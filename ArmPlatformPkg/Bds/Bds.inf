@@ -54,6 +54,7 @@
 [Guids]
   gEfiFileSystemInfoGuid
   gArmGlobalVariableGuid
+  gEfiPartTypeSystemPartGuid
 
 [Protocols]
   gEfiBdsArchProtocolGuid

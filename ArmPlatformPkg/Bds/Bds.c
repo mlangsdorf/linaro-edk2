@@ -235,6 +235,7 @@ FindCandidate (
     EFI_REMOVABLE_MEDIA_FILE_NAME,
     L"\\Image",
     L"\\EFI\\redhat\\grubaa64.efi",
+    L"\\EFI\\fedora\\grubaa64.efi",
     NULL
   };
 

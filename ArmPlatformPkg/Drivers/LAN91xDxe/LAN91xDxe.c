@@ -1821,9 +1821,9 @@ SnpTransmit (
   PktNum &= ARR_PACKET;
 
   // Check for the nature of the frame
-  if (DstAddr->Addr[0] == 0xFF) {
+  if (DstAddr && DstAddr->Addr[0] == 0xFF) {
     LanDriver->Stats.TxBroadcastFrames += 1;
-  } else if ((DstAddr->Addr[0] & 0x1) == 1) {
+  } else if (DstAddr && (DstAddr->Addr[0] & 0x1) == 1) {
     LanDriver->Stats.TxMulticastFrames += 1;
   } else {
     LanDriver->Stats.TxUnicastFrames += 1;

@@ -1553,7 +1553,7 @@ SnpStatistics (
   }
 
   // Fill in the statistics
-  CopyMem(&Statistics, &LanDriver->Stats, sizeof(EFI_NETWORK_STATISTICS));
+  CopyMem(Statistics, &LanDriver->Stats, sizeof(EFI_NETWORK_STATISTICS));
   Status = EFI_SUCCESS;
 
   // Restore TPL and return

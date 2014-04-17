@@ -30,7 +30,7 @@
 #include "PrePi.h"
 #include "LzmaDecompress.h"
 
-#define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > (UINT64)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet32 (PcdSystemMemorySize))) || \
+#define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > (UINT64)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize))) || \
                   ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
 
 // Not used when PrePi in run in XIP mode
@@ -109,7 +109,7 @@ PrePiMain (
   // If ensure the FD is either part of the System Memory or totally outside of the System Memory (XIP)
   ASSERT (IS_XIP() ||
           ((FixedPcdGet64 (PcdFdBaseAddress) >= FixedPcdGet64 (PcdSystemMemoryBase)) &&
-           ((UINT32)(FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= (UINT32)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize)))));
+           ((UINT64)(FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= (UINT64)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize)))));
 
   // Initialize the architecture specific bits
   ArchInitialize ();
@@ -140,7 +140,7 @@ PrePiMain (
   // Create the Stacks HOB (reserve the memory for all stacks)
   if (ArmIsMpCore ()) {
     StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize) +
-                 ((FixedPcdGet32 (PcdCoreCount) - 1) * FixedPcdGet32 (PcdCPUCoreSecondaryStackSize));
+				 (FixedPcdGet32(PcdClusterCount) * 4 * FixedPcdGet32(PcdCPUCoreSecondaryStackSize));
   } else {
     StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize);
   }

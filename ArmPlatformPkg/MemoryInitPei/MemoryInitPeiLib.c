@@ -34,7 +34,7 @@ InitMmu (
   VOID                          *TranslationTableBase;
   UINTN                         TranslationTableSize;
   RETURN_STATUS                 Status;
-
+  UINTN                         Index;
   // Get Virtual Memory Map from the Platform Library
   ArmPlatformGetVirtualMemoryMap (&MemoryTable);
 
@@ -43,6 +43,22 @@ InitMmu (
   Status = ArmConfigureMmu (MemoryTable, &TranslationTableBase, &TranslationTableSize);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "Error: Failed to enable MMU\n"));
+  }
+
+  BuildMemoryAllocationHob((EFI_PHYSICAL_ADDRESS)(UINTN)TranslationTableBase, EFI_SIZE_TO_PAGES(TranslationTableSize) * EFI_PAGE_SIZE, EfiBootServicesData);
+
+  Index = 0;
+  while (MemoryTable[Index].Length != 0) {
+    if (MemoryTable[Index].Attributes == ARM_MEMORY_REGION_ATTRIBUTE_DEVICE) {
+      BuildResourceDescriptorHob (
+          EFI_RESOURCE_MEMORY_MAPPED_IO,
+          EFI_RESOURCE_ATTRIBUTE_PRESENT     |
+          EFI_RESOURCE_ATTRIBUTE_INITIALIZED,
+          MemoryTable[Index].PhysicalBase,
+          MemoryTable[Index].Length
+          );
+    }
+    Index++;
   }
 }
 
@@ -70,12 +86,14 @@ MemoryPeim (
   )
 {
   EFI_RESOURCE_ATTRIBUTE_TYPE ResourceAttributes;
+#ifndef APM_XGENE
   UINT64                      ResourceLength;
   EFI_PEI_HOB_POINTERS        NextHob;
   EFI_PHYSICAL_ADDRESS        FdTop;
   EFI_PHYSICAL_ADDRESS        SystemMemoryTop;
   EFI_PHYSICAL_ADDRESS        ResourceTop;
   BOOLEAN                     Found;
+#endif
 
   // Ensure PcdSystemMemorySize has been set
   ASSERT (PcdGet64 (PcdSystemMemorySize) != 0);
@@ -100,7 +118,7 @@ MemoryPeim (
       PcdGet64 (PcdSystemMemoryBase),
       PcdGet64 (PcdSystemMemorySize)
   );
-
+#ifndef APM_XGENE
   SystemMemoryTop = (EFI_PHYSICAL_ADDRESS)PcdGet64 (PcdSystemMemoryBase) + (EFI_PHYSICAL_ADDRESS)PcdGet64 (PcdSystemMemorySize);
   FdTop = (EFI_PHYSICAL_ADDRESS)PcdGet64(PcdFdBaseAddress) + (EFI_PHYSICAL_ADDRESS)PcdGet32(PcdFdSize);
 
@@ -161,7 +179,7 @@ MemoryPeim (
 
     ASSERT(Found);
   }
-
+#endif
   // Build Memory Allocation Hob
   InitMmu ();
 

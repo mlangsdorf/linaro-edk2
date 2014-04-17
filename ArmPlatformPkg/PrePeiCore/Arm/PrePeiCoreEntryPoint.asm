@@ -43,7 +43,7 @@ _ModuleEntryPoint
   bl	ArmPlatformIsPrimaryCore
 
   // Get the top of the primary stacks (and the base of the secondary stacks)
-  LoadConstantToReg (FixedPcdGet32(PcdCPUCoresStackBase), r1)
+  LoadConstantToReg (FixedPcdGet64(PcdCPUCoresStackBase), r1)
   LoadConstantToReg (FixedPcdGet32(PcdCPUCorePrimaryStackSize), r2)
   add   r1, r1, r2
 
@@ -69,7 +69,7 @@ _SetupSecondaryCoreStack
 
 _PrepareArguments
   // The PEI Core Entry Point has been computed by GenFV and stored in the second entry of the Reset Vector
-  LoadConstantToReg (FixedPcdGet32(PcdFvBaseAddress), r2)
+  LoadConstantToReg (FixedPcdGet64(PcdFvBaseAddress), r2)
   add   r2, r2, #4
   ldr   r1, [r2]
 

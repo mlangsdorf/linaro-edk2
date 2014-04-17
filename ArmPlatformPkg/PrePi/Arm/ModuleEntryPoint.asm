@@ -58,7 +58,7 @@ _SetupStackPosition
   add   r1, r1, r2      // r1 = SystemMemoryTop = PcdSystemMemoryBase + PcdSystemMemorySize
 
   // Calculate Top of the Firmware Device
-  LoadConstantToReg (FixedPcdGet32(PcdFdBaseAddress), r2)
+  LoadConstantToReg (FixedPcdGet64(PcdFdBaseAddress), r2)
   LoadConstantToReg (FixedPcdGet32(PcdFdSize), r3)
   sub   r3, r3, #1
   add   r3, r3, r2      // r3 = FdTop = PcdFdBaseAddress + PcdFdSize

@@ -139,5 +139,5 @@ _PrepareArguments:
   ret
 
 ASM_PFX(JumpToPEI):
-  LoadConstantToReg (FixedPcdGet32(PcdFvBaseAddress), x0)
+  LoadConstantToReg (FixedPcdGet64(PcdFvBaseAddress), x0)
   blr   x0

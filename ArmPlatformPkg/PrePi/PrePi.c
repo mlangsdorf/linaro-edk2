@@ -30,8 +30,8 @@
 #include "PrePi.h"
 #include "LzmaDecompress.h"
 
-#define IS_XIP() (((UINT32)FixedPcdGet32 (PcdFdBaseAddress) > (UINT32)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet32 (PcdSystemMemorySize))) || \
-                  ((FixedPcdGet32 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
+#define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > (UINT64)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet32 (PcdSystemMemorySize))) || \
+                  ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
 
 // Not used when PrePi in run in XIP mode
 UINTN mGlobalVariableBase = 0;
@@ -107,9 +107,9 @@ PrePiMain (
   UINTN                         StacksSize;
 
   // If ensure the FD is either part of the System Memory or totally outside of the System Memory (XIP)
-  ASSERT (IS_XIP() || 
-          ((FixedPcdGet32 (PcdFdBaseAddress) >= FixedPcdGet64 (PcdSystemMemoryBase)) &&
-           ((UINT32)(FixedPcdGet32 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= (UINT32)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize)))));
+  ASSERT (IS_XIP() ||
+          ((FixedPcdGet64 (PcdFdBaseAddress) >= FixedPcdGet64 (PcdSystemMemoryBase)) &&
+           ((UINT32)(FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= (UINT32)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize)))));
 
   // Initialize the architecture specific bits
   ArchInitialize ();
@@ -123,7 +123,7 @@ PrePiMain (
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
   SaveAndSetDebugTimerInterrupt (TRUE);
-  
+
   // Declare the PI/UEFI memory region
   HobList = HobConstructor (
     (VOID*)UefiMemoryBase,
@@ -208,7 +208,7 @@ CEntryPoint (
   )
 {
   UINT64   StartTimeStamp;
- 
+
   ASSERT(!ArmIsMpCore() || (PcdGet32 (PcdCoreCount) > 1));
 
   // Initialize the platform specific controllers
@@ -245,7 +245,7 @@ CEntryPoint (
       ArmCallWFE ();
     }
   }
-  
+
   // If not primary Jump to Secondary Main
   if (ArmPlatformIsPrimaryCore (MpId)) {
     // Goto primary Main.

@@ -98,9 +98,9 @@
   #
   # ARM Normal (or Non Secure) Firmware PCDs
   #
-  gArmTokenSpaceGuid.PcdFdBaseAddress|0|UINT32|0x0000002B
+  gArmTokenSpaceGuid.PcdFdBaseAddress|0|UINT64|0x000000000000002B
   gArmTokenSpaceGuid.PcdFdSize|0|UINT32|0x0000002C
-  gArmTokenSpaceGuid.PcdFvBaseAddress|0|UINT32|0x0000002D
+  gArmTokenSpaceGuid.PcdFvBaseAddress|0|UINT64|0x000000000000002D
   gArmTokenSpaceGuid.PcdFvSize|0|UINT32|0x0000002E
 
   #

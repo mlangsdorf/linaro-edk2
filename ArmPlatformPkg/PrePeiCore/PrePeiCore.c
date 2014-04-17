@@ -53,7 +53,7 @@ CreatePpiList (
   ArmPlatformGetPlatformPpiList (&PlatformPpiListSize, &PlatformPpiList);
 
   // Copy the Common and Platform PPis in Temporrary Memory
-  ListBase = PcdGet32 (PcdCPUCoresStackBase);
+  ListBase = PcdGet64 (PcdCPUCoresStackBase);
   CopyMem ((VOID*)ListBase, gCommonPpiTable, sizeof(gCommonPpiTable));
   CopyMem ((VOID*)(ListBase + sizeof(gCommonPpiTable)), PlatformPpiList, PlatformPpiListSize);
 
@@ -140,7 +140,7 @@ PrePeiCoreTemporaryRamSupport (
   // Migrate the temporary memory heap to permanent memory heap.
   //
   CopyMem (NewHeap, OldHeap, CopySize >> 1);
-  
+
   SecSwitchStack ((UINTN)NewStack - (UINTN)OldStack);
 
   return EFI_SUCCESS;
@@ -153,7 +153,7 @@ PrePeiCoreGetGlobalVariableMemory (
 {
   ASSERT (GlobalVariableBase != NULL);
 
-  *GlobalVariableBase = (UINTN)PcdGet32 (PcdCPUCoresStackBase) +
+  *GlobalVariableBase = (UINTN)PcdGet64 (PcdCPUCoresStackBase) +
                         (UINTN)PcdGet32 (PcdCPUCorePrimaryStackSize) -
                         (UINTN)PcdGet32 (PcdPeiGlobalVariableSize);
 

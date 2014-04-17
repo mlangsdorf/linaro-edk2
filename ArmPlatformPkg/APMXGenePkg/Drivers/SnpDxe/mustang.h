@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2010 Applied Micro Circuits Corporation.
+ * All rights reserved. Keyur Chudgar <kchudgar@apm.com>.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ */
+
+#ifndef __CONFIG_H
+#define __CONFIG_H
+/* Fabric Map */
+#define CONFIG_SYS_QML_FABRIC_BASE	0x10000000
+#define CONFIG_SYS_QM0_FABRIC_BASE	0x18000000
+#define CONFIG_SYS_QM1_FABRIC_BASE	0x1B000000
+#define CONFIG_SYS_QM2_FABRIC_BASE	0x1E000000
+
+/* Address Map */
+#define CONFIG_SYS_STANDBY_CSR_BASE	0x17000000
+
+#define CONFIG_SYS_ETH4_CSR_BASE	(CONFIG_SYS_STANDBY_CSR_BASE + 0x20000)
+#define CONFIG_SYS_CLE4_CSR_BASE	(CONFIG_SYS_STANDBY_CSR_BASE + 0x26000)
+#define CONFIG_SYS_QML_CSR_BASE		(CONFIG_SYS_STANDBY_CSR_BASE + 0x30000)
+
+#define CONFIG_SYS_CSR_BASE		0x1F200000
+
+#define CONFIG_SYS_QM1_CSR_BASE		(CONFIG_SYS_CSR_BASE + 0x000000)
+#define CONFIG_SYS_ETH01_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x010000)
+#define CONFIG_SYS_CLE01_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x016000)
+#define CONFIG_SYS_ETH23_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x020000)
+#define CONFIG_SYS_CLE23_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x026000)
+
+#define CONFIG_SYS_QM0_CSR_BASE		(CONFIG_SYS_CSR_BASE + 0x400000)
+#define CONFIG_SYS_XGE0_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x410000)
+#define CONFIG_SYS_XGC0_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x416000)
+#define CONFIG_SYS_XGE1_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x420000)
+#define CONFIG_SYS_XGC1_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x426000)
+
+#define CONFIG_SYS_QM2_CSR_BASE		(CONFIG_SYS_CSR_BASE + 0x500000)
+#define CONFIG_SYS_XGE2_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x510000)
+#define CONFIG_SYS_XGC2_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x516000)
+#define CONFIG_SYS_XGE3_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x520000)
+#define CONFIG_SYS_XGC3_CSR_BASE	(CONFIG_SYS_CSR_BASE + 0x526000)
+
+/*****************************************************************************
+ * Ethernet
+ *****************************************************************************/
+#define ENABLE_ENET
+#ifdef ENABLE_ENET
+#define CONFIG_NET_MULTI
+#define CONFIG_CMD_NET
+#undef CONFIG_NETCONSOLE
+
+#define CONFIG_APM88XXXX_ENET
+//#define CONFIG_APM88XXXX_XGENET
+
+#ifdef CONFIG_APM88XXXX_ENET
+#define CONFIG_HAS_ETH0
+#undef CONFIG_HAS_ETH1
+//#define CONFIG_HAS_ETH1
+#undef CONFIG_HAS_ETH2
+//#define CONFIG_HAS_ETH2
+#undef CONFIG_HAS_ETH3
+//#define CONFIG_HAS_ETH3
+//#define CONFIG_HAS_ETH8
+#define	CONFIG_CMD_APM88XXXX_ENET
+#endif
+
+#ifdef CONFIG_APM88XXXX_XGENET
+#undef CONFIG_HAS_XG0
+#undef CONFIG_HAS_XG1
+#undef CONFIG_HAS_XG2
+#undef CONFIG_HAS_XG3
+#endif
+#endif
+
+#endif	/* __CONFIG_H */

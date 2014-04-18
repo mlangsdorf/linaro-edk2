@@ -104,7 +104,7 @@ NorFlashBlockIoWriteBlocks (
   } else if( This->Media->ReadOnly ) {
     Status = EFI_WRITE_PROTECTED;
   } else {
-    Status = NorFlashWriteBlocks (Instance,Lba,BufferSizeInBytes,Buffer);
+    Status = NorFlashWriteBlocks (Instance,Lba,BufferSizeInBytes,Buffer, TRUE);
   }
 
   return Status;

@@ -58,6 +58,8 @@
 [Sources.AARCH64]
   AArch64/CopyMem.c
   AArch64/SetMem.c
+  AArch64/CopyMemAlign.S
+  AArch64/SetMemAlign.S
 
 [Packages]
   MdePkg/MdePkg.dec

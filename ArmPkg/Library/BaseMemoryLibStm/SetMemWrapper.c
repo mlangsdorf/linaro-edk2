@@ -52,7 +52,11 @@ SetMem (
   }
 
   ASSERT ((Length - 1) <= (MAX_ADDRESS - (UINTN)Buffer));
-
+#ifdef ARM_CPU_AARCH64
+  if (((UINTN)Buffer & 0x7) == 0) {
+    return InternalMemSetMemAlign (Buffer, Length, Value);
+  }
+#endif
   return InternalMemSetMem (Buffer, Length, Value);
 }
 

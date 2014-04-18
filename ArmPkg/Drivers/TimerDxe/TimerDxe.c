@@ -136,9 +136,14 @@ TimerDriverSetTimerPeriod (
   )
 {
   UINT64      TimerTicks;
+#if defined(ARM_CPU_AARCH64)
+  UINTN	      TimerCtrlReg;
+#endif
   
+#if !defined(ARM_CPU_AARCH64)
   // Always disable the timer
   ArmArchTimerDisableTimer ();
+#endif
 
   if (TimerPeriod != 0) {
     // Convert TimerPeriod to micro sec units
@@ -150,6 +155,13 @@ TimerDriverSetTimerPeriod (
 
     // Enable the timer
     ArmArchTimerEnableTimer ();
+
+#if defined(ARM_CPU_AARCH64)
+    // Unmask the timer interrupt
+    TimerCtrlReg = ArmArchTimerGetTimerCtrlReg ();
+    TimerCtrlReg &= ~ARM_ARCH_TIMER_IMASK;
+    ArmArchTimerSetTimerCtrlReg (TimerCtrlReg);
+#endif
   }
 
   // Save the new timer period
@@ -273,6 +285,9 @@ TimerInterruptHandler (
   )
 {
   EFI_TPL      OriginalTPL;
+#if defined(ARM_CPU_AARCH64)
+  UINTN        TimerCtrlReg;
+#endif
 
   //
   // DXE core uses this callback for the EFI timer tick. The DXE core uses locks
@@ -287,6 +302,12 @@ TimerInterruptHandler (
     // Signal end of interrupt early to help avoid losing subsequent ticks from long duration handlers
     gInterrupt->EndOfInterrupt (gInterrupt, Source);
 
+#if defined(ARM_CPU_AARCH64)
+    // Mask the interrupt
+    TimerCtrlReg = ArmArchTimerGetTimerCtrlReg ();
+    TimerCtrlReg |= ARM_ARCH_TIMER_IMASK;
+    ArmArchTimerSetTimerCtrlReg (TimerCtrlReg);
+#endif
     if (mTimerNotifyFunction) {
       mTimerNotifyFunction (mTimerPeriod);
     }
@@ -336,10 +357,12 @@ TimerInitialize (
   ASSERT_EFI_ERROR (Status);
 
   // Disable the timer
+#if !defined(ARM_CPU_AARCH64)
   TimerCtrlReg = ArmArchTimerGetTimerCtrlReg ();
   TimerCtrlReg |= ARM_ARCH_TIMER_IMASK;
   TimerCtrlReg &= ~ARM_ARCH_TIMER_ENABLE;
   ArmArchTimerSetTimerCtrlReg (TimerCtrlReg);
+#endif
   Status = TimerDriverSetTimerPeriod (&gTimer, 0);
   ASSERT_EFI_ERROR (Status);
 
@@ -353,6 +376,12 @@ TimerInitialize (
   Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdArmArchTimerIntrNum), TimerInterruptHandler);
   ASSERT_EFI_ERROR (Status);
 
+  // Unmask timer interrupts
+#if defined(ARM_CPU_AARCH64)
+  TimerCtrlReg = ArmArchTimerGetTimerCtrlReg ();
+  TimerCtrlReg &= ~ARM_ARCH_TIMER_IMASK;
+  ArmArchTimerSetTimerCtrlReg (TimerCtrlReg);
+#endif
   // Set up default timer
   Status = TimerDriverSetTimerPeriod (&gTimer, FixedPcdGet32(PcdTimerPeriod)); // TIMER_DEFAULT_PERIOD
   ASSERT_EFI_ERROR (Status);
@@ -365,9 +394,16 @@ TimerInitialize (
                   );
   ASSERT_EFI_ERROR(Status);
 
+#if !defined(ARM_CPU_AARCH64)
   // Everything is ready, unmask and enable timer interrupts
   TimerCtrlReg = ARM_ARCH_TIMER_ENABLE;
   ArmArchTimerSetTimerCtrlReg (TimerCtrlReg);
+#else
+  // enable Secure timer interrupts
+  Status = gInterrupt->EnableInterruptSource (gInterrupt, PcdGet32 (PcdArmArchTimerSecIntrNum));
+  // enable NonSecure timer interrupts
+  Status = gInterrupt->EnableInterruptSource (gInterrupt, PcdGet32 (PcdArmArchTimerIntrNum));
+#endif
 
   // Register for an ExitBootServicesEvent
   Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY, ExitBootServicesEvent, NULL, &EfiExitBootServicesEvent);

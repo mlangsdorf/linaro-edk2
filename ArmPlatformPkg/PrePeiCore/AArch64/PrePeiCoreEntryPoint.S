@@ -42,18 +42,24 @@ ASM_PFX(_ModuleEntryPoint):
 // If started at EL1 or EL2 Sec jumps directly to PEI without making any
 // changes.
 
+#if 0
+// FIXME - LHO
 // Which EL are we running at? Every EL needs some level of setup...
-// We should not run this code in EL3
-  EL1_OR_EL2(x0)
+  EL1_OR_EL2_OR_EL3(x0)
 1:bl    ASM_PFX(SetupExceptionLevel1)
   b     ASM_PFX(MainEntryPoint)
 2:bl    ASM_PFX(SetupExceptionLevel2)
   b     ASM_PFX(MainEntryPoint)
+3:// If we are at EL3 we die.
+  b     dead
+#endif
 
 ASM_PFX(MainEntryPoint):
   // Identify CPU ID
   bl    ASM_PFX(ArmReadMpidr)
-  // Keep a copy of the MpId register value
+  // Get ID of this CPU in Multicore system
+  LoadConstantToReg (FixedPcdGet32(PcdArmPrimaryCoreMask), x1)
+  and   x0, x0, x1
   mov   x5, x0
 
   // Is it the Primary Core ?
@@ -108,3 +114,6 @@ _SetupPrimaryCoreStack:
   // 128-bit variable on the stack
   SetPrimaryStack (x1, x2, x3, x4)
   b     _PrepareArguments
+
+dead:
+  b     dead

@@ -293,7 +293,7 @@ FfsProcessSection (
   UINT32                                  SectionLength;
   UINT32                                  ParsedLength;
   EFI_COMPRESSION_SECTION                 *CompressionSection;
-  UINT32                                  DstBufferSize;
+  UINTN                                   DstBufferSize;
   VOID                                    *ScratchBuffer;
   UINT32                                  ScratchBufferSize;
   VOID                                    *DstBuffer;
@@ -322,13 +322,13 @@ FfsProcessSection (
         Status = UefiDecompressGetInfo (
                    (UINT8 *) ((EFI_COMPRESSION_SECTION *) Section + 1),
                    (UINT32) SectionLength - sizeof (EFI_COMPRESSION_SECTION),
-                   &DstBufferSize,
+                   (UINT32 *) &DstBufferSize,
                    &ScratchBufferSize
                    );
       } else if (Section->Type == EFI_SECTION_GUID_DEFINED) {
         Status = ExtractGuidedSectionGetInfo (
                    Section,
-                   &DstBufferSize,
+                   (UINT32 *) &DstBufferSize,
                    &ScratchBufferSize,
                    &SectionAttribute
                    );

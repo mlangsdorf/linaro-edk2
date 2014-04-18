@@ -840,9 +840,6 @@ FvbEraseBlocks (
       );
 
       // Erase it
-      // BOZO: ahs3 DEBUG ((DEBUG_BLKIO, "FvbEraseBlocks: Erasing Lba=%ld @ 0x%08x.\n", Instance->StartLba + StartingLba, BlockAddress));
-      DEBUG ((EFI_D_ERROR, "FvbEraseBlocks: Erasing Lba=%ld @ 0x%08x.\n", Instance->StartLba + StartingLba, BlockAddress));
-      // END BOZO
       Status = NorFlashUnlockAndEraseSingleBlock (Instance, BlockAddress);
       if (EFI_ERROR(Status)) {
         VA_END (Args);
@@ -913,18 +910,12 @@ NorFlashFvbInitialize (
     if (EFI_ERROR(Status)) {
       return Status;
     }
-    // BOZO: ahs3
-    DEBUG ((EFI_D_ERROR, "--> returned from FvbEraseBlocks safely\n"));
-    // END BOZO
 
     // Install all appropriate headers
     Status = InitializeFvAndVariableStoreHeaders (Instance);
     if (EFI_ERROR(Status)) {
       return Status;
     }
-    // BOZO: ahs3
-    DEBUG ((EFI_D_ERROR, "--> returned from InitializeAndVariableStoreHeaders safely\n"));
-    // END BOZO
   }
   DEBUG((DEBUG_BLKIO,"Store StorageVariable\n"));
 

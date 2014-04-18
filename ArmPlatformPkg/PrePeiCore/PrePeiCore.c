@@ -77,7 +77,9 @@ CEntryPoint (
   ArmInvalidateDataCache ();
   // Invalidate instruction cache
   ArmInvalidateInstructionCache ();
-  // Enable Instruction Caches on all cores.
+
+  // Enable Instruction & Data caches
+  ArmEnableDataCache ();
   ArmEnableInstructionCache ();
 
   //

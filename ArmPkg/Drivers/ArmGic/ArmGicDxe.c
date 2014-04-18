@@ -304,7 +304,8 @@ ExitBootServicesEvent (
   )
 {
   UINTN    Index;
-  
+  UINT32   ControlValue;
+
   // Acknowledge all pending interrupts
   for (Index = 0; Index < mGicNumInterrupts; Index++) {
     DisableInterruptSource (&gHardwareInterruptProtocol, Index);
@@ -315,11 +316,16 @@ ExitBootServicesEvent (
   }
 
   // Disable Gic Interface
-  MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR, 0x0);
+  ControlValue = MmioRead32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR);
+  MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR,
+     ControlValue & ~(ARM_GIC_ICCICR_ENABLE_SECURE | ARM_GIC_ICCICR_ENABLE_NS));
   MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCPMR, 0x0);
 
   // Disable Gic Distributor
   MmioWrite32 (PcdGet32(PcdGicDistributorBase) + ARM_GIC_ICDDCR, 0x0);
+
+  // Mask interrupts globally
+  ArmDisableInterrupts ();
 }
 
 /**
@@ -345,7 +351,8 @@ InterruptDxeInitialize (
   UINTN                   RegShift;
   EFI_CPU_ARCH_PROTOCOL   *Cpu;
   UINT32                  CpuTarget;
-  
+  UINT32                  ControlValue;
+
   // Make sure the Interrupt Controller Protocol is not already installed in the system.
   ASSERT_PROTOCOL_ALREADY_INSTALLED (NULL, &gHardwareInterruptProtocolGuid);
 
@@ -393,7 +400,9 @@ InterruptDxeInitialize (
   MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCPMR, 0xff);
   
   // Enable gic cpu interface
-  MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR, 0x1);
+  ControlValue = MmioRead32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR);
+  MmioWrite32 (PcdGet32(PcdGicInterruptInterfaceBase) + ARM_GIC_ICCICR,
+               ControlValue | 0x1);
 
   // Enable gic distributor
   MmioWrite32 (PcdGet32(PcdGicDistributorBase) + ARM_GIC_ICDDCR, 0x1);

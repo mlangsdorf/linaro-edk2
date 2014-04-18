@@ -22,12 +22,16 @@ EFIAPI
 ArmGicEnableInterruptInterface (
   IN  INTN          GicInterruptInterfaceBase
   )
-{  
+{
+  UINT32    ControlValue;
+
+  ControlValue = MmioRead32 (GicInterruptInterfaceBase + ARM_GIC_ICCICR);
+
   /*
   * Enable the CPU interface in Non-Secure world
   * Note: The ICCICR register is banked when Security extensions are implemented
   */
-  MmioWrite32 (GicInterruptInterfaceBase + ARM_GIC_ICCICR, 0x1);
+  MmioWrite32 (GicInterruptInterfaceBase + ARM_GIC_ICCICR, ControlValue | 0x1);
 }
 
 VOID

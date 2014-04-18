@@ -20,3 +20,13 @@ Conf/target.txt
 Conf/tools_def.txt
 PandaBoardPkg/Tools/chtool
 tmp.bin
+bld.log
+build-debug-img.sh
+build-img.sh
+clean.sh
+mustang_tianocore_sec_spi.fd
+mustang_tianocore_spi.fd
+parse-platforms.sh
+platforms.config
+tianocore_media.img
+uefi-build.sh

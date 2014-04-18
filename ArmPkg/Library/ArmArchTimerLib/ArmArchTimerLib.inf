@@ -43,4 +43,4 @@
   gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
 
 [Depex]
-  gEfiCpuArchProtocolGuid
+#  gEfiCpuArchProtocolGuid		FIXME - LHO

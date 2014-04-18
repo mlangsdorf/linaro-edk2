@@ -107,6 +107,11 @@ InternalMemZeroMem (
   IN      UINTN                     Length
   )
 {
+#ifdef ARM_CPU_AARCH64
+  if (((UINTN)Buffer & 0x7) == 0) {
+    return InternalMemSetMemAlign (Buffer, Length, 0);
+  }
+#endif
   return InternalMemSetMem (Buffer, Length, 0);
 }
 

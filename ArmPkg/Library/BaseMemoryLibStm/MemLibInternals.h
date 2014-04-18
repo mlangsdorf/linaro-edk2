@@ -28,6 +28,24 @@
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 
+#ifdef ARM_CPU_AARCH64
+VOID *
+EFIAPI
+InternalMemCopyMemAlign (
+  OUT     VOID                      *DestinationBuffer,
+  IN      CONST VOID                *SourceBuffer,
+  IN      UINTN                     Length
+  );
+
+VOID *
+EFIAPI
+InternalMemSetMemAlign (
+  OUT     VOID                      *Buffer,
+  IN      UINTN                     Length,
+  IN      UINT8                     Value
+  );
+
+#endif
 /**
   Copy Length bytes from Source to Destination.
 

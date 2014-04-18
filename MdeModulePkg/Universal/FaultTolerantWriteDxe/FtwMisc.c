@@ -158,6 +158,7 @@ GetFvbByAddress (
   UINTN                               HandleCount;
   UINTN                               Index;
   EFI_PHYSICAL_ADDRESS                FvbBaseAddress;
+  EFI_PHYSICAL_ADDRESS                FvbHeaderAddress;
   EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL  *Fvb;
   EFI_FIRMWARE_VOLUME_HEADER          *FwVolHeader;
   EFI_HANDLE                          FvbHandle;
@@ -187,7 +188,16 @@ GetFvbByAddress (
       continue;
     }
 
-    FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) ((UINTN) FvbBaseAddress);
+    if (Fvb->GetMappedAddress) {
+      Status = Fvb->GetMappedAddress(Fvb, &FvbHeaderAddress);
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
+      FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) FvbHeaderAddress;
+    } else {
+      FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) FvbBaseAddress;
+    }
+
     if ((Address >= FvbBaseAddress) && (Address <= (FvbBaseAddress + (FwVolHeader->FvLength - 1)))) {
       *FvBlock  = Fvb;
       FvbHandle  = HandleBuffer[Index];
@@ -1013,6 +1023,7 @@ FindFvbForFtw (
   UINTN                               HandleCount;
   UINTN                               Index;
   EFI_PHYSICAL_ADDRESS                FvbBaseAddress;
+  EFI_PHYSICAL_ADDRESS                FvbHeaderAddress;
   EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL  *Fvb;
   EFI_FIRMWARE_VOLUME_HEADER          *FwVolHeader;
   EFI_FVB_ATTRIBUTES_2                Attributes;
@@ -1053,7 +1064,16 @@ FindFvbForFtw (
       continue;
     }
 
+    if (Fvb->GetMappedAddress) {
+      Status = Fvb->GetMappedAddress(Fvb, &FvbHeaderAddress);
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
+      FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) ((UINTN) FvbHeaderAddress);
+    } else {
     FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) ((UINTN) FvbBaseAddress);
+    }
+
     if ((FtwDevice->FtwFvBlock == NULL) && (FtwDevice->WorkSpaceAddress >= FvbBaseAddress) &&
       ((FtwDevice->WorkSpaceAddress + FtwDevice->WorkSpaceLength) <= (FvbBaseAddress + FwVolHeader->FvLength))
       ) {

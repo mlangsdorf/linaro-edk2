@@ -111,6 +111,27 @@ EFI_STATUS
 );
 
 /**
+  The GetMappedAddress() function retrieves the mapped address of
+  firmware volume. .
+
+  @param This     Indicates the EFI_FIRMWARE_VOLUME_BLOCK2_PROTOCOL instance.
+
+  @param Address  Pointer to mapped address of
+                  base address of the firmware volume.
+
+  @retval EFI_SUCCESS       The firmware volume base address was returned.
+
+  @retval EFI_UNSUPPORTED   The firmware volume is not memory mapped.
+
+**/
+typedef
+EFI_STATUS
+(EFIAPI * EFI_FVB_GET_MAPPED_ADDRESS)(
+  IN CONST  EFI_FIRMWARE_VOLUME_BLOCK2_PROTOCOL *This,
+  OUT       EFI_PHYSICAL_ADDRESS                *Address
+);
+
+/**
   The GetBlockSize() function retrieves the size of the requested
   block. It also returns the number of additional blocks with
   the identical size. The GetBlockSize() function is used to
@@ -357,6 +378,7 @@ struct _EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL{
   /// The handle of the parent firmware volume.
   ///  
   EFI_HANDLE                    ParentHandle;
+  EFI_FVB_GET_MAPPED_ADDRESS    GetMappedAddress;
 };
 
 

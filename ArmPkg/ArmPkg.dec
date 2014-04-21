@@ -90,9 +90,9 @@
   #
   # ARM Secure Firmware PCDs
   #
-  gArmTokenSpaceGuid.PcdSecureFdBaseAddress|0|UINT32|0x00000015
+  gArmTokenSpaceGuid.PcdSecureFdBaseAddress|0|UINT64|0x00000015
   gArmTokenSpaceGuid.PcdSecureFdSize|0|UINT32|0x00000016
-  gArmTokenSpaceGuid.PcdSecureFvBaseAddress|0x0|UINT32|0x0000002F
+  gArmTokenSpaceGuid.PcdSecureFvBaseAddress|0x0|UINT64|0x0000002F
   gArmTokenSpaceGuid.PcdSecureFvSize|0x0|UINT32|0x00000030
 
   #
@@ -133,6 +133,7 @@
   gArmTokenSpaceGuid.PcdArmMachineType|0|UINT32|0x0000001E
   # The compressed Linux kernel is expected to be under 128MB from the beginning of the System Memory
   gArmTokenSpaceGuid.PcdArmLinuxKernelMaxOffset|0x08000000|UINT32|0x0000001F
+  gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset|0x00800000|UINT32|0x00000044
 
   #
   # ARM Architectural Timer
@@ -215,6 +216,7 @@
   # If the fixed FDT address is not available, then it should be loaded above the kernel.
   # The recommendation from the AArch64 Linux kernel is to have the FDT below 512MB.
   # (see the kernel doc: Documentation/arm64/booting.txt)
+  gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset|0x4000|UINT32|0x00000020
   gArmTokenSpaceGuid.PcdArmLinuxFdtMaxOffset|0x20000000|UINT32|0x00000023
   # The FDT blob must be loaded at a 2MB aligned address.
   gArmTokenSpaceGuid.PcdArmLinuxFdtAlignment|0x00200000|UINT32|0x00000026

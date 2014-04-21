@@ -1043,6 +1043,8 @@ SnpStart (
     ReturnUnlock (EFI_DEVICE_ERROR);
   }
 
+  // Set the Current MAC address
+  Mode->CurrentAddress = Mode->PermanentAddress;
 
   // Change state
   Mode->State = EfiSimpleNetworkStarted;

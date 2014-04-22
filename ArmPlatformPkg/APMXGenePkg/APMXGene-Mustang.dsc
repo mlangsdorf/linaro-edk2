@@ -192,10 +192,8 @@
    #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(F9DD58FC-C9AC-4C50-9F78-A7631E79B296)/Sata(0x0,0x0,0x0)/HD(1,MBR,0x4178A07E,0x800,0x3C00000)/\\mustang.dtb"
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F9DD58FC-C9AC-4C50-9F78-A7631E79B296)/Sata(0x0,0x0,0x0)/HD(1,MBR,0x4178A07E,0x800,0x3C00000)/\\uRamdisk"
 
-   ### BOZO: ahs3
-   # gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset|0x00008000
-   # gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset|0x04000000
-   ### END BOZO
+   gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset|0x00008000
+   gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset|0x04000000
 
    # Use the serial console (ConIn & ConOut) and the Graphic driver (ConOut)
    gArmPlatformTokenSpaceGuid.PcdDefaultConOutPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(115200,8, N,1)/VenPcAnsi()"

@@ -73,7 +73,11 @@
 // seems not ready. Change the Maximum Sector Numbers to 0xFFFF to work round
 // this issue.
 //
+#ifdef APM_XGENE
+#define MAX_48BIT_TRANSFER_BLOCK_NUM      0x800
+#else
 #define MAX_48BIT_TRANSFER_BLOCK_NUM      0xFFFF
+#endif
 
 //
 // The maximum model name in ATA identify data

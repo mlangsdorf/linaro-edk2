@@ -797,10 +797,14 @@ PciHostBridgeResourceAllocator (
       &PMem64Base
       );
 
+#ifndef ARM_CPU_AARCH64
+    // AARCH64 doesn't support option rom for now
+
     //
     // Process option rom for this root bridge
     //
     ProcessOptionRom (RootBridgeDev, Mem32Base, RootBridgeDev->RomSize);
+#endif
 
     //
     // Create the entire system resource map from the information collected by

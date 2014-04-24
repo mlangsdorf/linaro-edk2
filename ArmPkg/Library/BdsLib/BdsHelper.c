@@ -249,6 +249,57 @@ GetSystemMemoryResources (
   return EFI_SUCCESS;
 }
 
+EFI_STATUS
+GetMemmoryMapIOResources (
+  IN  LIST_ENTRY *ResourceList
+  )
+{
+  EFI_STATUS            Status;
+  UINTN                 MemoryMapSize;
+  EFI_MEMORY_DESCRIPTOR *MemoryMap;
+  EFI_MEMORY_DESCRIPTOR *MemoryMapPtr;
+  UINTN                 MapKey;
+  UINTN                 DescriptorSize;
+  UINT32                DescriptorVersion;
+  UINTN                 Pages;
+  UINTN                 Index;
+
+  EFI_HOB_RESOURCE_DESCRIPTOR ResHob;
+
+  InitializeListHead (ResourceList);
+
+  // Retrieve the UEFI Memory Map
+  MemoryMap = NULL;
+  MemoryMapSize = 0;
+  Status = gBS->GetMemoryMap (&MemoryMapSize, MemoryMap, &MapKey, &DescriptorSize, &DescriptorVersion);
+  if (Status == EFI_BUFFER_TOO_SMALL) {
+   // The UEFI specification advises to allocate more memory for the MemoryMap buffer between successive
+   // calls to GetMemoryMap(), since allocation of the new buffer may potentially increase memory map size.
+   Pages = EFI_SIZE_TO_PAGES (MemoryMapSize) + 1;
+   MemoryMap = AllocatePages (Pages);
+   if (MemoryMap == NULL) {
+     DEBUG((DEBUG_VERBOSE, "Out of resource\n"));
+     return EFI_OUT_OF_RESOURCES;
+   }
+   Status = gBS->GetMemoryMap (&MemoryMapSize, MemoryMap, &MapKey, &DescriptorSize, &DescriptorVersion);
+  }
+
+  if (!EFI_ERROR(Status)) {
+   MemoryMapPtr = MemoryMap;
+   for (Index = 0; Index < (MemoryMapSize / DescriptorSize); Index++) {
+     if (MemoryMapPtr->Type == EfiMemoryMappedIO) {
+       ResHob.PhysicalStart = MemoryMapPtr->PhysicalStart;
+       ResHob.ResourceLength = MemoryMapPtr->NumberOfPages * EFI_PAGE_SIZE;
+       InsertSystemMemoryResources (ResourceList, &ResHob);
+     }
+     MemoryMapPtr = (EFI_MEMORY_DESCRIPTOR*)((UINTN)MemoryMapPtr + DescriptorSize);
+   }
+  }
+
+  return EFI_SUCCESS;
+}
+
+
 VOID
 PrintPerformance (
   VOID

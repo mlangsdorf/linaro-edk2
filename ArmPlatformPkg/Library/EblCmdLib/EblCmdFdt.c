@@ -198,7 +198,7 @@ EblDumpFdt (
     return EFI_NOT_FOUND;
   }
 
-  Status = BdsLoadImage (FdtDevicePath, AllocateAnyPages, &FdtBlob, &FdtBlobSize);
+  Status = BdsLoadImage (&FdtDevicePath, AllocateAnyPages, &FdtBlob, &FdtBlobSize);
   if (EFI_ERROR(Status)) {
     Print (L"ERROR: Did not find the Fdt Blob.\n");
     return Status;

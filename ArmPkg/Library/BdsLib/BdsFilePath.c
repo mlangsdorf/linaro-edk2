@@ -314,7 +314,7 @@ TryRemovableDevice (
 **/
 EFI_STATUS
 BdsConnectDevicePath (
-  IN  EFI_DEVICE_PATH_PROTOCOL* DevicePath,
+  IN  EFI_DEVICE_PATH_PROTOCOL  ** DevicePath,
   OUT EFI_HANDLE                *Handle,
   OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
   )
@@ -323,12 +323,14 @@ BdsConnectDevicePath (
   EFI_DEVICE_PATH*            NewDevicePath;
   EFI_STATUS                  Status;
 
-  if ((DevicePath == NULL) || (Handle == NULL)) {
+  if ((DevicePath == NULL)  || (*DevicePath == NULL) || (Handle == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
+  //For tftp, this sould be here, not in the do { } while
+  Remaining = *DevicePath;
   do {
-    Remaining = DevicePath;
+    // Not for tftp, Remaining = DevicePath;
     // The LocateDevicePath() function locates all devices on DevicePath that support Protocol and returns
     // the handle to the device that is closest to DevicePath. On output, the device path pointer is modified
     // to point to the remaining part of the device path
@@ -348,7 +350,7 @@ BdsConnectDevicePath (
   if (!EFI_ERROR (Status)) {
     // Now, we have got the whole Device Path connected, call again ConnectController to ensure all the supported Driver
     // Binding Protocol are connected (such as DiskIo and SimpleFileSystem)
-    Remaining = DevicePath;
+    Remaining = *DevicePath;
     Status = gBS->LocateDevicePath (&gEfiDevicePathProtocolGuid, &Remaining, Handle);
     if (!EFI_ERROR (Status)) {
       Status = gBS->ConnectController (*Handle, NULL, Remaining, FALSE);
@@ -371,9 +373,10 @@ BdsConnectDevicePath (
     //TODO: Should we just return success and leave the caller decide if it is the expected RemainingPath
     Status = EFI_SUCCESS;
   } else {
-    Status = TryRemovableDevice (DevicePath, Handle, &NewDevicePath);
+    Status = TryRemovableDevice (*DevicePath, Handle, &NewDevicePath);
     if (!EFI_ERROR (Status)) {
-      return BdsConnectDevicePath (NewDevicePath, Handle, RemainingDevicePath);
+      *DevicePath = NewDevicePath;
+      return BdsConnectDevicePath (&NewDevicePath, Handle, RemainingDevicePath);
     }
   }
 
@@ -497,7 +500,7 @@ BdsMemoryMapLoadImage (
     MemMapPathDevicePath = (MEMMAP_DEVICE_PATH*)DevicePath;
   }
 
-  Size = MemMapPathDevicePath->EndingAddress - MemMapPathDevicePath->StartingAddress;
+  Size = MemMapPathDevicePath->EndingAddress - MemMapPathDevicePath->StartingAddress + 1;
   if (Size == 0) {
       return EFI_INVALID_PARAMETER;
   }
@@ -509,6 +512,7 @@ BdsMemoryMapLoadImage (
   }
   if (!EFI_ERROR (Status)) {
     CopyMem ((VOID*)(UINTN)(*Image), (CONST VOID*)(UINTN)MemMapPathDevicePath->StartingAddress, Size);
+    DEBUG((DEBUG_BLKIO, "BdsMemoryMapLoadImage: Load from 0x%p to %p.\n", (CONST VOID*)MemMapPathDevicePath->StartingAddress, (VOID*)(*Image)));
 
     if (ImageSize != NULL) {
         *ImageSize = Size;
@@ -867,7 +871,7 @@ BDS_FILE_LOADER FileLoaders[] = {
 
 EFI_STATUS
 BdsLoadImage (
-  IN     EFI_DEVICE_PATH       *DevicePath,
+  IN     EFI_DEVICE_PATH       **DevicePath,
   IN     EFI_ALLOCATE_TYPE     Type,
   IN OUT EFI_PHYSICAL_ADDRESS* Image,
   OUT    UINTN                 *FileSize
@@ -885,8 +889,8 @@ BdsLoadImage (
 
   FileLoader = FileLoaders;
   while (FileLoader->Support != NULL) {
-    if (FileLoader->Support (DevicePath, Handle, RemainingDevicePath)) {
-      return FileLoader->LoadImage (DevicePath, Handle, RemainingDevicePath, Type, Image, FileSize);
+    if (FileLoader->Support (*DevicePath, Handle, RemainingDevicePath)) {
+      return FileLoader->LoadImage (*DevicePath, Handle, RemainingDevicePath, Type, Image, FileSize);
     }
     FileLoader++;
   }
@@ -920,7 +924,7 @@ BdsStartEfiApplication (
   EFI_LOADED_IMAGE_PROTOCOL*   LoadedImage;
 
   // Find the nearest supported file loader
-  Status = BdsLoadImage (DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
+  Status = BdsLoadImage (&DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
   if (EFI_ERROR (Status)) {
     return Status;
   }

@@ -158,7 +158,7 @@ BdsBootLinuxAtag (
 
   // Load the Linux kernel from a device path
   LinuxImage = LINUX_KERNEL_MAX_OFFSET;
-  Status = BdsLoadImage (LinuxKernelDevicePath, AllocateMaxAddress, &LinuxImage, &LinuxImageSize);
+  Status = BdsLoadImage (&LinuxKernelDevicePath, AllocateMaxAddress, &LinuxImage, &LinuxImageSize);
   if (EFI_ERROR(Status)) {
     Print (L"ERROR: Did not find Linux kernel.\n");
     return Status;
@@ -167,9 +167,9 @@ BdsBootLinuxAtag (
   if (InitrdDevicePath) {
     // Load the initrd near to the Linux kernel
     InitrdImageBase = LINUX_KERNEL_MAX_OFFSET;
-    Status = BdsLoadImage (InitrdDevicePath, AllocateMaxAddress, &InitrdImageBase, &InitrdImageBaseSize);
+    Status = BdsLoadImage (&InitrdDevicePath, AllocateMaxAddress, &InitrdImageBase, &InitrdImageBaseSize);
     if (Status == EFI_OUT_OF_RESOURCES) {
-      Status = BdsLoadImage (InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
+      Status = BdsLoadImage (&InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
     }
     if (EFI_ERROR(Status)) {
       Print (L"ERROR: Did not find initrd image.\n");
@@ -245,7 +245,7 @@ BdsBootLinuxFdt (
 
   // Load the Linux kernel from a device path
   LinuxImage = LINUX_KERNEL_MAX_OFFSET;
-  Status = BdsLoadImage (LinuxKernelDevicePath, AllocateMaxAddress, &LinuxImage, &LinuxImageSize);
+  Status = BdsLoadImage (&LinuxKernelDevicePath, AllocateMaxAddress, &LinuxImage, &LinuxImageSize);
   if (EFI_ERROR(Status)) {
     Print (L"ERROR: Did not find Linux kernel.\n");
     return Status;
@@ -253,30 +253,29 @@ BdsBootLinuxFdt (
 
   if (InitrdDevicePath) {
     InitrdImageBase = LINUX_KERNEL_MAX_OFFSET;
-    Status = BdsLoadImage (InitrdDevicePath, AllocateMaxAddress, &InitrdImageBase, &InitrdImageBaseSize);
+    Status = BdsLoadImage (&InitrdDevicePath, AllocateMaxAddress, &InitrdImageBase, &InitrdImageBaseSize);
     if (Status == EFI_OUT_OF_RESOURCES) {
-      Status = BdsLoadImage (InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
+      Status = BdsLoadImage (&InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
     }
     if (EFI_ERROR(Status)) {
-      Print (L"ERROR: Did not find initrd image, you may need to update your config. Attempting to continue without it.\n");
-      InitrdImageBase = 0;
+      Print (L"ERROR: Did not find initrd image.\n");
+      goto EXIT_FREE_LINUX;
     }
-    else {
-      // Check if the initrd is a uInitrd
-      if (*(UINT32*)((UINTN)InitrdImageBase) == LINUX_UIMAGE_SIGNATURE) {
-        // Skip the 64-byte image header
-        InitrdImage = (EFI_PHYSICAL_ADDRESS)((UINTN)InitrdImageBase + 64);
-        InitrdImageSize = InitrdImageBaseSize - 64;
-      } else {
-        InitrdImage = InitrdImageBase;
-        InitrdImageSize = InitrdImageBaseSize;
-      }
+
+    // Check if the initrd is a uInitrd
+    if (*(UINT32*)((UINTN)InitrdImageBase) == LINUX_UIMAGE_SIGNATURE) {
+      // Skip the 64-byte image header
+      InitrdImage = (EFI_PHYSICAL_ADDRESS)((UINTN)InitrdImageBase + 64);
+      InitrdImageSize = InitrdImageBaseSize - 64;
+    } else {
+      InitrdImage = InitrdImageBase;
+      InitrdImageSize = InitrdImageBaseSize;
     }
   }
 
   // Load the FDT binary from a device path. The FDT will be reloaded later to a more appropriate location for the Linux kernel.
   FdtBlobBase = 0;
-  Status = BdsLoadImage (FdtDevicePath, AllocateAnyPages, &FdtBlobBase, &FdtBlobSize);
+  Status = BdsLoadImage (&FdtDevicePath, AllocateAnyPages, &FdtBlobBase, &FdtBlobSize);
   if (EFI_ERROR(Status)) {
     Print (L"ERROR: Did not find Device Tree blob.\n");
     goto EXIT_FREE_INITRD;
@@ -300,6 +299,7 @@ EXIT_FREE_INITRD:
     gBS->FreePages (InitrdImageBase, EFI_SIZE_TO_PAGES (InitrdImageBaseSize));
   }
 
+EXIT_FREE_LINUX:
   gBS->FreePages (LinuxImage, EFI_SIZE_TO_PAGES (LinuxImageSize));
 
   return Status;

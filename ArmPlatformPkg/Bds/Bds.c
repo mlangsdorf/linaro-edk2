@@ -16,12 +16,20 @@
 
 #include <Library/PcdLib.h>
 #include <Library/PerformanceLib.h>
+#include <Library/ArmPlatformLib.h>
 
 #include <Protocol/Bds.h>
+#include <Protocol/PxeBaseCode.h>
+#include <Protocol/SimpleFileSystem.h>
+#include <Protocol/SimpleNetwork.h>
+
+#include <Guid/FileSystemInfo.h>
 
 #define EFI_SET_TIMER_TO_SECOND   10000000
 
 EFI_HANDLE mImageHandle;
+
+extern UINT8 DeviceTreeBuff[];
 
 STATIC
 EFI_STATUS
@@ -117,7 +125,7 @@ InitializeConsolePipe (
   while (ConsoleDevicePaths != NULL) {
     DevicePath = GetNextDevicePathInstance (&ConsoleDevicePaths, &Size);
 
-    Status = BdsConnectDevicePath (DevicePath, Handle, NULL);
+    Status = BdsConnectDevicePath (&DevicePath, Handle, NULL);
     DEBUG_CODE_BEGIN();
       if (EFI_ERROR(Status)) {
         // We convert back to the text representation of the device Path
@@ -324,6 +332,50 @@ DefineDefaultBootEntries (
 }
 
 EFI_STATUS
+BdsStartPXE (
+)
+{
+  EFI_STATUS                        Status;
+  UINTN                             HandleCount;
+  EFI_HANDLE                        *HandleBuffer;
+  UINTN                             Index;
+  EFI_DEVICE_PATH_PROTOCOL*         PXEDevicePath;
+
+  // List all the PXE Protocols
+  Status = gBS->LocateHandleBuffer (ByProtocol, &gEfiPxeBaseCodeProtocolGuid, 
+                                    NULL, &HandleCount, &HandleBuffer);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  for (Index = 0; Index < HandleCount; Index++) {
+    // We only select the handle WITH a Device Path AND the PXE Protocol
+    Status = gBS->HandleProtocol (HandleBuffer[Index],
+                                  &gEfiDevicePathProtocolGuid,
+                                  (VOID **)&PXEDevicePath);
+    if (!EFI_ERROR(Status)) {
+      EFI_SIMPLE_NETWORK_PROTOCOL*      SimpleNet;
+      EFI_MAC_ADDRESS                   *Mac;
+      // Get MAC Address and print it
+      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, 
+                                    (VOID **)&SimpleNet);
+      if (!EFI_ERROR(Status)) {
+        Mac = &SimpleNet->Mode->CurrentAddress;
+        Print (L"Attempting PXE boot on MAC: %02x:%02x:%02x:%02x:%02x:%02x\n", 
+               Mac->Addr[0], Mac->Addr[1], Mac->Addr[2], Mac->Addr[3],
+               Mac->Addr[4], Mac->Addr[5]);
+      }
+      Status = BdsStartEfiApplication (mImageHandle, PXEDevicePath, 0, NULL);
+      // On a success, we never return
+      if (!EFI_ERROR(Status)) {
+        break;
+      }
+    }
+  }
+  return Status;
+}
+
+EFI_STATUS
 StartDefaultBootOnTimeout (
   VOID
   )
@@ -356,7 +408,7 @@ StartDefaultBootOnTimeout (
       WaitIndex = 0;
       Print(L"The default boot selection will start in ");
       while ((Timeout > 0) && (WaitIndex == 0)) {
-        Print(L"%3d seconds",Timeout);
+        Print(L"%3d second%s",Timeout, Timeout > 1 ? "s" : " ");
         gBS->WaitForEvent (2, WaitList, &WaitIndex);
         if (WaitIndex == 0) {
           Print(L"\b\b\b\b\b\b\b\b\b\b\b");
@@ -374,21 +426,69 @@ StartDefaultBootOnTimeout (
     // In case of Timeout we start the default boot selection
     if (Timeout == 0) {
       // Get the Boot Option Order from the environment variable (a default value should have been created)
-      GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize, (VOID**)&BootOrder);
+      Status = GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize, (VOID**)&BootOrder);
 
-      for (Index = 0; Index < BootOrderSize / sizeof (UINT16); Index++) {
+      if (EFI_ERROR(Status)) {
+        BootOrderSize = 0;
+      }
+
+      for (Index = 0; (Index < 32) && (Index < BootOrderSize / sizeof (UINT16)); Index++) {
         UnicodeSPrint (BootVariableName, 9 * sizeof(CHAR16), L"Boot%04X", BootOrder[Index]);
         Status = BdsStartBootOption (BootVariableName);
         if(!EFI_ERROR(Status)){
-        	// Boot option returned successfully, hence don't need to start next boot option
-        	break;
+          // Boot option returned successfully, hence don't need to start next boot option
+          break;
         }
         // In case of success, we should not return from this call.
       }
       FreePool (BootOrder);
+
+      // Now we should look for a PXE server
+      // Again, if this returned at all, that means it failed
+      Status = BdsStartPXE();
     }
   }
   return EFI_SUCCESS;
+}
+
+VOID
+SetupDeviceTree(
+  )
+{
+  EFI_STATUS          Status;
+  UINT8               *DeviceTreeVar;
+  UINTN               DeviceTreeVarSize;
+  UINTN               Count = 0;
+  CHAR16              DeviceTreeName[14];
+  UINT8               *Traveller = DeviceTreeBuff;
+
+  /* DeviceTree is encoded in ~1K blocks and the DeviceTreeBuff is 16K */
+  do {
+    UnicodeSPrint(DeviceTreeName, 13 * sizeof(CHAR16), L"DeviceTree%02d", Count);
+    DeviceTreeVarSize = sizeof(UINT16);
+    Status = GetGlobalEnvironmentVariable (DeviceTreeName, NULL, 
+                                    &DeviceTreeVarSize, (VOID**)&DeviceTreeVar);
+    if (EFI_ERROR(Status)) {
+      break;
+    } else {
+      /* DeviceTree found. Copy it into DeviceTreeBuff */
+      CopyMem(Traveller, DeviceTreeVar, DeviceTreeVarSize);
+
+      FreePool(DeviceTreeVar);
+      Traveller += DeviceTreeVarSize;
+    }
+    Count += 1;
+  } while (Count < 16);
+
+  if ((DeviceTreeBuff[0] == 0xd0) &&
+      (DeviceTreeBuff[1] == 0x0d) &&
+      (DeviceTreeBuff[2] == 0xfe) &&
+      (DeviceTreeBuff[3] == 0xed)) {
+    EFI_GUID DeviceTreeGuid = { 0xB1B621D5, 0xF19C, 0x41A5,
+                               { 0x83, 0x0B, 0xD9, 0x15,
+                                 0x2C, 0x69, 0xAA, 0xE0 }};
+    Status = gBS->InstallConfigurationTable(&DeviceTreeGuid, (void *) DeviceTreeBuff);
+  }
 }
 
 /**
@@ -424,6 +524,9 @@ BdsEntry (
   UINTN               BootNextSize;
   CHAR16              BootVariableName[9];
 
+
+  DEBUG((EFI_D_VERBOSE, "Setup boot device selction...\n"));
+
   PERF_END   (NULL, "DXE", NULL, 0);
 
   //
@@ -436,12 +539,20 @@ BdsEntry (
     UnicodeSPrint (gST->FirmwareVendor, Size, L"%a EFI %a %a", PcdGetPtr(PcdFirmwareVendor), __DATE__, __TIME__);
   }
 
+  // Now we need to setup the EFI System Table with information about the console devices.
+  InitializeConsole ();
+
+  // Show banner
+  ArmPlatformShowBoardBanner (Print);
+
   //
-  // Fixup Table CRC after we updated Firmware Vendor
+  // Update the CRC32 in the EFI System Table header
   //
   gST->Hdr.CRC32 = 0;
   Status = gBS->CalculateCrc32 ((VOID*)gST, gST->Hdr.HeaderSize, &gST->Hdr.CRC32);
   ASSERT_EFI_ERROR (Status);
+
+  SetupDeviceTree();
 
   // If BootNext environment variable is defined then we just load it !
   BootNextSize = sizeof(UINT16);
@@ -459,18 +570,19 @@ BdsEntry (
 
     FreePool (BootNext);
 
+    // Delete the BootNext environment variable
+    gRT->SetVariable (L"BootNext", &gEfiGlobalVariableGuid,
+        EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS,
+        0, NULL);
+
     // Start the requested Boot Entry
     Status = BdsStartBootOption (BootVariableName);
     if (Status != EFI_NOT_FOUND) {
       // BootNext has not been succeeded launched
       if (EFI_ERROR(Status)) {
+        DEBUG((EFI_D_ERROR, "Fail to start BootNext.\n"));
         Print(L"Fail to start BootNext.\n");
       }
-
-      // Delete the BootNext environment variable
-      gRT->SetVariable (L"BootNext", &gEfiGlobalVariableGuid,
-          EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS,
-          0, NULL);
     }
 
     // Clear BootCurrent variable
@@ -479,8 +591,10 @@ BdsEntry (
         0, NULL);
   }
 
+#ifndef APM_XGENE
   // If Boot Order does not exist then create a default entry
   DefineDefaultBootEntries ();
+#endif
 
   // Now we need to setup the EFI System Table with information about the console devices.
   InitializeConsole ();

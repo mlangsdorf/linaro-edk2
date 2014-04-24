@@ -18,6 +18,7 @@
 #include <PiDxe.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/BdsLib.h>
+#include <Library/BdsUnixLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
 #include <Library/UefiLib.h>
@@ -54,6 +55,7 @@ typedef enum {
     BDS_LOADER_KERNEL_LINUX_ATAG,
     BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT,
     BDS_LOADER_KERNEL_LINUX_LOCAL_FDT,
+    BDS_LOADER_KERNEL_LINUX_UEFI,
 } ARM_BDS_LOADER_TYPE;
 
 typedef struct {

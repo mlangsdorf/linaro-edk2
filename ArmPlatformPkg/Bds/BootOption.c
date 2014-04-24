@@ -14,6 +14,7 @@
 
 #include <Guid/ArmGlobalVariableHob.h>
 #include "BdsInternal.h"
+#include <Library/NorFlashPlatformLib.h>
 
 extern EFI_HANDLE mImageHandle;
 
@@ -60,7 +61,8 @@ BootOptionStart (
       Status = BdsBootLinuxAtag (BootOption->FilePathList,
                                  Initrd, // Initrd
                                  (CHAR8*)(LinuxArguments + 1)); // CmdLine
-    } else if ((LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+    } else if ((LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+               (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
       LinuxArguments = &(OptionalData->Arguments.LinuxArguments);
       CmdLineSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->CmdLineSize);
       InitrdSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->InitrdSize);
@@ -96,7 +98,21 @@ BootOptionStart (
                                 Initrd, // Initrd
                                 (CHAR8*)(LinuxArguments + 1),
                                 FdtDevicePath);
+      FreePool (FdtDevicePath);
+    } else if (LoaderType == BDS_LOADER_KERNEL_LINUX_UEFI) {
+      LinuxArguments = &(OptionalData->Arguments.LinuxArguments);
+      CmdLineSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->CmdLineSize);
+      InitrdSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->InitrdSize);
 
+      if (InitrdSize > 0) {
+        Initrd = GetAlignedDevicePath ((EFI_DEVICE_PATH*)((EFI_PHYSICAL_ADDRESS)(LinuxArguments + 1) + CmdLineSize));
+      } else {
+        Initrd = NULL;
+      }
+
+      Status = BdsBootLinuxUEFI (BootOption->FilePathList,
+                                Initrd, // Initrd
+                                (CHAR8*)(LinuxArguments + 1));
       FreePool (FdtDevicePath);
     }
   } else {
@@ -182,7 +198,10 @@ BootOptionSetFields (
 
   BootDescriptionSize = StrSize (BootDescription);
   BootOptionalDataSize = sizeof(ARM_BDS_LOADER_OPTIONAL_DATA_HEADER);
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
     BootOptionalDataSize += sizeof(ARM_BDS_LINUX_ARGUMENTS) + BootArguments->LinuxArguments.CmdLineSize + BootArguments->LinuxArguments.InitrdSize + BootArguments->LinuxArguments.FdtLocalSize;
   }
 
@@ -225,7 +244,10 @@ BootOptionSetFields (
 
   OptionalDataSize = sizeof(ARM_BDS_LOADER_OPTIONAL_DATA_HEADER);
 
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
     SrcLinuxArguments = &(BootArguments->LinuxArguments);
     DestLinuxArguments = &((ARM_BDS_LOADER_OPTIONAL_DATA*)EfiLoadOptionPtr)->Arguments.LinuxArguments;
 
@@ -304,6 +326,10 @@ BootOptionCreate (
       BootOption->LoadOptionSize,
       BootOption->LoadOption
       );
+  if (EFI_ERROR(Status)) {
+    DEBUG((EFI_D_WARN,"Fail to set variable %S error %d\n",
+          BootVariableName, Status));
+  }
 
   // Add the new Boot Index to the list
   Status = GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize, (VOID**)&BootOrder);
@@ -326,6 +352,10 @@ BootOptionCreate (
       BootOrderSize,
       BootOrder
       );
+  if (EFI_ERROR(Status)) {
+    DEBUG((EFI_D_WARN,"Fail to set variable %S error %d\n",
+          L"BootOrder", Status));
+  }
 
   // We only free it if the UEFI Variable 'BootOrder' was already existing
   if (BootOrderSize > sizeof(UINT16)) {

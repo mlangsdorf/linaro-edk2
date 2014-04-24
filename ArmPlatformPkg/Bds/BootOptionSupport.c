@@ -259,7 +259,7 @@ BootDeviceGetType (
     }
     *BootType = BDS_LOADER_EFI_APPLICATION;
   } else {
-    Print(L"Boot Type: [a] ATAGS, [g] Global FDT or [l] Local FDT? [a/g/l] ");
+    Print(L"Boot Type: [a] ATAGS, [u] UEFI, [g] Global FDT or [l] Local FDT? [a/u/g/l] ");
     Status = GetHIInputStr (FDTType, LOCAL_FDT_RESPONSE_LEN );
     if (EFI_ERROR(Status)) {
       return EFI_ABORTED;
@@ -271,7 +271,7 @@ BootDeviceGetType (
     } else if (StrCmp(FDTType, L"a") == 0) {
       *BootType = BDS_LOADER_KERNEL_LINUX_ATAG;
     } else {
-      return EFI_ABORTED;
+      *BootType = BDS_LOADER_KERNEL_LINUX_UEFI; /* FIXME - TPHAN */
     }
   }
 
@@ -731,7 +731,7 @@ BdsLoadOptionPxeIsSupported (
   EFI_DEVICE_PATH_PROTOCOL  *RemainingDevicePath;
   EFI_PXE_BASE_CODE_PROTOCOL  *PxeBcProtocol;
 
-  Status = BdsConnectDevicePath (DevicePath, &Handle, &RemainingDevicePath);
+  Status = BdsConnectDevicePath (&DevicePath, &Handle, &RemainingDevicePath);
   if (EFI_ERROR(Status)) {
     return FALSE;
   }
@@ -905,7 +905,7 @@ BdsLoadOptionTftpIsSupported (
   EFI_DEVICE_PATH  *NextDevicePath;
   EFI_PXE_BASE_CODE_PROTOCOL  *PxeBcProtocol;
 
-  Status = BdsConnectDevicePath (DevicePath, &Handle, &RemainingDevicePath);
+  Status = BdsConnectDevicePath (&DevicePath, &Handle, &RemainingDevicePath);
   if (EFI_ERROR(Status)) {
     return FALSE;
   }

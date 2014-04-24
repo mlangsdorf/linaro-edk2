@@ -26,6 +26,7 @@
   BdsHelper.c
   BdsLoadOption.c
   BdsLinuxFdt.c
+  BdsLinuxUEFI.c
 
 [Sources.ARM]
   Arm/BdsLinuxLoader.c
@@ -80,16 +81,19 @@
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
+  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
 
   gArmTokenSpaceGuid.PcdArmMachineType
   gArmTokenSpaceGuid.PcdArmLinuxFdtMaxOffset
   gArmTokenSpaceGuid.PcdArmLinuxFdtAlignment
   gArmTokenSpaceGuid.PcdArmLinuxKernelMaxOffset
+  gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset
 
 [FixedPcd.ARM]
   gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset
 
 [FixedPcd.AARCH64]
+  gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicSgiIntId
 

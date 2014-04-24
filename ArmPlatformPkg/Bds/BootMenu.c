@@ -158,7 +158,10 @@ BootMenuAddBootOption (
     goto EXIT;
   }
 
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
     Print(L"Add an initrd: ");
     Status = GetHIInputBoolean (&InitrdSupport);
     if (EFI_ERROR(Status)) {
@@ -303,7 +306,10 @@ BootMenuSelectBootOption (
       Print(L"\t- %s\n",DevicePathTxt);
       OptionalData = BdsLoadOption->OptionalData;
       LoaderType = (ARM_BDS_LOADER_TYPE)ReadUnaligned32 ((CONST UINT32*)&OptionalData->Header.LoaderType);
-      if ((LoaderType == BDS_LOADER_KERNEL_LINUX_ATAG) || (LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+  if ((LoaderType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+      (LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+      (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+      (LoaderType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
         Print (L"\t- Arguments: %a\n",&OptionalData->Arguments.LinuxArguments + 1);
       }
 
@@ -431,7 +437,11 @@ BootMenuUpdateBootOption (
   OptionalData = BootOption->OptionalData;
   BootType = (ARM_BDS_LOADER_TYPE)ReadUnaligned32 ((UINT32 *)(&OptionalData->Header.LoaderType));
 
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
+
     LinuxArguments = &OptionalData->Arguments.LinuxArguments;
 
     CmdLineSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->CmdLineSize);
@@ -774,7 +784,9 @@ BootMenuMain (
 
       Print(L"[%d] %s\n", OptionCount, BootOption->Description);
 
-      //DEBUG_CODE_BEGIN();
+      DEBUG_CODE_BEGIN();
+        CHAR16*                           DevicePathTxt;
+        EFI_DEVICE_PATH_TO_TEXT_PROTOCOL* DevicePathToTextProtocol;
         ARM_BDS_LOADER_OPTIONAL_DATA*     OptionalData;
         UINTN                             CmdLineSize;
         UINTN                             InitrdSize;
@@ -794,7 +806,10 @@ BootMenuMain (
         if (IS_ARM_BDS_BOOTENTRY (BootOption)) {
           OptionalData = BootOption->OptionalData;
           LoaderType = (ARM_BDS_LOADER_TYPE)ReadUnaligned32 ((CONST UINT32*)&OptionalData->Header.LoaderType);
-          if ((LoaderType == BDS_LOADER_KERNEL_LINUX_ATAG) || (LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+          if ((LoaderType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+              (LoaderType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+              (LoaderType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+              (LoaderType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
             if (ReadUnaligned16 (&OptionalData->Arguments.LinuxArguments.InitrdSize) > 0) {
               CmdLineSize = ReadUnaligned16 (&OptionalData->Arguments.LinuxArguments.CmdLineSize);
               DevicePathTxt = DevicePathToTextProtocol->ConvertDevicePathToText (
@@ -828,13 +843,19 @@ BootMenuMain (
               }
               Print(L"\t- LoaderType: Linux kernel with Local FDT\n");
               break;
+
+
+            case BDS_LOADER_KERNEL_LINUX_UEFI:
+              Print(L"\t- LoaderType: Linux kernel with UEFI support\n");
+              break;
+
             default:
               Print(L"\t- LoaderType: Not recognized (%d)\n", LoaderType);
               break;
           }
         }
         FreePool(DevicePathTxt);
-      //DEBUG_CODE_END();
+      DEBUG_CODE_END();
 
       OptionCount++;
     }

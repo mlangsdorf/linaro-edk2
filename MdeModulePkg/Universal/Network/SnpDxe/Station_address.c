@@ -117,9 +117,10 @@ PxeSetStnAddr (
     Snp->Cdb.CPBsize  = PXE_CPBSIZE_NOT_USED;
     Snp->Cdb.CPBaddr  = PXE_CPBADDR_NOT_USED;
   } else {
-    Snp->Cdb.OpFlags = PXE_OPFLAGS_STATION_ADDRESS_WRITE;
+    Snp->Cdb.OpFlags = PXE_OPFLAGS_STATION_ADDRESS_READ;
     //
-    // Supplying a new address in the CPB will make undi change the mac address to the new one.
+    // even though the OPFLAGS are set to READ, supplying a new address
+    // in the CPB will make undi change the mac address to the new one.
     //
     CopyMem (&Cpb->StationAddr, NewMacAddr, Snp->Mode.HwAddressSize);
 

@@ -40,9 +40,9 @@ typedef struct {
   UINTN   Size;
 } FdtRegion;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
   UINTN   Base;
-  UINT32   Size;
+  UINT32  Size;
 } FdtRegion32;
 
 STATIC
@@ -269,7 +269,7 @@ RelocateFdt (
 {
   EFI_STATUS            Status;
   INTN                  Error;
-  UINT32                FdtAlignment;
+  UINT64                FdtAlignment;
 
   *RelocatedFdtSize = OriginalFdtSize + FDT_ADDITIONAL_ENTRIES_SIZE;
 
@@ -283,7 +283,7 @@ RelocateFdt (
   Status = EFI_NOT_FOUND;
   if (PcdGet32 (PcdArmLinuxFdtMaxOffset) != 0) {
     *RelocatedFdt = LINUX_FDT_MAX_OFFSET;
-    Status = gBS->AllocatePages (AllocateAnyPages, EfiBootServicesData,
+    Status = gBS->AllocatePages (AllocateMaxAddress, EfiBootServicesData,
                     EFI_SIZE_TO_PAGES (*RelocatedFdtSize), RelocatedFdt);
     if (EFI_ERROR (Status)) {
       DEBUG ((EFI_D_WARN, "Warning: Failed to load FDT below address 0x%lX (%r). Will try again at a random address anywhere.\n", *RelocatedFdt, Status));
@@ -305,7 +305,7 @@ RelocateFdt (
   DEBUG ((EFI_D_WARN, "\n", *RelocatedFdt));
   *RelocatedFdtAlloc = *RelocatedFdt;
   if (FdtAlignment != 0) {
-    *RelocatedFdt = ALIGN (*RelocatedFdt, (EFI_PHYSICAL_ADDRESS) FdtAlignment);
+    *RelocatedFdt = ALIGN (*RelocatedFdt, FdtAlignment);
   }
 
   // Load the Original FDT tree into the new region
@@ -674,7 +674,7 @@ PrepareFdt (
   }
 
   DEBUG_CODE_BEGIN();
-//    DebugDumpFdt (fdt);
+    //DebugDumpFdt (fdt);
   DEBUG_CODE_END();
 
   // If we succeeded to generate the new Device Tree then free the old Device Tree

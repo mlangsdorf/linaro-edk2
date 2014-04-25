@@ -70,6 +70,7 @@ typedef struct {
   UINT32  TableAddress;
   UINT16  NumberOfSmbiosStructures;
   UINT8   SmbiosBcdRevision;
+  UINT32  ExtHighAddressTableAddress;
 } SMBIOS_TABLE_ENTRY_POINT;
 
 ///

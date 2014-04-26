@@ -959,10 +959,6 @@ ExitBootServicesEvent (
   SNP_GLOBAL_DATA   *This = Context;
   SNP_INSTANCE_DATA *Instance;
 
-  DEBUG ((EFI_D_ERROR, "ahs3=> SNP_INSTANCE_SIGNATURE = 0x%x\n", (UINT32)SNP_INSTANCE_SIGNATURE));
-  Instance = ((SNP_INSTANCE_DATA *) ((CHAR8 *) (This) - (CHAR8 *) &(((SNP_INSTANCE_DATA *) 0)->Snp)));
-  DEBUG ((EFI_D_ERROR, "ahs3=> Instance->Signature = 0x%x\n", (UINT32)(Instance->Signature)));
-
   Instance = SNP_INSTANCE_DATA_FROM_SNP_THIS (This);
 
   APMXGeneNet_Halt (Instance->InterfaceInfo.InterfaceIndex);

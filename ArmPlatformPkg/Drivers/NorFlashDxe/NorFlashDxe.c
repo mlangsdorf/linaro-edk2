@@ -22,14 +22,13 @@
 #include <Guid/GlobalVariable.h>
 #include <Guid/EventGroup.h>
 
-
 #include "NorFlashDxe.h"
 #ifdef APM_XGENE_GFC_FLASH
 #include <ArmPlatform.h>
 #include <Library/TimerLib.h>
 #endif
 
-EFI_EVENT  mVirtualAddressChangeEvent = NULL;
+STATIC EFI_EVENT  mNorFlashVirtualAddrChangeEvent = NULL;
 
 //
 // Global variable declarations
@@ -103,7 +102,7 @@ NOR_FLASH_INSTANCE  mNorFlashInstanceTemplate = {
       sizeof (EFI_DEVICE_PATH_PROTOCOL),
       0
     }
-    } // DevicePath
+  } // DevicePath
 };
 
 #ifdef APM_XGENE_GFC_FLASH
@@ -623,8 +622,14 @@ NorFlashUnlockAndEraseSingleBlock (
   UINTN           Index;
   EFI_TPL         OriginalTPL;
 
-  // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
-  OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  if (!EfiAtRuntime ()) {
+    // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
+    OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  } else {
+    // This initialization is only to prevent the compiler to complain about the
+    // use of uninitialized variables
+    OriginalTPL = TPL_HIGH_LEVEL;
+  }
 
   Index = 0;
   // The block erase might fail a first time (SW bug ?). Retry it ...
@@ -641,8 +646,10 @@ NorFlashUnlockAndEraseSingleBlock (
     DEBUG((EFI_D_ERROR,"EraseSingleBlock(BlockAddress=0x%08x: Block Locked Error (try to erase %d times)\n", BlockAddress,Index));
   }
 
-  // Interruptions can resume.
-  gBS->RestoreTPL (OriginalTPL);
+  if (!EfiAtRuntime()) {
+    // Interruptions can resume.
+    gBS->RestoreTPL (OriginalTPL);
+  }
 
   return Status;
 }
@@ -918,8 +925,14 @@ NorFlashWriteSingleBlock (
   // Start writing from the first address at the start of the block
   WordAddress = BlockAddress;
 
-  // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
-  OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  if (!EfiAtRuntime ()) {
+    // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
+    OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  } else {
+    // This initialization is only to prevent the compiler to complain about the
+    // use of uninitialized variables
+    OriginalTPL = TPL_HIGH_LEVEL;
+  }
 
   Status = NorFlashUnlockAndEraseSingleBlock (Instance, BlockAddress);
   if (EFI_ERROR(Status)) {
@@ -969,8 +982,10 @@ NorFlashWriteSingleBlock (
   }
 
 EXIT:
-  // Interruptions can resume.
-  gBS->RestoreTPL (OriginalTPL);
+  if (!EfiAtRuntime ()) {
+    // Interruptions can resume.
+    gBS->RestoreTPL (OriginalTPL);
+  }
 
   if (EFI_ERROR(Status)) {
     DEBUG((EFI_D_ERROR, "NOR FLASH Programming [WriteSingleBlock] failed at address 0x%08x. Exit Status = \"%r\".\n", WordAddress, Status));
@@ -1345,7 +1360,7 @@ NorFlashWriteBlocks (
   )
 {
   EFI_STATUS      Status = EFI_SUCCESS;
-  EFI_TPL         OriginalTPL;
+  EFI_TPL         OriginalTPL = TPL_HIGH_LEVEL;
   UINT32 Addr = Lba * Instance->Media.BlockSize + Instance->RegionBaseAddress;
 
   // if not initialized, initialize instance first
@@ -1368,23 +1383,25 @@ NorFlashWriteBlocks (
     return EFI_BAD_BUFFER_SIZE;
   }
 
-  // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
-  OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  if (!EfiAtRuntime ()) {
+    // Raise TPL to TPL_HIGH to stop anyone from interrupting us.
+    OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+  }
+
   if (Erase) {
     Status = NorFlashPlatformErase(Addr, BufferSizeInBytes);
   }
 
-  if (EFI_ERROR(Status)) {
-    DEBUG((DEBUG_BLKIO, "NorFlashWriteBlocks: Erase error BufferSizeInBytes=0x%x Buffer:0x%p\n", BufferSizeInBytes, Buffer));
-    // Interruptions can resume.
-    gBS->RestoreTPL (OriginalTPL);
-    return Status;
+  if (!EFI_ERROR(Status)) {
+    Status = NorFlashPlatformWrite(Addr, (VOID *)Buffer, BufferSizeInBytes);
+    DEBUG((DEBUG_BLKIO, "NorFlashWriteBlocks: Exit BufferSizeInBytes=0x%x Buffer:0x%p\n", BufferSizeInBytes, Buffer));
   }
 
-  Status = NorFlashPlatformWrite(Addr, (VOID *)Buffer, BufferSizeInBytes);
-  DEBUG((DEBUG_BLKIO, "NorFlashWriteBlocks: Exit BufferSizeInBytes=0x%x Buffer:0x%p\n", BufferSizeInBytes, Buffer));
-  // Interruptions can resume.
-  gBS->RestoreTPL (OriginalTPL);
+  if (!EfiAtRuntime()) {
+    // Interruptions can resume.
+    gBS->RestoreTPL (OriginalTPL);
+  }
+
   return Status;
 }
 
@@ -1445,32 +1462,57 @@ NorFlashReset (
 **/
 VOID
 EFIAPI
-VariableClassAddressChangeEvent (
+NorFlashVirtualNotifyEvent (
   IN EFI_EVENT                            Event,
   IN VOID                                 *Context
   )
 {
-  INTN Count;
-  for (Count = 0; Count < *mNorFlashDeviceCount; Count++) {
-    if (!mNorFlashInstances[Count]->PhysicalAddress) {
+  INTN Index;
+  for (Index = 0; Index < *mNorFlashDeviceCount; Index++) {
+    if (!mNorFlashInstances[Index]->PhysicalAddress) {
       /* FIXME: EfiConvertPointer doesn't deal with zero address */
-      mNorFlashInstances[Count]->PhysicalAddress |= 0x1;
+      mNorFlashInstances[Index]->PhysicalAddress |= 0x1;
     }
-    if (!mNorFlashInstances[Count]->DeviceBaseAddress) {
+    if (!mNorFlashInstances[Index]->DeviceBaseAddress) {
       /* FIXME: EfiConvertPointer doesn't deal with zero address */
-      mNorFlashInstances[Count]->DeviceBaseAddress |= 0x1;
+      mNorFlashInstances[Index]->DeviceBaseAddress |= 0x1;
     }
-    if (!mNorFlashInstances[Count]->RegionBaseAddress) {
+    if (!mNorFlashInstances[Index]->RegionBaseAddress) {
       /* FIXME: EfiConvertPointer doesn't deal with zero address */
-      mNorFlashInstances[Count]->RegionBaseAddress |= 0x1;
+      mNorFlashInstances[Index]->RegionBaseAddress |= 0x1;
     }
-    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Count]->PhysicalAddress);
-    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Count]->DeviceBaseAddress);
-    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Count]->RegionBaseAddress);
+    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Index]->PhysicalAddress);
+    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Index]->DeviceBaseAddress);
+    EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances[Index]->RegionBaseAddress);
 
-    mNorFlashInstances[Count]->PhysicalAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
-    mNorFlashInstances[Count]->DeviceBaseAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
-    mNorFlashInstances[Count]->RegionBaseAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
+    mNorFlashInstances[Index]->PhysicalAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
+    mNorFlashInstances[Index]->DeviceBaseAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
+    mNorFlashInstances[Index]->RegionBaseAddress &= ~(EFI_PHYSICAL_ADDRESS)0x1;
+#if 0
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->DeviceBaseAddress);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->RegionBaseAddress);
+#endif
+
+    // Convert BlockIo protocol
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->BlockIoProtocol.FlushBlocks);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->BlockIoProtocol.ReadBlocks);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->BlockIoProtocol.Reset);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->BlockIoProtocol.WriteBlocks);
+
+    // Convert Fvb
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.EraseBlocks);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.GetAttributes);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.GetBlockSize);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.GetPhysicalAddress);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.Read);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.SetAttributes);
+    EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbProtocol.Write);
+
+#if 0
+    if (mNorFlashInstances[Index]->FvbBuffer != NULL) {
+      EfiConvertPointer (0x0, (VOID**)&mNorFlashInstances[Index]->FvbBuffer);
+     }
+#endif
   }
 
   EfiConvertPointer (0x0, (VOID **) &mNorFlashInstances);
@@ -1549,10 +1591,10 @@ NorFlashInitialise (
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
                   TPL_NOTIFY,
-                  VariableClassAddressChangeEvent,
+                  NorFlashVirtualNotifyEvent,
                   NULL,
                   &gEfiEventVirtualAddressChangeGuid,
-                  &mVirtualAddressChangeEvent
+                  &mNorFlashVirtualAddrChangeEvent
                   );
   ASSERT_EFI_ERROR (Status);
 

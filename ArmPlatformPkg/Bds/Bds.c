@@ -298,6 +298,7 @@ DefineDefaultBootEntries (
   //
   // If Boot Order does not exist then create a default entry
   //
+  BootDevicePath = NULL;
   Size = 0;
   Status = gRT->GetVariable (L"BootOrder", &gEfiGlobalVariableGuid, NULL, &Size, NULL);
   if (Status == EFI_NOT_FOUND) {

@@ -2250,7 +2250,7 @@ NetLibGetMacAddress (
     // Try to get SNP mode from MNP
     //
     Status = Mnp->GetModeData (Mnp, NULL, &SnpModeData);
-    if (EFI_ERROR (Status) && (Status != EFI_NOT_STARTED)) {
+    if (EFI_ERROR (Status)) {
       MnpSb->DestroyChild (MnpSb, MnpChildHandle);
       return Status;
     }
@@ -3420,8 +3420,8 @@ NetLibGetSystemGuid (
     return EFI_NOT_FOUND;
   }
 
-  Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) SmbiosTable->TableAddress;
-  SmbiosEnd.Raw = (UINT8 *) (UINTN) (SmbiosTable->TableAddress + SmbiosTable->TableLength);
+  Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) (SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32));
+  SmbiosEnd.Raw = (UINT8 *) (UINTN) ((UINTN)(SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32)) + SmbiosTable->TableLength);
 
   do {
     if (Smbios.Hdr->Type == 1) {

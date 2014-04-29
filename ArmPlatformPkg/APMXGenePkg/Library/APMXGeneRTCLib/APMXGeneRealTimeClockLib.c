@@ -33,7 +33,6 @@
 
 #include <ArmPlatform.h>
 
-#define STORM_RTC_CSR_BASE  0x10510000
 #define RTC_CCVR   	0x00
 #define RTC_CMR		0x04
 #define RTC_CLR		0x08
@@ -76,6 +75,8 @@
 
 STATIC BOOLEAN       ApmRtcInitialized = FALSE;
 
+STATIC UINTN         ApmRtcBase = 0;
+
 /**
   Converts EFI_TIME to Epoch seconds (elapsed since 1970 JANUARY 01, 00:00:00 UTC)
  **/
@@ -107,7 +108,7 @@ EfiTimeToEpoch (
 
 static UINT32 apmRtcRead32(UINT64 reg_addr)
 {
-        UINT32 val = _apmRtcRead(STORM_RTC_CSR_BASE + reg_addr);
+        UINT32 val = _apmRtcRead(ApmRtcBase + reg_addr);
 	APM_RTC_LOG((EFI_D_INFO, "  RTC READ   0x%08x   VALUE  0x%08x \n", reg_addr, val));
 
 	return val;
@@ -115,7 +116,7 @@ static UINT32 apmRtcRead32(UINT64 reg_addr)
 
 void apmRtcWrite32(UINT64 reg_addr, UINT32 val)
 {
-        _apmRtcWrite(STORM_RTC_CSR_BASE + reg_addr, val);
+        _apmRtcWrite(ApmRtcBase + reg_addr, val);
 	APM_RTC_LOG((EFI_D_INFO, "  RTC WRITE   0x%08x   VALUE  0x%08x \n", reg_addr, val));
 }
 
@@ -440,6 +441,8 @@ LibRtcInitialize (
 {
   EFI_STATUS    Status;
   EFI_HANDLE    Handle;
+
+  ApmRtcBase = PcdGet64(PcdApmRtcBase);
 
   // Setup the setters and getters
   gRT->GetTime       = LibGetTime;

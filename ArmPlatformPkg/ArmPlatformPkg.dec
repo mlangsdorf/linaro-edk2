@@ -124,6 +124,9 @@
   gArmPlatformTokenSpaceGuid.PcdPL180SysMciRegAddress|0x00000000|UINT32|0x00000028
   gArmPlatformTokenSpaceGuid.PcdPL180MciBaseAddress|0x00000000|UINT32|0x00000029
 
+  ## APM RealTimeClock
+  gArmPlatformTokenSpaceGuid.PcdApmRtcBase|0x10510000|UINT64|0x00000040
+
   #
   # BDS - Boot Manager
   #

@@ -26,10 +26,13 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/ArmPlatformSysConfigLib.h>
+#include <Library/DxeServicesTableLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Protocol/RealTimeClock.h>
+#include <Library/UefiRuntimeLib.h>
 #include <Guid/GlobalVariable.h>
+#include <Guid/EventGroup.h>
 
 #include <ArmPlatform.h>
 
@@ -76,6 +79,8 @@
 STATIC BOOLEAN       ApmRtcInitialized = FALSE;
 
 STATIC UINTN         ApmRtcBase = 0;
+
+EFI_EVENT  mApmRtcVirtualAddressChangeEvent = NULL;
 
 /**
   Converts EFI_TIME to Epoch seconds (elapsed since 1970 JANUARY 01, 00:00:00 UTC)
@@ -441,8 +446,38 @@ LibRtcInitialize (
 {
   EFI_STATUS    Status;
   EFI_HANDLE    Handle;
+  EFI_GCD_MEMORY_SPACE_DESCRIPTOR Descriptor;
 
   ApmRtcBase = PcdGet64(PcdApmRtcBase);
+
+  Status = gDS->GetMemorySpaceDescriptor (ApmRtcBase, &Descriptor);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "GetMemorySpaceDescriptor fail - %r!\n", Status));
+    return EFI_DEVICE_ERROR;
+  }
+
+  Status = gDS->SetMemorySpaceAttributes (
+                  ApmRtcBase,
+                  0x1000,
+                  Descriptor.Attributes | EFI_MEMORY_RUNTIME
+                  );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "SetMemorySpaceAttributes fail - %r!\n", Status));
+    return EFI_DEVICE_ERROR;
+  }
+
+  Status = gBS->CreateEventEx (
+                    EVT_NOTIFY_SIGNAL,
+                    TPL_NOTIFY,
+                    LibRtcVirtualNotifyEvent,
+                    NULL,
+                    &gEfiEventVirtualAddressChangeGuid,
+                    &mApmRtcVirtualAddressChangeEvent
+                    );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "CreateEventEx failted - %r!\n", Status));
+    return EFI_DEVICE_ERROR;
+  }
 
   // Setup the setters and getters
   gRT->GetTime       = LibGetTime;
@@ -477,11 +512,5 @@ LibRtcVirtualNotifyEvent (
   IN VOID             *Context
   )
 {
-  //
-  // Only needed if you are going to support the OS calling RTC functions in virtual mode.
-  // You will need to call EfiConvertPointer (). To convert any stored physical addresses
-  // to virtual address. After the OS transistions to calling in virtual mode, all future
-  // runtime calls will be made in virtual mode.
-  //
-  return;
+  EfiConvertPointer (0x0, (VOID **) &ApmRtcBase);
 }

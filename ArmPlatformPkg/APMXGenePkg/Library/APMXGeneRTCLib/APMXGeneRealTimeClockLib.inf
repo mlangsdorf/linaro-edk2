@@ -36,6 +36,8 @@
   DebugLib
   TimerLib
   PcdLib
+  DxeServicesTableLib
+  UefiRuntimeLib
 
 [Pcd]
   gArmPlatformTokenSpaceGuid.PcdApmRtcBase

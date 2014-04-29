@@ -42,17 +42,13 @@ ASM_PFX(_ModuleEntryPoint):
 // If started at EL1 or EL2 Sec jumps directly to PEI without making any
 // changes.
 
-#if 0
-// FIXME - LHO
 // Which EL are we running at? Every EL needs some level of setup...
-  EL1_OR_EL2_OR_EL3(x0)
+// We should not run this code in EL3
+  EL1_OR_EL2(x0)
 1:bl    ASM_PFX(SetupExceptionLevel1)
   b     ASM_PFX(MainEntryPoint)
 2:bl    ASM_PFX(SetupExceptionLevel2)
   b     ASM_PFX(MainEntryPoint)
-3:// If we are at EL3 we die.
-  b     dead
-#endif
 
 ASM_PFX(MainEntryPoint):
   // Identify CPU ID

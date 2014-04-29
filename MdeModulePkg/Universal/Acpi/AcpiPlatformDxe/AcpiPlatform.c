@@ -21,12 +21,13 @@
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 
+#include <IndustryStandard/Acpi.h>
+
+#ifdef APM_XGENE
 #include <Library/PrintLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
-
-#include <IndustryStandard/Acpi.h>
 
 #define DEBUG_MAC_PATCH	0
 #if (DEBUG_MAC_PATCH)
@@ -162,6 +163,9 @@ ApmPatchAcpiTable(UINT8 *CurrentTable,
 
 	return (EFI_SUCCESS);
 }
+#else
+#define ApmPatchAcpiTable(a,b)
+#endif
 
 /**
   Locate the first instance of a protocol.  If the protocol requested is an

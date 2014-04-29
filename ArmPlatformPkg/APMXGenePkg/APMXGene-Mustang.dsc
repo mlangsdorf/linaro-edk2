@@ -386,8 +386,10 @@
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiTables/AcpiTables.inf
 
+!ifdef $(BUILD_DTB)
    # DeviceTree Support
    ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.inf
+!endif
 
    #
    # Bds

@@ -531,6 +531,7 @@ VOID
 SetupDeviceTree(
   )
 {
+#ifdef BUILD_DTB
   EFI_STATUS          Status;
   UINT8               *DeviceTreeVar;
   UINTN               DeviceTreeVarSize;
@@ -565,6 +566,7 @@ SetupDeviceTree(
                                  0x2C, 0x69, 0xAA, 0xE0 }};
     Status = gBS->InstallConfigurationTable(&DeviceTreeGuid, (void *) DeviceTreeBuff);
   }
+#endif
 }
 
 /**

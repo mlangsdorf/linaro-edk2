@@ -23,6 +23,9 @@ export CROSS_COMPILE:=aarch64-linux-gnu-
 export CROSS_COMPILER_PATH:=/usr/bin
 export ASL_BIN_DIR:=/usr/bin
 
+export FEDORA_CROSS:=/bin/aarch64-linux-gnu-
+export LINARO_CROSS:=/opt/gcc-linaro-aarch64-linux-gnu-4.8-2014.02_linux/bin/aarch64-linux-gnu-
+
 UEFI_TOOLS=../uefi-tools
 
 
@@ -38,7 +41,7 @@ linaro: clean basetools linaro_build
 linaro_debug: clean basetools linaro_build_debug
 .PHONY : linaro_debug
 
-clean: clean_tianocore clean_tianocore_debug clean_basetools clean_linaro_tools
+clean: clean_tianocore clean_tianocore_debug clean_basetools clean_linaro_tools clean_foundation clean_fvp
 	@echo
 	@echo "############################### Clean APM Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang
@@ -173,6 +176,40 @@ tianocore_apps_debug:
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/Applications/AppPkg.dsc
+
+clean_foundation:
+	@echo
+	@echo "################################# Clean Foundation ############################"
+	rm -rf Build/ArmVExpress-RTSM-AEMv8Ax4-foundation
+
+foundation:
+	@echo
+	@echo "################################# Build Foundation ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
+
+foundation_debug:
+	@echo
+	@echo "################################# Build Foundation Debug ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
+
+clean_fvp:
+	@echo
+	@echo "################################# Clean FVP ############################"
+	rm -rf Build/ArmVExpress-FVP-AArch64
+
+fvp:
+	@echo
+	@echo "################################# Build FVP ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${LINARO_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-FVP-AArch64.dsc
+
+fvp_debug:
+	@echo
+	@echo "################################# Build FVP ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${LINARO_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-FVP-AArch64.dsc
 
 uefi-build.sh platforms.config parse-platforms.sh:
 	@[ -d $(UEFI_TOOLS) ] || (echo "Please git clone $(UEFI_TOOLS) first." ; exit 1)

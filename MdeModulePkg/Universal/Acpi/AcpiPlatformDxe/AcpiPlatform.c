@@ -11,7 +11,6 @@
   WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 
 **/ 
-
 #include <PiDxe.h>
 
 #include <Protocol/AcpiTable.h>
@@ -22,7 +21,147 @@
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 
+#include <Library/PrintLib.h>
+#include <Library/DebugLib.h>
+#include <Library/BaseMemoryLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
+
 #include <IndustryStandard/Acpi.h>
+
+#define DEBUG_MAC_PATCH	0
+#if (DEBUG_MAC_PATCH)
+	#define DEBUG_MAC(x)	DEBUG(x)
+#else
+	#define DEBUG_MAC(x)
+#endif
+
+#define HID_NAME	"APMC0D05"
+extern EFI_GUID gShellVariableGuid;
+typedef struct {
+	CHAR8	EthName[10];
+	CHAR8	MacName[10];
+	CHAR16   NvName[18];
+}ETH_PORT;
+
+static ETH_PORT EthernetPort[5] = {	{"ET08", "MAC0", L"RGMII_MAC0"},
+					{"ET00", "MAC0", L"SGMII_MAC0"},
+					{"ET01", "MAC0", L"SGMII_MAC1"},
+					{"ET04", "MAC0", L"TENGI_MAC0"},
+					{"ET05", "MAC0", L"TENGI_MAC1"},
+				  };
+
+static int ContainStr(CHAR8 *SrcStr, CHAR8 *SubStr)
+{
+	while (*SrcStr && *SubStr)
+		if (*SrcStr != *SubStr)
+			break;
+		else {
+		   	SrcStr++; 
+			SubStr++;
+		}
+
+	return (*SubStr)?0:1;
+}
+
+void AsciiStrToEthAddr(CHAR16 *MacBuf, UINT8 *MAC)
+{
+#define A_D(x) ( ((x >= L'a')&&(x <= L'f'))?(x-L'a'+0xa):(((x >= L'A')&&(x <= L'F'))?(x-L'A'+0xa):(x-L'0')) )
+
+	*MAC++ = (A_D(*MacBuf)<<4) + A_D(*(MacBuf+1));
+	*MAC++ = (A_D(*(MacBuf+3))<<4) + A_D(*(MacBuf+4));
+	*MAC++ = (A_D(*(MacBuf+6))<<4) + A_D(*(MacBuf+7));
+	*MAC++ = (A_D(*(MacBuf+9))<<4) + A_D(*(MacBuf+10));
+	*MAC++ = (A_D(*(MacBuf+12))<<4) + A_D(*(MacBuf+13));
+	*MAC++ = (A_D(*(MacBuf+15))<<4) + A_D(*(MacBuf+16));
+}
+
+EFI_STATUS
+EFIAPI
+ApmPatchAcpiTable(UINT8 *CurrentTable,
+ 		  UINTN  TableSize 
+  )
+{
+	EFI_STATUS  Status;
+	UINTN       Size;
+	CHAR16      MacBuf[20];
+	int i, EthIndex;
+
+	EthIndex = 0;
+
+	DEBUG_MAC((EFI_D_ERROR, "print CurrentTable TableSize=%d\n", TableSize));
+	for (i=0; i<(TableSize-5); i++, CurrentTable++)
+	{
+		if (ContainStr((CHAR8 *)CurrentTable, (CHAR8 *)HID_NAME) > 0) {
+			DEBUG_MAC((EFI_D_ERROR, "Found HID_NAME i=%d\n", i));
+			for (; i<(TableSize-5); i++, CurrentTable++) {
+				if (ContainStr((CHAR8 *)CurrentTable, (CHAR8 *)(EthernetPort[EthIndex].EthName)) > 0) {
+					DEBUG_MAC((EFI_D_ERROR, "Found EthName =%c%c%c%c\n", 
+								*(EthernetPort[EthIndex].EthName),
+								*(EthernetPort[EthIndex].EthName+1),
+								*(EthernetPort[EthIndex].EthName+2),
+								*(EthernetPort[EthIndex].EthName+3)
+
+					      ));
+					break;	
+				}
+			}
+			for (; i<(TableSize-5); i++, CurrentTable++) {
+				if (ContainStr((CHAR8 *)CurrentTable, (CHAR8 *)(EthernetPort[EthIndex].MacName)) > 0) {
+					DEBUG_MAC((EFI_D_ERROR, "Found MacName =%c%c%c%c\n", 
+								*(CurrentTable),
+								*(CurrentTable+1),
+								*(CurrentTable+2),
+								*(CurrentTable+3)
+					      ));
+					break;	
+				}
+			}
+
+			/* point to the MAC value location */
+			CurrentTable += 8;
+			i += 8;
+
+			DEBUG_MAC((EFI_D_ERROR, "i:0x%x Mac =%2x:%2x:%2x:%2x:%2x:%2x\n", i, *(CurrentTable),
+						*(CurrentTable+1),
+						*(CurrentTable+2),
+						*(CurrentTable+3),
+						*(CurrentTable+4),
+						*(CurrentTable+5)							
+			      ));
+			/* update the MAC */
+			Size = sizeof(MacBuf);
+			Status = gRT->GetVariable(EthernetPort[EthIndex].NvName,
+					&gShellVariableGuid,
+					0,
+					&Size,
+					(void *)MacBuf);
+
+			if (EFI_ERROR (Status)) {
+				DEBUG_MAC((EFI_D_ERROR, "GetVariable MAC ERROR !!!"));
+			} else {
+				UINT8       MAC[20];
+
+				AsciiStrToEthAddr (MacBuf, MAC);
+
+				DEBUG_MAC((EFI_D_ERROR, "GetVariable %s MAC: %2x:%2x:%2x:%2x:%2x:%x !!!", EthernetPort[EthIndex].NvName, 
+							MAC[0], MAC[1], MAC[2], MAC[3], MAC[4], MAC[5]));
+
+				*((UINT8*)CurrentTable) = MAC[0];
+				*((UINT8*)CurrentTable+1) = MAC[1];
+				*((UINT8*)CurrentTable+2) = MAC[2];
+				*((UINT8*)CurrentTable+3) = MAC[3];
+				*((UINT8*)CurrentTable+4) = MAC[4];
+				*((UINT8*)CurrentTable+5) = MAC[5];
+			}
+
+			CurrentTable += 6;
+			i += 6;
+			EthIndex++;
+		}
+	}
+
+	return (EFI_SUCCESS);
+}
 
 /**
   Locate the first instance of a protocol.  If the protocol requested is an
@@ -227,6 +366,8 @@ AcpiPlatformEntryPoint (
       // Checksum ACPI table
       //
       AcpiPlatformChecksum ((UINT8*)CurrentTable, TableSize);
+
+      ApmPatchAcpiTable((UINT8*)CurrentTable, TableSize);
 
       //
       // Install ACPI table

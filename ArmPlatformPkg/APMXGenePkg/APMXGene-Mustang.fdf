@@ -52,12 +52,12 @@ FV = FVMAIN_SEC
 
 [FD.APMXGene-Mustang]
 BaseAddress   = 0x4002000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
-Size          = 0x7c0000|gArmTokenSpaceGuid.PcdFdSize    # The size in bytes of the FLASH Device
+Size          = 0x910000|gArmTokenSpaceGuid.PcdFdSize    # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
 BlockSize     = 0x00001000
-NumBlocks     = 0x7c0
+NumBlocks     = 0x910
 
 ################################################################################
 #
@@ -75,7 +75,7 @@ NumBlocks     = 0x7c0
 #
 ################################################################################
 
-0x0|0x7c0000
+0x0|0x910000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 

@@ -61,6 +61,7 @@ clean_linaro_tools:
 clean_basetools:
 	@echo
 	@echo "################################# Clean BaseTools ############################"
+	find $(EDK2TOOLSDIR) -type f -name \*.d -exec rm -f {} \;
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	make -C $(EDK2TOOLSDIR) clean

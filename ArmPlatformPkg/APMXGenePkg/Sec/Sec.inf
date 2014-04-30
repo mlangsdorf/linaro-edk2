@@ -62,10 +62,6 @@
  gArmTokenSpaceGuid.PcdTrustzoneSupport
  gArmTokenSpaceGuid.PcdVFPEnabled
 
- ### BOZO: ahs3
- #gArmTokenSpaceGuid.PcdArmScr
- #gArmTokenSpaceGuid.PcdArmNsacr
- ### END BOZO
  gArmTokenSpaceGuid.PcdArmNonSecModeTransition
 
  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask

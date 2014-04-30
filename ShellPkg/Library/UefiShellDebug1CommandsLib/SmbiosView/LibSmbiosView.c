@@ -58,7 +58,7 @@ LibSmbiosInit (
   //
   // Init SMBIOS structure table address
   //
-  mSmbiosStruct->Raw  = (UINT8 *) (UINTN) (mSmbiosTable->TableAddress);
+  mSmbiosStruct->Raw  = (UINT8 *) (UINTN) (mSmbiosTable->TableAddress | ((UINTN)mSmbiosTable->ExtHighAddressTableAddress << 32));
 
   mInit               = 1;
   return EFI_SUCCESS;

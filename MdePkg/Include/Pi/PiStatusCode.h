@@ -20,7 +20,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #define __PI_STATUS_CODE_H__
 
 //
-// Required for IA32, X64, IPF, ARM and EBC defines for CPU exception types
+// Required for IA32, X64, IPF, ARM, AARCH64 and EBC defines for CPU exception types
 //
 #include <Protocol/DebugSupport.h>
 
@@ -718,6 +718,7 @@ typedef struct {
 #define EFI_SOFTWARE_EFI_DXE_SERVICE      (EFI_SOFTWARE | 0x00120000)
 #define EFI_SOFTWARE_X64_EXCEPTION        (EFI_SOFTWARE | 0x00130000)
 #define EFI_SOFTWARE_ARM_EXCEPTION        (EFI_SOFTWARE | 0x00140000)
+#define EFI_SOFTWARE_AARCH64_EXCEPTION    (EFI_SOFTWARE | 0x00150000)
 
 ///@}
 
@@ -819,6 +820,10 @@ typedef struct {
 
 //
 // Software Class ARM Exception Subclass Progress Code definitions.
+//
+
+//
+// Software Class AARCH64 Exception Subclass Progress Code definitions.
 //
 
 //
@@ -1194,6 +1199,18 @@ typedef struct {
 #define EFI_SW_EC_ARM_RESERVED                       EXCEPT_ARM_RESERVED
 #define EFI_SW_EC_ARM_IRQ                            EXCEPT_ARM_IRQ
 #define EFI_SW_EC_ARM_FIQ                            EXCEPT_ARM_FIQ
+///@}
+
+///
+/// Software Class AArch64 Exception Subclass Error Code definitions.
+/// These exceptions are derived from the debug protocol
+/// definitions in the EFI specification.
+///
+///@{
+#define EFI_SW_EC_AARCH64_SYNCHRONOUS_EXCEPTIONS         EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS
+#define EFI_SW_EC_AARCH64_IRQ                            EXCEPT_AARCH64_IRQ
+#define EFI_SW_EC_AARCH64_FIQ                            EXCEPT_AARCH64_FIQ
+#define EFI_SW_EC_AARCH64_SERROR                         EXCEPT_AARCH64_SERROR
 ///@}
 
 #endif

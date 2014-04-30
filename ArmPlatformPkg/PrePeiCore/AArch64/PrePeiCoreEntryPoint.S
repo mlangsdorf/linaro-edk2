@@ -1,5 +1,5 @@
 //
-//  Copyright (c) 2011-2014, ARM Limited. All rights reserved.
+//  Copyright (c) 2011-2013, ARM Limited. All rights reserved.
 //
 //  This program and the accompanying materials
 //  are licensed and made available under the terms and conditions of the BSD License
@@ -15,6 +15,8 @@
 #include <Base.h>
 #include <Library/PcdLib.h>
 #include <AutoGen.h>
+
+#define APM88XXX_EFUSE_ADDR			0x1054a000
 
 .text
 .align 3
@@ -42,13 +44,17 @@ ASM_PFX(_ModuleEntryPoint):
 // If started at EL1 or EL2 Sec jumps directly to PEI without making any
 // changes.
 
+#if 0
+// FIXME - LHO
 // Which EL are we running at? Every EL needs some level of setup...
-// We should not run this code in EL3
-  EL1_OR_EL2(x0)
+  EL1_OR_EL2_OR_EL3(x0)
 1:bl    ASM_PFX(SetupExceptionLevel1)
   b     ASM_PFX(MainEntryPoint)
 2:bl    ASM_PFX(SetupExceptionLevel2)
   b     ASM_PFX(MainEntryPoint)
+3:// If we are at EL3 we die.
+  b     dead
+#endif
 
 ASM_PFX(MainEntryPoint):
   // Identify CPU ID
@@ -62,6 +68,7 @@ ASM_PFX(MainEntryPoint):
   bl    ASM_PFX(ArmPlatformIsPrimaryCore)
 
   // Get the top of the primary stacks (and the base of the secondary stacks)
+  // NOTE: Can not use LoadConstantToReg due to assembly compiler not support ULL
   LoadConstantToReg (FixedPcdGet64(PcdCPUCoresStackBase), x1)
   LoadConstantToReg (FixedPcdGet32(PcdCPUCorePrimaryStackSize), x2)
   add   x1, x1, x2
@@ -88,7 +95,9 @@ _SetupSecondaryCoreStack:
 
 _PrepareArguments:
   // The PEI Core Entry Point has been computed by GenFV and stored in the second entry of the Reset Vector
+  // NOTE: Can not use LoadConstantToReg due to assembly compiler not support ULL
   LoadConstantToReg (FixedPcdGet64(PcdFvBaseAddress), x2)
+
   add   x2, x2, #8
   ldr   x1, [x2]
 

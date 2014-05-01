@@ -40,15 +40,6 @@ ArmPlatformInitializeSystemMemory (
   UINT64 *MemSizeAddr;
   MemSizeAddr = (UINT64*)(UINT64)PcdGet64(PcdMemSizeAddr);
   DEBUG ((EFI_D_INFO, "Set MemSize:0x%llx\n", *MemSizeAddr));
-  /*
-   * FIXME: I _think_ we have to comment out the following line --
-   * which essentially makes this a null function -- because the
-   * PcdSystemMemorySize is no longer a Dynamic value.  But, that's
-   * just a theory right now... */
-  /* tphan@apm.com: We still need this until have better solution */
-  // BOZO: ahs3
-  // PcdSet64(PcdSystemMemorySize, *MemSizeAddr);
-  // END BOZO
 }
 
 /**

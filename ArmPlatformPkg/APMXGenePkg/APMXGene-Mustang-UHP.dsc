@@ -61,6 +61,8 @@
   UefiScsiLib|MdePkg/Library/UefiScsiLib/UefiScsiLib.inf
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
 
+  XGenePHYLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGenePHYLib/APMXGenePHYLib.inf
+
 [LibraryClasses.common.SEC]
   ArmLib|ArmPkg/Library/ArmLib/AArch64/AArch64LibSec.inf
   ArmPlatformSecLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneSecLib/APMXGeneSecLib.inf
@@ -96,6 +98,7 @@
    # PCIE
    #
    gArmPlatformTokenSpaceGuid.PcdPcieRootBridgeResetGpio|TRUE
+   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
 [PcdsDynamicDefault.common]
    # System Memory (4GB) 
@@ -178,13 +181,21 @@
    #
    # Note that MemoryMapped when boot from SPI NOR must be PcdSystemMemoryBase + PcdSPIFlashMappedBaseOffset + (Offset in Flash. This offset must above 0x800000).
    gArmTokenSpaceGuid.PcdArmMachineType|2272
-   gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"Linux from NorFlash"
-   gArmPlatformTokenSpaceGuid.PcdDefaultBootType|2
+
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"BOOT OS LOADER"
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootType|0
    gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|"console=ttyS0,115200 root=/dev/ram rw earlyprintk=uart8250-32bit,0x1c020000 debug"
+
    # From NOR MTD
-   gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uImage"
-   gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\mustang.dtb"
-   gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uRamdisk"
+   #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uImage"
+   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\mustang.dtb"
+   #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uRamdisk"
+
+   # From SD
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x3AE800)/efi\\boot\\bootaa64.efi"
+   gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\mustang.dtb"
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\uRamdisk"
+   
    # From U-Boot Memory (All images)
    # This helps speed up Tianocore and UEFI/Linux testing
    #    Mustang=> tftp 0x4002000000 ${user_dir}/mustang_tianocore_ubt.fd
@@ -398,6 +409,7 @@
    # ACPI Support
    #
    MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+   MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiTables/AcpiTables.inf
 

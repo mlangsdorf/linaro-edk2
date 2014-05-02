@@ -32,7 +32,7 @@
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-VHP.fdf
+  FLASH_DEFINITION               = ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-GFC.fdf
 
 !include ArmPlatformPkg/APMXGenePkg/APMXGene.dsc.inc
 
@@ -60,6 +60,8 @@
 
   UefiScsiLib|MdePkg/Library/UefiScsiLib/UefiScsiLib.inf
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
+
+  XGenePHYLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGenePHYLib/APMXGenePHYLib.inf
 
 [LibraryClasses.common.SEC]
   ArmLib|ArmPkg/Library/ArmLib/AArch64/AArch64LibSec.inf
@@ -103,6 +105,7 @@
    # PCIE
    #
    gArmPlatformTokenSpaceGuid.PcdPcieRootBridgeResetGpio|TRUE
+   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
 [PcdsDynamicDefault.common]
    # System Memory (4GB)
@@ -386,8 +389,9 @@
    # ACPI Support
    #
    MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+   MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
-   ArmPlatformPkg/APMXGenePkg/AcpiTables/AcpiTables.inf
+   ArmPkg/Drivers/AcpiTables/APMXGene/AcpiTables.inf
 
    #
    # Bds

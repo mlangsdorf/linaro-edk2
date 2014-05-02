@@ -1,21 +1,21 @@
 ## @file
-#  Sample ACPI Platform Driver
+#  X-Gene ACPI Platform Driver
 #
-#  Copyright (c) 2008 - 2010, Intel Corporation. All rights reserved.<BR>
+#  Copyright (c) 2014, Applied Micro Curcuit Corp. All rights reserved.<BR>
 #  This program and the accompanying materials
 #  are licensed and made available under the terms and conditions of the BSD License
 #  which accompanies this distribution.  The full text of the license may be found at
 #  http://opensource.org/licenses/bsd-license.php
-#  
+#
 #  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-#  
+#
 ##
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = AcpiPlatform
-  FILE_GUID                      = cb933912-df8f-4305-b1f9-7b44fa11395c
+  BASE_NAME                      = XGeneAcpiPlatform
+  FILE_GUID                      = e0829681-e9fa-4117-a8d7-84efadff863d
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
   ENTRY_POINT                    = AcpiPlatformEntryPoint
@@ -28,11 +28,13 @@
 
 [Sources]
   AcpiPlatform.c
+  XGeneEthMAC.c
 
 [Packages]
   MdePkg/MdePkg.dec
   ShellPkg/ShellPkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  ArmPlatformPkg/APMXGenePkg/APMXGene.dec
 
 [LibraryClasses]
   UefiLib
@@ -45,13 +47,20 @@
   UefiDriverEntryPoint
 
 [Guids]
-  gShellVariableGuid                                      # ALWAYS_CONSUMED
+  gShellVariableGuid                            # ALWAYS_CONSUMED
+  gEfiEventReadyToBootGuid                      # PROTOCOL ALWAYS_CONSUMED
 
 [Protocols]
   gEfiAcpiTableProtocolGuid                     # PROTOCOL ALWAYS_CONSUMED
+  gEfiAcpiSdtProtocolGuid                       # PROTOCOL ALWAYS_CONSUMED
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile
+
+[FeaturePcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol
+
+[FixedPcd]
 
 [Depex]
   gEfiAcpiTableProtocolGuid

@@ -125,6 +125,8 @@ StartLinux (
   EFI_STATUS            Status;
   LINUX_KERNEL64        LinuxKernel = (LINUX_KERNEL64)LinuxImage;
 
+  EfiSignalEventReadyToBoot ();
+
   // Send msg to secondary cores to go to the kernel pen.
   ArmGicSendSgiTo (PcdGet32(PcdGicDistributorBase), ARM_GIC_ICDSGIR_FILTER_EVERYONEELSE, 0x0E, PcdGet32 (PcdGicSgiIntId));
 

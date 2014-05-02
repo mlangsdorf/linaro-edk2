@@ -806,8 +806,7 @@ void apm_xg_laser_on(u32 port)
 }
 
 int apm_eth_device_setup(u8 port, u32 phy_addr, u32 phy_mode,
-	      void *port_base_addr, void *gbl_base_addr, void *mii_base_addr,
-	      u8 *apm_mac_addr)
+	      void *port_base_addr, void *gbl_base_addr, void *mii_base_addr, u8 *apm_mac_addr)
 {
 	struct eth_device *dev;
 	struct apm_enet_dev *priv_dev;
@@ -839,9 +838,10 @@ int apm_eth_device_setup(u8 port, u32 phy_addr, u32 phy_mode,
 	dev->next = NULL;
 	dev->index = port;
 
-        ENET_DEBUG("apm_eth_device_setup  MAC: %2x:%2x:%2x:%2x:%2x:%x !!!",
-                   apm_mac_addr[0], apm_mac_addr[1], apm_mac_addr[2],
-                   apm_mac_addr[3], apm_mac_addr[4], apm_mac_addr[5]);
+  	apm_mac_addr[5] += 1;
+	ENET_DEBUG("apm_eth_device_setup  MAC: %2x:%2x:%2x:%2x:%2x:%x !!!",
+                             apm_mac_addr[0], apm_mac_addr[1], apm_mac_addr[2], apm_mac_addr[3], 
+			     apm_mac_addr[4], apm_mac_addr[5]);
 
 #if 0	//TODO
 	/* Setup the ethernet name */

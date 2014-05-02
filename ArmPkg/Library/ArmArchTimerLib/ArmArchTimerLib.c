@@ -2,7 +2,7 @@
   Generic ARM implementation of TimerLib.h
 
   Copyright (c) 2011-2013, ARM Limited. All rights reserved.
-
+  
   This program and the accompanying materials
   are licensed and made available under the terms and conditions of the BSD License
   which accompanies this distribution.  The full text of the license may be found at
@@ -34,7 +34,6 @@ TimerConstructor (
   if (ArmIsArchTimerImplemented ()) {
 
     UINTN TimerFreq;
-    volatile UINT32 *CnTcr;
 
     // Check if Architectural Timer frequency is valid number (should not be 0)
     ASSERT (PcdGet32 (PcdArmArchTimerFreqInHz));
@@ -56,10 +55,6 @@ TimerConstructor (
     // If the reset value (0) is returned just ASSERT.
     TimerFreq = ArmArchTimerGetTimerFreq ();
     ASSERT (TimerFreq != 0);
-
-    // Enable Generic Ctr Ctrl
-    CnTcr = (UINT32 *)0x10580000;
-    *CnTcr |= 1;
 
   } else {
     DEBUG ((EFI_D_ERROR, "ARM Architectural Timer is not available in the CPU, hence this library can not be used.\n"));

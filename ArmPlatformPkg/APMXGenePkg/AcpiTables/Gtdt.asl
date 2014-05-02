@@ -25,21 +25,21 @@
 [0004]                    Asl Compiler ID : "INTL"
 [0004]              Asl Compiler Revision : 20110623
 
-[0008]                      Timer Address : 0000000002FAF080
+[0008]                      Timer Address : 0000000000000000
 [0004]              Flags (decoded below) : 00000001
                            Memory Present : 1
 
-[0004]               Secure PL1 Interrupt : 00000000
+[0004]               Secure PL1 Interrupt : 0000001F
 [0004]         SPL1 Flags (decoded below) : 00000000
                              Trigger Mode : 0
                                  Polarity : 0
 
-[0004]           Non-Secure PL1 Interrupt : 0000000D
+[0004]           Non-Secure PL1 Interrupt : 0000001D
 [0004]        NSPL1 Flags (decoded below) : 00000000
                              Trigger Mode : 0
                                  Polarity : 0
 
-[0004]            Virtual Timer Interrupt : 00000000
+[0004]            Virtual Timer Interrupt : 0000001E
 [0004]           VT Flags (decoded below) : 00000000
                              Trigger Mode : 0
                                  Polarity : 0

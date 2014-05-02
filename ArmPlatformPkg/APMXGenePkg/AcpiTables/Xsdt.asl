@@ -24,6 +24,6 @@
 [0004]                    Asl Compiler ID : "INTL"
 [0004]              Asl Compiler Revision : 20100528
 
-[0008]             ACPI Table Address   0 : 0000000085000060
-[0008]             ACPI Table Address   1 : 000000008500016C
-[0008]		   ACPI Table Address   2 : 00000000850001BC	
+[0008]             ACPI Table Address   0 : 00000004003800060
+[0008]             ACPI Table Address   1 : 0000000400380016C
+[0008]		   ACPI Table Address   2 : 000000040038001BC	

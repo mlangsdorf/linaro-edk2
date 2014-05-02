@@ -38,7 +38,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 0000004000008000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -50,7 +50,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 0000004000009000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -62,7 +62,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000a000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -74,7 +74,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000b000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -86,7 +86,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000c000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -98,7 +98,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000d000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -110,7 +110,7 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000e000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0B [Generic Interrupt Controller]
@@ -122,13 +122,13 @@
                         Processor Enabled : 1
 [0004]           Parking Protocol Version : 00000001
 [0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000f000
+[0008]                     Parked Address : 000000400000FFF8
 [0008]                       Base Address : 0000000078020000
 
 [0001]                      Subtable Type : 0C [Generic Interrupt Distributor]
 [0001]                             Length : 18
 [0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 0200143B
+[0004]              Local GIC Hardware ID : 00000000
 [0008]                       Base Address : 0000000078010000
 [0004]                     Interrupt Base : 00000000
 [0004]                           Reserved : 00000000

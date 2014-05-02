@@ -11,7 +11,7 @@
  *
  **/
 
-DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
+DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Operation Region For Power Control and Power Good
 	OperationRegion(\PGUD, SystemMemory, 0x17000078, 4)
@@ -132,13 +132,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550018, 3)},
 			3,
@@ -148,8 +154,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 1, 0xFC, 2, 2},
 	}) //_CSD
 
 	}//CPU0
@@ -230,13 +235,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551018, 3)},
 			3,
@@ -246,8 +257,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 1, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -333,13 +343,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552018, 3)},
 			3,
@@ -349,8 +365,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 2, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -436,13 +451,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553018, 3)},
 			3,
@@ -452,8 +473,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 2, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -539,13 +559,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554018, 3)},
 			3,
@@ -555,8 +581,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 3, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -642,13 +667,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555018, 3)},
 			3,
@@ -658,8 +689,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 3, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -745,13 +775,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556018, 3)},
 			3,
@@ -761,8 +797,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 4, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -848,13 +883,19 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		1,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557014, 3)},
 			1,
 			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
+		Package() {	//C2 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			2,
+			0,	//latency usec
+			0	//power mW
+		}, //C2 state
 /*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557018, 3)},
 			3,
@@ -864,8 +905,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
-		Package() {6, 0, 0, 0xFC, 1, 1},
-//		Package() {6, 0, 0, 0xFC, 2, 2},
+		Package() {6, 0, 4, 0xFC, 2, 2},
 	}) //_CSD
 
 	//Return the MADT table
@@ -876,640 +916,50 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}//CPU7
 
 ///////////////////////////////////////////////////////////////////////////////
+// Method DTGP
+	Method (DTGP, 5, NotSerialized) {
+		If (LEqual (Arg0, Buffer (0x10) {
+			/* UUID: a706b112-bf0b-48d2-9fa3-95591a3c4c06 */
+			/* 0000 */ 0xA7, 0x06, 0xB1, 0x12, 0xBF, 0x0B, 0x48, 0xD2,
+			/* 0008 */ 0x9f, 0xA3, 0x95, 0x59, 0x1A, 0x3C, 0x4C, 0x06
+		}))
+
+		{
+		If (LEqual (Arg1, 0x01)) {
+			If (LEqual (Arg2, 0x00)) {
+				Store (Buffer (0x01) {
+					0x03
+				}, Arg4)
+				Return (0x01)
+			}
+			If (LEqual (Arg2, 0x01)) {
+				Return (0x01)
+			}
+		}
+		}
+
+		Store (Buffer (0x01) {
+			0x00
+		}, Arg4)
+		Return (0x00)
+	}
+
+///////////////////////////////////////////////////////////////////////////////
 // PMU
-	Device(PMU0) {
-		Name(_HID, "APMC0D0C") // Device Identification Objects
+	Device(\_SB.PMU0) {
+		Name(_HID, "LNRO0007") // Device Identification Objects
 		Name(_DDN, "PMU0")
 		Name(_UID, "PMU0")
 		Name(_STR, Unicode("PMU"))
-		Name(_CID, "APMC0D0C")
+		Name(_CID, "LNRO0007")
 		Name(_CRS, ResourceTemplate() {
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x0C, 0x1 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x1C }
 		})
-	} //PMU
-
-////////////////////////////////////////////////////////////////////////////////
-// SoC Clock
-	Device(CK00) {
-		Name(_HID, "APMC0C00")
-		Name(_CID, 0x00)
-		Name(_STR, Unicode("Reference Clock"))
-		Name(_UID, "refclk")	// clock-name
-		Name(CLNM, "refclk")	// clock-name
-		Name(FREQ, 100000000)	// clock-frequency
 	}
-	Device(CK01) {
-		Name(_HID, "APMC0C02")
-		Name(_CID, 0x00)
-		Name(_STR, Unicode("PCP PLL Clock"))
-		Name(MM0A, 0x17000100)	// MMIO 0 Address
-		Name(MM0S, 0x20)	// MMIO 0 Size
-		Name(_UID, "pcppll")	// clock-name
-		Name(CLNM, "pcppll")	// clock-name
-		Name(PRNT, "refclk")	// parent-clock
-	}
-	Device(CK02) {
-		Name(_HID, "APMC0C03")
-		Name(_CID, 0x00)
-		Name(_STR, Unicode("SOC PLL Clock"))
-		Name(MM0A, 0x17000120)	// MMIO 0 Address
-		Name(MM0S, 0x20)	// MMIO 0 Size
-		Name(_UID, "socpll")	// clock-name
-		Name(CLNM, "socpll")	// clock-name
-		Name(PRNT, "refclk")	// parent-clock
-	}
-	Device(CK03) {
-		Name(_HID, "APMC0C01")
-		Name(_CID, 0x00)
-		Name(_STR, Unicode("SOC PLL DIV2"))
-		Name(_UID, "socplldiv2")// clock-name
-		Name(CLNM, "socplldiv2")// clock-name
-		Name(PRNT, "socpll")	// parent-clock
-		Name(CMUL, 0x1)		// clock-mult
-		Name(CDIV, 0x2)		// clock-div
-	}
-	Device(CK04) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x00)
-		Name(_STR, Unicode("QM Lite Clock"))
-		Name(MM0A, 0x1703C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "qmlclk")	// clock-name
-		Name(CLNM, "qmlclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK05) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x01)
-		Name(_STR, Unicode("Ethernet Clock"))
-		Name(MM0A, 0x00000000)	// MMIO 0 Address
-		Name(MM0S, 0x0)		// MMIO 0 Size
-		Name(MM1A, 0x17000000)	// MMIO 1 Address
-		Name(MM1S, 0x1000)	// MMIO 1 Size
-		Name(_UID, "ethclk")	// clock-name
-		Name(CLNM, "ethclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(DIVO, 0x238)	// divider-offset
-		Name(DIVW, 0x9)		// divider-width
-		Name(DIVS, 0x0)		// divider-shift
-	}
-	Device(CK06) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x02)
-		Name(_STR, Unicode("ETH8 Clock"))
-		Name(MM0A, 0x1702C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "eth8clk")	// clock-name
-		Name(CLNM, "eth8clk")	// clock-name
-		Name(PRNT, "ethclk")	// parent-clock
-	}
-	Device(CK07) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x03)
-		Name(_STR, Unicode("QM1 Clock"))
-		Name(MM0A, 0x1F20C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "qm1clk")	// clock-name
-		Name(CLNM, "qm1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK08) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x04)
-		Name(_STR, Unicode("ETH01 Clock"))
-		Name(MM0A, 0x1F21C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "eth01clk")	// clock-name
-		Name(CLNM, "eth01clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK09) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x05)
-		Name(_STR, Unicode("ETH23 Clock"))
-		Name(MM0A, 0x1F22C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "eth23clk")	// clock-name
-		Name(CLNM, "eth23clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0A) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x06)
-		Name(_STR, Unicode("QM XGE0 Clock"))
-		Name(MM0A, 0x1F60C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "qmxge0clk")	// clock-name
-		Name(CLNM, "qmxge0clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0B) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x07)
-		Name(_STR, Unicode("XGE0 Clock"))
-		Name(MM0A, 0x1F61C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "xge0clk")	// clock-name
-		Name(CLNM, "xge0clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0C) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x08)
-		Name(_STR, Unicode("XGE1 Clock"))
-		Name(MM0A, 0x1F62C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "xge1clk")	// clock-name
-		Name(CLNM, "xge1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0D) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x09)
-		Name(_STR, Unicode("QM XGE1 Clock"))
-		Name(MM0A, 0x1F70C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "qmxge1clk")	// clock-name
-		Name(CLNM, "qmxge1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0E) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0A)
-		Name(_STR, Unicode("XGE2 Clock"))
-		Name(MM0A, 0x1F71C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "xge2clk")	// clock-name
-		Name(CLNM, "xge2clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK0F) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0B)
-		Name(_STR, Unicode("XGE3 Clock"))
-		Name(MM0A, 0x1F72C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "xge3clk")	// clock-name
-		Name(CLNM, "xge3clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK10) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0C)
-		Name(_STR, Unicode("PCIE0 Clock"))
-		Name(MM0A, 0x1F2BC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pcie0clk")	// clock-name
-		Name(CLNM, "pcie0clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(EMSK, 0x0)		// enable-mask
-	}
-	Device(CK11) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0D)
-		Name(_STR, Unicode("PCIE1 Clock"))
-		Name(MM0A, 0x1F2CC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pcie1clk")	// clock-name
-		Name(CLNM, "pcie1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(EMSK, 0x0)		// enable-mask
-	}
-	Device(CK12) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0E)
-		Name(_STR, Unicode("PCIE2 Clock"))
-		Name(MM0A, 0x1F2DC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pcie2clk")	// clock-name
-		Name(CLNM, "pcie2clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(EMSK, 0x0)		// enable-mask
-	}
-	Device(CK13) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x0F)
-		Name(_STR, Unicode("PCIE3 Clock"))
-		Name(MM0A, 0x1F50C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pcie3clk")	// clock-name
-		Name(CLNM, "pcie3clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(EMSK, 0x0)		// enable-mask
-	}
-	Device(CK14) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x10)
-		Name(_STR, Unicode("PCIE4 Clock"))
-		Name(MM0A, 0x1F51C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pcie4clk")	// clock-name
-		Name(CLNM, "pcie4clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(EMSK, 0x0)		// enable-mask
-	}
-	Device(CK16) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x11)
-		Name(_STR, Unicode("USB0 Clock"))
-		Name(MM0A, 0x1F28C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "usb0clk")	// clock-name
-		Name(CLNM, "usb0clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK17) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x12)
-		Name(_STR, Unicode("USB1 Clock"))
-		Name(MM0A, 0x1F29C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "usb1clk")	// clock-name
-		Name(CLNM, "usb1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK18) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x13)
-		Name(_STR, Unicode("Packet DMA Clock"))
-		Name(MM0A, 0x1F27C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "pktdmaclk")	// clock-name
-		Name(CLNM, "pktdmaclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-	}
-	Device(CK19) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x14)
-		Name(_STR, Unicode("AHB Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x17000000)	// MMIO 1 Address
-		Name(MM1S, 0x1000)	// MMIO 1 Size
-		Name(_UID, "ahbclk")	// clock-name
-		Name(CLNM, "ahbclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x1)		// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x1)		// enable-mask
-		Name(DIVO, 0x164)	// divider-offset
-		Name(DIVW, 0x5)		// divider-width
-		Name(DIVS, 0x0)		// divider-shift
-	}
-	Device(CK1A) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x15)
-		Name(_STR, Unicode("APB Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x1F2AC000)	// MMIO 1 Address
-		Name(MM1S, 0x1000)	// MMIO 1 Size
-		Name(_UID, "apbclk")	// clock-name
-		Name(CLNM, "apbclk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x200)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x200)	// enable-mask
-		Name(DIVO, 0x10)	// divider-offset
-		Name(DIVW, 0x2)		// divider-width
-		Name(DIVS, 0x0)		// divider-shift
-	}
-	Device(CK1B) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x16)
-		Name(_STR, Unicode("SPI0 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "spi0clk")	// clock-name
-		Name(CLNM, "spi0clk")	// clock-name
-		Name(PRNT, "apbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x100)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x100)	// enable-mask
-	}
-	Device(CK1C) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x17)
-		Name(_STR, Unicode("SPI1 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "spi1clk")	// clock-name
-		Name(CLNM, "spi1clk")	// clock-name
-		Name(PRNT, "apbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x80)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x80)	// enable-mask
-	}
-	Device(CK1D) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x18)
-		Name(_STR, Unicode("SDIO Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x17000000)	// MMIO 1 Address
-		Name(MM1S, 0x1000)	// MMIO 1 Size
-		Name(_UID, "sdioclk")	// clock-name
-		Name(CLNM, "sdioclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x2)		// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x2)		// enable-mask
-		Name(DIVO, 0x178)	// divider-offset
-		Name(DIVW, 0x8)		// divider-width
-		Name(DIVS, 0x0)		// divider-shift
-	}
-	Device(CK1E) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x19)
-		Name(_STR, Unicode("UART0 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "uart0clk")	// clock-name
-		Name(CLNM, "uart0clk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x8)		// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x8)		// enable-mask
-	}
-	Device(CK1F) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1A)
-		Name(_STR, Unicode("UART1 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "uart1clk")	// clock-name
-		Name(CLNM, "uart1clk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x10)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x10)	// enable-mask
-	}
-	Device(CK20) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1B)
-		Name(_STR, Unicode("UART2 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "uart2clk")	// clock-name
-		Name(CLNM, "uart2clk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x20)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x20)	// enable-mask
-	}
-	Device(CK21) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1C)
-		Name(_STR, Unicode("UART3 Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "uart3clk")	// clock-name
-		Name(CLNM, "uart3clk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x40)	// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x40)	// enable-mask
-	}
-	Device(CK22) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1D)
-		Name(_STR, Unicode("GPIO Clock"))
-		Name(MM0A, 0x1F2AC000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "gpioclk")	// clock-name
-		Name(CLNM, "gpioclk")	// clock-name
-		Name(PRNT, "ahbclk")	// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x4)		// csr-mask
-		Name(EOFF, 0x8)		// enable-offset
-		Name(EMSK, 0x4)		// enable-mask
-	}
-	Device(CK23) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1E)
-		Name(_STR, Unicode("I2C Clock"))
-		Name(MM0A, 0x17000000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "i2cclk")	// clock-name
-		Name(CLNM, "i2cclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x0)		// csr-offset
-		Name(CSRM, 0x2)		// csr-mask
-		Name(EOFF, 0x10)	// enable-offset
-		Name(EMSK, 0x4)		// enable-mask
-		Name(DIVO, 0x168)	// divider-offset
-		Name(DIVW, 0x5)		// divider-width
-		Name(DIVS, 0x0)		// divider-shift
-	}
-	Device(CK24) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x1F)
-		Name(_STR, Unicode("RTC Clock"))
-		Name(MM0A, 0x17000000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "rtcclk")	// clock-name
-		Name(CLNM, "rtcclk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0xc)		// csr-offset
-		Name(CSRM, 0x2)		// csr-mask
-		Name(EOFF, 0x10)	// enable-offset
-		Name(EMSK, 0x2)		// enable-mask
-	}
-	Device(CK25) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x20)
-		Name(_STR, Unicode("TRNG PKA Clock"))
-		Name(MM0A, 0x17000000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "trngpkaclk")// clock-name
-		Name(CLNM, "trngpkaclk")// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0xc)		// csr-offset
-		Name(CSRM, 0x10)	// csr-mask
-		Name(EOFF, 0x10)	// enable-offset
-		Name(EMSK, 0x10)	// enable-mask
-	}
-	Device(CK26) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x21)
-		Name(_STR, Unicode("SATA01 PHY Clock"))
-		Name(MM0A, 0x1F21C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sataphy1clk")	// clock-name
-		Name(CLNM, "sataphy1clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x3A)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x06)	// enable-mask
-	}
-	Device(CK27) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x22)
-		Name(_STR, Unicode("SATA23 PHY Clock"))
-		Name(MM0A, 0x1F22C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sataphy2clk")	// clock-name
-		Name(CLNM, "sataphy2clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x3A)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x06)	// enable-mask
-	}
-	Device(CK28) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x23)
-		Name(_STR, Unicode("SATA45 PHY Clock"))
-		Name(MM0A, 0x1F23C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sataphy3clk")	// clock-name
-		Name(CLNM, "sataphy3clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x3A)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x06)	// enable-mask
-	}
-	Device(CK29) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x24)
-		Name(_STR, Unicode("SATA01 Clock"))
-		Name(MM0A, 0x1F21C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sata01clk")	// clock-name
-		Name(CLNM, "sata01clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x05)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x39)	// enable-mask
-	}
-	Device(CK30) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x25)
-		Name(_STR, Unicode("SATA23 Clock"))
-		Name(MM0A, 0x1F22C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sata23clk")	// clock-name
-		Name(CLNM, "sata23clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x05)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x39)	// enable-mask
-	}
-	Device(CK31) {
-		Name(_HID, "APMC0C04")
-		Name(_CID, 0x26)
-		Name(_STR, Unicode("SATA45 Clock"))
-		Name(MM0A, 0x1F23C000)	// MMIO 0 Address
-		Name(MM0S, 0x1000)	// MMIO 0 Size
-		Name(MM1A, 0x00000000)	// MMIO 1 Address
-		Name(MM1S, 0x0)		// MMIO 1 Size
-		Name(_UID, "sata45clk")	// clock-name
-		Name(CLNM, "sata45clk")	// clock-name
-		Name(PRNT, "socplldiv2")// parent-clock
-		Name(CSRO, 0x4)		// csr-offset
-		Name(CSRM, 0x05)	// csr-mask
-		Name(EOFF, 0x00)	// enable-offset
-		Name(EMSK, 0x39)	// enable-mask
-	}
-
-///////////////////////////////////////////////////////////////////////////////
-// Reboot Device
-	Device(SRBD) {
-		Name(_HID, "APMC0D08") // Device Identification Objects
-		Name(_DDN, "SRD0")
-		Name(_UID, "SRD0")
-		Name(_STR, Unicode("System Reboot Device"))
-		Name(_ADR, 0x17000014)
-		Name(_CID, "SRBD0000")
-		Name(_CRS, ResourceTemplate() {
-      			Memory32Fixed(ReadWrite, 0x17000014, 0x00000100, )
-		})
-	} //REBOOT
 
 ///////////////////////////////////////////////////////////////////////////////
 // SLIMpro Device
-	Device(SLIM) {
+	Device(\_SB.SLIM) {
 		Name(_HID, "APMC0D01") // Device Identification Objects
 		Name(_DDN, "SLIM")
 		Name(_UID, "SLIM")
@@ -1519,16 +969,14 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x10540000, 0xa100, )
 			Memory32Fixed(ReadWrite, 0x17000000, 0x1000, )
 			Memory32Fixed(ReadWrite, 0x17001000, 0x1000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x0 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x1 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x2 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x3 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x4 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x20 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x21 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x22 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x23 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x24 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x25 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x26 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x27 }
 		})
 		Name(DBST, 0x0000) // Doorbell start index
 		Name(DBEN, 0x0007) // Doorbell end index
@@ -1539,7 +987,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // PCP Bus Device
-	Device(PCPD) {
+	Device(\_SB.PCPD) {
 		Name(_HID, "APMC0D02") // Device Identification Objects
 		Name(_DDN, "PCP0")
 		Name(_UID, "PCP0")
@@ -1552,15 +1000,15 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7C000000, 0x4000000, )
 			Memory32Fixed(ReadWrite, 0x7E200200, 0x1000, )
 			Memory32Fixed(ReadWrite, 0x7E600000, 0x1000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x20 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x21 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x27 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x47 }
 			})
 	} //PCP Bus Device
 
 ///////////////////////////////////////////////////////////////////////////////
 // GPIO
-	Device(GP00) {
+	Device(\_SB.GP00) {
 		Name(_HID, "APMC0D07") // Device Identification Objects
 		Name(_CID, "APMC0D07")
 		Name(_UID, "GPIO0")
@@ -1575,7 +1023,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 ///////////////////////////////////////////////////////////////////////////////
 //AHBC Bus
 	// AHBC Device
-	Device(AHBC) {
+	Device(\_SB.AHBC) {
 		OperationRegion(SRST, SystemMemory, 0x1F2AC000, 4)
 		OperationRegion(CLKE, SystemMemory, 0x1F2AC004, 4)
 		Field(SRST, DWordAcc, NoLock, Preserve) {
@@ -1770,7 +1218,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 					U1DT
 				)
 				Interrupt(ResourceProducer, Level, ActiveHigh,
-				Exclusive) {108}
+				Exclusive) {109}
 				})
 		} //URT1
 //==============================================================================
@@ -1991,7 +1439,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 ////////////////////////////////////////////////////////////////////////////////
 // I2C1 VRM Bus
 
-	Device(I2CS) {
+	Device(\_SB.I2CS) {
 		//Device Identification Objects
 		Name(_HID, "I2CS0001")
 		Name(_DDN, "I2CS")
@@ -2078,7 +1526,7 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // SATA Devices
-	Device(PHY1) {
+	Device(\_SB.PHY1) {
 		Name(_HID, "APMC0D0A") // Device Identification Objects
 		Name(_UID, 1)
 		Name(_STR, Unicode("X-Gene PHY"))
@@ -2088,45 +1536,18 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1F21A000, 0x100)
 		})
-		// Tx Booster/Gain
-		Name(TBG0, Buffer() { 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e })
-		// Tx Booster/Gain SSD
-		Name(TBG1, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Eye Tuning
-		Name(TET0, Buffer() { 0x2, 0xa, 0xa, 0x2, 0xa, 0xa })
-		// Tx Booster/Gain - pre-A3 chip
-		Name(TBGA, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Booster/Gain SSD - pre-A3 chip
-		Name(TBGB, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Eye Tuning - pre-A3 chip
-		Name(TETA, Buffer() { 0xa, 0xa, 0xa, 0xa, 0xa, 0xa })
-		// Tx Speed - pre-A3 chip
-		Name(TSPA, Buffer() { 0x1, 0x3, 0x5})
-		// Tx pre-cursor1 - pre-A3 chip (4 bytes - mV)
-		Name(TC1A, Buffer() { 	0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0 })
-		// Tx post-cursor - pre-A3 chip (4 bytes - mV)
-		Name(TPCA, Buffer() {	0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68 })
-		// Tx Amptitude - pre-A3 chip (4 bytes - mV)
-		Name(TAPA, Buffer() {	0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C })
-		Name(CONS, "APMC0D00:00")
-		NAME(CLNM, "sataphy1clk")  // clock-names
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"consumer", "APMC0D00:00",
+				"apm,tx-boost-gain", "30 30 30 30 30 30",
+				"apm,tx-boost-gain-ssd", "2 2 2 2 2 2",
+				"apm,tx-eye-tuning", "2 10 10 2 10 10",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	};
-	Device(PHY2) {
+	Device(\_SB.PHY2) {
 		Name(_HID, "APMC0D0A") // Device Identification Objects
 		Name(_UID, 2)
 		Name(_STR, Unicode("X-Gene PHY"))
@@ -2136,45 +1557,18 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1F22A000, 0x100)
 		})
-		// Tx Booster/Gain
-		Name(TBG0, Buffer() { 0x1e, 0x1e, 0x1e, 0x1e, 0x1e, 0x1e })
-		// Tx Booster/Gain SSD
-		Name(TBG1, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Eye Tuning
-		Name(TET0, Buffer() { 0x1, 0xa, 0xa, 0x2, 0xa, 0xa })
-		// Tx Booster/Gain - pre-A3 chip
-		Name(TBGA, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Booster/Gain SSD - pre-A3 chip
-		Name(TBGB, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Eye Tuning - pre-A3 chip
-		Name(TETA, Buffer() { 0x1, 0xa, 0xa, 0x2, 0xa, 0xa })
-		// Tx Speed - pre-A3 chip
-		Name(TSPA, Buffer() { 0x1, 0x3, 0x5})
-		// Tx pre-cursor1 - pre-A3 chip (4 bytes - mV)
-		Name(TC1A, Buffer() { 	0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0 })
-		// Tx post-cursor - pre-A3 chip (4 bytes - mV)
-		Name(TPCA, Buffer() {	0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68 })
-		// Tx Amptitude - pre-A3 chip (4 bytes - mV)
-		Name(TAPA, Buffer() {	0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C })
-		Name(CONS, "APMC0D0D:00")
-		NAME(CLNM, "sataphy2clk")  // clock-names
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"consumer", "APMC0D0D:00",
+				"apm,tx-boost-gain", "30 30 30 30 30 30",
+				"apm,tx-boost-gain-ssd", "2 2 2 2 2 2",
+				"apm,tx-eye-tuning", "1 10 10 2 10 10",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	};
-	Device(PHY3) {
+	Device(\_SB.PHY3) {
 		Name(_HID, "APMC0D0B") // Device Identification Objects
 		Name(_UID, 3)
 		Name(_STR, Unicode("X-Gene PHY"))
@@ -2185,135 +1579,104 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F23A000, 0x100)
 			Memory32Fixed (ReadWrite, 0x1F2D0000, 0x100)
 		})
-		// Tx Booster/Gain
-		Name(TBG0, Buffer() { 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f })
-		// Tx Booster/Gain SSD
-		Name(TBG1, Buffer() { 0x3, 0x3, 0x3, 0x3, 0x3, 0x3 })
-		// Tx Eye Tuning
-		Name(TET0, Buffer() { 0x2, 0xa, 0xa, 0x2, 0xa, 0xa })
-		// Tx Booster/Gain - pre-A3 chip
-		Name(TBGA, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Booster/Gain SSD - pre-A3 chip
-		Name(TBGB, Buffer() { 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 })
-		// Tx Eye Tuning - pre-A3 chip
-		Name(TETA, Buffer() { 0xa, 0xa, 0xa, 0xa, 0xa, 0xa })
-		// Tx Speed - pre-A3 chip
-		Name(TSPA, Buffer() { 0x1, 0x3, 0x5})
-		// Tx pre-cursor1 - pre-A3 chip (4 bytes - mV)
-		Name(TC1A, Buffer() { 	0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0,
-					0x0, 0x0, 0x0, 0x0 })
-		// Tx post-cursor - pre-A3 chip (4 bytes - mV)
-		Name(TPCA, Buffer() {	0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68,
-					0x0, 0x4, 0x2A, 0x68 })
-		// Tx Amptitude - pre-A3 chip (4 bytes - mV)
-		Name(TAPA, Buffer() {	0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C,
-					0x0, 0x3, 0x0B, 0x4C })
-		Name(CONS, "APMC0D09:00")
-		NAME(CLNM, "sataphy3clk")  // clock-names
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"consumer", "APMC0D09:00",
+				"apm,tx-boost-gain", "31 31 31 31 31 31",
+				"apm,tx-boost-gain-ssd", "3 3 3 3 3 3",
+				"apm,tx-eye-tuning", "2 10 10 2 10 10",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	};
-	Device(SAT0) {
+	Device(\_SB.SAT0) {
 		Name(_HID, "APMC0D00") // Device Identification Objects
 		Name(_UID, 1)
 		Name(_STR, Unicode("X-Gene SATA"))
-	        Method(_STA, 0, NotSerialized) {
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (0x0)
-        	}
+		}
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A000000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F210000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x86}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA6}
 		})
-		NAME(CLNM, "sata01clk")  // clock-names
 	} //SAT0
-	Device(SAT1) {
+	Device(\_SB.SAT1) {
 		Name(_HID, "APMC0D0D") // Device Identification Objects
 		Name(_UID, 2)
 		Name(_STR, Unicode("X-Gene SATA"))
-	        Method(_STA, 0, NotSerialized) {
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (0x1)
-        	}
+		}
 		Name (_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A400000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F220000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x87}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA7}
 		})
-		NAME(CLNM, "sata23clk")  // clock-names
 	} //SAT1
-	Device(SAT2) {
+	Device(\_SB.SAT2) {
 		Name(_HID, "APMC0D09") // Device Identification Objects
 		Name(_UID, 3)
 		Name(_STR, Unicode("X-Gene SATA"))
-	        Method(_STA, 0, NotSerialized) {
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (0x1)
-        	}
+		}
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A800000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F230000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x88}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA8}
 		})
-		NAME(CLNM, "sata45clk") // clock-names
 	} //SAT2
 
 ///////////////////////////////////////////////////////////////////////////////
 // USB Devices
-	Device(USB0) {
+	Device(\_SB.USB0) {
 		Name(_HID, "APMC0D03")
 		Name(_DDN, "USB0")
 		Name(_UID, "USB0")
-		Name(_STR, Unicode("APM88xxxx USB"))
-		Name(_CID, "APMC0D03")
+		Name(_STR, Unicode("X-Gene USB"))
+		Method(_STA, 0, NotSerialized)
+		{
+			Return (0x1)
+		}
+		Name(_CID, "PNP0D10")
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x19000000, 0x100000)
 			Memory32Fixed (ReadWrite, 0x1F280000,  0x10000)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x89}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA9}
 		})
-		NAME(CLNM, "usb0clk")  // clock-names
-		Name(STAT, "ok")        // status
-		NAME(SDCL, 0x0)         // serdes-diff-clk
-		NAME(GENS, 0x3)         // gen-sel
-		NAME(OVCE, 0x0)         // Overcur Enable
-		NAME(OVCI, 0x0)         // Overcur Invert
 	} //USB0
-	Device(USB1) {
+	Device(\_SB.USB1) {
 		Name(_HID, "APMC0D03")
 		Name(_DDN, "USB1")
 		Name(_UID, "USB1")
-		Name(_STR, Unicode("APM88xxxx USB"))
-		Name(_CID, "APMC0D03")
+		Name(_STR, Unicode("X-Gene USB"))
+		Method(_STA, 0, NotSerialized)
+		{
+			Return (0x1)
+		}
+		Name(_CID, "PNP0D10")
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x19800000, 0x100000)
 			Memory32Fixed (ReadWrite, 0x1F290000,  0x10000)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x8a}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xAA}
 		})
-		NAME(CLNM, "usb1clk")  // clock-names
-		Name(STAT, "ok")        // status
-		NAME(SDCL, 0x0)         // serdes-diff-clk
-		NAME(GENS, 0x3)         // gen-sel
-		NAME(OVCE, 0x0)         // Overcur Enable
-		NAME(OVCI, 0x0)         // Overcur Invert
 	} //USB1
 
 ///////////////////////////////////////////////////////////////////////////////
 // QM Device
-	Device(QM03) {
+	Device(\_SB.QM03) {
 		Name(_HID, "APMC0D04") // Device Identification Objects
 		Name(_DDN, "QM03")
 		Name(_UID, "QM03")
@@ -2322,161 +1685,272 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17030000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x10000000, 0x400000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x3c }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x60 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5C }
 		})
-		Name(CLNM, "qmlclk") // clock-names
-		Name(DVID, 0x03)     // Device ID
-		Name(MQID, 0x400)    // Max QID
-		Name(SLNM, "CPU_QMTM3") // Slave name
-		Name(SLIF, Buffer() { 0x03, 0x00, 0x01, 0x20, 0x01 }) // Slave info
+		OperationRegion(CLKQ, SystemMemory, 0x1703c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"max_queues", "1024",
+				"devid", "3",
+				"slave_name", "CPU_QMTM3",
+				"slave_info", "3 0 1 32 1",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	} // QM03
 
-	Device(QM01) {
+	Device(\_SB.QM01) {
 		Name(_HID, "APMC0D04") // Device Identification Objects
 		Name(_DDN, "QM01")
 		Name(_UID, "QM01")
 		Name(_STR, Unicode("QM 1 Device"))
 		Name(_CID, "APMC0D04")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x1f200000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x1b000000, 0x400000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xe0 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc0 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa0 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa1 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa2 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa3 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa4 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa5 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa6 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa7 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa8 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xa9 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xaa }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xab }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xad }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xae }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xaf }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb0 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb1 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb2 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb3 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb4 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb5 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb6 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb7 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb8 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb9 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xba }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xbb }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xbc }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xbd }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xbe }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xbf }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc1 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc2 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc3 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc4 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc5 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc6 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc7 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc8 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc9 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xca }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xcb }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xcc }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xcd }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xce }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xcf }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd0 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd1 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd2 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd3 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd4 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd5 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd6 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd7 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd8 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xd9 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xda }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xdb }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xdc }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xdd }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xde }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xdf }
 		})
-		Name(CLNM, "qm1clk") // clock-names
-		Name(DVID, 0x01)     // Device ID
-		Name(MQID, 0x400)     // Max QID
-		Name(SLNM, "CPU_QMTM1") // Slave name
-		Name(SLIF, Buffer() { 0x01, 0x00, 0x20, 0x20, 0x20 }) // Slave info
+		OperationRegion(CLKQ, SystemMemory, 0x1f20c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"max_queues", "1024",
+				"devid", "1",
+				"slave_name", "CPU_QMTM1",
+				"slave_info", "1 0 32 32 32",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	} // QM01
 
-	Device(QM00) {
+	Device(\_SB.QM00) {
 		Name(_HID, "APMC0D04") // Device Identification Objects
 		Name(_DDN, "QM00")
 		Name(_UID, "QM00")
 		Name(_STR, Unicode("QM 0 Device"))
 		Name(_CID, "APMC0D04")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x1f600000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x18000000, 0x400000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xA0 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x80 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x60 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x61 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x62 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x63 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x64 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x65 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x66 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x67 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x68 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x69 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6a }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6b }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6c }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6d }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6e }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x6f }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x81 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x82 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x83 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x84 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x85 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x86 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x87 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x88 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x89 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8a }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8b }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8c }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8d }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8e }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8f }
 		})
-		Name(CLNM, "qmxge0clk") // clock-names
-		Name(DVID, 0x00)     // Device ID
-		Name(MQID, 0x400)     // Max QID
-		Name(SLNM, "CPU_QMTM0") // Slave name
-		Name(SLIF, Buffer() { 0x00, 0x00, 0x10, 0x20, 0x10 }) // Slave info
+		OperationRegion(CLKQ, SystemMemory, 0x1f60c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"max_queues", "1024",
+				"devid", "0",
+				"slave_name", "CPU_QMTM0",
+				"slave_info", "0 0 16 32 16",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	} // QM00
 
-	Device(QM02) {
+	Device(\_SB.QM02) {
 		Name(_HID, "APMC0D04") // Device Identification Objects
 		Name(_DDN, "QM02")
 		Name(_UID, "QM02")
 		Name(_STR, Unicode("QM 2 Device"))
 		Name(_CID, "APMC0D04")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x1f700000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x1e000000, 0x400000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc1 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x70 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x71 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x72 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x73 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x74 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x75 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x76 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x77 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x78 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x79 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7a }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7b }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7c }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7d }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7e }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x7f }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xE1 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x90 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x91 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x92 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x93 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x94 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x95 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x96 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x97 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x98 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x99 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9a }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9b }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9c }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9d }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9e }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9f }
 		})
-		Name(CLNM, "qmxge1clk") // clock-names
-		Name(DVID, 0x02)     // Device ID
-		Name(MQID, 0x400)     // Max QID
-		Name(SLNM, "CPU_QMTM2") // Slave name
-		Name(SLIF, Buffer() { 0x02, 0x10, 0x10, 0x30, 0x10 }) // Slave info
+		OperationRegion(CLKQ, SystemMemory, 0x1f70c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (8) {
+				"max_queues", "1024",
+				"devid", "2",
+				"slave_name", "CPU_QMTM2",
+				"slave_info", "2 16 16 48 16",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	} //QM02
-
+///////////////////////////////////////////////////////////////////////////////
+//SOC PLL and ETH Divider Fields
+//Operation Region For Eth Speed Control
+	OperationRegion(\SOCP, SystemMemory, 0x17000120, 4)
+	Field(\SOCP, DWordAcc, NoLock, Preserve) {
+		CLKF, 9,
+		RSV1, 11,
+		CLOD, 2,
+		RSV2, 2,
+		CLKR, 3,
+		RSV3, 5
+	}
 ///////////////////////////////////////////////////////////////////////////////
 // Ethernet Device
-	Device(ET08) {
+	Device(\_SB.ET08) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
 		Name(_STR, Unicode("Ethernet RGMII Device"))
 		Name(_CID, "APMC0D05")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17020000, 0x30, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x38 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x39 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x3a }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
 		})
-		Name(CLNM, "eth8clk") // clock-names
-		Name(DVID, 0x08)      // Device ID
-		Name(SLNM, "RGMII")
-		Name(SLIF, Buffer() { 0x03, 0x00, 0x04, 0x20, 0x04 })
-		Name(FMSZ, 0x233a)    // Frame-size
-		Name(PHID, 0x03)      // Phy ID
-		Name(PHMD, "rgmii")   // PHY mode
-		Name(MAC0, Buffer() { 0x00, 0x11, 0x3a, 0x8a, 0x5a, 0x78 })	// MAC Address
+
+		OperationRegion(\ETHD, SystemMemory, 0x17000238, 4)
+		Field(\ETHD, DWordAcc, NoLock, Preserve) {
+			NDIV, 9,
+		}
+		Method(S10, 0, NotSerialized) {
+			// 10Mbps requires 2.5MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/2500000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 2500000), NDIV)
+		}
+		Method(S100, 0, NotSerialized) {
+			// 100Mbps requires 25MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// 100Mbps = (SOC DIV 2)/25000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 25000000), NDIV)
+		}
+		Method(S1G, 0, NotSerialized) {
+			// 1Gbps requires 125MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/125000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 125000000), NDIV)
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x1702c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x2, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "8",
+				"slave_name", "RGMII",
+				"slave_info", "3 0 4 32 4",
+				"max-frame-size", "9018",
+				"phyid", "3",
+				"phy-mode", "rgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
 
-	Device(ET00) {
+	Device(\_SB.ET00) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET00")
 		Name(_UID, "ET00")
@@ -2489,21 +1963,34 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1f210000, 0x30, )
 			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8c }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8d }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x90 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xad }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb0 }
 		})
-		Name(CLNM, "eth01clk") // clock-names
-		Name(DVID, 0x00)      // Device ID
-		Name(SLNM, "SGMII0")
-		Name(SLIF, Buffer() { 0x01, 0x00, 0x08, 0x20, 0x08 })
-		Name(FMSZ, 0x233a)    // Frame-size
-		Name(PHID, 0x1e)      // Phy ID
-		Name(PHMD, "sgmii")   // PHY mode
-		Name(MAC0, Buffer() { 0x00, 0x11, 0x3a, 0x8a, 0x5a, 0x6c })	// MAC Address
+		OperationRegion(CLKQ, SystemMemory, 0x1f21c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 4,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0xf, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "0",
+				"slave_name", "SGMII0",
+				"slave_info", "1 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "30",
+				"phy-mode", "sgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
 
-	Device(ET01) {
+	Device(\_SB.ET01) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET01")
 		Name(_UID, "ET01")
@@ -2516,21 +2003,34 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1f210030, 0x30, )
 			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8c }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8d }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x90 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xad }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb0 }
 		})
-		Name(CLNM, "eth01clk") // clock-names
-		Name(DVID, 0x01)      // Device ID
-		Name(SLNM, "SGMII1")
-		Name(SLIF, Buffer() { 0x01, 0x08, 0x08, 0x28, 0x08 })
-		Name(FMSZ, 0x233a)    // Frame-size
-		Name(PHID, 0x1e)      // Phy ID
-		Name(PHMD, "sgmii")   // PHY mode
-		Name(MAC0, Buffer() { 0x00, 0x11, 0x3a, 0x8a, 0x5a, 0x6d })	// MAC Address
+		OperationRegion(CLKQ, SystemMemory, 0x1f21c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 4,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0xf, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "1",
+				"slave_name", "SGMII1",
+				"slave_info", "1 8 8 40 8",
+				"max-frame-size", "9018",
+				"phyid", "30",
+				"phy-mode", "sgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
 
-	Device(ET04) {
+	Device(\_SB.ET04) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET04")
 		Name(_UID, "ET04")
@@ -2542,22 +2042,35 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x1f610000, 0x30, )
 			Memory32Fixed(ReadWrite, 0x1f610000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x1f610000, 0x10000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x50 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x51 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x52 }
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x70 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x71 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x72 }
 		})
-		Name(CLNM, "xge0clk") // clock-names
-		Name(DVID, 0x04)      // Device ID
-		Name(SLNM, "SXGMII0")
-		Name(SLIF, Buffer() { 0x00, 0x00, 0x08, 0x20, 0x08 })
-		Name(FMSZ, 0x233a)    // Frame-size
-		Name(PHID, 0x01)      // Phy ID
-		Name(PHMD, "xgmii")   // PHY mode
-		Name(MAC0, Buffer() { 0x00, 0x11, 0x3a, 0x8a, 0x5a, 0x74})	// MAC Address
+		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "4",
+				"slave_name", "SXGMII0",
+				"slave_info", "0 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "1",
+				"phy-mode", "xgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
 
-	Device(ET05) {
+	Device(\_SB.ET05) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET05")
 		Name(_UID, "ET05")
@@ -2569,19 +2082,379 @@ DefinitionBlock("apm88xxxx_dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x1f620000, 0x30, )
 			Memory32Fixed(ReadWrite, 0x1f620000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x1f620000, 0x10000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x53 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x54 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x55 }
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x73 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x74 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x75 }
 		})
-		Name(CLNM, "xge0clk") // clock-names
-		Name(SLNM, "SXGMII1")
-		Name(SLIF, Buffer() { 0x00, 0x00, 0x08, 0x20, 0x08 })
-		Name(FMSZ, 0x233a)    // Frame-size
-		Name(PHID, 0x01)      // Phy ID
-		Name(PHMD, "xgmii")   // PHY mode
-		Name(DVID, 0x05)      // Device ID
-		Name(MAC0, Buffer() { 0x00, 0x11, 0x3a, 0x8a, 0x5a, 0x75})	// MAC Address
+		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "5",
+				"slave_name", "SXGMII1",
+				"slave_info", "0 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "1",
+				"phy-mode", "xgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
+///////////////////////////////////////////////////////////////////////////////
+//PCIe0
+	Device(\_SB.PCI0) {
+            //
+            // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+            // Section 6.1.5
+            //
+
+            Name(_HID,"PNP0A08")
+
+            //
+            // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+            // root complex for use with pre-PCIe operating systems.
+            // Section 6.1.2
+            //
+
+            Name(_CID,"PNP0A03")
+
+            //
+            // Declare the segment number of this root complex. Most systems only
+            // have one segment, which is numbered 0.
+            // Section 6.5.6
+            //
+
+            Name(_SEG, 0)
+
+            //
+            // Declare the base bus number, which is the bus number of the root
+            // bus in this root complex. This is usually 0, but need not be.
+            // For root complexes supporting multiple root busses, this should
+            // be the lowest numbered root bus.
+            // Section 6.5.5
+            //
+
+            Name(_BBN, 0)
+
+            //
+            // The _UID value provides a way of uniquely identifying a device
+            // in the case where more than one instance of a specific device
+            // is implemented with the same _HID/_CID. For systems with a
+            // single root complex, this is usually just 0. For systems with
+            // multiple root complexes, this should be different for each
+            // root complex.
+            // Section 6.1.12
+            //
+
+            Name(_UID, "PCI0")
+			Name(_STR, Unicode("PCIe 0 Device"))
+
+            //
+            // Declare the PCI Routing Table.
+            // This defines SPI mappings of the four line-based interrupts
+            // associated with the root complex and hierarchy below it.
+            // Section 6.2.12
+            //
+
+            Name(_PRT, Package() {
+
+                //
+                // Routing for device 0, all functions.
+                // Note: ARM doesn't support LNK nodes, so the third param
+                // is 0 and the fourth param is the SPI number of the interrupt
+                // line. In this example, the A/B/C/D interrupts are wired to
+                // SPI lines 100/101/102/103 respectively.
+                //
+
+                Package() {0x0000FFFF, 0, 0, 226},
+                Package() {0x0000FFFF, 1, 0, 227},
+                Package() {0x0000FFFF, 2, 0, 228},
+                Package() {0x0000FFFF, 3, 0, 229},
+            })
+
+            //
+            // Declare the resources assigned to this root complex.
+            // Section 6.2.2
+            //
+
+            Method (_CRS, 0, Serialized) {
+
+                //
+                // Declare a ResourceTemplate buffer to return the resource
+                // requirements from _CRS.
+                // Section 19.5.109
+                //
+
+                Name (RBUF, ResourceTemplate () {
+
+                    //
+                    // Declare the range of bus numbers assigned to this root
+                    // complex. In this example, the minimum bus number will be
+                    // 0, the maximum bus number will be 0xFF, supporting
+                    // 256 busses total.
+                    // Section 19.5.141
+                    //
+
+                    WordBusNumber (
+                        ResourceProducer,
+                        MinFixed,   // IsMinFixed
+                        MaxFixed,   // IsMaxFixed
+                        PosDecode,  // Decode
+                        0,          // AddressGranularity
+                        0,          // AddressMinimum - Minimum Bus Number
+                        255,        // AddressMaximum - Maximum Bus Number
+                        0,          // AddressTranslation - Set to 0
+                        256)        // RangeLength - Number of Busses
+
+                    //
+                    // Declare the memory range to be used for BAR memory
+                    // windows. This declares a 4GB region starting at
+                    // 0x4000000000.
+                    // Section 19.5.80
+                    //
+			QWordMemory(
+				ResourceConsumer,
+				PosDecode,
+				MinFixed,
+				MaxFixed,
+				Cacheable,
+				ReadWrite,
+				0x0000000000000000,
+				0x0000000000000000,
+				0x0000000000FFFFFF,
+				0x000000E000000000,
+				0x0000000001000000
+				)
+			QWordMemory(
+				ResourceConsumer,
+				PosDecode,
+				MinFixed,
+				MaxFixed,
+				Cacheable,
+				ReadWrite,
+				0x0000000000000000,
+				0x000000e100000000,
+				0x000000e13FFFFFFF,
+				0x0000000000000000,
+				0x0000000040000000
+				)
+                })
+
+                Return (RBUF)
+            }
+
+            //
+            // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+            //
+            // Argments:
+            //   Arg0  A Buffer containing a UUID
+            //   Arg1  An Integer containing a Revision ID of the buffer format
+            //   Arg2  An Integer containing a count of entries in Arg3
+            //   Arg3  A Buffer containing a list of DWORD capabilities
+            // Return Value:
+            //   A Buffer containing a list of capabilities
+            // See the APCI spec, Section 6.2.10,
+            // and the PCI FW spec, Section 4.5.
+            //
+            // The following is an example, and may need modification for
+            // specific implementations.
+            //
+
+            Name(SUPP,0) // PCI _OSC Support Field value
+            Name(CTRL,0) // PCI _OSC Control Field value
+            Method(_OSC, 4) {
+
+                //
+                // Look for the PCI Host Bridge Interface UUID.
+                // Section 6.2.10.3
+                //
+
+                //
+                // Create DWord-adressable fields from the Capabilities Buffer
+                // Create CDW1 outside the test as it's used in the else clause.
+                //
+
+                CreateDWordField(Arg3,0,CDW1)
+                If(LEqual(Arg0,ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+                    CreateDWordField(Arg3,4,CDW2)
+                    CreateDWordField(Arg3,8,CDW3)
+
+                    //
+                    // Save Capabilities DWord 2 & 3
+                    //
+
+                    Store(CDW2,SUPP)
+                    Store(CDW3,CTRL)
+
+                    //
+                    // Only allow native hot plug control if OS supports:
+                    //  ASPM
+                    //  Clock PM
+                    //  MSI/MSI-X
+                    //
+
+					// Storm, no hotplug, but still return bit 0 set
+					// because win won't be happy.
+					And(CTRL,0x1D,CTRL)
+
+                    //If(LNotEqual(And(SUPP, 0x16), 0x16)) {
+
+                        //
+                        // Mask bit 0 (and undefined bits)
+                        //
+
+                      //  And(CTRL,0x1E,CTRL)
+                    //}
+
+                    //
+                    // Always allow native PME, AER (no dependencies).
+                    // Never allow SHPC (no SHPC controller in this system).
+                    //
+
+                    And(CTRL,0x1D,CTRL)
+
+                    //
+                    // Check for unknown revision.
+                    //
+
+                    If(LNotEqual(Arg1,One)) {
+                        Or(CDW1,0x08,CDW1)
+                    }
+
+                    //
+                    // Check if capabilities bits were masked.
+                    //
+
+                    If(LNotEqual(CDW3,CTRL)) {
+                        Or(CDW1,0x10,CDW1)
+                    }
+
+                    //
+                    // Update DWORD3 in the buffer.
+                    //
+
+                    Store(CTRL,CDW3)
+                    Return(Arg3)
+
+                } Else {
+
+                    //
+                    // Unrecognized UUID
+                    //
+
+                    Or(CDW1,4,CDW1)
+                    Return(Arg3)
+                }
+            } // End _OSC
+
+            //
+            // Declare a _DSM method for various functions called by the OS.
+            // See the APCI spec, Section 9.14.1,
+            // and the PCI FW spec, Section 4.6.
+            // See also:
+            // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+            //
+
+            Method(_DSM, 0x4, Serialized) {
+
+                //
+                // Match against the _DSM PCI GUID.
+                //
+
+                If(LEqual(Arg0,ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+                    switch(ToInteger(Arg2))
+                    {
+                        //
+                        // Function 0: Return supported functions as a bitfield
+                        // with one bit for each supported function.
+                        // Bit 0 must always be set, as that represents
+                        // function 0 (which is what is being called here).
+                        // Support for different functions may depend on
+                        // the revision ID of the interface, passed as Arg1.
+                        //
+
+                        case(0) {
+
+                            //
+                            // Functions 0-7 are supported.
+                            //
+
+                            return (Buffer() {0x01})
+                        }
+
+
+                    }
+                }
+
+                //
+                // If not one of the function identifiers we recognize, then return a buffer
+                // with bit 0 set to 0 indicating no functions supported.
+                //
+
+                return(Buffer(){0})
+            }
+
+             //
+            // Root Port 0 Device within the Root Complex.
+            //
+
+            Device(RP0) {
+
+                //
+                // Device 0, Function 0.
+                //
+
+                Name(_ADR, 0x00000000)
+
+                //
+                // Power resources required for D0.
+                //
+
+                Name(_PR0, Package() {SCVR})
+
+                //
+                // Power resources required for D3Hot.
+                //
+
+                Name(_PR3, Package(){SCVR})
+            }
+	} // PCI0
+///////////////////////////////////////////////////////////////////////////////
+// SDIO0
+	Device(\_SB.SDM0) {
+		Name(_HID, "APMC0D0C") // Device Identification Objects
+		Name(_CID,"PNP0D40")
+		Method(_STA) {
+			Return (One)
+		}
+		Device(STOR) {
+			Name(_ADR, 0x00000008)
+			Method(_STA) {
+                		Return (Zero)
+			}
+		}
+
+		Device(EMMC) {
+			Name(_ADR, 0x00000008)
+		}
+
+		Name(_CRS, ResourceTemplate () {
+			Memory32Fixed (ReadWrite, 0x1C000000, 0x1000)
+			Interrupt (ResourceConsumer, Level, ActiveHigh, ExclusiveAndWake) {0x69}
+		})
+	}
+
+///////////////////////////////////////////////////////////////////////////////
 
 }//DSDT

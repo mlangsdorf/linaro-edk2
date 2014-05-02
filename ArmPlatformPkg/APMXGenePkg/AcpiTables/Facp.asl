@@ -26,10 +26,10 @@
 [0004]              Asl Compiler Revision : 20111123
 
 [0004]                       FACS Address : 00000000 
-[0004]                       DSDT Address : 00000001
+[0004]                       DSDT Address : FFFFFFFF 
 [0001]                              Model : 00
 [0001]                         PM Profile : 00 [Unspecified]
-[0002]                      SCI Interrupt : 0000		[ TODO ]
+[0002]                      SCI Interrupt : 0000
 [0004]                   SMI Command Port : 00000000
 [0001]                  ACPI Enable Value : 00
 [0001]                 ACPI Disable Value : 00
@@ -37,16 +37,16 @@
 [0001]                    P-State Control : 00
 [0004]           PM1A Event Block Address : 00000000
 [0004]           PM1B Event Block Address : 00000000
-[0004]         PM1A Control Block Address : 00000000 
+[0004]         PM1A Control Block Address : 10558008 
 [0004]         PM1B Control Block Address : 00000000
 [0004]          PM2 Control Block Address : 00000000
-[0004]             PM Timer Block Address : 00000000 
+[0004]             PM Timer Block Address : 10559000 
 [0004]                 GPE0 Block Address : 00000000
 [0004]                 GPE1 Block Address : 00000000
-[0001]             PM1 Event Block Length : 00
-[0001]           PM1 Control Block Length : 00
+[0001]             PM1 Event Block Length : 08
+[0001]           PM1 Control Block Length : 04
 [0001]           PM2 Control Block Length : 00
-[0001]              PM Timer Block Length : 00
+[0001]              PM Timer Block Length : 04
 [0001]                  GPE0 Block Length : 00
 [0001]                  GPE1 Block Length : 00
 [0001]                   GPE1 Base Offset : 00
@@ -100,15 +100,14 @@
 [0008]                            Address : 0000000000000000
 [0001]               Value to cause reset : 00
 [0003]                           Reserved : 000000
-[0008]                       FACS Address : 0000000085001EC0
-[0008]                       DSDT Address : 0000000085000340
-
+[0008]                       FACS Address : 0000004005001EC0
+[0008]                       DSDT Address : 0000004003800340
 [0012]                   PM1A Event Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 00
+[0001]                          Bit Width : 40
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 00 [Word Access:16]
-[0008]                            Address : 0000000000000000
+[0001]               Encoded Access Width : 04 [Word Access:16]
+[0008]                            Address : 0000000010558000
 
 [0012]                   PM1B Event Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
@@ -119,10 +118,10 @@
 
 [0012]                 PM1A Control Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 00
+[0001]                          Bit Width : 40
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 00 [Word Access:16]
-[0008]                            Address : 0000000000000008
+[0001]               Encoded Access Width : 04 [Word Access:16]
+[0008]                            Address : 0000000010558008
 
 [0012]                 PM1B Control Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
@@ -140,16 +139,16 @@
 
 [0012]                     PM Timer Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 00
+[0001]                          Bit Width : 20
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 00 [DWord Access:32]
-[0008]                            Address : 0000000000000000
+[0001]               Encoded Access Width : 03 [DWord Access:32]
+[0008]                            Address : 0000000010559000
 
 [0012]                         GPE0 Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
 [0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 00 [Byte Access:8]
+[0001]               Encoded Access Width : 01 [Byte Access:8]
 [0008]                            Address : 0000000000000000
 
 [0012]                         GPE1 Block : [Generic Address Structure]

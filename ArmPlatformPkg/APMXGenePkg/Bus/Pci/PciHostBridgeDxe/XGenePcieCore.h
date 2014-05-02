@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
+
 #if !defined(__XGENEPCIECORE_H__)
 #define __XGENEPCIECORE_H__
 
@@ -11,7 +24,7 @@
 #include <Library/ArmLib.h>
 
 #include <APMXGeneSocCsr.h>
-
+#include <Library/XGenePHY.h>
 #include "PciHostBridge.h"
 
 /*FIXME: These typedef just for don't want to modify Serdes code for now */
@@ -38,6 +51,8 @@ typedef EFI_PHYSICAL_ADDRESS phys_addr_t;
 #define ERRORINTERRUPTSTATUSMASK  0x64
 #define INTXSTATUSMASK      0x6c
 #define PCIECORE_CTLANDSTATUS   0x50
+#define IBAR2         0x98
+#define IBAR3L        0xb4
 #define PIM1_1L       0x80
 #define PIM2_1L       0xa0
 #define PIM3_1L       0xc4
@@ -247,11 +262,11 @@ enum {
 /* PCIE0 - Outbound Memory 1 Base Address */
 #define PCIE0_OB_MEMBASE0_HI	CONFIG_SYS_PCIE0_PHYMEMBASE_HI
 #define PCIE0_OB_MEMBASE0_LO	CONFIG_SYS_PCIE0_PHYMEMBASE_LO
-#define PCIE0_OB_MEMSIZE0	CONFIG_SYS_PCIE_MEMSIZE
+#define PCIE0_OB_MEMSIZE0	0x1000000
 /* PCIE0 - Outbound Memory 2 Base Address */
-#define PCIE0_OB_MEMBASE1_HI	CONFIG_SYS_PCIE0_PHYMEMBASE_HI
-#define PCIE0_OB_MEMBASE1_LO	(CONFIG_SYS_PCIE0_PHYMEMBASE_LO + 0x80000000)
-#define PCIE0_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE
+#define PCIE0_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE0_PHYMEMBASE_HI + 1)
+#define PCIE0_OB_MEMBASE1_LO	CONFIG_SYS_PCIE0_PHYMEMBASE_LO
+#define PCIE0_OB_MEMSIZE1	0x40000000
 /* * PCIE0 - Inbound Memory 1 Base Address */
 #define PCIE0_IB_MEMBASE0_PCIE_HI	((UINT32)((UINT64)	\
 					CONFIG_SYS_PCIE_INBOUND_BASE >> 32))
@@ -263,11 +278,19 @@ enum {
 #define PCIE0_IB_MEMBASE0_PIM_2_LO	0
 #define PCIE0_IB_MEMBASE0_PIM_SIZE	PIM_SIZE
 
-/* PCIE0 - Inbound Memory 1 Base Address */
-#define PCIE0_IB_MEMBASE1_PCIE_HI	0x00000000
-#define PCIE0_IB_MEMBASE1_PCIE_LO	0x00000000
+/* PCIE0 - Inbound Memory 2 Base Address */
+#define PCIE0_IB_MEMBASE1_PCIE_HI	0
+#define PCIE0_IB_MEMBASE1_PCIE_LO	0
 #define PCIE0_IB_MEMSIZE1		0
-#define PCIE0_IB_MEMBASE1_PIM_SIZE	0
+#define PCIE0_IB_MEMBASE1_PIM_SIZE 0x0
+
+#define PCIE0_IB_MEMBASE3_PCIE_HI 0x0
+#define PCIE0_IB_MEMBASE3_PCIE_LO 0x80000000
+#define PCIE0_IB_MEMSIZE3   0x80000000
+#define PCIE0_IB_MEMBASE3_PIM_1_HI  ((UINT32)((UINT64) FixedPcdGet64(PcdSystemMemoryBase) >> 32))
+#define PCIE0_IB_MEMBASE3_PIM_1_LO  ((UINT32) FixedPcdGet64(PcdSystemMemoryBase))
+#define PCIE0_IB_MEMBASE3_PIM_SIZE  0xFFFFFFFF80000000ULL
+
 #define PCIE0_IB_ROMBASE_HI		0
 #define PCIE0_IB_ROMBASE_LO		0
 #define PCIE0_IB_ROMSIZE		0
@@ -468,7 +491,90 @@ enum {
 #define APMXGeneRevA2 2
 #define APMXGeneRevA3 3
 
-int apm88xxx_chip_revision(void);
+/* clock */
+#define PCIE_SRST     0xc000
+#define PCIE_CLKEN      0xc008
+#define CORE_CLKEN_MASK     0x00000002
+#define CORE_RESET_MASK     0x00000002
+#define PCIE_RESET_ALL_MASK 0x1f
+
+#define CFG_8G_CONSTANTS_287_256  0x2120
+#define CFG_8G_CONSTANTS_319_288  0x2124
+#define CFG_8G_CONSTANTS_351_320  0x2128
+#define CFG_8G_CONSTANTS_383_352  0x212c
+#define CFG_8G_CONSTANTS_159_128  0x2110
+#define CFG_CONTROL_95_64     0x2208
+#define CFG_CONSTANTS_415_384   0x2030
+
+/* generated macros to access bitfields */
+#define PIPE_PHY_RATE_RD(src)     ((0xc000 & (u32)(src)) >> 0xe)
+#define MGMT_US_PORT_TX_PRESET_SET(dst, src)  (((dst) & ~0xf00)| \
+            (((u32)(src) << 0x8) & 0xf00))
+#define MGMT_DS_PORT_TX_PRESET_SET(dst, src)  (((dst) & ~0xf) | \
+            (((u32)(src)) & 0xf))
+
+#define ENABLE_L1S_POWER_MGMT_MASK    0x02000000
+#define ENABLE_L1S_POWER_MGMT_SHIFT_MASK    0x19
+#define ENABLE_L1S_POWER_MGMT_SET(dst, src) (((dst) & ~ENABLE_L1S_POWER_MGMT_MASK) | \
+            (((uint32_t)(src) << ENABLE_L1S_POWER_MGMT_SHIFT_MASK) & \
+            ENABLE_L1S_POWER_MGMT_MASK))
+
+#define EQ_UPDN_POST_STEP_MASK      0x00000030
+#define EQ_UPDN_POST_STEP_SHIFT_MASK    0x4
+#define EQ_UPDN_POST_STEP_SET(dst, src) (((dst) & ~EQ_UPDN_POST_STEP_MASK) | \
+            (((uint32_t)(src) << EQ_UPDN_POST_STEP_SHIFT_MASK) & \
+            EQ_UPDN_POST_STEP_MASK))
+
+#define EQ_PRE_CURSOR_LANE0_MASK    0x000000ff
+#define EQ_PRE_CURSOR_LANE0_SHIFT_MASK    0x0
+#define EQ_PRE_CURSOR_LANE0_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE0_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE0_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE0_MASK))
+
+#define EQ_PRE_CURSOR_LANE1_MASK    0x00ff0000
+#define EQ_PRE_CURSOR_LANE1_SHIFT_MASK    0x10
+#define EQ_PRE_CURSOR_LANE1_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE1_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE1_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE1_MASK))
+
+#define EQ_PRE_CURSOR_LANE2_MASK    0x000000ff
+#define EQ_PRE_CURSOR_LANE2_SHIFT_MASK    0x0
+#define EQ_PRE_CURSOR_LANE2_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE2_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE2_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE2_MASK))
+
+#define EQ_PRE_CURSOR_LANE3_MASK    0x00ff0000
+#define EQ_PRE_CURSOR_LANE3_SHIFT_MASK    0x10
+#define EQ_PRE_CURSOR_LANE3_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE3_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE3_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE3_MASK))
+
+#define EQ_PRE_CURSOR_LANE4_MASK    0x000000ff
+#define EQ_PRE_CURSOR_LANE4_SHIFT_MASK    0x0
+#define EQ_PRE_CURSOR_LANE4_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE4_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE4_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE4_MASK))
+
+#define EQ_PRE_CURSOR_LANE5_MASK    0x00ff0000
+#define EQ_PRE_CURSOR_LANE5_SHIFT_MASK    0x10
+#define EQ_PRE_CURSOR_LANE5_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE5_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE5_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE5_MASK))
+
+#define EQ_PRE_CURSOR_LANE6_MASK    0x000000ff
+#define EQ_PRE_CURSOR_LANE6_SHIFT_MASK    0x0
+#define EQ_PRE_CURSOR_LANE6_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE6_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE6_SHIFT_MASK) & \
+            EQ_PRE_CURSOR_LANE6_MASK))
+
+#define EQ_PRE_CURSOR_LANE7_MASK    0x00ff0000
+#define EQ_PRE_CURSOR_LANE7_SHIFT_MASK    0x10
+#define EQ_PRE_CURSOR_LANE7_SET(dst, src) (((dst) & ~EQ_PRE_CURSOR_LANE7_MASK) | \
+            (((uint32_t)(src) << EQ_PRE_CURSOR_LANE7_SHIFT_MASK) & \
+             EQ_PRE_CURSOR_LANE7_MASK))
+
+
+//int apm88xxx_chip_revision(void);
 
 int
 xgene_pcie_out32(void *addr, u32 val);
@@ -496,6 +602,9 @@ xgene_pcie_cfg_in8(void *addr, u8 *val);
 
 int
 xgene_pcie_setup_core(struct xgene_pcie_port *port);
+
+void
+xgene_pcie_reset_port(struct xgene_pcie_port *port);
 
 #endif /* __XGENEPCIECORE_H__ */
 

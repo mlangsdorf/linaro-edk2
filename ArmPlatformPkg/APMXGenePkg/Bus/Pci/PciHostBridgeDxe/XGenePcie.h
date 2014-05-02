@@ -1,9 +1,21 @@
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
+
 #ifndef _XGENEPCIE_H_
 #define _XGENEPCIE_H_
 
 #include "PciHostBridge.h"
 #include "XGenePcieCore.h"
-#include "XGenePcieSerdes.h"
 
 #define XGENE_PCIE_FIRST_BUS         0
 #define XGENE_PCIE_LAST_BUS          15
@@ -20,6 +32,10 @@ XGenePcieSetupPrimaryBus(UINT32, UINT32, UINT32);
 EFI_STATUS
 EFIAPI
 XGenePcieSetupHostPost(UINT32, PCI_HOST_BRIDGE_INSTANCE *);
+
+EFI_STATUS
+EFIAPI
+XGenePcieReset(PCI_HOST_BRIDGE_INSTANCE *);
 
 
 #define PCIE_OP_PROTO(rw,size,type,op,mask)                               \

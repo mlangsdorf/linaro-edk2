@@ -1,16 +1,15 @@
 ## @file
 #
-#    Component description file a sinngle segment PCI Host Bridge driver.
+#  Component description file PCI Host Bridge driver.
+#  Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
 #
-#  Copyright (c) 2008 - 2010, Intel Corporation. All rights reserved.<BR>
 #  This program and the accompanying materials
 #  are licensed and made available under the terms and conditions of the BSD License
 #  which accompanies this distribution.  The full text of the license may be found at
 #  http://opensource.org/licenses/bsd-license.php
-#  
+#
 #  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-#  
 ##
 
 [Defines]
@@ -41,6 +40,7 @@
   TimerLib
   ArmLib
   DevicePathLib
+  XGenePHYLib
 
 [Sources]
   PciHostBridge.c
@@ -50,8 +50,8 @@
   XGenePcie.h
   XGenePcieCore.c
   XGenePcieCore.h
-  XGenePcieSerdes.c
-  XGenePcieSerdes.h
+  #XGenePcieSerdes.c
+  #XGenePcieSerdes.h
   
 
 [Protocols]

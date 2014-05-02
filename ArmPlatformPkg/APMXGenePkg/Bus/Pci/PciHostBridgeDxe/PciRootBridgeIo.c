@@ -1,16 +1,15 @@
-/** @file
-  PCI Root Bridge Io Protocol implementation
-
-Copyright (c) 2008 - 2012, Intel Corporation. All rights reserved.<BR>
-This program and the accompanying materials are
-licensed and made available under the terms and conditions of the BSD License
-which accompanies this distribution.  The full text of the license may be found at
-http://opensource.org/licenses/bsd-license.php
-
-THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
-WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-
-**/ 
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
 
 #include "PciHostBridge.h"
 #include "XGenePcie.h"
@@ -905,12 +904,13 @@ RootBridgeIoMemRW (
   PCI_ROOT_BRIDGE_INSTANCE              *PrivateData;
 
   PrivateData = DRIVER_INSTANCE_FROM_PCI_ROOT_BRIDGE_IO_THIS (This);
-  /* Fixme: Caller maybe pass Address as physical mapped address not offset */
+  /* Address is bus resource */
   Address |= PrivateData->MemBase;
-//  PCIE_DEBUG("RootBridgeIoMemRW Address:0x%llx\n", Address);
-//  PCIE_DEBUG("RootBridgeIoMemRW Count:0x%llx\n", Count);
-//  PCIE_DEBUG("RootBridgeIoMemRW Write:0x%llx\n", Write);
-//  PCIE_DEBUG("RootBridgeIoMemRW Width:0x%llx\n", Width);
+  //Address |= 0xE000000000ULL;
+  //PCIE_DEBUG("RootBridgeIoMemRW Address:0x%llx\n", Address);
+  //PCIE_DEBUG("RootBridgeIoMemRW Count:0x%llx\n", Count);
+  //PCIE_DEBUG("RootBridgeIoMemRW Write:0x%llx\n", Write);
+  //PCIE_DEBUG("RootBridgeIoMemRW Width:0x%llx\n", Width);
 
 
   Status = RootBridgeIoCheckParameter (This, MemOperation, Width, Address, Count, Buffer);
@@ -1006,6 +1006,11 @@ RootBridgeIoIoRW (
   UINT8                                  OutStride;
   EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH  OperationWidth;
   UINT8                                  *Uint8Buffer;
+  PCI_ROOT_BRIDGE_INSTANCE              *PrivateData;
+
+  PrivateData = DRIVER_INSTANCE_FROM_PCI_ROOT_BRIDGE_IO_THIS (This);
+  /* Address is bus resource */
+  Address |= PrivateData->IoBase;
 
   Status = RootBridgeIoCheckParameter (This, IoOperation, Width, Address, Count, Buffer);
   if (EFI_ERROR (Status)) {

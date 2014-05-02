@@ -1,29 +1,41 @@
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
+
 #include "PciHostBridge.h"
 #include "XGenePcieCore.h"
-#include "XGenePcieSerdes.h"
 
-int apm88xxx_chip_revision(void)
-{
-#define EFUSE0_SHADOW_VERSION_SHIFT     28
-#define EFUSE0_SHADOW_VERSION_MASK      0xF
-#define SCU_JTAG0                       0x17000004
-#define EFUSE0_SHADOW_ADDR_ABS          0x1054a000
-  volatile u32 *addr;
-  addr = (u32 *)EFUSE0_SHADOW_ADDR_ABS;
-
-  u32 val = (*(addr) >> EFUSE0_SHADOW_VERSION_SHIFT)
-              & EFUSE0_SHADOW_VERSION_MASK;
-  switch (val){
-  case 0x00:
-    addr = (u32 *)SCU_JTAG0;
-    return (*addr & 0x10000000)? APMXGeneRevA2: APMXGeneRevA1;
-  case 0x01:
-    return APMXGeneRevA2;
-  case 0x02:
-    return APMXGeneRevA3;
-  }
-  return 0;
-}
+//int apm88xxx_chip_revision(void)
+//{
+//#define EFUSE0_SHADOW_VERSION_SHIFT     28
+//#define EFUSE0_SHADOW_VERSION_MASK      0xF
+//#define SCU_JTAG0                       0x17000004
+//#define EFUSE0_SHADOW_ADDR_ABS          0x1054a000
+//  volatile u32 *addr;
+//  addr = (u32 *)EFUSE0_SHADOW_ADDR_ABS;
+//
+//  u32 val = (*(addr) >> EFUSE0_SHADOW_VERSION_SHIFT)
+//              & EFUSE0_SHADOW_VERSION_MASK;
+//  switch (val){
+//  case 0x00:
+//    addr = (u32 *)SCU_JTAG0;
+//    return (*addr & 0x10000000)? APMXGeneRevA2: APMXGeneRevA1;
+//  case 0x01:
+//    return APMXGeneRevA2;
+//  case 0x02:
+//    return APMXGeneRevA3;
+//  }
+//  return 0;
+//}
 
 /* PCIE Out/In to CSR */
 int xgene_pcie_out32(void *addr, u32 val)
@@ -162,13 +174,13 @@ static void xgene_pcie_setup_link(struct xgene_pcie_port *port)
 {
   void *csr_base = port->csr_base;
   u32 val;
-  if (apm88xxx_chip_revision() == APMXGeneRevA1) {
-    if (port->link_width == LNKW_X8) {
-      xgene_pcie_in32(csr_base + CFG_CONSTANTS_607_576, &val);
-      val = (val & ~MAX_LNK_WDT_OVRRD_MASK) | 0x4;
-      xgene_pcie_out32(csr_base + CFG_CONSTANTS_607_576, val);
-    }
-  }
+//  if (apm88xxx_chip_revision() == APMXGeneRevA1) {
+//    if (port->link_width == LNKW_X8) {
+//      xgene_pcie_in32(csr_base + CFG_CONSTANTS_607_576, &val);
+//      val = (val & ~MAX_LNK_WDT_OVRRD_MASK) | 0x4;
+//      xgene_pcie_out32(csr_base + CFG_CONSTANTS_607_576, val);
+//    }
+//  }
   xgene_pcie_in32(csr_base + CFG_CONSTANTS_479_448, &val);
   switch (port->link_speed) {
   case PCIE_GEN1:
@@ -190,11 +202,11 @@ static void xgene_pcie_setup_link(struct xgene_pcie_port *port)
   }
   xgene_pcie_out32(csr_base + CFG_CONSTANTS_479_448, val);
 
-  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
+//  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
     xgene_pcie_in32(csr_base + CFG_CONSTANTS_479_448, &val);
     val &= ~ADVT_INFINITE_CREDITS;
     xgene_pcie_out32(csr_base + CFG_CONSTANTS_479_448, val);
-  }
+//  }
   xgene_pcie_in32(csr_base + CFG_8G_CONSTANTS_31_0, &val);
   val |= MGMT_DS_PORT_TX_PRESET_SET(val, 0x7);
   val |= MGMT_US_PORT_TX_PRESET_SET(val, 0x7);
@@ -304,6 +316,7 @@ static void xgene_pcie_configure_pim_settings(struct xgene_pcie_port *port,
   xgene_pcie_out32(csr_base + addr + 0x14, val);
 }
 
+/*
 static void xgene_pcie_setup_ep_inbound_regions(struct xgene_pcie_port *port)
 {
   struct xgene_pcie_map_tbl *hb = port->map_tbl;
@@ -324,19 +337,19 @@ static void xgene_pcie_setup_ep_inbound_regions(struct xgene_pcie_port *port)
     xgene_pcie_set_ib_mask(port, mask_addr, flags);
     xgene_pcie_configure_pim_settings(port, addr, i);
   }
-}
+}*/
 
 static void xgene_pcie_setup_rc_inbound_regions(struct xgene_pcie_port *port)
 {
   struct xgene_pcie_map_tbl *hb = port->map_tbl;
   void *csr_base = port->csr_base;
   void *cfg_addr = port->cfg_base;
-  u32 i, addr, val64;
+  u32 i, addr;
+  u64 val64;
   u32 flags = PCI_BASE_ADDRESS_MEM_PREFETCH |
         PCI_BASE_ADDRESS_MEM_TYPE_64;
 
   for (i = 0; i < XGENE_PCIE_MAX_REGIONS; i++) {
-    addr = PIM1_1L + (i * 0x18);
     if (hb->ib_mem_addr[i].pcie_size == 0)
       continue;
     if (i == 0) {
@@ -349,13 +362,34 @@ static void xgene_pcie_setup_rc_inbound_regions(struct xgene_pcie_port *port)
       xgene_pcie_out32(cfg_addr + PCI_BASE_ADDRESS_0, val);
       val = hb->ib_mem_addr[i].pcie_hi;
       xgene_pcie_out32(cfg_addr + PCI_BASE_ADDRESS_1, val);
+      addr = PIM1_1L;
     } else {
-      xgene_pcie_out32(csr_base + addr,
-            hb->ib_mem_addr[i].pcie_lo);
-      val64 = ~(hb->ib_mem_addr[i].pcie_size - 1) | EN_REG;
-      xgene_pcie_out32(csr_base + addr + 0x04,
-            lower_32_bits(val64));
-      addr += 0x08;
+      switch (i) {
+      case 1:
+        addr = IBAR2;
+        xgene_pcie_out32(csr_base + addr,
+              hb->ib_mem_addr[i].pcie_lo);
+        val64 = ~(hb->ib_mem_addr[i].pcie_size - 1) | EN_REG;
+        xgene_pcie_out32(csr_base + addr + 0x04,
+              lower_32_bits(val64));
+        addr = PIM2_1L;
+        break;
+      case 2:
+        addr = IBAR3L;
+        xgene_pcie_out32(csr_base + addr,
+              hb->ib_mem_addr[i].pcie_lo);
+        xgene_pcie_out32(csr_base + addr + 0x04,
+              hb->ib_mem_addr[i].pcie_hi);
+        val64 = ~(hb->ib_mem_addr[i].pcie_size - 1) | EN_REG;
+        xgene_pcie_out32(csr_base + addr + 0x08,
+              lower_32_bits(val64));
+        xgene_pcie_out32(csr_base + addr + 0x0c,
+              upper_32_bits(val64));
+        addr = PIM3_1L;
+        break;
+      default:
+        continue;
+      }
     }
     xgene_pcie_configure_pim_settings(port, addr, i);
   }
@@ -405,13 +439,13 @@ static void xgene_pcie_setup_root_complex(struct xgene_pcie_port *port)
   xgene_pcie_in32(csr_base + CFG_CONSTANTS_479_448, &val);
   val |= SWITCH_PORT_MODE_MASK;
   val &= ~PM_FORCE_RP_MODE_MASK;
-  if (apm88xxx_chip_revision() == APMXGeneRevA1) {
-    val &= ~ADVT_INFINITE_CREDITS;
-  }
+//  if (apm88xxx_chip_revision() == APMXGeneRevA1) {
+//    val &= ~ADVT_INFINITE_CREDITS;
+//  }
   xgene_pcie_out32(csr_base + CFG_CONSTANTS_479_448, val);
 
   xgene_pcie_setup_link(port);
-  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
+//  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
     xgene_pcie_in32(csr_base + CFG_8G_CONSTANTS_287_256, &val);
     val = EQ_PRE_CURSOR_LANE0_SET(val, 0x7);
     val = EQ_PRE_CURSOR_LANE1_SET(val, 0x7);
@@ -437,13 +471,13 @@ static void xgene_pcie_setup_root_complex(struct xgene_pcie_port *port)
     val = EQ_UPDN_POST_STEP_SET(val, 0x1);
     val = EQ_UPDN_POST_STEP_SET(val, 0x1);
     xgene_pcie_out32(csr_base + CFG_8G_CONSTANTS_159_128, val);
-  }
+//  }
 
   xgene_pcie_in32(csr_base + CFG_CONTROL_191_160, &val);
   val &= ~DEVICE_PORT_TYPE_MASK;
   val |= XGENE_PORT_TYPE_RC;
   xgene_pcie_out32(csr_base + CFG_CONTROL_191_160, val);
-  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
+//  if (apm88xxx_chip_revision() > APMXGeneRevA1) {
     xgene_pcie_in32(csr_base + CFG_CONTROL_95_64, &val);
     val |= 2 << 26;
     xgene_pcie_out32(csr_base + CFG_CONTROL_95_64, val);
@@ -451,9 +485,10 @@ static void xgene_pcie_setup_root_complex(struct xgene_pcie_port *port)
     xgene_pcie_in32(csr_base + CFG_CONSTANTS_415_384, &val);
     val = ENABLE_L1S_POWER_MGMT_SET(val, 1);
     xgene_pcie_out32(csr_base + CFG_CONSTANTS_415_384, val);
-  }
+//  }
 }
 
+/*
 static void xgene_pcie_setup_endpoint(struct xgene_pcie_port *port)
 {
   void *csr_base = port->csr_base;
@@ -482,6 +517,38 @@ static void xgene_pcie_setup_endpoint(struct xgene_pcie_port *port)
   xgene_pcie_out32(csr_base + CFG_CONSTANTS_63_32, val);
 
   xgene_pcie_setup_link(port);
+}*/
+
+void xgene_pcie_reset_pcie_core_clk(struct xgene_pcie_port *port)
+{
+  void *csr_base = port->csr_base;
+  u32 val;
+
+  xgene_pcie_in32(csr_base + PCIE_CLKEN, &val);
+  if (!(val & CORE_CLKEN_MASK)) {
+    val |= CORE_CLKEN_MASK;
+    xgene_pcie_out32(csr_base + PCIE_CLKEN, val);
+  }
+
+  xgene_pcie_in32(csr_base + PCIE_SRST, &val);
+  if (val & CORE_RESET_MASK) {
+    val &= ~CORE_RESET_MASK;
+    xgene_pcie_out32(csr_base + PCIE_SRST, val);
+  }
+}
+
+void xgene_pcie_reset_port(struct xgene_pcie_port *port)
+{
+  void *csr_base = port->csr_base;
+  u32 val;
+  xgene_pcie_in32(csr_base + PCIE_SRST, &val);
+  if (!(val & CORE_RESET_MASK)) {
+    val |= PCIE_RESET_ALL_MASK;
+    xgene_pcie_out32(csr_base + PCIE_SRST, val);
+    xgene_pcie_in32(csr_base + PCIE_SRST, &val); /* force barrier */
+  }
+  mdelay(1000);
+  xgene_pcie_init((UINT64)port->csr_base, port->link_width, port->index);
 }
 
 static int xgene_pcie_setup_port(struct xgene_pcie_port *port)
@@ -491,15 +558,21 @@ static int xgene_pcie_setup_port(struct xgene_pcie_port *port)
   xgene_pcie_program_core(port->csr_base);
   if (type == PTYPE_ROOT_PORT)
     xgene_pcie_setup_root_complex(port);
-  else
+  else {
+    /* not support en for now
     xgene_pcie_setup_endpoint(port);
+    */
+  }
 
   xgene_pcie_reset_pcie_core_clk(port);
   xgene_pcie_setup_outbound_regions(port);
   if (type == PTYPE_ROOT_PORT)
     xgene_pcie_setup_rc_inbound_regions(port);
-  else
+  else {
+    /* not support ep for now
     xgene_pcie_setup_ep_inbound_regions(port);
+    */
+  }
   /*
    * A component must enter the LTSSM Detect state within 20 ms of the end of
    * Fundamental Reset.
@@ -523,15 +596,16 @@ int xgene_pcie_setup_core(struct xgene_pcie_port *port)
 {
   int ret = 0;
 
+  ret = xgene_pcie_init((UINT64)port->csr_base, port->link_width, port->index);
+  if (ret)
+    return ret;
+
   /* X-Gene RC always starts at GEN-3. However few low gen PCIe cards
    * don't get link up. So when X-Gene PCIe port is RC and there is no
    * link up, then reduce the GEN speed on X-Gene side and retry for
    * link up.
    */
   while (1) {
-    ret = xgene_pcie_serdes_init(port);
-    if (ret)
-      break;
     ret = xgene_pcie_setup_port(port);
     if (port->type == PTYPE_ROOT_PORT) {
       if (port->link_up || (port->link_speed == PCIE_GEN1))

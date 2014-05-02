@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
+
 #include "XGenePcie.h"
 
 enum {
@@ -28,8 +41,8 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         PCIE0_OB_MEMBASE1_HI,
         PCIE0_OB_MEMBASE1_LO,
         PCIE0_OB_MEMSIZE1,
-        0,
-        0x80000000
+        PCIE0_OB_MEMBASE1_HI, /* 1:1 mapping */
+        PCIE0_OB_MEMBASE1_LO
      },
      {
         PCIE0_OB_IOBASE_HI,
@@ -60,7 +73,17 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         0,
         0,
         PCIE0_IB_MEMBASE1_PIM_SIZE
-    }
+    },
+    {
+        PCIE0_IB_MEMBASE3_PCIE_HI,
+        PCIE0_IB_MEMBASE3_PCIE_LO,
+        PCIE0_IB_MEMSIZE3,
+        PCIE0_IB_MEMBASE3_PIM_1_HI,
+        PCIE0_IB_MEMBASE3_PIM_1_LO,
+        0,
+        0,
+        PCIE0_IB_MEMBASE3_PIM_SIZE
+    },
    },
    PCIE0_IB_ROMBASE_HI,
    PCIE0_IB_ROMBASE_LO,
@@ -456,6 +479,23 @@ VOID XgenePcieAdjustRanges(struct xgene_pcie_port *port)
   hb->ob_mem_addr[0].pcie_hi = 0;
   hb->ob_mem_addr[0].pcie_lo = 0;
 
+}
+
+EFI_STATUS
+EFIAPI
+XGenePcieReset(PCI_HOST_BRIDGE_INSTANCE *HostInstance)
+{
+  struct xgene_pcie_port *Port = NULL;
+  INTN Count;
+
+  for (Count = 0; Count < XGENE_PCIE_MAX_PORTS; Count++) {
+	  if (Port->status != PORT_OK)
+		  continue;
+	  Port = &PortList[Count];
+	  xgene_pcie_reset_port(Port);
+	  PCIE_DEBUG("Resetted PCIe%d\n", Count);
+  }
+  return EFI_SUCCESS;
 }
 
 EFI_STATUS

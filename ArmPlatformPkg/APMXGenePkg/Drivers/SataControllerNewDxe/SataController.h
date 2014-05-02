@@ -35,9 +35,8 @@
 #include <IndustryStandard/Acpi.h>
 
 #include <Library/ArmLib.h>
-
+#include <Library/XGenePHY.h>
 #include <APMXGeneSocCsr.h>
-#include "XGeneSataPhy.h"
 
 #define NUM_SATA_CONTROLLER		3
 

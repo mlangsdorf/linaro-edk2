@@ -24,8 +24,6 @@
 [Sources.common]
   PciRootBridgeIo.c
   SataController.c
-  XGeneSataPhy.c
-  XGeneSataPhyInit.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -46,6 +44,7 @@
   DebugLib
   BaseMemoryLib
   MemoryAllocationLib
+  XGenePHYLib
   
 [Protocols]
   gEfiPciRootBridgeIoProtocolGuid

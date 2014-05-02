@@ -24,7 +24,6 @@
 
   ENTRY_POINT                    = BdsInitialize
 
-
 [Sources.common]
   Bds.c
   BdsHelper.c

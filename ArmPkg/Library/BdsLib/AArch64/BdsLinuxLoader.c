@@ -57,8 +57,8 @@ UINT32 be32toh(UINT32 val)
  * x0 is set to FDT base.
  * x1-x3 are reserved for future use and should be set to zero.
  */
-typedef VOID (*LINUX_KERNEL64)(UINT64 ParametersBase, UINT64 Reserved0,
-                               UINT64 Reserved1, UINT64 Reserved2);
+typedef VOID (*LINUX_KERNEL64)(UINTN ParametersBase, UINTN Reserved0,
+                               UINTN Reserved1, UINTN Reserved2);
 
 /* These externs are used to relocate some ASM code into Linux memory. */
 extern VOID  *SecondariesPenStart;
@@ -193,7 +193,7 @@ StartLinux (
         LinuxKernel, FdtBlobBase));
 
   // x1-x3 are reserved (set to zero) for future use.
-  LinuxKernel (FdtBlobBase, 0, 0, 0);
+  LinuxKernel ((UINTN)FdtBlobBase, 0, 0, 0);
 
   // Kernel should never exit
   // After Life services are not provided

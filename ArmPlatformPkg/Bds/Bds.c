@@ -338,7 +338,8 @@ DefineDefaultBootEntries (
         ASSERT_EFI_ERROR(Status);
         DevicePathTxt = DevicePathToTextProtocol->ConvertDevicePathToText (BootDevicePath, TRUE, TRUE);
 
-        ASSERT (StrCmp ((CHAR16*)PcdGetPtr(PcdDefaultBootDevicePath), DevicePathTxt) == 0);
+        ASSERT (StrCmp ((CHAR16*)PcdGetPtr(PcdDefaultBootDevicePath), DevicePathTxt) == 0);
+
 
         if (DevicePathTxt != NULL){
           FreePool (DevicePathTxt);
@@ -348,9 +349,15 @@ DefineDefaultBootEntries (
 
     // Create the entry is the Default values are correct
     if (BootDevicePath != NULL) {
+      CHAR16 BootDescription[128];
+
       BootType = (ARM_BDS_LOADER_TYPE)PcdGet32 (PcdDefaultBootType);
 
-      if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) || (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT)) {
+      /* Create an entry for Linux FDT/UEFI */
+      if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
+          (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
+          (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
+          (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
         CmdLineSize = AsciiStrSize ((CHAR8*)PcdGetPtr(PcdDefaultBootArgument));
         InitrdPath = EfiDevicePathFromTextProtocol->ConvertTextToDevicePath ((CHAR16*)PcdGetPtr(PcdDefaultBootInitrdPath));
         if (InitrdPath != NULL) {
@@ -385,9 +392,16 @@ DefineDefaultBootEntries (
       } else {
         BootArguments = NULL;
       }
+      if (BootType == BDS_LOADER_KERNEL_LINUX_UEFI) {
+        UnicodeSPrint(BootDescription, sizeof(BootDescription),
+                     L"UEFI %s", (CHAR16 *) PcdGetPtr(PcdDefaultBootDescription));
+      } else {
+        UnicodeSPrint(BootDescription, sizeof(BootDescription),
+                             L"%s", (CHAR16 *) PcdGetPtr(PcdDefaultBootDescription));
+      }
 
       BootOptionCreate (LOAD_OPTION_ACTIVE | LOAD_OPTION_CATEGORY_BOOT,
-        (CHAR16*)PcdGetPtr(PcdDefaultBootDescription),
+        BootDescription,
         BootDevicePath,
         BootType,
         BootArguments,
@@ -624,7 +638,7 @@ BdsEntry (
   ArmPlatformShowBoardBanner (Print);
 
   //
-  // Update the CRC32 in the EFI System Table header
+  // Fixup Table CRC after we updated Firmware Vendor
   //
   gST->Hdr.CRC32 = 0;
   Status = gBS->CalculateCrc32 ((VOID*)gST, gST->Hdr.HeaderSize, &gST->Hdr.CRC32);
@@ -676,6 +690,9 @@ BdsEntry (
 
   // Now we need to setup the EFI System Table with information about the console devices.
   InitializeConsole ();
+
+  // Show banner
+  ArmPlatformShowBoardBanner (Print);
 
   //
   // Update the CRC32 in the EFI System Table header

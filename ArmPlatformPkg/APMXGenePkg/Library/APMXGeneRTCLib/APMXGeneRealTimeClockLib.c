@@ -76,10 +76,8 @@
 #define SEC_PER_MONTH                                   ((UINTN)  2,592,000)
 #define SEC_PER_YEAR                                    ((UINTN) 31,536,000)
 
-STATIC BOOLEAN       ApmRtcInitialized = FALSE;
-
+STATIC BOOLEAN ApmRtcInitialized = FALSE;
 STATIC UINTN         ApmRtcBase = 0;
-
 EFI_EVENT  mApmRtcVirtualAddressChangeEvent = NULL;
 
 /**
@@ -259,9 +257,8 @@ LibGetTime (
 
 	rtc_time = apmRtcRead32(RTC_CCVR);
 
-	if (Time == NULL) {
+	if (Time == NULL)
 		return EFI_INVALID_PARAMETER;
-	}
 
 	// Convert from internal 32-bit time to UEFI time
 	EpochToEfiTime (rtc_time, Time);

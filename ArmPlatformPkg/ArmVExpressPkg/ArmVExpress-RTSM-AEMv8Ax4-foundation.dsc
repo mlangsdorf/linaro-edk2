@@ -72,7 +72,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|FALSE
 
 [PcdsFixedAtBuild.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0-rh-0.9"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0-rh-0.10-rc1"
   gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"ARM Foundation Model"
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"ArmFoundation"
 

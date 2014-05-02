@@ -18,7 +18,7 @@
 #ifdef AARCH64_MP_PROTOCOL
 #define KERNEL_MAILBOX_ADDR                     0x4000008000
 #else
-#define KERNEL_MAILBOX_ADDR                     0x400000F000
+#define KERNEL_MAILBOX_ADDR                     0x400000FFF8
 #endif
 
 ASM_GLOBAL ASM_PFX(CEntryPoint)
@@ -177,9 +177,9 @@ _InitMem:
         /* Initialize Init Boot Memory */
 	bl	ASM_PFX(ArmPlatformSecBootMemoryInit)
 
-	ldr	x0, =0x78020000
-	movz	w1, #0xa0		/* ICC bypass */
-	str	w1, [x0]
+	ldr x0, =0x78020000
+	movz w1, #0xa0 /* Disable FIQ bypass signal to processor */
+	str  w1, [x0]
 
 _IdentifyPrimary:
 	/* SMP - Find primary core - Read PMD disable efuse */
@@ -247,9 +247,11 @@ secondary_core_wait:
 	br	    x3	/* branch to the given address */
 	b	    secondary_core_wait
 #else
+
+    /* Secondary wait for signal */
 	ldr	    x1, =KERNEL_MAILBOX_ADDR
     movz    x3, #0
-    str     w3, [x1]
+    str     x3, [x1]
 
 1:	wfe
 	ldr     x3, [x1]

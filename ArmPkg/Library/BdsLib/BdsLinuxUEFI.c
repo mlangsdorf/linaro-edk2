@@ -337,9 +337,9 @@ PrepareUEFI (
   }
 
   TmpVal = cpu_to_fdtn((EFI_PHYSICAL_ADDRESS) gST);
-  err = fdt_setprop(fdt, node, "linux,efi-system-table", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
+  err = fdt_setprop(fdt, node, "linux,uefi-system-table", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
   if (err) {
-    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,efi-system-table' (err:%d)\n",err));
+    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,uefi-system-table' (err:%d)\n",err));
     Status = EFI_INVALID_PARAMETER;
     ASSERT_EFI_ERROR(Status);
     return Status;
@@ -347,9 +347,9 @@ PrepareUEFI (
   }
 
   TmpVal = cpu_to_fdtn(MemDesc);
-  err = fdt_setprop(fdt, node, "linux,efi-mmap-addr", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
+  err = fdt_setprop(fdt, node, "linux,uefi-mmap-start", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
   if (err) {
-    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,efi-mmap-addr' (err:%d)\n",err));
+    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,uefi-mmap-start' (err:%d)\n",err));
     Status = EFI_INVALID_PARAMETER;
     ASSERT_EFI_ERROR(Status);
     return Status;
@@ -357,9 +357,9 @@ PrepareUEFI (
   }
 
   TmpVal = cpu_to_fdtn(sizeof (EFI_MEMORY_DESCRIPTOR) * (MemDescCnt + 1));
-  err = fdt_setprop(fdt, node, "linux,efi-mmap-size", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
+  err = fdt_setprop(fdt, node, "linux,uefi-mmap-size", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
   if (err) {
-    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,efi-mmap-size' (err:%d)\n",err));
+    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,uefi-mmap-size' (err:%d)\n",err));
     Status = EFI_INVALID_PARAMETER;
     ASSERT_EFI_ERROR(Status);
     return Status;
@@ -367,18 +367,18 @@ PrepareUEFI (
   }
 
   TmpVal = cpu_to_fdtn(sizeof (EFI_MEMORY_DESCRIPTOR));
-  err = fdt_setprop(fdt, node, "linux,efi-mmap-desc-size", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
+  err = fdt_setprop(fdt, node, "linux,uefi-mmap-desc-size", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
   if (err) {
-    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,efi-mmap-desc-size' (err:%d)\n",err));
+    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,uefi-mmap-desc-size' (err:%d)\n",err));
     Status = EFI_INVALID_PARAMETER;
     ASSERT_EFI_ERROR(Status);
     return Status;
 
   }
   TmpVal = cpu_to_fdtn(EFI_MEMORY_DESCRIPTOR_VERSION);
-  err = fdt_setprop(fdt, node, "linux,efi-mmap-desc-ver", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
+  err = fdt_setprop(fdt, node, "linux,uefi-mmap-desc-ver", &TmpVal, sizeof(EFI_PHYSICAL_ADDRESS));
   if (err) {
-    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,efi-mmap-desc-ver' (err:%d)\n",err));
+    DEBUG((EFI_D_ERROR,"Fail to set new 'linux,uefi-mmap-desc-ver' (err:%d)\n",err));
     Status = EFI_INVALID_PARAMETER;
     ASSERT_EFI_ERROR(Status);
     return Status;

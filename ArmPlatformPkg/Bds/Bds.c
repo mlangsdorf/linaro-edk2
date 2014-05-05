@@ -432,7 +432,7 @@ BdsStartPXE (
   EFI_DEVICE_PATH_PROTOCOL*         PXEDevicePath;
 
   // List all the PXE Protocols
-  Status = gBS->LocateHandleBuffer (ByProtocol, &gEfiPxeBaseCodeProtocolGuid, 
+  Status = gBS->LocateHandleBuffer (ByProtocol, &gEfiPxeBaseCodeProtocolGuid,
                                     NULL, &HandleCount, &HandleBuffer);
   if (EFI_ERROR (Status)) {
     return Status;
@@ -447,11 +447,11 @@ BdsStartPXE (
       EFI_SIMPLE_NETWORK_PROTOCOL*      SimpleNet;
       EFI_MAC_ADDRESS                   *Mac;
       // Get MAC Address and print it
-      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, 
+      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL,
                                     (VOID **)&SimpleNet);
       if (!EFI_ERROR(Status)) {
         Mac = &SimpleNet->Mode->CurrentAddress;
-        Print (L"Attempting PXE boot on MAC: %02x:%02x:%02x:%02x:%02x:%02x\n", 
+        Print (L"Attempting PXE boot on MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
                Mac->Addr[0], Mac->Addr[1], Mac->Addr[2], Mac->Addr[3],
                Mac->Addr[4], Mac->Addr[5]);
       }
@@ -557,7 +557,7 @@ SetupDeviceTree(
   do {
     UnicodeSPrint(DeviceTreeName, 13 * sizeof(CHAR16), L"DeviceTree%02d", Count);
     DeviceTreeVarSize = sizeof(UINT16);
-    Status = GetGlobalEnvironmentVariable (DeviceTreeName, NULL, 
+    Status = GetGlobalEnvironmentVariable (DeviceTreeName, NULL,
                                     &DeviceTreeVarSize, (VOID**)&DeviceTreeVar);
     if (EFI_ERROR(Status)) {
       break;
@@ -630,12 +630,6 @@ BdsEntry (
     ASSERT (gST->FirmwareVendor != NULL);
     UnicodeSPrint (gST->FirmwareVendor, Size, L"%a EFI %a %a", PcdGetPtr(PcdFirmwareVendor), __DATE__, __TIME__);
   }
-
-  // Now we need to setup the EFI System Table with information about the console devices.
-  InitializeConsole ();
-
-  // Show banner
-  ArmPlatformShowBoardBanner (Print);
 
   //
   // Fixup Table CRC after we updated Firmware Vendor

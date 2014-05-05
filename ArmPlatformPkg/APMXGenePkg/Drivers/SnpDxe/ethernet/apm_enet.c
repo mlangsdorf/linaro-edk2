@@ -838,7 +838,6 @@ int apm_eth_device_setup(u8 port, u32 phy_addr, u32 phy_mode,
 	dev->next = NULL;
 	dev->index = port;
 
-  	apm_mac_addr[5] += 1;
 	ENET_DEBUG("apm_eth_device_setup  MAC: %2x:%2x:%2x:%2x:%2x:%x !!!",
                              apm_mac_addr[0], apm_mac_addr[1], apm_mac_addr[2], apm_mac_addr[3], 
 			     apm_mac_addr[4], apm_mac_addr[5]);

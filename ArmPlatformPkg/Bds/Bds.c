@@ -484,8 +484,11 @@ StartDefaultBootOnTimeout (
 
   Size = sizeof(UINT16);
   Timeout = (UINT16)PcdGet16 (PcdPlatformBootTimeOut);
-  TimeoutPtr = &Timeout;
-  GetGlobalEnvironmentVariable (L"Timeout", &Timeout, &Size, (VOID**)&TimeoutPtr);
+  Status = GetGlobalEnvironmentVariable (L"Timeout", &Timeout, &Size, (VOID**)&TimeoutPtr);
+  if (!EFI_ERROR (Status)) {
+    Timeout = *TimeoutPtr;
+    FreePool (TimeoutPtr);
+  }
 
   if (Timeout != 0xFFFF) {
     if (Timeout > 0) {
@@ -498,7 +501,7 @@ StartDefaultBootOnTimeout (
       WaitIndex = 0;
       Print(L"The default boot selection will start in ");
       while ((Timeout > 0) && (WaitIndex == 0)) {
-        Print(L"%3d second%s",Timeout, Timeout > 1 ? "s" : " ");
+        Print(L"%3d second%c", Timeout, Timeout > 1 ? 's' : ' ');
         gBS->WaitForEvent (2, WaitList, &WaitIndex);
         if (WaitIndex == 0) {
           Print(L"\b\b\b\b\b\b\b\b\b\b\b");

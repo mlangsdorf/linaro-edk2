@@ -15,7 +15,7 @@
 #include <AsmMacroIoLibV8.h>
 
 #define APM88XXX_EFUSE_ADDR        0x1054a000
-#define KERNEL_MAILBOX_ADDR        0x4000008000
+#define KERNEL_MAILBOX_ADDR        0x400000F000
 
 ASM_GLOBAL ASM_PFX(CEntryPoint)
 ASM_GLOBAL ASM_PFX(_ModuleEntryPoint)

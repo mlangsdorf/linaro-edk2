@@ -18,7 +18,7 @@
 #ifdef AARCH64_MP_PROTOCOL
 #define KERNEL_MAILBOX_ADDR                     0x4000008000
 #else
-#define KERNEL_MAILBOX_ADDR                     0x400000FFF8
+#define KERNEL_MAILBOX_ADDR                     0x400000F000
 #endif
 
 ASM_GLOBAL ASM_PFX(CEntryPoint)

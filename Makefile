@@ -71,7 +71,7 @@ clean_tianocore:
 	@echo "################################# Clean TianoCore ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D BUILD_DTB -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
 
 clean_tianocore_VHP:
 	@echo
@@ -99,7 +99,7 @@ clean_tianocore_debug:
 	@echo "################################# Clean TianoCore Debug ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D BUILD_DTB -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
 
 clean_tianocore_apps:
 	@echo
@@ -127,7 +127,7 @@ tianocore:
 	@echo "################################# Build TianoCore ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D BUILD_DTB -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
 
 tianocore_UHP:
 	@echo
@@ -155,7 +155,7 @@ tianocore_debug:
 	@echo "################################# Build TianoCore Debug ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D BUILD_DTB -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
 
 tianocore_UHP_debug:
 	@echo

@@ -105,7 +105,7 @@ VOID ConfigureUart(
   Data = MmioRead32(UartBase + LCR);
 
   /* Enable FIFO and set transmit level in FCR */
-  MmioWrite32(UartBase + FCR, 0x0);
+  MmioWrite32(UartBase + FCR, DW_FCR_CLEAR_XMIT | DW_FCR_CLEAR_RCVR | DW_FCR_ENABLE_FIFO);
 
   /* Disable Interrupts */
   MmioWrite32(UartBase + IER, 0x0);

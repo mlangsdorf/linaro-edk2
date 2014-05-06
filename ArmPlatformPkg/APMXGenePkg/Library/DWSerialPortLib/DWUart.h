@@ -57,6 +57,10 @@ enum DWUartReg {
 #define DW_LSR_THRE 0x20U
 #define DW_LSR_DR   0x1U
 
+#define DW_FCR_ENABLE_FIFO	0x01
+#define DW_FCR_CLEAR_RCVR	0x02
+#define DW_FCR_CLEAR_XMIT	0x04
+
 enum DWOper { DW_OPER_READ, DW_OPER_WRITE };
 
 RETURN_STATUS

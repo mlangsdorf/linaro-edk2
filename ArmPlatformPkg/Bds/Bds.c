@@ -555,12 +555,14 @@ SetupDeviceTree(
   UINTN               Count = 0;
   CHAR16              DeviceTreeName[14];
   UINT8               *Traveller = DeviceTreeBuff;
+  EFI_GUID            RedhatGuid = {0x0abba7dc, 0xe516, 0x4167, 
+                                    {0xbb,0xf5,0x4d,0x9d,0x1c,0x73,0x94,0x16}};
 
   /* DeviceTree is encoded in ~1K blocks and the DeviceTreeBuff is 16K */
   do {
     UnicodeSPrint(DeviceTreeName, 13 * sizeof(CHAR16), L"DeviceTree%02d", Count);
     DeviceTreeVarSize = sizeof(UINT16);
-    Status = GetGlobalEnvironmentVariable (DeviceTreeName, NULL,
+    Status = GetEnvironmentVariable (DeviceTreeName, &RedhatGuid, NULL,
                                     &DeviceTreeVarSize, (VOID**)&DeviceTreeVar);
     if (EFI_ERROR(Status)) {
       break;

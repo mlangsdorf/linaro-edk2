@@ -26,7 +26,7 @@
 [Defines]
   PLATFORM_NAME                  = APMXGene-Mustang
   PLATFORM_GUID                  = edcba8fd-a24e-489c-b4e9-93561f576500
-  PLATFORM_VERSION               = 1.1-RedHat-0.10-rc2
+  PLATFORM_VERSION               = 1.1-rh-0.10-rc3
   DSC_SPECIFICATION              = 0x00010005
   OUTPUT_DIRECTORY               = Build/APMXGene-Mustang
   SUPPORTED_ARCHITECTURES        = AARCH64
@@ -103,7 +103,7 @@
 [PcdsFixedAtBuild.common]
    # System Memory (4GB)
    gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
-   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0-rh-0.10-rc2"
+   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1-rh-0.10-rc3"
    gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"X-Gene Mustang Board"
    gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"Mustang"
    gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000

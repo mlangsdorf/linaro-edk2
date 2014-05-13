@@ -94,6 +94,13 @@ MemoryPeim (
   EFI_PHYSICAL_ADDRESS        ResourceTop;
   BOOLEAN                     Found;
 #endif
+  UINT64                      SystemMemorySize;
+
+#ifdef APM_XGENE
+  SystemMemorySize = ArmPlatformDRAMSize();
+#else
+  SystemMemorySize = PcdGet64 (PcdSystemMemorySize);
+#endif
 
   // Ensure PcdSystemMemorySize has been set
   ASSERT (PcdGet64 (PcdSystemMemorySize) != 0);
@@ -116,7 +123,7 @@ MemoryPeim (
       EFI_RESOURCE_SYSTEM_MEMORY,
       ResourceAttributes,
       PcdGet64 (PcdSystemMemoryBase),
-      PcdGet64 (PcdSystemMemorySize)
+      SystemMemorySize
   );
 #ifndef APM_XGENE
   SystemMemoryTop = (EFI_PHYSICAL_ADDRESS)PcdGet64 (PcdSystemMemoryBase) + (EFI_PHYSICAL_ADDRESS)PcdGet64 (PcdSystemMemorySize);

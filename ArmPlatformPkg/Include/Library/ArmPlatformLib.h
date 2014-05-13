@@ -120,6 +120,15 @@ ArmPlatformInitializeSystemMemory (
   );
 
 /**
+  Return size of platform DRAM
+
+**/
+UINT64
+ArmPlatformDRAMSize (
+  VOID
+  );
+
+/**
   Return the Virtual Memory Map of your platform
 
   This Virtual Memory Map is used by MemoryInitPei Module to initialize the MMU on your platform.

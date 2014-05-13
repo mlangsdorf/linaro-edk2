@@ -42,6 +42,16 @@ ArmPlatformInitializeSystemMemory (
   DEBUG ((EFI_D_INFO, "Set MemSize:0x%llx\n", *MemSizeAddr));
 }
 
+UINT64
+ArmPlatformDRAMSize (
+  VOID
+  )
+{
+  UINT64 *MemSizeAddr;
+  MemSizeAddr = (UINT64*)(UINT64)PcdGet64(PcdMemSizeAddr);
+  return *MemSizeAddr;
+}
+
 /**
   Return the Virtual Memory Map of your platform
 
@@ -60,6 +70,8 @@ ArmPlatformGetVirtualMemoryMap (
   ARM_MEMORY_REGION_ATTRIBUTES  CacheAttributes;
   UINTN                         Index = 0;
   ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
+  UINT64 *MemSizeAddr;
+  MemSizeAddr = (UINT64*)(UINT64)PcdGet64(PcdMemSizeAddr);
 
   ASSERT(VirtualMemoryMap != NULL);
 
@@ -83,7 +95,7 @@ ArmPlatformGetVirtualMemoryMap (
   // DDR
   VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdSystemMemoryBase);
   VirtualMemoryTable[Index].VirtualBase  = PcdGet64 (PcdSystemMemoryBase);
-  VirtualMemoryTable[Index].Length       = PcdGet64 (PcdSystemMemorySize);
+  VirtualMemoryTable[Index].Length       = *MemSizeAddr;
   VirtualMemoryTable[Index].Attributes   = CacheAttributes;
 
   /* For Address space 0x80_8000_0000 to 0xFF_FFFF_FFFF

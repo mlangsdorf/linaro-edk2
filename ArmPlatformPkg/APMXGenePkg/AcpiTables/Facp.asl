@@ -21,7 +21,7 @@
 [0001]                           Checksum : 18
 [0006]                             Oem ID : "APM   "
 [0008]                       Oem Table ID : "XGENE   "
-[0004]                       Oem Revision : 00000002
+[0004]                       Oem Revision : 00000003
 [0004]                    Asl Compiler ID : "INTL"
 [0004]              Asl Compiler Revision : 20111123
 
@@ -37,16 +37,16 @@
 [0001]                    P-State Control : 00
 [0004]           PM1A Event Block Address : 00000000
 [0004]           PM1B Event Block Address : 00000000
-[0004]         PM1A Control Block Address : 10558008 
+[0004]         PM1A Control Block Address : 00000000 
 [0004]         PM1B Control Block Address : 00000000
 [0004]          PM2 Control Block Address : 00000000
-[0004]             PM Timer Block Address : 10559000 
+[0004]             PM Timer Block Address : 00000000 
 [0004]                 GPE0 Block Address : 00000000
 [0004]                 GPE1 Block Address : 00000000
-[0001]             PM1 Event Block Length : 08
-[0001]           PM1 Control Block Length : 04
+[0001]             PM1 Event Block Length : 00
+[0001]           PM1 Control Block Length : 00
 [0001]           PM2 Control Block Length : 00
-[0001]              PM Timer Block Length : 04
+[0001]              PM Timer Block Length : 00
 [0001]                  GPE0 Block Length : 00
 [0001]                  GPE1 Block Length : 00
 [0001]                   GPE1 Base Offset : 00
@@ -77,7 +77,7 @@
          Control Method Sleep Button (V1) : 0
      RTC wake not in fixed reg space (V1) : 0
          RTC can wake system from S4 (V1) : 0
-                     32-bit PM Timer (V1) : 1 
+                     32-bit PM Timer (V1) : 0 
                    Docking Supported (V1) : 0
             Reset Register Supported (V2) : 0
                          Sealed Case (V3) : 0
@@ -98,16 +98,18 @@
 [0001]                         Bit Offset : 00
 [0001]               Encoded Access Width : 01 [Byte Access:8]
 [0008]                            Address : 0000000000000000
+
 [0001]               Value to cause reset : 00
 [0003]                           Reserved : 000000
 [0008]                       FACS Address : 0000004005001EC0
 [0008]                       DSDT Address : 0000004003800340
+
 [0012]                   PM1A Event Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 40
+[0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 04 [Word Access:16]
-[0008]                            Address : 0000000010558000
+[0001]               Encoded Access Width : 00 [Word Access:16]
+[0008]                            Address : 0000000000000000
 
 [0012]                   PM1B Event Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
@@ -118,10 +120,10 @@
 
 [0012]                 PM1A Control Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 40
+[0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 04 [Word Access:16]
-[0008]                            Address : 0000000010558008
+[0001]               Encoded Access Width : 00 [Word Access:16]
+[0008]                            Address : 0000000000000000
 
 [0012]                 PM1B Control Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
@@ -132,23 +134,23 @@
 
 [0012]                  PM2 Control Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 08
+[0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
 [0001]               Encoded Access Width : 00 [Undefined/Legacy]
 [0008]                            Address : 0000000000000000
 
 [0012]                     PM Timer Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
-[0001]                          Bit Width : 20
+[0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 03 [DWord Access:32]
-[0008]                            Address : 0000000010559000
+[0001]               Encoded Access Width : 00 [DWord Access:32]
+[0008]                            Address : 0000000000000000
 
 [0012]                         GPE0 Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
 [0001]                          Bit Width : 00
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 01 [Byte Access:8]
+[0001]               Encoded Access Width : 00 [Byte Access:8]
 [0008]                            Address : 0000000000000000
 
 [0012]                         GPE1 Block : [Generic Address Structure]

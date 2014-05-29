@@ -46,7 +46,14 @@ clean: clean_tianocore clean_tianocore_debug clean_basetools clean_linaro_tools 
 	@echo "############################### Clean APM Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang
 
-reallyclean: clean_tianocore clean_tianocore_debug clean_tianocore_VHP_debug clean_tianocore_VHP clean_basetools
+clean_conf:
+	rm -rf $(EDK2DIR)/Conf/.cache
+	rm -rf $(EDK2DIR)/Conf/BuildEnv.sh
+	rm -rf $(EDK2DIR)/Conf/build_rule.txt
+	rm -rf $(EDK2DIR)/Conf/target.txt
+	rm -rf $(EDK2DIR)/Conf/tools_def.txt
+
+reallyclean: clean_conf clean_tianocore clean_tianocore_debug clean_tianocore_VHP_debug clean_tianocore_VHP clean_basetools
 	@echo
 	@echo "############################### Clean Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang

@@ -188,12 +188,14 @@ clean_foundation:
 foundation:
 	@echo
 	@echo "################################# Build Foundation ############################"
+	touch ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	. ./edksetup.sh && \
 	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
 
 foundation_debug:
 	@echo
 	@echo "################################# Build Foundation Debug ############################"
+	touch ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	. ./edksetup.sh && \
 	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
 

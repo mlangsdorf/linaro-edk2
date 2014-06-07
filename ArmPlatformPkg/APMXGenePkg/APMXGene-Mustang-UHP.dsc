@@ -189,7 +189,7 @@
 
    # From NOR MTD
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uImage"
-   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\mustang.dtb"
+   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/\\apm-mustang.dtb"
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uRamdisk"
 
    # From SD

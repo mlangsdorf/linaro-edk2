@@ -191,7 +191,7 @@
    gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uRamdisk"
    # From SD card
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\uImage"
-   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\mustang.dtb"
+   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\apm-mustang.dtb"
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\uRamdisk"
 
    # From SATA disk

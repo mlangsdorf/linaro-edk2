@@ -594,7 +594,7 @@ PrepareFdt (
       for (Index = 0; Index < ArmProcessorTable->NumberOfEntries; Index++) {
         CoreMpId = (UINTN) GET_MPID (ArmCoreInfoTable[Index].ClusterId,
                              ArmCoreInfoTable[Index].CoreId);
-        AsciiSPrint (Name, 10, "cpu@%x", CoreMpId);
+        AsciiSPrint (Name, 10, "cpu@%03x", CoreMpId);
 
         // If the 'cpus' node did not exist then create all the 'cpu' nodes.
         // In case 'cpus' node is provided in the original FDT then we do not add

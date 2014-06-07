@@ -23,7 +23,6 @@
 #include <Universal/SetupBrowserDxe/Setup.h>
 #include "APMXGeneClock.h"
 
-#ifdef AARCH64_MP_PROTOCOL
 ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
@@ -47,7 +46,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 2
-    0x0, 0x2,
+    0x1, 0x0,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xA000,
@@ -57,7 +56,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 3
-    0x0, 0x3,
+    0x1, 0x1,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xB000,
@@ -67,7 +66,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 4
-    0x0, 0x4,
+    0x2, 0x0,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xC000,
@@ -77,7 +76,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 5
-    0x0, 0x5,
+    0x2, 0x1,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xD000,
@@ -87,7 +86,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 6
-    0x0, 0x6,
+    0x3, 0x0,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xE000,
@@ -97,7 +96,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 7
-    0x0, 0x7,
+    0x3, 0x1,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0xF000,
@@ -106,90 +105,7 @@ ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
     (UINT64)0xFFFFFFFF
   },
 };
-#else
-ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
-  {
-    // Cluster 0, Core 0
-    0x0, 0x0,
 
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 1
-    0x0, 0x1,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 2
-    0x0, 0x2,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 3
-    0x0, 0x3,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 4
-    0x0, 0x4,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 5
-    0x0, 0x5,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 6
-    0x0, 0x6,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-  {
-    // Cluster 0, Core 7
-    0x0, 0x7,
-
-    // MP Core MailBox Set/Get/Clear Addresses and Clear Value
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (EFI_PHYSICAL_ADDRESS)0xF000,
-    (UINT64)0xFFFFFFFF
-  },
-};
-#endif
 /**
   Return the current Boot Mode
 

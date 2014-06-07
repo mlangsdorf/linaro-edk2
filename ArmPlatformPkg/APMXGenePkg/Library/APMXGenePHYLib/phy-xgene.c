@@ -1648,6 +1648,7 @@ static int xgene_phy_hw_initialize(struct xgene_phy_ctx *ctx,
 {
 	int rc;
 
+	dev_dbg(ctx->dev, "PHY init mode %d\n", ctx->mode);
 	dev_dbg(ctx->dev, "PHY init clk type %d\n", clk_type);
 
 	/* Configure internal ref clock CMU */

@@ -21,6 +21,7 @@
 /* Porting wrapper */
 typedef UINT32 u32;
 typedef UINT64 u64;
+typedef UINT16 u16;
 typedef UINT8	u8;
 
 #define readl(x)		*((volatile u32 *) (x))

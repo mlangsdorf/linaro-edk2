@@ -29,7 +29,7 @@
 [0004]              Flags (decoded below) : 00000001
                            Memory Present : 1
 
-[0004]               Secure PL1 Interrupt : 0000001F
+[0004]               Secure PL1 Interrupt : 00000010
 [0004]         SPL1 Flags (decoded below) : 00000000
                              Trigger Mode : 0
                                  Polarity : 0
@@ -44,7 +44,7 @@
                              Trigger Mode : 0
                                  Polarity : 0
 
-[0004]           Non-Secure PL2 Interrupt : 00000000
+[0004]           Non-Secure PL2 Interrupt : 0000001F
 [0004]        NSPL2 Flags (decoded below) : 00000000
                              Trigger Mode : 0
                                  Polarity : 0

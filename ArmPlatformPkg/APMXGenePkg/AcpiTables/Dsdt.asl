@@ -150,11 +150,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state*/
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055001C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 1, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	}//CPU0
@@ -253,11 +274,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055101C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 1, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -361,11 +403,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055201C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 2, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -469,11 +532,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055301C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 2, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -577,11 +661,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055401C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 3, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -685,11 +790,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055501C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 3, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -793,11 +919,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055601C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 4, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -901,11 +1048,32 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			3,
 			200000,	//latency usec
 			1800	//power mW
-		}, //C3 state */
+		}, //C3 state
+		Package() {	//C4 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x1055701C, 3)},
+			4,
+			500000,	//latency usec
+			1000	//power mW
+		}, //C4 state
+		Package() {	//C5 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x00000000, 3)},
+			5,
+			0,	//latency usec
+			0	//power mW
+		}, //C5 state
+		Package() {	//C6 state
+			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557020, 3)},
+			6,
+			10000000,	//latency usec
+			0		//power mW
+		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
 		Package() {6, 0, 4, 0xFC, 2, 2},
+		Package() {6, 0, 5, 0xFC, 8, 3},
+		Package() {6, 0, 6, 0xFC, 8, 5},
 	}) //_CSD
 
 	//Return the MADT table
@@ -1026,6 +1194,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	Device(\_SB.AHBC) {
 		OperationRegion(SRST, SystemMemory, 0x1F2AC000, 4)
 		OperationRegion(CLKE, SystemMemory, 0x1F2AC004, 4)
+		OperationRegion(SRRM, SystemMemory, 0x1F2AD070, 4)
+		OperationRegion(RD2F, SystemMemory, 0x1F2AE014, 4)
 		Field(SRST, DWordAcc, NoLock, Preserve) {
 			ACSR, 1,
 			SDRS, 1,
@@ -1049,6 +1219,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			S0CE, 1,
 			S1CE, 1,
 			APCE, 1
+		}
+		Field(SRRM, DWordAcc, NoLock, Preserve) {
+			RMSH, 32
+		}
+		Field(RD2F, DWordAcc, NoLock, Preserve) {
+			RSV9, 1,
+			RDFL, 1,
+			RSVA, 30
 		}
 
 		// Device Identification Objects
@@ -1079,10 +1257,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		//UART0 Device Controller
 		Device(URT0) {
 			//Device Identification Objects
-			Name(_HID, "UART0000")
+			Name(_HID, "APMC0D08")
 			Name(_DDN, "URT0")
 			Name(_UID, "URT0")
-			Name(_STR, Unicode("APM88xxxx UART0 Controller"))
+			Name(_STR, Unicode("APM X-Gene UART0 Controller"))
 
 			Name(_ADR, 0x1C020000)
 			Name(_CID, "NS16550")
@@ -1124,11 +1302,15 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Name(_PR0, Package() {SCVR})
 			//Can be put to D3 state when in S1 state
 			Name(_S1D, 3)
+			//Lowest D-State supported in S1 to support wakeup
+			Name(_S1W, 0)
+			//Inform OSPM to use _S1W instead of _S1D when used for wake up
+			Name(_PRW, Package() { 0x0, 0x3 })
 
 			//Device Current Resource Settings
 			//UART0 Generates an interrupt
 			Name(_CRS, ResourceTemplate() {
-				Register(SystemMemory, 32, 0, 0x1C020000, 3)
+				Memory32Fixed(ReadWrite, 0x1C020000, 0x100)
 				UARTSerialBus(
 					115200,			//Baud Rate
 					DataBitsEight, 		//Bits-per-byte
@@ -1152,7 +1334,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		//UART1 Device Controller
 		Device(URT1) {
 			//Device Identification Objects
-			Name(_HID, "UART0000")
+			Name(_HID, "APMC0D08")
 			Name(_DDN, "URT1")
 			Name(_UID, "URT1")
 			Name(_STR, Unicode("APM88xxxx UART1 Controller"))
@@ -1197,11 +1379,15 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Name(_PR0, Package() {SCVR})
 			//Can be put to D3 state when in S1 state
 			Name(_S1D, 3)
+			//Lowest D-State supported in S1 to support wakeup
+			Name(_S1W, 0)
+			//Inform OSPM to use _S1W instead of _S1D when used for wake up
+			Name(_PRW, Package() { 0x0, 0x3 })
 
 			//Device Current Resource Settings
 			//UART1 Generates an interrupt
 			Name(_CRS, ResourceTemplate() {
-				Register(SystemMemory, 32, 0, 0x1C021000, 3)
+				Memory32Fixed(ReadWrite, 0x1C021000, 0x100)
 				UARTSerialBus(
 					115200,			//Baud Rate
 					DataBitsEight, 		//Bits-per-byte
@@ -1434,6 +1620,152 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			ResourceConsumer,
 			)
 		})//SP12
+
+		// SDIO0
+		Device(SDM0) {
+			Name(_HID, "APMC0D0C") // Device Identification Objects
+			Name(_CID, "APMC0D0C")
+			Name(_STR, Unicode("APM X-Gene SDHCI Controller"))
+
+			Method(_STA) {
+				Return (One)
+			}
+
+			Name(_CRS, ResourceTemplate () {
+				Memory32Fixed (ReadWrite, 0x1C000000, 0x100)
+				Memory32Fixed (ReadWrite, 0x1f2a0000, 0x1000)
+				Interrupt (ResourceConsumer, Level, ActiveHigh, ExclusiveAndWake) { 0x69 }
+			})
+
+			OperationRegion(CPL0, SystemMemory, 0x1F2A0024, 4)
+			OperationRegion(CPH0, SystemMemory, 0x1F2A0028, 4)
+			OperationRegion(CFG0, SystemMemory, 0x1F2A0000, 4)
+			Field(CPL0, DWordAcc, NoLock, Preserve) {
+				TOCF, 6,
+				TOCU, 1,
+				BACF, 8,
+				MXBL, 2,
+				EMBS, 1,
+				ADM2, 1,
+				RSV1, 1,
+				HSST, 1,
+				SDMA, 1,
+				SURS, 1,
+				VS33, 1,
+				VS30, 1,
+				VS18, 1,
+				BS64, 1,
+				ASIS, 1,
+				SLTY, 2,
+				RSV2, 2
+			}
+			Field(CPH0, DWordAcc, NoLock, Preserve) {
+				DTAS, 1,
+				DTCS, 1,
+				DTDS, 1,
+				TCRT, 4,
+				TU50, 1,
+				MODE, 2,
+				CLMU, 8,
+				SPIM, 1,
+				SPIB, 1,
+				RSV3, 12
+			}
+			Field(CFG0, DWordAcc, NoLock, Preserve) {
+				RXWG, 4,
+				TXWG, 4,
+				PWMO, 4,
+				RSV4, 3,
+				WBRD, 1,
+				RSV5, 1,
+				RDPR, 2,
+				RDCH, 1,
+				RSV6, 1,
+				WRPR, 2,
+				WRCH, 1,
+				RSV7, 8
+			}
+
+			// Device Power Management Methods
+			// D0 State, ON
+			Method(_PS0) {
+				// Configure the capability of the core
+				Store(0x30, TOCF)	// Time out 48MHz
+				Store(One, TOCU)	// Clock unit MHz
+				Store(50, BACF)		// 50MHz clock
+				Store(Zero, MXBL)	// 512B block size
+				Store(Zero, EMBS)	// No extend media support
+				Store(Zero, ADM2)	// No ADMA2 support
+				Store(Zero, RSV1)
+				Store(One, HSST)	// High speed support
+				Store(One, SDMA)	// SDMA support
+				Store(One, SURS)	// Suspend/resume support
+				Store(One, VS33)	// 3.3 voltage support
+				Store(One, VS30)	// 3.0 voltage support
+				Store(Zero, VS18)	// No 1.8 voltage support
+				Store(Zero, BS64)	// No 64-bit
+				Store(Zero, ASIS)	// Async Int
+				Store(Zero, SLTY)	// Removable media
+				Store(0, RSV2)
+
+				Store(One, DTAS)	// Type A support
+				Store(One, DTCS)	// Type C support
+				Store(One, DTDS)	// Type D support
+				Store(One, TCRT)	// 1 seconds timer counter
+				Store(One, TU50)	// SDR50 tuning
+				Store(Zero, MODE)	// Return mode 1
+				Store(Zero, CLMU)	// Clock multipler
+				Store(Zero, SPIM)	// No SPI mode
+				Store(Zero, SPIB)	// No SPI block mode
+				Store(Zero, RSV3)	// Reserved
+
+				// Configure coherency
+				Store(0xf, RXWG)	// Tx weight
+				Store(0xf, TXWG)	// Tx weight
+				Store(0x1, PWMO)	// PW Max outstanding
+				Store(0x0, RSV4)	// Reserved
+				Store(0x1, WBRD)	// Write block Read
+				Store(0x0, RSV5)	// Reserved
+				Store(0x2, RDPR)	// Read AXI sideband prio
+				Store(0x1, RDCH)	// Read Coherent
+				Store(0x0, RSV6)	// Reserved
+				Store(0x2, WRPR)	// Write AXI sideband prio
+				Store(0x1, WRCH)	// Write Coherent
+				Store(0x0, RSV7)	// Reserved
+
+				// Configure PIN Mux
+				// NOTE: Default for GPIO is SD function
+
+				// Enable clock and CSR
+				Store(One, SDCE)	// Enable the clock
+				Store(Zero, SDRS)	// Enable the CSR
+
+				// Enable AHBC read to flush
+				Store(1, RDFL)		// Enable read to flush
+
+				// Remove RAM from shutdown
+				Store(Zero, RMSH)	// Release from shutdown
+				Sleep(1)		// Sleep 1 ms
+			}
+
+			// D3 State, OFF
+			// NOTE: This is only possible if you only enable 1
+			//       slot as both slot share the same clock and
+			//       etc.
+			Method(_PS3) {
+				Store(One, SDRS)
+				Store(Zero, SDCE)
+			}
+
+			// Current Power State
+			Method(_PSC) {
+				if (LOr(NAnd(U0RS, One), LEqual(U0CE, Zero))) {
+					Return (3)
+				}
+				Return (0)
+			}
+		}
+
 //==============================================================================
 	} //AHBC
 ////////////////////////////////////////////////////////////////////////////////
@@ -1600,9 +1932,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A000000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F210000, 0x10000)
-			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
+			Memory32Fixed (ReadWrite, 0x1F210000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F21D000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F21E000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
+			Memory32Fixed (ReadWrite, 0x1f217000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA6}
 		})
 	} //SAT0
@@ -1616,9 +1950,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 		Name (_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A400000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F220000, 0x10000)
-			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
+			Memory32Fixed (ReadWrite, 0x1F220000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F22D000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F22E000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
+			Memory32Fixed (ReadWrite, 0x1f227000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA7}
 		})
 	} //SAT1
@@ -1632,8 +1968,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 		Name(_CRS, ResourceTemplate () {
 			Memory32Fixed (ReadWrite, 0x1A800000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F230000, 0x10000)
-			Memory32Fixed (ReadWrite, 0x1F2A0000, 0x10000)
+			Memory32Fixed (ReadWrite, 0x1F230000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F23D000, 0x1000)
+			Memory32Fixed (ReadWrite, 0x1F23E000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA8}
 		})
@@ -2185,7 +2522,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
             // Declare the resources assigned to this root complex.
             // Section 6.2.2
             //
-
+			Method (_CBA, 0, Serialized) {
+				Return (0xE0D0000000)
+			}
             Method (_CRS, 0, Serialized) {
 
                 //
@@ -2221,33 +2560,47 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
                     // 0x4000000000.
                     // Section 19.5.80
                     //
-			QWordMemory(
-				ResourceConsumer,
-				PosDecode,
-				MinFixed,
-				MaxFixed,
-				Cacheable,
-				ReadWrite,
-				0x0000000000000000,
-				0x0000000000000000,
-				0x0000000000FFFFFF,
-				0x000000E000000000,
-				0x0000000001000000
-				)
-			QWordMemory(
-				ResourceConsumer,
-				PosDecode,
-				MinFixed,
-				MaxFixed,
-				Cacheable,
-				ReadWrite,
-				0x0000000000000000,
-				0x000000e100000000,
-				0x000000e13FFFFFFF,
-				0x0000000000000000,
-				0x0000000040000000
-				)
-                })
+					Memory32Fixed(ReadWrite, 0x1F2B0000, 0x10000, )
+
+//					QWordIO(
+//						ResourceConsumer,
+//						MinFixed,
+//						MaxFixed,
+//						PosDecode,
+//						EntireRange,
+//						0x0000000000000000,
+//						0x0000000010000000,
+//						0x000000001000FFFF,
+//						0x000000E000000000,
+//						0x0000000000010000
+//					)
+					QWordMemory(
+						ResourceConsumer,
+						PosDecode,
+						MinFixed,
+						MaxFixed,
+						Cacheable,
+						ReadWrite,
+						0x0000000000000000,
+						0x0000000030000000,
+						0x0000000030FFFFFF,
+						0x000000E000000000,
+						0x0000000001000000
+					)
+					QWordMemory(
+						ResourceConsumer,
+						PosDecode,
+						MinFixed,
+						MaxFixed,
+						Cacheable,
+						ReadWrite,
+						0x0000000000000000,
+						0x000000e100000000,
+						0x000000e13FFFFFFF,
+						0x0000000000000000,
+						0x0000000040000000
+					)
+				})
 
                 Return (RBUF)
             }
@@ -2430,31 +2783,44 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
                 Name(_PR3, Package(){SCVR})
             }
 	} // PCI0
+
 ///////////////////////////////////////////////////////////////////////////////
-// SDIO0
-	Device(\_SB.SDM0) {
-		Name(_HID, "APMC0D0C") // Device Identification Objects
-		Name(_CID,"PNP0D40")
-		Method(_STA) {
+// MSI
+	Device(\_SB.MSIX) {
+		Name(_HID, "APMC0D0E") // Device Identification Objects
+		Name(_UID, 0)
+		Name(_STR, Unicode("X-Gene MSI/MSIX"))
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (One)
 		}
-		Device(STOR) {
-			Name(_ADR, 0x00000008)
-			Method(_STA) {
-                		Return (Zero)
-			}
-		}
-
-		Device(EMMC) {
-			Name(_ADR, 0x00000008)
-		}
-
 		Name(_CRS, ResourceTemplate () {
-			Memory32Fixed (ReadWrite, 0x1C000000, 0x1000)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, ExclusiveAndWake) {0x69}
+			Memory32Fixed (ReadWrite, 0x79000000, 0x900000)
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x30}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x31}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x32}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x33}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x34}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x35}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x36}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x37}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x38}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x39}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3A}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3B}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3C}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3D}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3E}
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x3F}
 		})
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (2) {
+				"msi-available-ranges", "0x0 0x1000",
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
 	}
 
 ///////////////////////////////////////////////////////////////////////////////
-
 }//DSDT

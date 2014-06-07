@@ -16,9 +16,9 @@
 
 #include "UsbController.h"
 
-extern int apm_usb_init(UINT64 csr_base, UINT64 xhci_base,
-  int cid, int irq, UINT32 gen_sel, int clk_sel,
-  int ovrcur_en, int ovrcur_ivrt);
+extern INTN xgene_xhci_init(UINT64 serdes_base, UINT64 xhci_base,
+		UINTN irq, UINTN cid, UINT32 clk2_sel, UINT32 ovrcur_en,
+		UINT32 ovrcur_ivrt);
 
 typedef struct {
   ACPI_HID_DEVICE_PATH      AcpiDevicePath;
@@ -405,7 +405,6 @@ PciUsbEmulationEntryPoint (
   INTN    Cid;
   UINT64  csr_base;
   UINT64  xhci_base;
-  UINT32  gen_sel = 3;
   INTN    irq;
   INTN    clk_sel;
   INTN    ovrcur_en;
@@ -422,9 +421,8 @@ PciUsbEmulationEntryPoint (
         continue;
       csr_base    = PcdGet64(PcdUsb1CsrRegisterBase);
       xhci_base   = PcdGet64(PcdXHCI1RegisterBase);
-      gen_sel     = 3;
       irq         = PcdGet32(PcdUsb1Irq);
-      clk_sel     = PcdGet32(PcdUsb1ClkSel);
+      clk_sel     = 0;
       ovrcur_en   = PcdGet32(PcdUsb1OvrcurEn);
       ovrcur_ivrt = PcdGet32(PcdUsb1OvrcurIvrt);
       break;
@@ -433,9 +431,8 @@ PciUsbEmulationEntryPoint (
         continue;
       csr_base    = PcdGet64(PcdUsb2CsrRegisterBase);
       xhci_base   = PcdGet64(PcdXHCI2RegisterBase);
-      gen_sel     = 3;
       irq         = PcdGet32(PcdUsb2Irq);
-      clk_sel     = PcdGet32(PcdUsb2ClkSel);
+      clk_sel     = 0xB;
       ovrcur_en   = PcdGet32(PcdUsb2OvrcurEn);
       ovrcur_ivrt = PcdGet32(PcdUsb2OvrcurIvrt);
       break;
@@ -444,13 +441,13 @@ PciUsbEmulationEntryPoint (
     }
 
     DEBUG((EFI_D_BLKIO, "PciUsbEmulationEntryPoint started.\n"));
-    // Configure USB host
-    if (apm_usb_init(csr_base, xhci_base, Cid, irq,
-      gen_sel, clk_sel, ovrcur_en, ovrcur_ivrt)) {
-      DEBUG((EFI_D_ERROR, "Controller %d Initialize Serdes failed\n", Cid));
-      Status = EFI_DEVICE_ERROR;
-      return Status;
-    }
+    /* Configure USB host */
+	if (xgene_xhci_init(csr_base, xhci_base, irq, Cid, clk_sel, ovrcur_en,
+			ovrcur_ivrt)) {
+		DEBUG((EFI_D_ERROR, "USB%d Initialization failed\n", Cid));
+		Status = EFI_DEVICE_ERROR;
+		return Status;
+	}
 
     // Create a private structure
     Private = AllocatePool(sizeof(EFI_PCI_IO_PRIVATE_DATA));

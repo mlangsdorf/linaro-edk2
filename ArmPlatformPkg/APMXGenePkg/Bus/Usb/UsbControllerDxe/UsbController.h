@@ -38,11 +38,11 @@
 
 #include <IndustryStandard/Pci22.h>
 #include <IndustryStandard/Acpi.h>
+#include <Library/XGenePHY.h>
 
 #define EFI_RESOURCE_NONEXISTENT  0xFFFFFFFFFFFFFFFFULL
 #define EFI_RESOURCE_LESS         0xFFFFFFFFFFFFFFFEULL
 #define EFI_RESOURCE_SATISFIED    0x0000000000000000ULL
-
 
 typedef struct {
   ACPI_HID_DEVICE_PATH      AcpiDevicePath;

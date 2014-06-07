@@ -14,12 +14,8 @@
 
 #include <AsmMacroIoLibV8.h>
 
-#define APM88XXX_EFUSE_ADDR			0x1054a000
-#ifdef AARCH64_MP_PROTOCOL
-#define KERNEL_MAILBOX_ADDR                     0x4000008000
-#else
-#define KERNEL_MAILBOX_ADDR                     0x400000F000
-#endif
+#define APM88XXX_EFUSE_ADDR        0x1054a000
+#define KERNEL_MAILBOX_ADDR        0x4000008000
 
 ASM_GLOBAL ASM_PFX(CEntryPoint)
 ASM_GLOBAL ASM_PFX(_ModuleEntryPoint)
@@ -249,8 +245,19 @@ secondary_core_wait:
 #else
 
     /* Secondary wait for signal */
-	ldr	    x1, =KERNEL_MAILBOX_ADDR
-    movz    x3, #0
+    mrs     x0, mpidr_el1
+	and     x0, x0, #0xffff
+	mov     x1, x0
+	and     x1, x1, #0x1
+	and     x0, x0, #0xff00
+	ror     x0, x0, #7
+	orr     x0, x0, x1 /* CPU ID */
+
+	ldr	    x1, =KERNEL_MAILBOX_ADDR /* start from 0x4000008000 */
+	movz    x2, 0x1000 /* 4K */
+	madd    x1, x2, x0, x1
+
+	movz    x3, #0
     str     x3, [x1]
 
 1:	wfe

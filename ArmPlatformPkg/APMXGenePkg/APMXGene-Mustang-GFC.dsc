@@ -110,6 +110,7 @@
 [PcdsDynamicDefault.common]
    # System Memory (4GB)
    gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
+   gArmTokenSpaceGuid.PcdBootingLinuxUEFI|0
 
 [PcdsFixedAtBuild.common]
    gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0"
@@ -287,6 +288,11 @@
    #
    # DXE
    #
+   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf  {
+       <LibraryClasses>
+       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+   }
+
    MdeModulePkg/Core/Dxe/DxeMain.inf {
        <LibraryClasses>
        PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
@@ -333,6 +339,16 @@
    # Semi-hosting filesystem
    #
    #ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
+
+   #
+   # PCI Support
+   #
+   ArmPlatformPkg/APMXGenePkg/Drivers/GpioDxe/GpioDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf {
+     <LibraryClasses>
+       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+   }
+   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 
    #
    # Multimedia Card Interface
@@ -397,7 +413,10 @@
    # Bds
    #
    MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-   ArmPlatformPkg/Bds/Bds.inf
+   ArmPlatformPkg/Bds/Bds.inf {
+     <LibraryClasses>
+       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+   }
 
    #
    # Network stack drivers
@@ -414,13 +433,7 @@
    MdeModulePkg/Universal/Network/Udp4Dxe/Udp4Dxe.inf
    MdeModulePkg/Universal/Network/UefiPxeBcDxe/UefiPxeBcDxe.inf
    ArmPlatformPkg/APMXGenePkg/Drivers/SnpDxe/SnpDxe.inf
-
-   #
-   # PCI Support
-   #
-   ArmPlatformPkg/APMXGenePkg/Drivers/GpioDxe/GpioDxe.inf
-   ArmPlatformPkg/APMXGenePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
-   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Drivers/MellanoxDxe/SnpDxe.inf
 
    #
    # IDE/AHCI Support

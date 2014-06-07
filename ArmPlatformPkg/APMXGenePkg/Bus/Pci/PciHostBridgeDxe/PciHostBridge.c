@@ -265,9 +265,12 @@ OnAcpiReadyToBoot(
   IN VOID             *Context
   )
 {
-  /*FIXME: Reset PCIE controller before go to Linux OS */
+  /*Reset PCIE controller before go to Linux OS */
   PCI_HOST_BRIDGE_INSTANCE *HostBridge = (PCI_HOST_BRIDGE_INSTANCE *)Context;
-  XGenePcieReset(HostBridge);
+  if (!PcdGet32 (PcdBootingLinuxUEFI)) {
+    PCIE_INFO("Reset PCIE controller when boot to Linux fdt\n");
+    XGenePcieReset(HostBridge);
+  }
 }
 
 /**
@@ -363,7 +366,8 @@ InitializePciHostBridge (
         &PrivateData->Io,
         HostBridge->HostBridgeHandle,
         RootBridgeAttribute[Loop1][Loop2],
-        &mResAppeture[Loop1][Loop2]
+        &mResAppeture[Loop1][Loop2],
+        Loop1
         );
 
       Status = gBS->InstallMultipleProtocolInterfaces(
@@ -567,6 +571,12 @@ NotifyPhase(
                 BaseAddress = (RootBridgeInstance->IoBase + AllocatedLenIO +
                                 RootBridgeInstance->ResAllocNode[Index].Alignment)
                                 & ~(RootBridgeInstance->ResAllocNode[Index].Alignment);
+                if ((BaseAddress + AddrLen - 1) > RootBridgeInstance->IoLimit) {
+                  ReturnStatus = EFI_OUT_OF_RESOURCES;
+                  RootBridgeInstance->ResAllocNode[Index].Length = 0;
+                  break;
+                }
+                PCIE_DEBUG("IO request memory at:%llx\n", BaseAddress);
                 Status = gDS->AllocateMemorySpace (
                                 EfiGcdAllocateAddress,
                                 EfiGcdMemoryTypeMemoryMappedIo,
@@ -578,7 +588,7 @@ NotifyPhase(
                                 );
 
                 if (!EFI_ERROR (Status)) {
-                  RootBridgeInstance->ResAllocNode[Index].Base   = (UINTN)BaseAddress - RootBridgeInstance->IoBase;
+                  RootBridgeInstance->ResAllocNode[Index].Base   = (UINTN)BaseAddress;
                   RootBridgeInstance->ResAllocNode[Index].Status = ResAllocated;
                   AllocatedLenIO += AddrLen;
                   PCIE_DEBUG("IO Baseaddress:%llx\n", BaseAddress);
@@ -596,7 +606,12 @@ NotifyPhase(
                 BaseAddress = (RootBridgeInstance->MemBase + AllocatedLenMem +
                                 RootBridgeInstance->ResAllocNode[Index].Alignment)
                                 & ~(RootBridgeInstance->ResAllocNode[Index].Alignment);
-                PCIE_DEBUG("Requesting resource at:%llx\n", BaseAddress);
+                if ((BaseAddress + AddrLen - 1) > RootBridgeInstance->MemLimit) {
+                  ReturnStatus = EFI_OUT_OF_RESOURCES;
+                  RootBridgeInstance->ResAllocNode[Index].Length = 0;
+                  break;
+                }
+                PCIE_DEBUG("(P)Mem32/64 request memory at:%llx\n", BaseAddress);
                 Status = gDS->AllocateMemorySpace (
                                 EfiGcdAllocateAddress,
                                 EfiGcdMemoryTypeMemoryMappedIo,
@@ -609,7 +624,7 @@ NotifyPhase(
 
                 if (!EFI_ERROR (Status)) {
                   // We were able to allocate the PCI memory
-                  RootBridgeInstance->ResAllocNode[Index].Base   = (UINTN)BaseAddress - RootBridgeInstance->MemBase;
+                  RootBridgeInstance->ResAllocNode[Index].Base   = (UINTN)BaseAddress;
                   RootBridgeInstance->ResAllocNode[Index].Status = ResAllocated;
                   AllocatedLenMem += AddrLen;
                   PCIE_DEBUG("(P)Mem32/64 resource allocated:%llx\n", BaseAddress);
@@ -1065,6 +1080,7 @@ SubmitResources(
   UINT64                                Alignment;
   UINTN                                 Index;
 
+  PCIE_DEBUG("In SubmitResources\n");
   //
   // Check the input parameter: Configuration
   //
@@ -1087,7 +1103,7 @@ SubmitResources(
     if (RootBridgeHandle == RootBridgeInstance->Handle) {
       while ( *Temp == 0x8A) {
         Ptr = (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *) Temp ;
-        PCIE_DEBUG("Ptr->ResType:%llx\n", Ptr->ResType);
+        PCIE_DEBUG("Ptr->ResType:%d\n", Ptr->ResType);
         PCIE_DEBUG("Ptr->Addrlen:%llx\n", Ptr->AddrLen);
         PCIE_DEBUG("Ptr->AddrRangeMax:%llx\n", Ptr->AddrRangeMax);
         PCIE_DEBUG("Ptr->AddrRangeMin:%llx\n", Ptr->AddrRangeMin);
@@ -1191,6 +1207,7 @@ GetProposedResources(
   Buffer = NULL;
   Number = 0;
 
+  PCIE_DEBUG("In GetProposedResources\n");
   //
   // Get the Host Bridge Instance from the resource allocation protocol
   //
@@ -1235,7 +1252,9 @@ GetProposedResources(
             Ptr->ResType = 1;
             Ptr->GenFlag = 0;
             Ptr->SpecificFlag = 0;
-            Ptr->AddrRangeMin = RootBridgeInstance->ResAllocNode[Index].Base;
+            /* This is PCIE Device Bus which start address is the low 32bit of mem base*/
+            Ptr->AddrRangeMin = (RootBridgeInstance->ResAllocNode[Index].Base - RootBridgeInstance->MemBase) +
+                                 (RootBridgeInstance->MemBase & 0xFFFFFFFF);
             Ptr->AddrRangeMax = 0;
             Ptr->AddrTranslationOffset = \
                  (ResStatus == ResAllocated) ? EFI_RESOURCE_SATISFIED : EFI_RESOURCE_LESS;
@@ -1252,7 +1271,9 @@ GetProposedResources(
             Ptr->GenFlag = 0;
             Ptr->SpecificFlag = 0;
             Ptr->AddrSpaceGranularity = 32;
-            Ptr->AddrRangeMin = RootBridgeInstance->ResAllocNode[Index].Base;
+            /* This is PCIE Device Bus which start address is the low 32bit of mem base*/
+            Ptr->AddrRangeMin = (RootBridgeInstance->ResAllocNode[Index].Base - RootBridgeInstance->MemBase) +
+                                 (RootBridgeInstance->MemBase & 0xFFFFFFFF);
             Ptr->AddrRangeMax = 0;
             Ptr->AddrTranslationOffset = \
                  (ResStatus == ResAllocated) ? EFI_RESOURCE_SATISFIED : EFI_RESOURCE_LESS;
@@ -1269,7 +1290,9 @@ GetProposedResources(
             Ptr->GenFlag = 0;
             Ptr->SpecificFlag = 6;
             Ptr->AddrSpaceGranularity = 32;
-            Ptr->AddrRangeMin = RootBridgeInstance->ResAllocNode[Index].Base;
+            /* This is PCIE Device Bus which start address is the low 32bit of mem base*/
+            Ptr->AddrRangeMin = (RootBridgeInstance->ResAllocNode[Index].Base - RootBridgeInstance->MemBase) +
+                                 (RootBridgeInstance->MemBase & 0xFFFFFFFF);
             Ptr->AddrRangeMax = 0;
             Ptr->AddrTranslationOffset = \
                  (ResStatus == ResAllocated) ? EFI_RESOURCE_SATISFIED : EFI_RESOURCE_LESS;
@@ -1286,7 +1309,9 @@ GetProposedResources(
             Ptr->GenFlag = 0;
             Ptr->SpecificFlag = 0;
             Ptr->AddrSpaceGranularity = 64;
-            Ptr->AddrRangeMin = RootBridgeInstance->ResAllocNode[Index].Base;
+            /* This is PCIE Device Bus which start address is the low 32bit of mem base*/
+            Ptr->AddrRangeMin = (RootBridgeInstance->ResAllocNode[Index].Base - RootBridgeInstance->MemBase) +
+                                 (RootBridgeInstance->MemBase & 0xFFFFFFFF);
             Ptr->AddrRangeMax = 0;
             Ptr->AddrTranslationOffset = \
                  (ResStatus == ResAllocated) ? EFI_RESOURCE_SATISFIED : EFI_RESOURCE_LESS;
@@ -1303,13 +1328,22 @@ GetProposedResources(
             Ptr->GenFlag = 0;
             Ptr->SpecificFlag = 6;
             Ptr->AddrSpaceGranularity = 64;
-            Ptr->AddrRangeMin = RootBridgeInstance->ResAllocNode[Index].Base;
+            /* This is PCIE Device Bus which start address is the low 32bit of mem base*/
+            Ptr->AddrRangeMin = (RootBridgeInstance->ResAllocNode[Index].Base - RootBridgeInstance->MemBase) +
+                                 (RootBridgeInstance->MemBase & 0xFFFFFFFF);
             Ptr->AddrRangeMax = 0;
             Ptr->AddrTranslationOffset = \
                  (ResStatus == ResAllocated) ? EFI_RESOURCE_SATISFIED : EFI_RESOURCE_LESS;
             Ptr->AddrLen = RootBridgeInstance->ResAllocNode[Index].Length;
             break;
           };
+          PCIE_DEBUG("Ptr->ResType:%d\n", Ptr->ResType);
+          PCIE_DEBUG("Ptr->Addrlen:%llx\n", Ptr->AddrLen);
+          PCIE_DEBUG("Ptr->AddrRangeMax:%llx\n", Ptr->AddrRangeMax);
+          PCIE_DEBUG("Ptr->AddrRangeMin:%llx\n", Ptr->AddrRangeMin);
+          PCIE_DEBUG("Ptr->SpecificFlag:%llx\n", Ptr->SpecificFlag);
+          PCIE_DEBUG("Ptr->AddrTranslationOffset:%d\n", Ptr->AddrTranslationOffset);
+          PCIE_DEBUG("Ptr->AddrSpaceGranularity:%d\n", Ptr->AddrSpaceGranularity);
 
           Temp += sizeof (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR);
         }

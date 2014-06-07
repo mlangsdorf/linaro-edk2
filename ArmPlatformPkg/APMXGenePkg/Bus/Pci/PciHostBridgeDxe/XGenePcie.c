@@ -22,49 +22,49 @@ struct xgene_pcie_port *PortList;
 UINT32 PcieMaxWidthSupport[XGENE_PCIE_MAX_PORTS] = {0x8, 0x4, 0x1, 0x8, 0x4};
 struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
   {
-   /* PCIE 0 SPACE */
-   MAKE_U64(PCIE0_CSR_BASE_HI, PCIE0_CSR_BASE_LO),
-   PCIE_CSR_SIZE,
-   PCIE0_CFGBASE_HI,
-   PCIE0_CFGBASE_LO,
-   PCIE_CFGSIZE,
-   MAKE_U64(PCIE0_CFGBASE_HI,PCIE0_CFGBASE_LO),
-   {
-     {
+    /* PCIE 0 SPACE */
+    MAKE_U64(PCIE0_CSR_BASE_HI, PCIE0_CSR_BASE_LO),
+    PCIE_CSR_SIZE,
+    PCIE0_CFGBASE_HI,
+    PCIE0_CFGBASE_LO,
+    PCIE_CFGSIZE,
+    MAKE_U64(PCIE0_CFGBASE_HI,PCIE0_CFGBASE_LO),
+    {
+      {
         PCIE0_OB_MEMBASE0_HI,
         PCIE0_OB_MEMBASE0_LO,
         PCIE0_OB_MEMSIZE0,
         0,
-        0
-     },
-     {
+        PCIE0_OB_MEMBASE0_LO
+      },
+      {
         PCIE0_OB_MEMBASE1_HI,
         PCIE0_OB_MEMBASE1_LO,
         PCIE0_OB_MEMSIZE1,
         PCIE0_OB_MEMBASE1_HI, /* 1:1 mapping */
         PCIE0_OB_MEMBASE1_LO
-     },
-     {
+      },
+      {
         PCIE0_OB_IOBASE_HI,
         PCIE0_OB_IOBASE_LO,
         PCIE0_OB_IOSIZE,
         0,
-        0x10000000
-     }
-   },
-   PCIE0_MSGBASE_HI, PCIE0_MSGBASE_LO, PCIE0_MSGSIZE,
-   {
-     {
-       PCIE0_IB_MEMBASE0_PCIE_HI,
-       PCIE0_IB_MEMBASE0_PCIE_LO,
-       PCIE0_IB_MEMSIZE0,
-       PCIE0_IB_MEMBASE0_PIM_1_HI,
-       PCIE0_IB_MEMBASE0_PIM_1_LO,
-       PCIE0_IB_MEMBASE0_PIM_2_HI,
-       PCIE0_IB_MEMBASE0_PIM_2_LO,
-       PCIE0_IB_MEMBASE0_PIM_SIZE
-     },
+        PCIE0_OB_IOBASE_LO
+      }
+    },
+    PCIE0_MSGBASE_HI, PCIE0_MSGBASE_LO, PCIE0_MSGSIZE,
     {
+      {
+        PCIE0_IB_MEMBASE0_PCIE_HI,
+        PCIE0_IB_MEMBASE0_PCIE_LO,
+        PCIE0_IB_MEMSIZE0,
+        PCIE0_IB_MEMBASE0_PIM_1_HI,
+        PCIE0_IB_MEMBASE0_PIM_1_LO,
+        0,
+        0,
+        PCIE0_IB_MEMBASE0_PIM_SIZE
+      },
+      {
         PCIE0_IB_MEMBASE1_PCIE_HI,
         PCIE0_IB_MEMBASE1_PCIE_LO,
         PCIE0_IB_MEMSIZE1,
@@ -73,8 +73,8 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         0,
         0,
         PCIE0_IB_MEMBASE1_PIM_SIZE
-    },
-    {
+      },
+      {
         PCIE0_IB_MEMBASE3_PCIE_HI,
         PCIE0_IB_MEMBASE3_PCIE_LO,
         PCIE0_IB_MEMSIZE3,
@@ -83,255 +83,295 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         0,
         0,
         PCIE0_IB_MEMBASE3_PIM_SIZE
+      },
     },
-   },
-   PCIE0_IB_ROMBASE_HI,
-   PCIE0_IB_ROMBASE_LO,
-   PCIE0_IB_ROMSIZE
+    PCIE0_IB_ROMBASE_HI,
+    PCIE0_IB_ROMBASE_LO,
+    PCIE0_IB_ROMSIZE
   },
 
   /* PCIE 1 SPACE */
   {
-      MAKE_U64(PCIE1_CSR_BASE_HI, PCIE1_CSR_BASE_LO),
-      PCIE_CSR_SIZE,
-      PCIE1_CFGBASE_HI,
-      PCIE1_CFGBASE_LO,
-      PCIE_CFGSIZE,
-      MAKE_U64(PCIE1_CFGBASE_HI,PCIE1_CFGBASE_LO),
-   {
-     {
-         PCIE1_OB_MEMBASE0_HI,
-         PCIE1_OB_MEMBASE0_LO,
-         PCIE1_OB_MEMSIZE0,
-         0,
-         0
-     },
-     {
+    MAKE_U64(PCIE1_CSR_BASE_HI, PCIE1_CSR_BASE_LO),
+    PCIE_CSR_SIZE,
+    PCIE1_CFGBASE_HI,
+    PCIE1_CFGBASE_LO,
+    PCIE_CFGSIZE,
+    MAKE_U64(PCIE1_CFGBASE_HI,PCIE1_CFGBASE_LO),
+    {
+      {
+        PCIE1_OB_MEMBASE0_HI,
+        PCIE1_OB_MEMBASE0_LO,
+        PCIE1_OB_MEMSIZE0,
+        0,
+        PCIE1_OB_MEMBASE0_LO
+      },
+      {
         PCIE1_OB_MEMBASE1_HI,
         PCIE1_OB_MEMBASE1_LO,
         PCIE1_OB_MEMSIZE1,
         0,
-        0x80000000
-     },
-     {
+        PCIE1_OB_MEMBASE1_LO
+      },
+      {
         PCIE1_OB_IOBASE_HI,
         PCIE1_OB_IOBASE_LO,
         PCIE1_OB_IOSIZE,
         0,
-        0x10000000
-     }
-   },
-   PCIE1_MSGBASE_HI,
-   PCIE1_MSGBASE_LO,
-   PCIE1_MSGSIZE,
-   {
-     {
-         PCIE1_IB_MEMBASE0_PCIE_HI,
-         PCIE1_IB_MEMBASE0_PCIE_LO,
-         PCIE1_IB_MEMSIZE0,
-         PCIE1_IB_MEMBASE0_PIM_1_HI,
-         PCIE1_IB_MEMBASE0_PIM_1_LO,
-         PCIE1_IB_MEMBASE0_PIM_2_HI,
-         PCIE1_IB_MEMBASE0_PIM_2_LO,
-         PCIE1_IB_MEMBASE0_PIM_SIZE
-     },
-     {
-         PCIE1_IB_MEMBASE1_PCIE_HI,
-         PCIE1_IB_MEMBASE1_PCIE_LO,
-         PCIE1_IB_MEMSIZE1,
-         0,
-         0,
-         0,
-         0,
-         PCIE1_IB_MEMBASE1_PIM_SIZE
-     }
-   },
-   PCIE1_IB_ROMBASE_HI,
-   PCIE1_IB_ROMBASE_LO,
-   PCIE1_IB_ROMSIZE
+        PCIE1_OB_IOBASE_LO
+      }
+    },
+    PCIE1_MSGBASE_HI,
+    PCIE1_MSGBASE_LO,
+    PCIE1_MSGSIZE,
+    {
+      {
+        PCIE1_IB_MEMBASE0_PCIE_HI,
+        PCIE1_IB_MEMBASE0_PCIE_LO,
+        PCIE1_IB_MEMSIZE0,
+        PCIE1_IB_MEMBASE0_PIM_1_HI,
+        PCIE1_IB_MEMBASE0_PIM_1_LO,
+        0,
+        0,
+        PCIE1_IB_MEMBASE0_PIM_SIZE
+      },
+      {
+        PCIE1_IB_MEMBASE1_PCIE_HI,
+        PCIE1_IB_MEMBASE1_PCIE_LO,
+        PCIE1_IB_MEMSIZE1,
+        0,
+        0,
+        0,
+        0,
+        PCIE1_IB_MEMBASE1_PIM_SIZE
+      },
+      {
+        PCIE1_IB_MEMBASE3_PCIE_HI,
+        PCIE1_IB_MEMBASE3_PCIE_LO,
+        PCIE1_IB_MEMSIZE3,
+        PCIE1_IB_MEMBASE3_PIM_1_HI,
+        PCIE1_IB_MEMBASE3_PIM_1_LO,
+        0,
+        0,
+        PCIE1_IB_MEMBASE3_PIM_SIZE
+      },
+    },
+    PCIE1_IB_ROMBASE_HI,
+    PCIE1_IB_ROMBASE_LO,
+    PCIE1_IB_ROMSIZE
   },
 
   /* PCIE 2 SPACE */
   {
-      MAKE_U64(PCIE2_CSR_BASE_HI, PCIE2_CSR_BASE_LO),
-      PCIE_CSR_SIZE,
-      PCIE2_CFGBASE_HI,
-      PCIE2_CFGBASE_LO,
-      PCIE_CFGSIZE,
-      MAKE_U64(PCIE2_CFGBASE_HI,PCIE2_CFGBASE_LO),
+    MAKE_U64(PCIE2_CSR_BASE_HI, PCIE2_CSR_BASE_LO),
+    PCIE_CSR_SIZE,
+    PCIE2_CFGBASE_HI,
+    PCIE2_CFGBASE_LO,
+    PCIE_CFGSIZE,
+    MAKE_U64(PCIE2_CFGBASE_HI,PCIE2_CFGBASE_LO),
     {
       {
-          PCIE2_OB_MEMBASE0_HI,
-          PCIE2_OB_MEMBASE0_LO,
-          PCIE2_OB_MEMSIZE0,
-          0,
-          0
+        PCIE2_OB_MEMBASE0_HI,
+        PCIE2_OB_MEMBASE0_LO,
+        PCIE2_OB_MEMSIZE0,
+        0,
+        PCIE2_OB_MEMBASE0_LO
       },
       {
-          PCIE2_OB_MEMBASE1_HI,
-          PCIE2_OB_MEMBASE1_LO,
-          PCIE2_OB_MEMSIZE1,
-          0,
-          0x80000000
+        PCIE2_OB_MEMBASE1_HI,
+        PCIE2_OB_MEMBASE1_LO,
+        PCIE2_OB_MEMSIZE1,
+        0,
+        PCIE2_OB_MEMBASE1_LO
       },
       {
-          PCIE2_OB_IOBASE_HI,
-          PCIE2_OB_IOBASE_LO,
-          PCIE2_OB_IOSIZE,
-          0,
-          0x10000000
+        PCIE2_OB_IOBASE_HI,
+        PCIE2_OB_IOBASE_LO,
+        PCIE2_OB_IOSIZE,
+        0,
+        PCIE2_OB_IOBASE_LO
       }
     },
     PCIE2_MSGBASE_HI,
     PCIE2_MSGBASE_LO,
     PCIE2_MSGSIZE,
-   {
-     {
-         PCIE2_IB_MEMBASE0_PCIE_HI,
-         PCIE2_IB_MEMBASE0_PCIE_LO,
-         PCIE2_IB_MEMSIZE0,
-         PCIE2_IB_MEMBASE0_PIM_1_HI,
-         PCIE2_IB_MEMBASE0_PIM_1_LO,
-         PCIE2_IB_MEMBASE0_PIM_2_HI,
-         PCIE2_IB_MEMBASE0_PIM_2_LO,
-         PCIE2_IB_MEMBASE0_PIM_SIZE
-     },
-     {
-         PCIE2_IB_MEMBASE1_PCIE_HI,
-         PCIE2_IB_MEMBASE1_PCIE_LO,
-         PCIE2_IB_MEMSIZE1,
-         0,
-         0,
-         0,
-         0,
-         PCIE2_IB_MEMBASE1_PIM_SIZE
-     }
-   },
-   PCIE2_IB_ROMBASE_HI,
-   PCIE2_IB_ROMBASE_LO,
-   PCIE2_IB_ROMSIZE
+    {
+      {
+        PCIE2_IB_MEMBASE0_PCIE_HI,
+        PCIE2_IB_MEMBASE0_PCIE_LO,
+        PCIE2_IB_MEMSIZE0,
+        PCIE2_IB_MEMBASE0_PIM_1_HI,
+        PCIE2_IB_MEMBASE0_PIM_1_LO,
+        0,
+        0,
+        PCIE2_IB_MEMBASE0_PIM_SIZE
+      },
+      {
+        PCIE2_IB_MEMBASE1_PCIE_HI,
+        PCIE2_IB_MEMBASE1_PCIE_LO,
+        PCIE2_IB_MEMSIZE1,
+        0,
+        0,
+        0,
+        0,
+        PCIE2_IB_MEMBASE1_PIM_SIZE
+      },
+      {
+        PCIE2_IB_MEMBASE3_PCIE_HI,
+        PCIE2_IB_MEMBASE3_PCIE_LO,
+        PCIE2_IB_MEMSIZE3,
+        PCIE2_IB_MEMBASE3_PIM_1_HI,
+        PCIE2_IB_MEMBASE3_PIM_1_LO,
+        0,
+        0,
+        PCIE2_IB_MEMBASE3_PIM_SIZE
+      },
+    },
+    PCIE2_IB_ROMBASE_HI,
+    PCIE2_IB_ROMBASE_LO,
+    PCIE2_IB_ROMSIZE
   },
 
   /* PCIE 3 SPACE */
   {
-      MAKE_U64(PCIE3_CSR_BASE_HI, PCIE3_CSR_BASE_LO),
-      PCIE_CSR_SIZE,
-      PCIE3_CFGBASE_HI,
-      PCIE3_CFGBASE_LO,
-      PCIE_CFGSIZE,
-      MAKE_U64(PCIE3_CFGBASE_HI,PCIE3_CFGBASE_LO),
-   {
-     {
-         PCIE3_OB_MEMBASE0_HI,
-         PCIE3_OB_MEMBASE0_LO,
-         PCIE3_OB_MEMSIZE0,
-         0,
-         0
-     },
-     {
-         PCIE3_OB_MEMBASE1_HI,
-         PCIE3_OB_MEMBASE1_LO,
-         PCIE3_OB_MEMSIZE1,
-         0,
-         0x80000000
-     },
-     {
-         PCIE3_OB_IOBASE_HI,
-         PCIE3_OB_IOBASE_LO,
-         PCIE3_OB_IOSIZE,
-         0,
-         0x10000000
-     }
-   },
-   PCIE3_MSGBASE_HI,
-   PCIE3_MSGBASE_LO,
-   PCIE3_MSGSIZE,
-   {
-     {
-         PCIE3_IB_MEMBASE0_PCIE_HI,
-         PCIE3_IB_MEMBASE0_PCIE_LO,
-         PCIE3_IB_MEMSIZE0,
-         PCIE3_IB_MEMBASE0_PIM_1_HI,
-         PCIE3_IB_MEMBASE0_PIM_1_LO,
-         PCIE3_IB_MEMBASE0_PIM_2_HI,
-         PCIE3_IB_MEMBASE0_PIM_2_LO,
-         PCIE3_IB_MEMBASE0_PIM_SIZE
-     },
-     {
-         PCIE3_IB_MEMBASE1_PCIE_HI,
-         PCIE3_IB_MEMBASE1_PCIE_LO,
-         PCIE3_IB_MEMSIZE1,
-         0,
-         0,
-         0,
-         0,
-         PCIE3_IB_MEMBASE1_PIM_SIZE
-     }
-   },
-   PCIE3_IB_ROMBASE_HI,
-   PCIE3_IB_ROMBASE_LO,
-   PCIE3_IB_ROMSIZE
+    MAKE_U64(PCIE3_CSR_BASE_HI, PCIE3_CSR_BASE_LO),
+    PCIE_CSR_SIZE,
+    PCIE3_CFGBASE_HI,
+    PCIE3_CFGBASE_LO,
+    PCIE_CFGSIZE,
+    MAKE_U64(PCIE3_CFGBASE_HI,PCIE3_CFGBASE_LO),
+    {
+      {
+        PCIE3_OB_MEMBASE0_HI,
+        PCIE3_OB_MEMBASE0_LO,
+        PCIE3_OB_MEMSIZE0,
+        0,
+        PCIE3_OB_MEMBASE0_LO
+      },
+      {
+        PCIE3_OB_MEMBASE1_HI,
+        PCIE3_OB_MEMBASE1_LO,
+        PCIE3_OB_MEMSIZE1,
+        0,
+        PCIE3_OB_MEMBASE1_LO
+      },
+      {
+        PCIE3_OB_IOBASE_HI,
+        PCIE3_OB_IOBASE_LO,
+        PCIE3_OB_IOSIZE,
+        0,
+        PCIE3_OB_IOBASE_LO
+      }
+    },
+    PCIE3_MSGBASE_HI,
+    PCIE3_MSGBASE_LO,
+    PCIE3_MSGSIZE,
+    {
+      {
+        PCIE3_IB_MEMBASE0_PCIE_HI,
+        PCIE3_IB_MEMBASE0_PCIE_LO,
+        PCIE3_IB_MEMSIZE0,
+        PCIE3_IB_MEMBASE0_PIM_1_HI,
+        PCIE3_IB_MEMBASE0_PIM_1_LO,
+        0,
+        0,
+        PCIE3_IB_MEMBASE0_PIM_SIZE
+      },
+      {
+        PCIE3_IB_MEMBASE1_PCIE_HI,
+        PCIE3_IB_MEMBASE1_PCIE_LO,
+        PCIE3_IB_MEMSIZE1,
+        0,
+        0,
+        0,
+        0,
+        PCIE3_IB_MEMBASE1_PIM_SIZE
+      },
+      {
+        PCIE3_IB_MEMBASE3_PCIE_HI,
+        PCIE3_IB_MEMBASE3_PCIE_LO,
+        PCIE3_IB_MEMSIZE3,
+        PCIE3_IB_MEMBASE3_PIM_1_HI,
+        PCIE3_IB_MEMBASE3_PIM_1_LO,
+        0,
+        0,
+        PCIE3_IB_MEMBASE3_PIM_SIZE
+      },
+    },
+    PCIE3_IB_ROMBASE_HI,
+    PCIE3_IB_ROMBASE_LO,
+    PCIE3_IB_ROMSIZE
   },
 
   /* PCIE 4 SPACE */
   {
-      MAKE_U64(PCIE4_CSR_BASE_HI, PCIE4_CSR_BASE_LO),
-      PCIE_CSR_SIZE,
-      PCIE4_CFGBASE_HI,
-      PCIE4_CFGBASE_LO,
-      PCIE_CFGSIZE,
-      MAKE_U64(PCIE4_CFGBASE_HI,PCIE4_CFGBASE_LO),
-   {
-     {
-         PCIE4_OB_MEMBASE0_HI,
-         PCIE4_OB_MEMBASE0_LO,
-         PCIE4_OB_MEMSIZE0,
-         0,
-         0
-     },
-     {
-         PCIE4_OB_MEMBASE1_HI,
-         PCIE4_OB_MEMBASE1_LO,
-         PCIE4_OB_MEMSIZE1,
-         0,
-         0x80000000
-     },
-     {
-         PCIE4_OB_IOBASE_HI,
-         PCIE4_OB_IOBASE_LO,
-         PCIE4_OB_IOSIZE,
-         0,
-         0x10000000
-     }
-   },
-   PCIE4_MSGBASE_HI,
-   PCIE4_MSGBASE_LO,
-   PCIE4_MSGSIZE,
-   {
-     {
-         PCIE4_IB_MEMBASE0_PCIE_HI,
-         PCIE4_IB_MEMBASE0_PCIE_LO,
-         PCIE4_IB_MEMSIZE0,
-         PCIE4_IB_MEMBASE0_PIM_1_HI,
-         PCIE4_IB_MEMBASE0_PIM_1_LO,
-         PCIE4_IB_MEMBASE0_PIM_2_HI,
-         PCIE4_IB_MEMBASE0_PIM_2_LO,
-         PCIE4_IB_MEMBASE0_PIM_SIZE
-     },
-     {
-         PCIE4_IB_MEMBASE1_PCIE_HI,
-         PCIE4_IB_MEMBASE1_PCIE_LO,
-         PCIE4_IB_MEMSIZE1,
-         0,
-         0,
-         0,
-         0,
-         PCIE4_IB_MEMBASE1_PIM_SIZE
-     }
-   },
-   PCIE4_IB_ROMBASE_HI,
-   PCIE4_IB_ROMBASE_LO,
-   PCIE4_IB_ROMSIZE
+    MAKE_U64(PCIE4_CSR_BASE_HI, PCIE4_CSR_BASE_LO),
+    PCIE_CSR_SIZE,
+    PCIE4_CFGBASE_HI,
+    PCIE4_CFGBASE_LO,
+    PCIE_CFGSIZE,
+    MAKE_U64(PCIE4_CFGBASE_HI,PCIE4_CFGBASE_LO),
+    {
+      {
+        PCIE4_OB_MEMBASE0_HI,
+        PCIE4_OB_MEMBASE0_LO,
+        PCIE4_OB_MEMSIZE0,
+        0,
+        PCIE4_OB_MEMBASE0_LO
+      },
+      {
+        PCIE4_OB_MEMBASE1_HI,
+        PCIE4_OB_MEMBASE1_LO,
+        PCIE4_OB_MEMSIZE1,
+        0,
+        PCIE4_OB_MEMBASE1_LO
+      },
+      {
+        PCIE4_OB_IOBASE_HI,
+        PCIE4_OB_IOBASE_LO,
+        PCIE4_OB_IOSIZE,
+        0,
+        PCIE4_OB_IOBASE_LO
+      }
+    },
+    PCIE4_MSGBASE_HI,
+    PCIE4_MSGBASE_LO,
+    PCIE4_MSGSIZE,
+    {
+      {
+        PCIE4_IB_MEMBASE0_PCIE_HI,
+        PCIE4_IB_MEMBASE0_PCIE_LO,
+        PCIE4_IB_MEMSIZE0,
+        PCIE4_IB_MEMBASE0_PIM_1_HI,
+        PCIE4_IB_MEMBASE0_PIM_1_LO,
+        PCIE4_IB_MEMBASE0_PIM_2_HI,
+        PCIE4_IB_MEMBASE0_PIM_2_LO,
+        PCIE4_IB_MEMBASE0_PIM_SIZE
+      },
+      {
+        PCIE4_IB_MEMBASE1_PCIE_HI,
+        PCIE4_IB_MEMBASE1_PCIE_LO,
+        PCIE4_IB_MEMSIZE1,
+        0,
+        0,
+        0,
+        0,
+        PCIE4_IB_MEMBASE1_PIM_SIZE
+      },
+      {
+        PCIE4_IB_MEMBASE3_PCIE_HI,
+        PCIE4_IB_MEMBASE3_PCIE_LO,
+        PCIE4_IB_MEMSIZE3,
+        PCIE4_IB_MEMBASE3_PIM_1_HI,
+        PCIE4_IB_MEMBASE3_PIM_1_LO,
+        0,
+        0,
+        PCIE4_IB_MEMBASE3_PIM_SIZE
+      },
+    },
+    PCIE4_IB_ROMBASE_HI,
+    PCIE4_IB_ROMBASE_LO,
+    PCIE4_IB_ROMSIZE
   }
 };
 
@@ -364,7 +404,7 @@ INTN SetupPortType(VOID)
   INTN Speed, Width;
 
   for(i = 0; i < XGENE_PCIE_MAX_PORTS; i++) {
-    Speed = (PcieGen >> (i*4)) & 0xF;
+    Speed = ((PcieGen >> (i*4)) & 0xF) - 1;
     if (Speed < PCIE_GEN1 || Speed > PCIE_GEN3) {
       continue;
     }
@@ -461,25 +501,23 @@ XGenePcieSetupHostPre()
   return EFI_SUCCESS;
 }
 
-VOID XgenePcieAdjustRanges(struct xgene_pcie_port *port)
-{
-  struct xgene_pcie_map_tbl *hb = port->map_tbl;
-  EFI_PHYSICAL_ADDRESS ram_addr = CONFIG_SYS_PCIE_INBOUND_BASE;
-  UINT64 ram_size = *(UINT64*)(UINT64)PcdGet64(PcdMemSizeAddr);
-  UINT64 pim = (ram_addr & ~(ram_size - 1));
-
-  hb->ib_mem_addr[0].pcie_hi = upper_32_bits(ram_addr);
-  hb->ib_mem_addr[0].pcie_lo = lower_32_bits(ram_addr);
-  hb->ib_mem_addr[0].pcie_size = ram_size;
-  hb->ib_mem_addr[0].pim1_hi = upper_32_bits(pim);
-  hb->ib_mem_addr[0].pim1_lo = lower_32_bits(pim);
-  hb->ib_mem_addr[0].pim2_hi = 0;
-  hb->ib_mem_addr[0].pim2_lo = 0;
-  hb->ib_mem_addr[0].pim_size = (u64) ~(hb->ib_mem_addr[0].pcie_size - 1);
-  hb->ob_mem_addr[0].pcie_hi = 0;
-  hb->ob_mem_addr[0].pcie_lo = 0;
-
-}
+//VOID XgenePcieAdjustRanges(struct xgene_pcie_port *port)
+//{
+//  struct xgene_pcie_map_tbl *hb = port->map_tbl;
+//  EFI_PHYSICAL_ADDRESS ram_addr = CONFIG_SYS_PCIE_INBOUND_BASE;
+//  UINT64 ram_size = *(UINT64*)(UINT64)PcdGet64(PcdMemSizeAddr);
+//  UINT64 pim = (ram_addr & ~(ram_size - 1));
+//
+//  hb->ib_mem_addr[0].pcie_hi = upper_32_bits(ram_addr);
+//  hb->ib_mem_addr[0].pcie_lo = lower_32_bits(ram_addr);
+//  hb->ib_mem_addr[0].pcie_size = ram_size;
+//  hb->ib_mem_addr[0].pim1_hi = upper_32_bits(pim);
+//  hb->ib_mem_addr[0].pim1_lo = lower_32_bits(pim);
+//  hb->ib_mem_addr[0].pim2_hi = 0;
+//  hb->ib_mem_addr[0].pim2_lo = 0;
+//  hb->ib_mem_addr[0].pim_size = (u64) ~(hb->ib_mem_addr[0].pcie_size - 1);
+//
+//}
 
 EFI_STATUS
 EFIAPI
@@ -511,7 +549,7 @@ XGenePcieSetupHostPost(UINT32 Index, PCI_HOST_BRIDGE_INSTANCE *HostInstance)
   Port->cfg_base = (VOID *)PcieMapTlb[Index].cfg_vaddr;
   Port->host = (VOID *)HostInstance;
 
-  XgenePcieAdjustRanges(Port);
+  //XgenePcieAdjustRanges(Port);
   xgene_pcie_setup_core(Port);
 
   if (Port->link_up) {

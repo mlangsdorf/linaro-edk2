@@ -631,7 +631,8 @@ RootBridgeConstructor (
   IN EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL    *Protocol,
   IN EFI_HANDLE                         HostBridgeHandle,
   IN UINT64                             Attri,
-  IN PCI_ROOT_BRIDGE_RESOURCE_APPETURE  *ResAppeture
+  IN PCI_ROOT_BRIDGE_RESOURCE_APPETURE  *ResAppeture,
+  IN UINT32                             Seg
   )
 {
   EFI_STATUS                        Status;
@@ -707,7 +708,7 @@ RootBridgeConstructor (
 
   Protocol->Configuration  = RootBridgeIoConfiguration;
 
-  Protocol->SegmentNumber  = 0;
+  Protocol->SegmentNumber  = Seg;
 
   Status = gBS->LocateProtocol (&gEfiMetronomeArchProtocolGuid, NULL, (VOID **)&mMetronome);
   ASSERT_EFI_ERROR (Status);
@@ -905,16 +906,16 @@ RootBridgeIoMemRW (
 
   PrivateData = DRIVER_INSTANCE_FROM_PCI_ROOT_BRIDGE_IO_THIS (This);
   /* Address is bus resource */
-  Address |= PrivateData->MemBase;
-  //Address |= 0xE000000000ULL;
+  Address += (PrivateData->MemBase & ~(0xFFFFFFFFULL));
+
   //PCIE_DEBUG("RootBridgeIoMemRW Address:0x%llx\n", Address);
   //PCIE_DEBUG("RootBridgeIoMemRW Count:0x%llx\n", Count);
   //PCIE_DEBUG("RootBridgeIoMemRW Write:0x%llx\n", Write);
   //PCIE_DEBUG("RootBridgeIoMemRW Width:0x%llx\n", Width);
 
-
   Status = RootBridgeIoCheckParameter (This, MemOperation, Width, Address, Count, Buffer);
   if (EFI_ERROR (Status)) {
+    //PCIE_DEBUG("RootBridgeIoMemRW check parameter failed\n");
     return Status;
   }
 
@@ -1010,7 +1011,7 @@ RootBridgeIoIoRW (
 
   PrivateData = DRIVER_INSTANCE_FROM_PCI_ROOT_BRIDGE_IO_THIS (This);
   /* Address is bus resource */
-  Address |= PrivateData->IoBase;
+  Address += (PrivateData->IoBase & ~(0xFFFFFFFFULL));
 
   Status = RootBridgeIoCheckParameter (This, IoOperation, Width, Address, Count, Buffer);
   if (EFI_ERROR (Status)) {
@@ -1106,18 +1107,56 @@ RootBridgeIoPciRW (
   UINT8                                        *Uint8Buffer;
   EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS  *PciRbAddr;
   UINTN                                        PcieRegAddr;
-
   PCI_ROOT_BRIDGE_INSTANCE                     *PrivateData;
 
-
   //PCIE_DEBUG("RootBridgeIoPciRW called\n");
+  OperationWidth = (EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH) (Width & 0x03);
+  PciRbAddr = (EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS*) &Address;
+
+  /* our HW doesn't support Device > 0 */
+  if (PciRbAddr->Device > 0) {
+    if (!Write) {
+      switch (OperationWidth) {
+      case EfiPciWidthUint8:
+        *(UINT8 *) Buffer = 0xFF;
+        break;
+      case EfiPciWidthUint16:
+        *(UINT16 *) Buffer = 0xFFFF;
+        break;
+      case EfiPciWidthUint32:
+        *(UINT32 *) Buffer = 0xFFFFFFFF;
+        break;
+      default:
+        break;
+      }
+    }
+    return EFI_SUCCESS;
+  }
+  /* try to hide bridge resource */
+  if (PciRbAddr->Bus == 0 &&
+        (PciRbAddr->ExtendedRegister == 0x10 || PciRbAddr->ExtendedRegister == 0x14 )) {
+    if (!Write) {
+      switch (OperationWidth) {
+      case EfiPciWidthUint8:
+        *(UINT8 *) Buffer = 0x0;
+        break;
+      case EfiPciWidthUint16:
+        *(UINT16 *) Buffer = 0x0;
+        break;
+      case EfiPciWidthUint32:
+        *(UINT32 *) Buffer = 0x0;
+        break;
+      default:
+        break;
+      }
+    }
+    return EFI_SUCCESS;
+  }
 
   Status = RootBridgeIoCheckParameter (This, PciOperation, Width, Address, Count, Buffer);
   if (EFI_ERROR (Status)) {
     return Status;
   }
-
-  PciRbAddr = (EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS*) &Address;
 
   PrivateData = DRIVER_INSTANCE_FROM_PCI_ROOT_BRIDGE_IO_THIS (This);
 
@@ -1140,7 +1179,6 @@ RootBridgeIoPciRW (
 
   InStride = mInStride[Width];
   OutStride = mOutStride[Width];
-  OperationWidth = (EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH) (Width & 0x03);
   for (Uint8Buffer = Buffer; Count > 0; PcieRegAddr += InStride, Uint8Buffer += OutStride, Count--) {
     if (Write) {
       switch (OperationWidth) {

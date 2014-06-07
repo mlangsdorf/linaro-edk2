@@ -223,9 +223,9 @@ static void xgene_pcie_program_core(void *csr_base)
 {
   u32 val;
 
-  xgene_pcie_in32(csr_base + CFG_CONSTANTS_31_00, &val);
+  xgene_pcie_in32(csr_base + CFG_CONTROL_31_00, &val);
   val |= AER_OPTIONAL_ERROR_EN;
-  xgene_pcie_out32(csr_base + CFG_CONSTANTS_31_00, val);
+  xgene_pcie_out32(csr_base + CFG_CONTROL_31_00, val);
   xgene_pcie_out32(csr_base + INTXSTATUSMASK, 0x0);
   xgene_pcie_in32(csr_base + CFG_CONTROL_63_32, &val);
   val = (val & ~0xffff) | XGENE_PCIE_DEV_CTRL;
@@ -247,6 +247,7 @@ static void xgene_pcie_setup_outbound_regions(struct xgene_pcie_port *port)
       continue;
     if (i == XGENE_IO)
       flag |= OB_LO_IO;
+    PCIE_VDEBUG("Setup outbound region:%d\n", i);
     xgene_pcie_out32(csr_base + addr, hb->ob_mem_addr[i].lo);
     xgene_pcie_out32(csr_base + addr + 0x04, hb->ob_mem_addr[i].hi);
     val64 = ~(hb->ob_mem_addr[i].size - 1) | flag;
@@ -439,9 +440,6 @@ static void xgene_pcie_setup_root_complex(struct xgene_pcie_port *port)
   xgene_pcie_in32(csr_base + CFG_CONSTANTS_479_448, &val);
   val |= SWITCH_PORT_MODE_MASK;
   val &= ~PM_FORCE_RP_MODE_MASK;
-//  if (apm88xxx_chip_revision() == APMXGeneRevA1) {
-//    val &= ~ADVT_INFINITE_CREDITS;
-//  }
   xgene_pcie_out32(csr_base + CFG_CONSTANTS_479_448, val);
 
   xgene_pcie_setup_link(port);
@@ -578,14 +576,9 @@ static int xgene_pcie_setup_port(struct xgene_pcie_port *port)
    * Fundamental Reset.
    */
   mdelay(1000);
-  if (type == PTYPE_ROOT_PORT) {
-    if (xgene_pcie_poll_pcie_linkup(port))
-      if (port->link_speed > PCIE_GEN1)
-        port->link_speed--;
+  if (type == PTYPE_ROOT_PORT)
+    return xgene_pcie_poll_pcie_linkup(port);
 
-    return !port->link_up;
-  }
-  mdelay(5000);
   return 0;
 }
 
@@ -596,22 +589,23 @@ int xgene_pcie_setup_core(struct xgene_pcie_port *port)
 {
   int ret = 0;
 
-  ret = xgene_pcie_init((UINT64)port->csr_base, port->link_width, port->index);
-  if (ret)
-    return ret;
-
   /* X-Gene RC always starts at GEN-3. However few low gen PCIe cards
    * don't get link up. So when X-Gene PCIe port is RC and there is no
    * link up, then reduce the GEN speed on X-Gene side and retry for
    * link up.
    */
   while (1) {
+    ret = xgene_pcie_init((UINT64)port->csr_base, port->link_width, port->index);
+    if (ret)
+      return ret;
     ret = xgene_pcie_setup_port(port);
     if (port->type == PTYPE_ROOT_PORT) {
-      if (port->link_up || (port->link_speed == PCIE_GEN1))
+      if (port->link_up || port->link_speed == PCIE_GEN1)
         break;
+      else
+        port->link_speed -= 1;
     } else
-      break;
+        break;
   }
   /*
    * With a Downstream Port that supports Link speeds greater

@@ -530,5 +530,7 @@ BdsBootLinuxUEFI (
   Print(L"Loaded: ACPI          = 0x%16LX, Size = %d bytes\n", KernelParamsAddress, KernelParamsSize );
   Print(L"Laeded: Init RAM-disk = 0x%16LX, Size = %d bytes\n\n", InitrdImage, InitrdImageSize );
 
+  PcdSet32(PcdBootingLinuxUEFI, 1);
+
   return StartLinux (LinuxImage, LinuxImageSize, KernelParamsAddress, KernelParamsSize, InitrdImage, InitrdImageSize, FdtMachineType);
 }

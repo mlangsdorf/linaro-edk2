@@ -41,6 +41,7 @@
   ArmLib
   DevicePathLib
   XGenePHYLib
+  PcdLib
 
 [Sources]
   PciHostBridge.c
@@ -66,6 +67,9 @@
 
 [FeaturePcd]
   gArmPlatformTokenSpaceGuid.PcdPcieRootBridgeResetGpio
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdBootingLinuxUEFI
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase

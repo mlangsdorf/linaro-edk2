@@ -68,6 +68,9 @@
   # Define if the Power State Coordination Interface (PSCI) is supported by the Platform Trusted Firmware
   gArmTokenSpaceGuid.PcdArmPsciSupport|FALSE|BOOLEAN|0x00000033
 
+[PcdsDynamic.common]
+  gArmTokenSpaceGuid.PcdBootingLinuxUEFI|0|UINT32|0x00000040
+
 [PcdsFixedAtBuild.common]
   gArmTokenSpaceGuid.PcdTrustzoneSupport|FALSE|BOOLEAN|0x00000006
 

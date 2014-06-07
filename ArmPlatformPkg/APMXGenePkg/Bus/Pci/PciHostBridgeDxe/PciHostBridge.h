@@ -513,7 +513,8 @@ RootBridgeConstructor (
   IN EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL    *Protocol,
   IN EFI_HANDLE                         HostBridgeHandle,
   IN UINT64                             Attri,
-  IN PCI_ROOT_BRIDGE_RESOURCE_APPETURE  *ResAppeture
+  IN PCI_ROOT_BRIDGE_RESOURCE_APPETURE  *ResAppeture,
+  IN UINT32                             Seg
   );
 
 #endif

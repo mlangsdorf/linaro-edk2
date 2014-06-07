@@ -53,6 +53,7 @@
   SerialPortLib
   FdtLib
   TimerLib
+  PcdLib
 
 [LibraryClasses.AARCH64]
   ArmGicLib
@@ -75,6 +76,9 @@
   gEfiLoadedImageProtocolGuid
   gEfiSimpleNetworkProtocolGuid
     
+[Pcd]
+  gArmTokenSpaceGuid.PcdBootingLinuxUEFI
+
 [FeaturePcd]
   gArmTokenSpaceGuid.PcdArmPsciSupport
 

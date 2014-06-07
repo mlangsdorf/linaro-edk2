@@ -428,6 +428,7 @@
    MdeModulePkg/Universal/Network/Udp4Dxe/Udp4Dxe.inf
    MdeModulePkg/Universal/Network/UefiPxeBcDxe/UefiPxeBcDxe.inf
    ArmPlatformPkg/APMXGenePkg/Drivers/SnpDxe/SnpDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Drivers/MellanoxDxe/SnpDxe.inf
    
    #
    # PCI Support

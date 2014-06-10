@@ -1181,7 +1181,7 @@ putshex((unsigned char*)&Instance->InterfaceInfo.MacAddr, 6);
 //DBG(" SnpDxeInitializeGlobalData Addr[5]=0x%x\n", Instance->InterfaceInfo.MacAddr[5]);
 #endif
   // JCM - remove it for single MAC only
-   Instance->Mode.CurrentAddress.Addr[NET_ETHER_ADDR_LEN - 1]++;
+  // Instance->Mode.CurrentAddress.Addr[NET_ETHER_ADDR_LEN - 1]++;
 #if 1	//TODO
   DBG(" SnpDxeInitializeInstanceData after bump\n");
 //DBG(" bump SnpDxeInitializeGlobalData Addr[5]=0x%x\n", Instance->InterfaceInfo.MacAddr[5]);

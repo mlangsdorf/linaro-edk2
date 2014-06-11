@@ -145,6 +145,10 @@ UpdateFdt(
     node = fdt_subnode_offset(fdt, soc, "ethernet");
     if (node >= 0)
       fdt_setprop(fdt, node, "local-mac-address", MacAddr, sizeof(MacAddr));
+
+    node = fdt_subnode_offset(fdt, soc, "ethernet_old");
+    if (node >= 0)
+      fdt_setprop(fdt, node, "local-mac-address", MacAddr, sizeof(MacAddr));
   }
 
   //

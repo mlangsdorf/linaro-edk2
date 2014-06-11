@@ -30,7 +30,6 @@
   BootMenu.c
   BootOption.c
   BootOptionSupport.c
-  ../APMXGenePkg/DeviceTree/DeviceTree.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -49,6 +48,7 @@
   PrintLib
   BaseLib
   ArmPlatformLib
+  ArmPlatformDeviceTree
   
 [Guids]
   gEfiFileSystemInfoGuid

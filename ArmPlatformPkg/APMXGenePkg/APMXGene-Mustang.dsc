@@ -46,6 +46,7 @@
   SPIFlashLib|ArmPlatformPkg/APMXGenePkg/Library/SPIFlashLib/SPIFlashLib.inf
   SerialPortLib|ArmPlatformPkg/APMXGenePkg/Library/DWSerialPortLib/DWSerialPortLib.inf
   RegDumpLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneRegDumpLib/APMXGeneRegDump.inf
+  ArmPlatformDeviceTree|ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.inf
 
   # ARM General Interrupt Driver in Secure and Non-secure
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
@@ -74,7 +75,7 @@
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
-  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR -DBUILD_DTB
+  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
 
@@ -399,10 +400,8 @@
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiTables/AcpiTables.inf
 
-!ifdef $(BUILD_DTB)
    # DeviceTree Support
    ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.inf
-!endif
 
    #
    # Bds

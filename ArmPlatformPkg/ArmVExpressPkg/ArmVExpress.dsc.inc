@@ -31,6 +31,7 @@
   IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
   UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiDecompressLib.inf
   CpuLib|MdePkg/Library/BaseCpuLib/BaseCpuLib.inf
+  ArmPlatformDeviceTree|ArmPlatformPkg/DeviceTreeNull/DeviceTree.inf
 
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf

@@ -17,27 +17,14 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = PlatformDeviceTree
-  FILE_GUID                      = d2af4e1e-8c37-44eb-b4f1-d4ca07ae09a1
-  MODULE_TYPE                    = USER_DEFINED
+  BASE_NAME                      = PlatformDeviceTreeNull
+  FILE_GUID                      = bd0823b5-8510-401d-8b99-228a196a535c
+  MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = ArmPlatformDeviceTree
 
 [Sources]
-  DeviceTree.c
   Setup.c
 
 [Packages]
   MdePkg/MdePkg.dec
-  EmbeddedPkg/EmbeddedPkg.dec
-  ShellPkg/ShellPkg.dec
-  ArmPkg/ArmPkg.dec
-  ArmPlatformPkg/ArmPlatformPkg.dec
-
-[LibraryClasses]
-  ArmLib
-  BaseLib
-  FdtLib
-
-[Guids]
-  gShellVariableGuid                            # ALWAYS_CONSUMED

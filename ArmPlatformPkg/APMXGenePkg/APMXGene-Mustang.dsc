@@ -107,7 +107,7 @@
 [PcdsFixedAtBuild.common]
    # System Memory (4GB)
    gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
-   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1-rh-0.10"
+   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1-rh-0.11"
    gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"X-Gene Mustang Board"
    gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"Mustang"
    gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000

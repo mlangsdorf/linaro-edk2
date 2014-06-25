@@ -29,6 +29,17 @@
 
 EFI_DEBUG_IMAGE_INFO_TABLE_HEADER *gDebugImageTableHeader = NULL;
 
+/* ARM-specific macro to align a stack pointer (downwards). */
+#define STACKALIGNBYTES         (0x4000 - 1)
+#define STACKALIGN(p)           ((UINTN)(p + STACKALIGNBYTES) &~ STACKALIGNBYTES)
+
+typedef struct {
+  UINTN FramePointer;
+  UINTN StackPointer;
+  UINTN ProgramCounter;
+} StackFrame;
+
+
 STATIC CHAR8 *gExceptionTypeString[] = {
   "Synchronous",
   "IRQ",
@@ -60,9 +71,44 @@ DefaultExceptionHandler (
 {
   CHAR8  Buffer[100];
   UINTN  CharCount;
+  UINTN                  FrameCount = 0;
+  StackFrame     Frame;
 
   CharCount = AsciiSPrint (Buffer,sizeof (Buffer),"\n\n%a Exception: \n", gExceptionTypeString[ExceptionType]);
   SerialPortWrite ((UINT8 *) Buffer, CharCount);
+
+  Frame.FramePointer = SystemContext.SystemContextAArch64->FP;
+  Frame.StackPointer = SystemContext.SystemContextAArch64->SP;
+  Frame.ProgramCounter = SystemContext.SystemContextAArch64->LR;
+
+  /* unwind the last 10 frames on the stack */
+  for (FrameCount = 0; FrameCount < 10; FrameCount++) {
+    UINTN High, Low;
+    UINTN FramePointer;
+
+    FramePointer = Frame.FramePointer;
+    Low = Frame.StackPointer;
+    High = STACKALIGN(Low);
+
+    if ((FramePointer < Low) || (FramePointer > (High - 0x18)) ||
+        (FramePointer & 0xf)) {
+      break;
+    }
+
+    CharCount = AsciiSPrint (Buffer, sizeof (Buffer),
+                       "%d: FP 0x%016lx SP 0x%016lx PC 0x%016lx\n",
+                        FrameCount, Frame.FramePointer, Frame.StackPointer,
+                        Frame.ProgramCounter);
+    Frame.StackPointer = FramePointer + 0x10;
+    Frame.FramePointer = *(UINTN *)(FramePointer);
+    Frame.ProgramCounter = *(UINTN *)(FramePointer + 8) - 4;
+
+    if ((CharCount < 100) && (CharCount > 0)) {
+      SerialPortWrite ((UINT8 *) Buffer, CharCount);
+    } else {
+      break;
+    }
+  }
 
   DEBUG_CODE_BEGIN ();
     CHAR8  *Pdb;

@@ -52,9 +52,6 @@ UpdateFdt(
   UINTN                 Index;
   ARM_PROCESSOR_TABLE   *ArmProcessorTable;
   ARM_CORE_INFO         *ArmCoreInfoTable;
-  UINT32                MpId;
-  UINT32                ClusterId;
-  UINT32                CoreId;
   UINT32                Freq;
   UINT64                CpuReleaseAddr;
   UINTN                 CoreMpId;
@@ -82,10 +79,6 @@ UpdateFdt(
   for (Index=0; Index < gST->NumberOfTableEntries; Index++) {
     // Check for correct GUID type
     if (CompareGuid (&gArmMpCoreInfoGuid, &(gST->ConfigurationTable[Index].VendorGuid))) {
-      MpId = ArmReadMpidr ();
-      ClusterId = GET_CLUSTER_ID(MpId);
-      CoreId    = GET_CORE_ID(MpId);
-
       node = fdt_subnode_offset(fdt, 0, "cpus");
       if (node < 0) {
 	Print (L"ERROR: Device Tree 'cpus' node not found\n");

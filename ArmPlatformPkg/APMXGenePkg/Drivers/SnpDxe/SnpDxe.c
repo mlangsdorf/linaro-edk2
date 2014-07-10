@@ -13,7 +13,7 @@
 
 #include "SnpDxe.h"
 
-EFI_EVENT             EfiExitBootServicesEvent = (EFI_EVENT)NULL;
+EFI_EVENT             EfiExitBootServicesEvents[MAX_INTERFACE_INFO_NUMBER];
 
 extern EFI_STATUS
 APMXGeneNet_Initialize (
@@ -955,10 +955,7 @@ ExitBootServicesEvent (
   IN VOID       *Context
   )
 {
-  SNP_GLOBAL_DATA   *This = Context;
-  SNP_INSTANCE_DATA *Instance;
-
-  Instance = SNP_INSTANCE_DATA_FROM_SNP_THIS (This);
+  SNP_INSTANCE_DATA *Instance = Context;
 
   APMXGeneNet_Halt (Instance->InterfaceInfo.InterfaceIndex);
 }
@@ -1099,12 +1096,14 @@ DBG(" SnpDxeInitializeGlobalData Addr[5]=0x%x\n", NetInterfaceInfoBuffer[0].MacA
 	}
 
 #endif
-  }
-  // Register for an ExitBootServicesEvent
-  Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY,
-			     ExitBootServicesEvent, This, &EfiExitBootServicesEvent);
-  ASSERT_EFI_ERROR (Status);
+	// Register for an ExitBootServicesEvent
 
+	EfiExitBootServicesEvents[Index] = (EFI_EVENT)NULL;
+	Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY,
+				   ExitBootServicesEvent, Instance,
+				   &EfiExitBootServicesEvents[Index]);
+	ASSERT_EFI_ERROR (Status);
+  }
   DBG("Exit SnpDxeInitializeGlobalData Index=%d\n", Index);
   return EFI_SUCCESS;
 

@@ -74,6 +74,8 @@ SelectBootDevice (
     goto EXIT;
   }
 
+  Print(L"[%d] Return to Main Menu\n", SupportedDeviceCount + 1);
+
   //
   // Select the Boot Device
   //
@@ -81,7 +83,8 @@ SelectBootDevice (
   while (SupportedDeviceSelected == 0) {
     Print(L"Select the Boot Device: ");
     Status = GetHIInputInteger (&SupportedDeviceSelected);
-    if (EFI_ERROR(Status)) {
+    if (EFI_ERROR(Status) ||
+       (SupportedDeviceSelected == (SupportedDeviceCount + 1))) {
       Status = EFI_ABORTED;
       goto EXIT;
     } else if ((SupportedDeviceSelected == 0) || (SupportedDeviceSelected > SupportedDeviceCount)) {
@@ -332,6 +335,8 @@ BootMenuSelectBootOption (
     return EFI_NOT_FOUND;
   }
 
+  Print(L"[%d] Return to Main Menu\n", BootOptionCount + 1);
+
   // Get the index of the boot device to delete
   BootOptionSelected = 0;
   while (BootOptionSelected == 0) {
@@ -339,6 +344,8 @@ BootMenuSelectBootOption (
     Status = GetHIInputInteger (&BootOptionSelected);
     if (EFI_ERROR(Status)) {
       return Status;
+    } else if (BootOptionSelected == (BootOptionCount + 1)) {
+      return EFI_ABORTED;
     } else if ((BootOptionSelected == 0) || (BootOptionSelected > BootOptionCount)) {
       Print(L"Invalid input (max %d)\n",BootOptionCount);
       BootOptionSelected = 0;

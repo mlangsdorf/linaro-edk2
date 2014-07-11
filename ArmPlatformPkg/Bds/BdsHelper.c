@@ -35,7 +35,7 @@ EditHIInputStr (
   Print (CmdLine);
 
   // To prevent a buffer overflow, we only allow to enter (MaxCmdLine-1) characters
-  for (CmdLineIndex = StrLen (CmdLine); CmdLineIndex < MaxCmdLine - 1; ) {
+  for (CmdLineIndex = StrLen (CmdLine); CmdLineIndex < MaxCmdLine; ) {
     Status = gBS->WaitForEvent (1, &gST->ConIn->WaitForKey, &WaitIndex);
     ASSERT_EFI_ERROR (Status);
 
@@ -52,7 +52,7 @@ EditHIInputStr (
 
     if ((Char == CHAR_LINEFEED) || (Char == CHAR_CARRIAGE_RETURN) || (Char == 0x7f)) {
       CmdLine[CmdLineIndex] = '\0';
-      Print (L"\n\r");
+      Print (L"\r\n");
 
       return EFI_SUCCESS;
     } else if ((Key.UnicodeChar == L'\b') || (Key.ScanCode == SCAN_LEFT) || (Key.ScanCode == SCAN_DELETE)){
@@ -62,7 +62,7 @@ EditHIInputStr (
       }
     } else if ((Key.ScanCode == SCAN_ESC) || (Char == 0x1B) || (Char == 0x0)) {
       return EFI_INVALID_PARAMETER;
-    } else {
+    } else if (CmdLineIndex < (MaxCmdLine-1)) {
       CmdLine[CmdLineIndex++] = Key.UnicodeChar;
       Print (L"%c", Key.UnicodeChar);
     }

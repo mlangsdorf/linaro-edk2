@@ -533,7 +533,8 @@ StartDefaultBootOnTimeout (
         }
         // In case of success, we should not return from this call.
       }
-      FreePool (BootOrder);
+      if (BootOrder)
+	      FreePool (BootOrder);
 
       // Now we should look for a PXE server
       // Again, if this returned at all, that means it failed

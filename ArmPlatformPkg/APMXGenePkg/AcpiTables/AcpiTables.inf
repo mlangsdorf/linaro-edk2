@@ -27,6 +27,7 @@
   Facp.asl
   Facs.asl
   Dsdt.asl
+  Ssdt.asl
   Gtdt.asl
   Dbg2.asl
   Spcr.asl

@@ -75,7 +75,7 @@
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
-  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR
+  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR -fno-omit-frame-pointer
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
 

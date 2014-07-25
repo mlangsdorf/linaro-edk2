@@ -46,6 +46,7 @@
   SPIFlashLib|ArmPlatformPkg/APMXGenePkg/Library/SPIFlashLib/SPIFlashLib.inf
   SerialPortLib|ArmPlatformPkg/APMXGenePkg/Library/DWSerialPortLib/DWSerialPortLib.inf
   RegDumpLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneRegDumpLib/APMXGeneRegDump.inf
+  ArmPlatformDeviceTree|ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.inf
 
   # ARM General Interrupt Driver in Secure and Non-secure
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
@@ -74,7 +75,7 @@
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
-  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_UHP=0x100000000
+  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_UHP=0x100000000 -fno-omit-frame-pointer
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
 
@@ -101,11 +102,11 @@
    gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
 [PcdsDynamicDefault.common]
-   # System Memory (4GB) 
-   gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
    gArmTokenSpaceGuid.PcdBootingLinuxUEFI|0
 
 [PcdsFixedAtBuild.common]
+   # System Memory (4GB)
+   gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
    gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0"
    gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"X-Gene Mustang Board"
    gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"Mustang"
@@ -418,6 +419,9 @@
    MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiTables/AcpiTables.inf
+
+   # DeviceTree Support
+   ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.inf
 
    #
    # Bds

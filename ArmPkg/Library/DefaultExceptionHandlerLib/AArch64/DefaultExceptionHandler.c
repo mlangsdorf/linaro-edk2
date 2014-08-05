@@ -82,7 +82,7 @@ DefaultExceptionHandler (
   Frame.ProgramCounter = SystemContext.SystemContextAArch64->LR;
 
   /* unwind the last 10 frames on the stack */
-  for (FrameCount = 0; FrameCount < 10; FrameCount++) {
+  for (FrameCount = 0; FrameCount < 25; FrameCount++) {
     UINTN High, Low;
     UINTN FramePointer;
 

@@ -420,6 +420,8 @@ int apm_eth_rx(struct eth_device *dev, VOID *Buffer, UINTN *BufferSize)
 	return APM_RC_OK;
 }
 
+extern void apm_menet_clk_rst(struct apm_data_priv *priv);
+
 static void apm_eth_halt(struct eth_device *dev)
 {
 	struct apm_enet_dev *priv_dev = dev->priv;
@@ -433,6 +435,7 @@ static void apm_eth_halt(struct eth_device *dev)
 	/* Disable MAC */
 	apm_enet_mac_rx_state(priv, 0);
 	apm_enet_mac_tx_state(priv, 0);
+	apm_menet_clk_rst(priv);
 }
 
 static int apm_eth_init(struct eth_device *dev)
@@ -950,7 +953,8 @@ int apm_eth_device_setup(u8 port, u32 phy_addr, u32 phy_mode,
 	apm_enet_mac_init(priv, dev->enetaddr, SPEED_1000, ENET_MAX_MTU_ALIGNED, 1);
 
 	/* Ensure port is halted */
-	apm_eth_halt(dev);
+	apm_enet_mac_rx_state(priv, 0);
+	apm_enet_mac_tx_state(priv, 0);
 
 	/* Register ethernet device */
 #if defined(CONFIG_NET_MULTI)

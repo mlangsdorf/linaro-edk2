@@ -29,7 +29,7 @@
 #include "XGeneEthMAC.h"
 
 /**
-  Notify function for event group EFI_EVENT_GROUP_READY_TO_BOOT. This is used
+  Notify function for event group EVT_SIGNAL_EXIT_BOOT_SERVICES. This is used
   to configure the system clock and PHY accordingly.
 
   @param[in]  Event   The Event that is being processed.
@@ -38,7 +38,7 @@
 **/
 VOID
 EFIAPI
-OnAcpiReadyToBoot(
+OnAcpiExitBootServices(
   IN EFI_EVENT        Event,
   IN VOID             *Context
   )
@@ -66,18 +66,14 @@ AcpiPlatformEntryPoint (
   )
 {
   EFI_STATUS Status;
-  EFI_EVENT  ReadyToBootEvent;
+  EFI_EVENT  ExitBootServicesEvent;
 
-  //
-  // Register notify function to configure system on ReadyToBoot Event
-  Status = gBS->CreateEventEx (
-                  EVT_NOTIFY_SIGNAL,
-                  TPL_CALLBACK,
-                  OnAcpiReadyToBoot,
+  Status = gBS->CreateEvent (
+                  EVT_SIGNAL_EXIT_BOOT_SERVICES,
+                  TPL_NOTIFY,
+                  OnAcpiExitBootServices,
                   NULL,
-                  &gEfiEventReadyToBootGuid,
-                  &ReadyToBootEvent
-                  );
+                  &ExitBootServicesEvent);
   ASSERT_EFI_ERROR(Status);
 
   return EFI_SUCCESS;

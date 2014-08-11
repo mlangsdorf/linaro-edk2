@@ -1935,7 +1935,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F210000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F21D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F21E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
 			Memory32Fixed (ReadWrite, 0x1f217000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA6}
 		})
@@ -1953,7 +1952,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F220000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F22D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F22E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
 			Memory32Fixed (ReadWrite, 0x1f227000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA7}
 		})
@@ -1971,7 +1969,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F230000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F23D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F23E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA8}
 		})
 	} //SAT2
@@ -2234,12 +2231,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Return (0x1)
 		}
 		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x17020000, 0x30, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
+			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
+			Memory32Fixed(ReadWrite, 0x17030000, 0x400, )
+			Memory32Fixed(ReadWrite, 0x10000000, 0x200, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5c }
 		})
 
 		OperationRegion(\ETHD, SystemMemory, 0x17000238, 4)
@@ -2266,10 +2261,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 		OperationRegion(CLKQ, SystemMemory, 0x1702c008, 4)
 		Field(CLKQ, DWordAcc, NoLock, Preserve) {
-			CLKE, 2,
+			CLKE, 1,
 		}
 		Method(_INI, 0, NotSerialized) {
-			Store(0x2, CLKE)
+			Store(0x1, CLKE)
 			Stall(100)
 		}
 		Method(_DSM, 4, NotSerialized) {

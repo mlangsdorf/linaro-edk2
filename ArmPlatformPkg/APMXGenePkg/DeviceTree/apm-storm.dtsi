@@ -273,19 +273,6 @@
 				enable-mask = <0x39>;
 			};
 
-			rtcclk: rtcclk@17000000 {
-				compatible = "apm,xgene-device-clock";
-				#clock-cells = <1>;
-				clocks = <&socplldiv2 0>;
-				reg = <0x0 0x17000000 0x0 0x2000>;
-				reg-names = "csr-reg";
-				csr-offset = <0xc>;
-				csr-mask = <0x2>;
-				enable-offset = <0x10>;
-				enable-mask = <0x2>;
-				clock-output-names = "rtcclk";
-			};
-
 			pcie0clk: pcie0clk@1f2bc000 {
 				status = "disabled";
 				compatible = "apm,xgene-device-clock";

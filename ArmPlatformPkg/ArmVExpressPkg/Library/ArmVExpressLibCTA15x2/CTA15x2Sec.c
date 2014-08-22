@@ -11,7 +11,6 @@
 *  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 *
 **/
-
 #include <Library/IoLib.h>
 #include <Library/ArmPlatformLib.h>
 #include <Library/DebugLib.h>
@@ -70,5 +69,6 @@ ArmPlatformSecExtraAction (
   OUT UINTN*        JumpAddress
   )
 {
-  *JumpAddress = PcdGet64(PcdFvBaseAddress);
+//  *JumpAddress = PcdGet64(PcdFvBaseAddress);
+  *JumpAddress = PcdGet32(PcdFvBaseAddress);
 }

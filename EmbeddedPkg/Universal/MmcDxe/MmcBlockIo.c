@@ -60,6 +60,7 @@ RaiseTplIfLow() {
   return Current ;
 }
 
+#include "Mmc.h"
 
 EFI_STATUS
 MmcNotifyState (

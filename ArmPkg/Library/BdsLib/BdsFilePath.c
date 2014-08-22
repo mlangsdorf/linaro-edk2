@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2011-2013, ARM Limited. All rights reserved.
+*  Copyright (c) 2011-2014, ARM Limited. All rights reserved.
 *  
 *  This program and the accompanying materials                          
 *  are licensed and made available under the terms and conditions of the BSD License         
@@ -300,30 +300,19 @@ TryRemovableDevice (
   return Status;
 }
 
-/**
-  Connect a Device Path and return the handle of the driver that support this DevicePath
-
-  @param  DevicePath            Device Path of the File to connect
-  @param  Handle                Handle of the driver that support this DevicePath
-  @param  RemainingDevicePath   Remaining DevicePath nodes that do not match the driver DevicePath
-
-  @retval EFI_SUCCESS           A driver that matches the Device Path has been found
-  @retval EFI_NOT_FOUND         No handles match the search.
-  @retval EFI_INVALID_PARAMETER DevicePath or Handle is NULL
-
-**/
+STATIC
 EFI_STATUS
-BdsConnectDevicePath (
-  IN  EFI_DEVICE_PATH_PROTOCOL  ** DevicePath,
-  OUT EFI_HANDLE                *Handle,
-  OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
+BdsConnectAndUpdateDevicePath (
+  IN OUT EFI_DEVICE_PATH_PROTOCOL  **DevicePath,
+  OUT    EFI_HANDLE                *Handle,
+  OUT    EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
   )
 {
   EFI_DEVICE_PATH*            Remaining;
   EFI_DEVICE_PATH*            NewDevicePath;
   EFI_STATUS                  Status;
 
-  if ((DevicePath == NULL)  || (*DevicePath == NULL) || (Handle == NULL)) {
+  if ((DevicePath == NULL) || (*DevicePath == NULL) || (Handle == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -331,6 +320,7 @@ BdsConnectDevicePath (
   Remaining = *DevicePath;
   do {
     // Not for tftp, Remaining = DevicePath;
+    Remaining = *DevicePath;
     // The LocateDevicePath() function locates all devices on DevicePath that support Protocol and returns
     // the handle to the device that is closest to DevicePath. On output, the device path pointer is modified
     // to point to the remaining part of the device path
@@ -375,8 +365,9 @@ BdsConnectDevicePath (
   } else {
     Status = TryRemovableDevice (*DevicePath, Handle, &NewDevicePath);
     if (!EFI_ERROR (Status)) {
+      Status = BdsConnectAndUpdateDevicePath (&NewDevicePath, Handle, RemainingDevicePath);
       *DevicePath = NewDevicePath;
-      return BdsConnectDevicePath (&NewDevicePath, Handle, RemainingDevicePath);
+      return Status;
     }
   }
 
@@ -385,6 +376,28 @@ BdsConnectDevicePath (
   }
 
   return Status;
+}
+
+/**
+  Connect a Device Path and return the handle of the driver that support this DevicePath
+
+  @param  DevicePath            Device Path of the File to connect
+  @param  Handle                Handle of the driver that support this DevicePath
+  @param  RemainingDevicePath   Remaining DevicePath nodes that do not match the driver DevicePath
+
+  @retval EFI_SUCCESS           A driver that matches the Device Path has been found
+  @retval EFI_NOT_FOUND         No handles match the search.
+  @retval EFI_INVALID_PARAMETER DevicePath or Handle is NULL
+
+**/
+EFI_STATUS
+BdsConnectDevicePath (
+  IN  EFI_DEVICE_PATH_PROTOCOL  *DevicePath,
+  OUT EFI_HANDLE                *Handle,
+  OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
+  )
+{
+  return BdsConnectAndUpdateDevicePath (&DevicePath, Handle, RemainingDevicePath);
 }
 
 BOOLEAN
@@ -747,7 +760,7 @@ BdsTftpLoadImage (
   EFI_STATUS                  Status;
   EFI_PXE_BASE_CODE_PROTOCOL  *Pxe;
   UINT64                      TftpBufferSize;
-  VOID*                       TftpBuffer;
+  UINT64                      TftpTransferSize;
   EFI_IP_ADDRESS              ServerIp;
   IPv4_DEVICE_PATH*           IPv4DevicePathNode;
   FILEPATH_DEVICE_PATH*       FilePathDevicePath;
@@ -809,6 +822,7 @@ BdsTftpLoadImage (
   }
   UnicodeStrToAsciiStr (FilePathDevicePath->PathName, AsciiPathName);
 
+  // Try to get the size (required the TFTP server to have "tsize" extension)
   Status = Pxe->Mtftp (
                   Pxe,
                   EFI_PXE_BASE_CODE_TFTP_GET_FILE_SIZE,
@@ -821,37 +835,83 @@ BdsTftpLoadImage (
                   NULL,
                   FALSE
                   );
-  if (EFI_ERROR(Status)) {
+  // Pxe.Mtftp replies EFI_PROTOCOL_ERROR if tsize is not supported by the TFTP server
+  if (EFI_ERROR (Status) && (Status != EFI_PROTOCOL_ERROR)) {
     if (Status == EFI_TFTP_ERROR) {
       DEBUG((EFI_D_ERROR, "TFTP Error: Fail to get the size of the file\n"));
     }
     goto EXIT;
   }
 
-  // Allocate a buffer to hold the whole file.
-  TftpBuffer = AllocatePool (TftpBufferSize);
-  if (TftpBuffer == NULL) {
-    Status = EFI_OUT_OF_RESOURCES;
-    goto EXIT;
-  }
+  //
+  // Two cases:
+  //   1) the file size is unknown (tsize extension not supported)
+  //   2) tsize returned the file size
+  //
+  if (Status == EFI_PROTOCOL_ERROR) {
+    for (TftpBufferSize = SIZE_8MB; TftpBufferSize <= FixedPcdGet32 (PcdMaxTftpFileSize); TftpBufferSize += SIZE_8MB) {
+      // Allocate a buffer to hold the whole file.
+      Status = gBS->AllocatePages (
+                      Type,
+                      EfiBootServicesCode,
+                      EFI_SIZE_TO_PAGES (TftpBufferSize),
+                      Image
+                      );
+      if (EFI_ERROR (Status)) {
+        DEBUG ((EFI_D_ERROR, "Failed to allocate space for image: %r\n", Status));
+        goto EXIT;
+      }
 
-  Status = Pxe->Mtftp (
-                  Pxe,
-                  EFI_PXE_BASE_CODE_TFTP_READ_FILE,
-                  TftpBuffer,
-                  FALSE,
-                  &TftpBufferSize,
-                  NULL,
-                  &ServerIp,
-                  (UINT8*)AsciiPathName,
-                  NULL,
-                  FALSE
-                  );
-  if (EFI_ERROR (Status)) {
-    FreePool (TftpBuffer);
-  } else if (ImageSize != NULL) {
-    *Image = (UINTN)TftpBuffer;
-    *ImageSize = (UINTN)TftpBufferSize;
+      TftpTransferSize = TftpBufferSize;
+      Status = Pxe->Mtftp (
+                      Pxe,
+                      EFI_PXE_BASE_CODE_TFTP_READ_FILE,
+                      (VOID *)(UINTN)*Image,
+                      FALSE,
+                      &TftpTransferSize,
+                      NULL,
+                      &ServerIp,
+                      (UINT8*)AsciiPathName,
+                      NULL,
+                      FALSE
+                      );
+      if (EFI_ERROR (Status)) {
+        gBS->FreePages (*Image, EFI_SIZE_TO_PAGES (TftpBufferSize));
+      } else {
+        *ImageSize = (UINTN)TftpBufferSize;
+        break;
+      }
+    }
+  } else {
+    // Allocate a buffer to hold the whole file.
+    Status = gBS->AllocatePages (
+                    Type,
+                    EfiBootServicesCode,
+                    EFI_SIZE_TO_PAGES (TftpBufferSize),
+                    Image
+                    );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((EFI_D_ERROR, "Failed to allocate space for kernel image: %r\n", Status));
+      goto EXIT;
+    }
+
+    Status = Pxe->Mtftp (
+                    Pxe,
+                    EFI_PXE_BASE_CODE_TFTP_READ_FILE,
+                    (VOID *)(UINTN)*Image,
+                    FALSE,
+                    &TftpBufferSize,
+                    NULL,
+                    &ServerIp,
+                    (UINT8*)AsciiPathName,
+                    NULL,
+                    FALSE
+                    );
+    if (EFI_ERROR (Status)) {
+      gBS->FreePages (*Image, EFI_SIZE_TO_PAGES (TftpBufferSize));
+    } else {
+      *ImageSize = (UINTN)TftpBufferSize;
+    }
   }
 
 EXIT:
@@ -870,8 +930,8 @@ BDS_FILE_LOADER FileLoaders[] = {
 };
 
 EFI_STATUS
-BdsLoadImage (
-  IN     EFI_DEVICE_PATH       **DevicePath,
+BdsLoadImageAndUpdateDevicePath (
+  IN OUT EFI_DEVICE_PATH       **DevicePath,
   IN     EFI_ALLOCATE_TYPE     Type,
   IN OUT EFI_PHYSICAL_ADDRESS* Image,
   OUT    UINTN                 *FileSize
@@ -882,7 +942,7 @@ BdsLoadImage (
   EFI_DEVICE_PATH *RemainingDevicePath;
   BDS_FILE_LOADER*  FileLoader;
 
-  Status = BdsConnectDevicePath (DevicePath, &Handle, &RemainingDevicePath);
+  Status = BdsConnectAndUpdateDevicePath (DevicePath, &Handle, &RemainingDevicePath);
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -896,6 +956,17 @@ BdsLoadImage (
   }
 
   return EFI_UNSUPPORTED;
+}
+
+EFI_STATUS
+BdsLoadImage (
+  IN     EFI_DEVICE_PATH       **DevicePath,
+  IN     EFI_ALLOCATE_TYPE     Type,
+  IN OUT EFI_PHYSICAL_ADDRESS* Image,
+  OUT    UINTN                 *FileSize
+  )
+{
+  return BdsLoadImageAndUpdateDevicePath (DevicePath, Type, Image, FileSize);
 }
 
 /**
@@ -924,7 +995,7 @@ BdsStartEfiApplication (
   EFI_LOADED_IMAGE_PROTOCOL*   LoadedImage;
 
   // Find the nearest supported file loader
-  Status = BdsLoadImage (&DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
+  Status = BdsLoadImageAndUpdateDevicePath (&DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
   if (EFI_ERROR (Status)) {
     return Status;
   }

@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2011-2013, ARM Limited. All rights reserved.
+*  Copyright (c) 2011-2014, ARM Limited. All rights reserved.
 *
 *  This program and the accompanying materials
 *  are licensed and made available under the terms and conditions of the BSD License
@@ -126,7 +126,7 @@ InitializeConsolePipe (
   while (ConsoleDevicePaths != NULL) {
     DevicePath = GetNextDevicePathInstance (&ConsoleDevicePaths, &Size);
 
-    Status = BdsConnectDevicePath (&DevicePath, Handle, NULL);
+    Status = BdsConnectDevicePath (DevicePath, Handle, NULL);
     DEBUG_CODE_BEGIN();
       if (EFI_ERROR(Status)) {
         // We convert back to the text representation of the device Path
@@ -286,13 +286,16 @@ DefineDefaultBootEntries (
   EFI_STATUS                          Status;
   EFI_DEVICE_PATH_FROM_TEXT_PROTOCOL* EfiDevicePathFromTextProtocol;
   EFI_DEVICE_PATH*                    BootDevicePath;
+  UINT8*                              OptionalData;
+  UINTN                               OptionalDataSize;
   ARM_BDS_LOADER_ARGUMENTS*           BootArguments;
   ARM_BDS_LOADER_TYPE                 BootType;
   EFI_DEVICE_PATH*                    InitrdPath;
-  EFI_DEVICE_PATH*                    FdtLocalPath;
-  UINTN                               CmdLineSize;
   UINTN                               InitrdSize;
-  UINTN                               FdtLocalSize;
+  UINTN                               CmdLineSize;
+  UINTN                               CmdLineAsciiSize;
+  CHAR16*                             DefaultBootArgument;
+  CHAR8*                              AsciiDefaultBootArgument;
 
   //
   // If Boot Order does not exist then create a default entry
@@ -339,78 +342,92 @@ DefineDefaultBootEntries (
 
         ASSERT (StrCmp ((CHAR16*)PcdGetPtr(PcdDefaultBootDevicePath), DevicePathTxt) == 0);
 
-
         if (DevicePathTxt != NULL){
           FreePool (DevicePathTxt);
         }
       DEBUG_CODE_END();
     }
-
+    
     // Create the entry is the Default values are correct
     if (BootDevicePath != NULL) {
       CHAR16 BootDescription[128];
 
       BootType = (ARM_BDS_LOADER_TYPE)PcdGet32 (PcdDefaultBootType);
 
-      /* Create an entry for Linux FDT/UEFI */
-      if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
-          (BootType == BDS_LOADER_KERNEL_LINUX_GLOBAL_FDT) ||
-          (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) ||
-          (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
-        CmdLineSize = AsciiStrSize ((CHAR8*)PcdGetPtr(PcdDefaultBootArgument));
+      // We do not support NULL pointer
+      ASSERT (PcdGetPtr (PcdDefaultBootArgument) != NULL);
+
+      //
+      // Logic to handle ASCII or Unicode default parameters
+      //
+      if (*(CHAR8*)PcdGetPtr (PcdDefaultBootArgument) == '\0') {
+        CmdLineSize = 0;
+        CmdLineAsciiSize = 0;
+        DefaultBootArgument = NULL;
+        AsciiDefaultBootArgument = NULL;
+      } else if (IsUnicodeString ((CHAR16*)PcdGetPtr (PcdDefaultBootArgument))) {
+        // The command line is a Unicode string
+        DefaultBootArgument = (CHAR16*)PcdGetPtr (PcdDefaultBootArgument);
+        CmdLineSize = StrSize (DefaultBootArgument);
+
+        // Initialize ASCII variables
+        CmdLineAsciiSize = CmdLineSize / 2;
+        AsciiDefaultBootArgument = AllocatePool (CmdLineAsciiSize);
+        if (AsciiDefaultBootArgument == NULL) {
+          return EFI_OUT_OF_RESOURCES;
+        }
+        UnicodeStrToAsciiStr ((CHAR16*)PcdGetPtr (PcdDefaultBootArgument), AsciiDefaultBootArgument);
+      } else {
+        // The command line is a ASCII string
+        AsciiDefaultBootArgument = (CHAR8*)PcdGetPtr (PcdDefaultBootArgument);
+        CmdLineAsciiSize = AsciiStrSize (AsciiDefaultBootArgument);
+
+        // Initialize ASCII variables
+        CmdLineSize = CmdLineAsciiSize * 2;
+        DefaultBootArgument = AllocatePool (CmdLineSize);
+        if (DefaultBootArgument == NULL) {
+          return EFI_OUT_OF_RESOURCES;
+        }
+        AsciiStrToUnicodeStr (AsciiDefaultBootArgument, DefaultBootArgument);
+      }
+
+      if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_FDT)) {
         InitrdPath = EfiDevicePathFromTextProtocol->ConvertTextToDevicePath ((CHAR16*)PcdGetPtr(PcdDefaultBootInitrdPath));
-        if (InitrdPath != NULL) {
-          InitrdSize = GetDevicePathSize (InitrdPath);
-        } else {
-          InitrdSize = 0;
-        }
-        if (BootType == BDS_LOADER_KERNEL_LINUX_LOCAL_FDT) {
-          FdtLocalPath = EfiDevicePathFromTextProtocol->ConvertTextToDevicePath ((CHAR16*)PcdGetPtr(PcdDefaultFdtLocalDevicePath));
-          FdtLocalSize = GetDevicePathSize (FdtLocalPath);
-        } else {
-          FdtLocalPath = NULL;
-          FdtLocalSize = 0;
-        }
+        InitrdSize = GetDevicePathSize (InitrdPath);
 
-        BootArguments = (ARM_BDS_LOADER_ARGUMENTS*)AllocatePool (sizeof(ARM_BDS_LOADER_ARGUMENTS) + CmdLineSize + InitrdSize + FdtLocalSize);
-        if ( BootArguments != NULL ) {
-          BootArguments->LinuxArguments.CmdLineSize = CmdLineSize;
-          BootArguments->LinuxArguments.InitrdSize = InitrdSize;
-          BootArguments->LinuxArguments.FdtLocalSize = FdtLocalSize;
+        OptionalDataSize = sizeof(ARM_BDS_LOADER_ARGUMENTS) + CmdLineAsciiSize + InitrdSize;
+        BootArguments = (ARM_BDS_LOADER_ARGUMENTS*)AllocatePool (OptionalDataSize);
+        if (BootArguments == NULL) {
+          return EFI_OUT_OF_RESOURCES;
+        }
+        BootArguments->LinuxArguments.CmdLineSize = CmdLineAsciiSize;
+        BootArguments->LinuxArguments.InitrdSize = InitrdSize;
 
-          CopyMem ((VOID*)(BootArguments + 1), (CHAR8*)PcdGetPtr(PcdDefaultBootArgument), CmdLineSize);
-          CopyMem ((VOID*)((UINTN)(BootArguments + 1) + CmdLineSize), InitrdPath, InitrdSize);
-          CopyMem ((VOID*)((UINTN)(BootArguments + 1) + CmdLineSize + InitrdSize), FdtLocalPath, FdtLocalSize);
-        }
-        if (FdtLocalPath != NULL ) {
-          FreePool (FdtLocalPath);
-        }
-        if (InitrdPath != NULL ) {
-          FreePool (InitrdPath);
-        }
+        CopyMem ((VOID*)(BootArguments + 1), AsciiDefaultBootArgument, CmdLineAsciiSize);
+        CopyMem ((VOID*)((UINTN)(BootArguments + 1) + CmdLineAsciiSize), InitrdPath, InitrdSize);
+
+        OptionalData = (UINT8*)BootArguments;
       } else {
-        BootArguments = NULL;
+        OptionalData = (UINT8*)DefaultBootArgument;
+        OptionalDataSize = CmdLineSize;
       }
-      if (BootType == BDS_LOADER_KERNEL_LINUX_UEFI) {
-        UnicodeSPrint(BootDescription, sizeof(BootDescription),
-                     L"UEFI %s", (CHAR16 *) PcdGetPtr(PcdDefaultBootDescription));
-      } else {
-        UnicodeSPrint(BootDescription, sizeof(BootDescription),
+      UnicodeSPrint(BootDescription, sizeof(BootDescription),
                              L"%s", (CHAR16 *) PcdGetPtr(PcdDefaultBootDescription));
-      }
 
       BootOptionCreate (LOAD_OPTION_ACTIVE | LOAD_OPTION_CATEGORY_BOOT,
         BootDescription,
         BootDevicePath,
         BootType,
-        BootArguments,
+        OptionalData,
+        OptionalDataSize,
         &BdsLoadOption
         );
-      if (BdsLoadOption != NULL){
-        FreePool (BdsLoadOption);
-      }
-      if (BootDevicePath != NULL){
-        FreePool (BootDevicePath);
+      FreePool (BdsLoadOption);
+
+      if (DefaultBootArgument == (CHAR16*)PcdGetPtr (PcdDefaultBootArgument)) {
+        FreePool (AsciiDefaultBootArgument);
+      } else if (DefaultBootArgument != NULL) {
+        FreePool (DefaultBootArgument);
       }
     } else {
       Status = EFI_UNSUPPORTED;

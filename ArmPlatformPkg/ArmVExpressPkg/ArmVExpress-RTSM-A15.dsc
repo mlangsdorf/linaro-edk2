@@ -140,19 +140,10 @@
   gArmPlatformTokenSpaceGuid.PcdPL180MciBaseAddress|0x1C050000
   
   #
-  # Select network device based on build time macro
-!if $(EDK2_ARMVE_SUPPORT_QEMU) == 1
-  # Ethernet (SMSC 9118, for QEMU, matches real hardware)
-  gArmPlatformTokenSpaceGuid.PcdLan9118DxeBaseAddress|0x1A000000
-!else
-  # Ethernet (SMSC 91C111, for RTSM)
-  gArmPlatformTokenSpaceGuid.PcdLan91xDxeBaseAddress|0x1A000000
-!endif
-
+  # ARM General Interrupt Controller
   #
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x2C001000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C002000
-
 
   #
   # ARM OS Loader
@@ -162,9 +153,8 @@
   gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"Linaro image on SD card"
   gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(09831032-6FA3-4484-AF4F-0A000A8D3A82)/HD(1,MBR,0x00000000,0x3F,0x19FC0)/uImage"
   gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(09831032-6FA3-4484-AF4F-0A000A8D3A82)/HD(1,MBR,0x00000000,0x3F,0x19FC0)/uInitrd"
-  gArmPlatformTokenSpaceGuid.PcdDefaultFdtLocalDevicePath|L"VenHw(09831032-6FA3-4484-AF4F-0A000A8D3A82)/HD(1,MBR,0x00000000,0x3F,0x19FC0)/rtsm\\rtsm_ve-ca15x1.dtb"
   gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|"console=ttyAMA0,38400n8 rootwait root=/dev/mmcblk0p2"
-  gArmPlatformTokenSpaceGuid.PcdDefaultBootType|3
+  gArmPlatformTokenSpaceGuid.PcdDefaultBootType|2
   gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(09831032-6FA3-4484-AF4F-0A000A8D3A82)/HD(1,MBR,0x00000000,0x3F,0x19FC0)/rtsm\\rtsm_ve-ca15x1.dtb"
 
   # Use the serial console (ConIn & ConOut) and the Graphic driver (ConOut)
@@ -172,11 +162,11 @@
   gArmPlatformTokenSpaceGuid.PcdDefaultConInPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(38400,8,N,1)/VenPcAnsi()"
 
   #
-  # ARM Architectual Timer Frequency
+  # ARM Architectural Timer Frequency
   #
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|60000000
-  
-  
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|100000000
+
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform

@@ -73,6 +73,8 @@ extern CHAR16            *mUnknownString;
 #define POPUP_PAD_SPACE_COUNT         5
 #define POPUP_FRAME_WIDTH             2
 
+#define UPPER_LOWER_CASE_OFFSET       0x20
+
 //
 // Display definitions
 //
@@ -200,6 +202,12 @@ typedef struct {
   UINT16             DisplayRow;
   UINT16             SkipValue;
 } DISPLAY_HIGHLIGHT_MENU_INFO;
+
+typedef struct {
+  EFI_EVENT   SyncEvent;
+  UINT8       *TimeOut;
+  CHAR16      *ErrorInfo;
+} WARNING_IF_CONTEXT;
 
 #define UI_MENU_OPTION_SIGNATURE  SIGNATURE_32 ('u', 'i', 'm', 'm')
 
@@ -576,17 +584,31 @@ ExitDisplay (
   );
 
 /**
-  Process validate for one question.
+  Process nothing.
 
-  @param  Question               The question which need to validate.
-
-  @retval EFI_SUCCESS            Question Option process success.
-  @retval Other                  Question Option process fail.
+  @param Event    The Event need to be process
+  @param Context  The context of the event.
 
 **/
-EFI_STATUS 
-ValidateQuestion (
-  IN FORM_DISPLAY_ENGINE_STATEMENT   *Question
+VOID
+EFIAPI
+EmptyEventProcess (
+  IN  EFI_EVENT    Event,
+  IN  VOID         *Context
+  );
+
+/**
+  Process for the refresh interval statement.
+
+  @param Event    The Event need to be process
+  @param Context  The context of the event.
+
+**/
+VOID
+EFIAPI
+RefreshTimeOutProcess (
+  IN  EFI_EVENT    Event,
+  IN  VOID         *Context
   );
 
 #endif

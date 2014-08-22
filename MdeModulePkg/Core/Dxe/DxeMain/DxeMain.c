@@ -296,8 +296,9 @@ DxeMain (
   //
   // Report DXE Core image information to the PE/COFF Extra Action Library
   //
+  ZeroMem (&ImageContext, sizeof (ImageContext));
   ImageContext.ImageAddress = (EFI_PHYSICAL_ADDRESS)(UINTN)gDxeCoreLoadedImage->ImageBase;
-  ImageContext.PdbPointer = PeCoffLoaderGetPdbPointer ((VOID*) (UINTN) ImageContext.ImageAddress);
+  ImageContext.PdbPointer   = PeCoffLoaderGetPdbPointer ((VOID*) (UINTN) ImageContext.ImageAddress);
   PeCoffLoaderRelocateImageExtraAction (&ImageContext);
 
   //
@@ -856,7 +857,7 @@ DxeMainUefiDecompressGetInfo (
   implementation. It is the caller's responsibility to allocate and free the
   Destination and Scratch buffers.
   If the compressed source data specified by Source and SourceSize is
-  sucessfully decompressed into Destination, then EFI_SUCCESS is returned. If
+  successfully decompressed into Destination, then EFI_SUCCESS is returned. If
   the compressed source data specified by Source and SourceSize is not in a
   valid compressed data format, then EFI_INVALID_PARAMETER is returned.
 

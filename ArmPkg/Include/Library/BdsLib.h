@@ -48,7 +48,7 @@ typedef struct {
 **/
 EFI_STATUS
 BdsConnectDevicePath (
-  IN  EFI_DEVICE_PATH_PROTOCOL  **DevicePath,
+  IN  EFI_DEVICE_PATH_PROTOCOL  *DevicePath,
   OUT EFI_HANDLE                *Handle,
   OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
   );

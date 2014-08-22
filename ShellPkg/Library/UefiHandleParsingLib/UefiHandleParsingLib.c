@@ -149,7 +149,8 @@ LoadedImageProtocolDumpInformation(
   CHAR16                            *Temp;
   CHAR16                            *CodeType;
   CHAR16                            *DataType;
-
+  EFI_STATUS			    Status;
+  
   if (!Verbose) {
     return (CatSPrint(NULL, L"LoadedImage"));
   }
@@ -162,7 +163,7 @@ LoadedImageProtocolDumpInformation(
     return NULL;
   }
 
-  gBS->OpenProtocol (
+  Status = gBS->OpenProtocol (
                 TheHandle,
                 &gEfiLoadedImageProtocolGuid,
                 (VOID**)&LoadedImage,

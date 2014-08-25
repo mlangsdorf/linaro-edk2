@@ -360,6 +360,15 @@ static int xgene_xhci_power_sequence_enable(struct xgene_phy_ctx *ctx)
 	return 0;
 }
 
+static int apm_usb_superspeed_supported(void)
+{
+#ifdef APM_CONFIG_USB3_ENABLE
+	return 1;
+#else
+	return 0;
+#endif
+}
+
 static int xgene_phy_hw_init_usb(struct xgene_phy_ctx *ctx,
 		enum clk_type_t clk_type, int ssc_enable)
 {
@@ -367,6 +376,9 @@ static int xgene_phy_hw_init_usb(struct xgene_phy_ctx *ctx,
 	enum cmu_type_t cmu_type = PHY_CMU;
 	void *sds_base = ctx->sds_base;
 	int rc = 0;
+
+	if (!apm_usb_superspeed_supported())
+		return -ENODEV;
 
 	dev_dbg(ctx->dev, "Initialize USB PHY\n");
 

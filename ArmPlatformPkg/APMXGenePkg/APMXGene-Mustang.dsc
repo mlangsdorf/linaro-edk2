@@ -175,8 +175,8 @@
 
    #
    # ARM General Interrupt Controller
-   gArmTokenSpaceGuid.PcdGicDistributorBase|0x78010000
-   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x78020000
+   gArmTokenSpaceGuid.PcdGicDistributorBase|0x78090000
+   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x780a0000
 
    #
    # ARM OS Loader

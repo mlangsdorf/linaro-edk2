@@ -13,6 +13,7 @@
 ##
 
 #include <AsmMacroIoLibV8.h>
+#include <Library/ArmGicLib.h>
 
 #define APM88XXX_EFUSE_ADDR        0x1054a000
 #define KERNEL_MAILBOX_ADDR        0x400000F000
@@ -173,9 +174,22 @@ _InitMem:
         /* Initialize Init Boot Memory */
 	bl	ASM_PFX(ArmPlatformSecBootMemoryInit)
 
-	ldr x0, =0x78020000
-	movz w1, #0xa0 /* Disable FIQ bypass signal to processor */
-	str  w1, [x0]
+	/* Initialize GIC per CPU */
+	ldr x0, =0x78010000
+	ldr x1, =0x78020000
+
+	mov	w9, #~0		/* Config SGIs and PPIs as Grp1 */
+	str	w9, [x0, ARM_GIC_ICDISR]    /* GICD_IGROUPR0 */
+	mov	w9, #0x1	/* Enable SGI 0 */
+	str	w9, [x0, ARM_GIC_ICDISER]
+
+	/* Initialize Cpu Interface */
+	mov	w9, #0x1e7	/* Disable IRQ/FIQ Bypass & */
+				/* Enable Ack Group1 Interrupt & */
+				/* EnableGrp0 & EnableGrp1 */
+	str	w9, [x1, ARM_GIC_ICCICR]    /* Secure GICC_CTLR */
+	mov	w9, #0x1 << 7	/* Non-Secure access to GICC_PMR */
+	str	w9, [x1, ARM_GIC_ICCPMR]
 
 _IdentifyPrimary:
 	/* SMP - Find primary core - Read PMD disable efuse */
@@ -203,16 +217,19 @@ done_find_primary_core:
 
 secondary_core_wait:
 #ifdef AARCH64_MP_PROTOCOL
+	ldr x0,	=0x78020000
+	movz w1, #0xFF /* Non-Secure access to GICC_PMR */
+	str  w1, [x0, ARM_GIC_ICCPMR]
+
+	/* To wake up secondary CPU using wfi, these commented code need
+to be called 
+	ldr	x0, =0x78010000
+	mov	w9, #0x8000
+	movk	w9, #0x100, lsl #16
+	str	w9, [x0, ARM_GIC_ICDSGIR]
+	*/
+
 	/* Secondary wait for signal */
-	/* enable CPU interrupt interface */
-	ldr  x0, =0x78020004
-	movz w1, #0xFF
-	str  w1, [x0]
-
-	ldr x0, =0x78020000
-	movz w1, #0x1 /* enable group 0. Default SGI should be group 0 */
-	str  w1, [x0]
-
 	mrs     x0, mpidr_el1
 	and     x0, x0, #0xffff
 	mov     x1, x0
@@ -225,14 +242,14 @@ secondary_core_wait:
 	movz    x2, 0x1000 /* 4K */
 	madd    x1, x2, x0, x1
 
-    ldr w3, =0xFFFFFFFF
-    str     w3, [x1]
-    movz    x4, #0
-    str     x4, [x1, #8]
+	ldr w3, =0xFFFFFFFF
+	str	w3, [x1]
+	movz	x4, #0
+	str	x4, [x1, #8]
 
 1:	wfi
-	ldr     w2, [x1]
-	cmp     w2, w0 /* Check processor ID */
+	ldr	 w2, [x1]
+	cmp	 w2, w0 /* Check processor ID */
 	b.ne	1b
 
 	ldr     x3, [x1, #8]
@@ -257,22 +274,35 @@ secondary_core_wait:
 #endif
 
 primary_core_boot:
+	/* GIC Distributer configuration */
+	ldr	x0, =0x78010000
+	mov	w9, #0x3		/* EnableGrp0 | EnableGrp1 */
+	str	w9, [x0, ARM_GIC_ICDDCR]	/* Secure GICD_CTLR */
+	ldr	w9, [x0, ARM_GIC_ICDICTR]
+	and	w10, w9, #0x1f		/* ITLinesNumber */
+	cbz	w10, 1f			/* No SPIs */
+	add	x11, x0, (ARM_GIC_ICDISR + 4)
+	mov	w9, #~0			/* Config SPIs as Grp1 */
+0:	str	w9, [x11], #0x4
+	sub	w10, w10, #0x1
+	cbnz	w10, 0b
+1:
 	/* Identify CPU ID */
-    mrs     x5, mpidr_el1
-	and     x5, x5, #0xF
-
-	mov     x10, #0x1               /* Booting mode is unused as of now */
+	mrs	 x5, mpidr_el1
+	and	 x5, x5, #0xF
+	mov	 x10, #0x1		/* Booting mode is unused as of now */
 
 _PrepareArguments:
 	/* Move sec startup address into a data register
-	   Ensure we're jumping to FV version of the code (not boot remapped alias)
-           Jump to SEC C code
-	    x0 = mp_id
-	    x1 = Boot Mode
-         */
-	mov     x0, x5
-	mov     x1, x10
-        b  ASM_PFX(CEntryPoint)
+	 * Ensure we're jumping to FV version of the code
+	 * (not boot remapped alias)
+	 * Jump to SEC C code
+	x0 = mp_id
+	x1 = Boot Mode
+	 */
+	mov	x0, x5
+	mov	x1, x10
+	b	ASM_PFX(CEntryPoint)
 
 _NeverReturn:
 	b _NeverReturn

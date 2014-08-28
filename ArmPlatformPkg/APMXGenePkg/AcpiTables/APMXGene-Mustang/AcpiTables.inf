@@ -23,12 +23,14 @@
   VERSION_STRING                 = 1.0
 
 [Sources]
+#  Apic.asl
   Facp.asl
   Facs.asl
   Dsdt.asl
   Gtdt.asl
   Dbg2.asl
   Spcr.asl
+  Ssdt.asl
 
 [Packages]
   MdePkg/MdePkg.dec

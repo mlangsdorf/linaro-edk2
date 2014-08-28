@@ -29,11 +29,11 @@
 
 #include <Protocol/AcpiTable.h>
 #include <Guid/Acpi.h>
-#include <IndustryStandard/Acpi.h>
+#include <IndustryStandard/Acpi51.h>
 
-EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE APICGicDistributerTemplate = {
-  EFI_ACPI_5_0_GICD,
-  sizeof(EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE),
+EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE APICGicDistributerTemplate = {
+  EFI_ACPI_5_1_GICD,
+  sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE),
   0,
   0,
   FixedPcdGet32(PcdGicDistributorBase),
@@ -41,24 +41,29 @@ EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE APICGicDistributerTemplate = {
   0
 };
 
-EFI_ACPI_5_0_GIC_STRUCTURE APICProcessorRecordTemplate = {
-  EFI_ACPI_5_0_GIC,
-  sizeof(EFI_ACPI_5_0_GIC_STRUCTURE),
+EFI_ACPI_5_1_GIC_STRUCTURE APICProcessorRecordTemplate = {
+  EFI_ACPI_5_1_GIC,
+  sizeof(EFI_ACPI_5_1_GIC_STRUCTURE),
+  0,
   0,
   0, /* need fill in */
-  0, /* need fill in */
-  EFI_ACPI_5_0_GIC_ENABLED,
+  EFI_ACPI_5_1_GIC_ENABLED,
   1,
   0,
   0, /* need fill in */
-  FixedPcdGet32(PcdGicInterruptInterfaceBase)
+  FixedPcdGet32(PcdGicInterruptInterfaceBase),
+  FixedPcdGet32(PcdGicInterruptInterfaceBase) + 0x40000, /* VGIC */
+  FixedPcdGet32(PcdGicInterruptInterfaceBase) + 0x20000, /* Hyp GIC */
+  0x9,
+  FixedPcdGet32(PcdGicDistributorBase),
+  0, /* need fill in */
 };
 
-EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER APICProcessorTableHeaderTemplate = {
+EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER APICProcessorTableHeaderTemplate = {
   {
-    EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
+    EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
     0, /* need fill in */
-    EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,    // Revision
+    EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,    // Revision
     0x00, // Checksum will be updated at runtime
     //
     // It is expected that these values will be updated at EntryPoint.
@@ -70,7 +75,7 @@ EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER APICProcessorTableHeaderTemp
     0,       // Creator Revision
   },
   0,
-  EFI_ACPI_5_0_PCAT_COMPAT
+  EFI_ACPI_5_1_PCAT_COMPAT
 };
 
 /**
@@ -111,12 +116,13 @@ XGeneInstallApicTable(VOID)
   UINTN                         Size;
   EFI_STATUS                    Status;
   UINTN                         ApicTableKey  = 0;
-  EFI_ACPI_5_0_GIC_STRUCTURE    *EntryPointer = NULL;
-  EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE    *GicDistributePointer = NULL;
-  EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER *ApicTablePointer = NULL;
+  EFI_ACPI_5_1_GIC_STRUCTURE    *EntryPointer = NULL;
+  EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE    *GicDistributePointer = NULL;
+  EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER *ApicTablePointer = NULL;
   //
   // Get AcpiTable Protocol.
   //
+
   Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **) &AcpiTableProtocol);
   if (EFI_ERROR (Status))
     return Status;
@@ -126,41 +132,42 @@ XGeneInstallApicTable(VOID)
       ArmProcessorTable = (ARM_PROCESSOR_TABLE *)gST->ConfigurationTable[Count].VendorTable;
       ArmCoreInfoTable = ArmProcessorTable->ArmCpus;
 
-      Size = sizeof(EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER) +
-              ArmProcessorTable->NumberOfEntries * sizeof(EFI_ACPI_5_0_GIC_STRUCTURE) +
-              sizeof(EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE);
+      Size = sizeof(EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER) +
+              ArmProcessorTable->NumberOfEntries * sizeof(EFI_ACPI_5_1_GIC_STRUCTURE) +
+              sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE);
 
-      ApicTablePointer = (EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER *)AllocateZeroPool(Size);
+      ApicTablePointer = (EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER *)AllocateZeroPool(Size);
       if (!ApicTablePointer)
         return EFI_OUT_OF_RESOURCES;
 
-      EntryPointer = (EFI_ACPI_5_0_GIC_STRUCTURE *) ((UINT64)ApicTablePointer +
-          sizeof(EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER));
+      EntryPointer = (EFI_ACPI_5_1_GIC_STRUCTURE *) ((UINT64)ApicTablePointer +
+          sizeof(EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER));
 
-      GicDistributePointer = (EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE *) ((UINT64)EntryPointer +
-          ArmProcessorTable->NumberOfEntries * sizeof(EFI_ACPI_5_0_GIC_STRUCTURE));
+      GicDistributePointer = (EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE *) ((UINT64)EntryPointer +
+          ArmProcessorTable->NumberOfEntries * sizeof(EFI_ACPI_5_1_GIC_STRUCTURE));
 
       for (Count1 = 0; Count1 < ArmProcessorTable->NumberOfEntries; Count1++ ) {
-        CopyMem(&EntryPointer[Count1], &APICProcessorRecordTemplate, sizeof(EFI_ACPI_5_0_GIC_STRUCTURE));
+        CopyMem(&EntryPointer[Count1], &APICProcessorRecordTemplate, sizeof(EFI_ACPI_5_1_GIC_STRUCTURE));
         EntryPointer[Count1].AcpiProcessorUid = (ArmCoreInfoTable[Count1].ClusterId) << 8 |
                                   ArmCoreInfoTable[Count1].CoreId;
-        EntryPointer[Count1].GicId = Count1;
+        EntryPointer[Count1].CPUInterfaceNumber = Count1;
+        EntryPointer[Count1].MPIDR = EntryPointer[Count1].AcpiProcessorUid;
         EntryPointer[Count1].ParkedAddress = ArmCoreInfoTable[Count1].MailboxSetAddress;
       }
 
       CopyMem(ApicTablePointer, &APICProcessorTableHeaderTemplate,
-                          sizeof(EFI_ACPI_5_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER));
+                          sizeof(EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER));
 
       ApicTablePointer->Header.Length = Size;
-      CopyMem(ApicTablePointer->Header.OemId, PcdGetPtr (PcdAcpiDefaultOemId),
+      CopyMem(ApicTablePointer->Header.OemId, "APM   ",
                     sizeof(ApicTablePointer->Header.OemId));
-      ApicTablePointer->Header.OemTableId = PcdGet64 (PcdAcpiDefaultOemTableId);
-      ApicTablePointer->Header.OemRevision = PcdGet32 (PcdAcpiDefaultOemRevision);
+      ApicTablePointer->Header.OemTableId = SIGNATURE_64('X', 'G', 'E', 'N', 'E', ' ', ' ', ' ');
+      ApicTablePointer->Header.OemRevision = 3;
       ApicTablePointer->Header.CreatorId = PcdGet32 (PcdAcpiDefaultCreatorId);
       ApicTablePointer->Header.CreatorRevision = PcdGet32 (PcdAcpiDefaultCreatorRevision);
 
       CopyMem(GicDistributePointer, &APICGicDistributerTemplate,
-                                sizeof(EFI_ACPI_5_0_GIC_DISTRIBUTOR_STRUCTURE));
+                                sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE));
 
       ApicAcpiTableChecksum((UINT8 *)ApicTablePointer, ApicTablePointer->Header.Length);
 

@@ -23,7 +23,7 @@
 [0008]                       Oem Table ID : "XGENE   "
 [0004]                       Oem Revision : 00000003
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20111123
+[0004]              Asl Compiler Revision : 20140724
 
 [0004]                       FACS Address : 00000000 
 [0004]                       DSDT Address : FFFFFFFF 
@@ -100,10 +100,12 @@
 [0008]                            Address : 0000000000000000
 
 [0001]               Value to cause reset : 00
-[0003]                           Reserved : 000000
-[0008]                       FACS Address : 0000004005001EC0
-[0008]                       DSDT Address : 0000004003800340
-
+[0002]      ARM_BOOT_ARCH (decoded below) : 0000
+                            Use PSCI 0.2+ : 0
+                             PSCI Use HVC : 0
+[0001]                FADT Minor Revision : 01
+[0008]                       FACS Address : 0000000000000000
+[0008]                       DSDT Address : 0000000000000010
 [0012]                   PM1A Event Block : [Generic Address Structure]
 [0001]                           Space ID : 00 [SystemIO]
 [0001]                          Bit Width : 00
@@ -174,3 +176,4 @@
 [0001]                         Bit Offset : 00
 [0001]               Encoded Access Width : 04 [Byte Access:8]
 [0008]                            Address : 0000000010558000
+

@@ -22,8 +22,8 @@
 [0008]                       Oem Table ID : "XGENE   "
 [0004]                       Oem Revision : 00000002
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20100528
+[0004]              Asl Compiler Revision : 20140724
 
 [0008]             ACPI Table Address   0 : 00000004003800060
 [0008]             ACPI Table Address   1 : 0000000400380016C
-[0008]             ACPI Table Address   2 : 000000040038001BC
+[0008]		   ACPI Table Address   2 : 000000040038001BC	

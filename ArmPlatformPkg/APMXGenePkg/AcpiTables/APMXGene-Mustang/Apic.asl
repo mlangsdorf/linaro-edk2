@@ -15,120 +15,160 @@
  *
  **/
 
-[0004]                          Signature : "APIC"    [Multiple APIC Description Table (MADT)]
-[0004]                       Table Length : 00000184
-[0001]                           Revision : 01
-[0001]                           Checksum : 00
-[0006]                             Oem ID : "APM   "
-[0008]                       Oem Table ID : "XGENE   "
-[0004]                       Oem Revision : 00000002
-[0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20110623
+[0004]                         Signature : "APIC"    [Multiple APIC Description Table (MADT)]
+[0004]                      Table Length : 0000028C
+[0001]                          Revision : 03
+[0001]                          Checksum : 00
+[0006]                            Oem ID : "APM   "
+[0008]                      Oem Table ID : "XGENE   "
+[0004]                      Oem Revision : 00000003
+[0004]                   Asl Compiler ID : "INTL"
+[0004]             Asl Compiler Revision : 20140724
 
-[0004]                 Local Apic Address : 00000000
-[0004]              Flags (decoded below) : 00000001
-                      PC-AT Compatibility : 1
+[0004]                Local Apic Address : 00000000
+[0004]             Flags (decoded below) : 00000000
+                     PC-AT Compatibility : 0
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000000
-[0004]                      Processor UID : 00000000
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 0000004000008000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000000
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000000
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000001
-[0004]                      Processor UID : 00000001
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 0000004000009000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000001
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000001
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000002
-[0004]                      Processor UID : 00000002
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000A000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000100
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000100
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000003
-[0004]                      Processor UID : 00000003
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000B000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000101
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000101
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000004
-[0004]                      Processor UID : 00000004
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000C000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000200
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000200
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000005
-[0004]                      Processor UID : 00000005
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000D000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000201
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000201
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000006
-[0004]                      Processor UID : 00000006
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000E000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000300
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000300
 
-[0001]                      Subtable Type : 0B [Generic Interrupt Controller]
-[0001]                             Length : 28
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000007
-[0004]                      Processor UID : 00000007
-[0004]              Flags (decoded below) : 00000001
-                        Processor Enabled : 1
-[0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
-[0008]                     Parked Address : 000000400000F000
-[0008]                       Base Address : 00000000780A0000
+[0001]                     Subtable Type : 0B [Generic Interrupt Controller]
+[0001]                            Length : 4C
+[0002]                          Reserved : 0000
+[0004]              CPU Interface Number : 00000000
+[0004]                     Processor UID : 00000301
+[0004]             Flags (decoded below) : 00000001
+                       Processor Enabled : 1
+[0004]          Parking Protocol Version : 00000001
+[0004]             Performance Interrupt : 00000000
+[0008]                    Parked Address : 000000400000F000
+[0008]                      Base Address : 00000000780A0000
+[0008]          Virtual GIC Base Address : 00000000780E0000
+[0008]              Hyp GIC Base Address : 00000000780C0000
+[0004] Virtual GIC Maintenance Interrupt : 00000009
+[0008]                 RedistBaseAddress : 0000000078090000
+[0008]                             MPIDR : 0000000000000301
 
-[0001]                      Subtable Type : 0C [Generic Interrupt Distributor]
-[0001]                             Length : 18
-[0002]                           Reserved : 0000
-[0004]              Local GIC Hardware ID : 00000000
-[0008]                       Base Address : 0000000078090000
-[0004]                     Interrupt Base : 00000000
-[0004]                           Reserved : 00000000
+[0001]                     Subtable Type : 0C [Generic Interrupt Distributor]
+[0001]                            Length : 18
+[0002]                          Reserved : 0000
+[0004]             Local GIC Hardware ID : 00000000
+[0008]                      Base Address : 0000000078090000
+[0004]                    Interrupt Base : 00000000
+[0004]                          Reserved : 00000000

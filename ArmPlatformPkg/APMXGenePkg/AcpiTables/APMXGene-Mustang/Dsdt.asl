@@ -132,11 +132,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -145,7 +145,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550018, 3)},
 			3,
 			200000,	//latency usec
@@ -169,6 +169,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -255,11 +256,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -268,7 +269,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551018, 3)},
 			3,
 			200000,	//latency usec
@@ -292,6 +293,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -383,11 +385,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -396,7 +398,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552018, 3)},
 			3,
 			200000,	//latency usec
@@ -420,6 +422,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -511,11 +514,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -524,7 +527,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553018, 3)},
 			3,
 			200000,	//latency usec
@@ -548,6 +551,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -639,11 +643,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -652,7 +656,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554018, 3)},
 			3,
 			200000,	//latency usec
@@ -676,6 +680,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -767,11 +772,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -780,7 +785,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555018, 3)},
 			3,
 			200000,	//latency usec
@@ -804,6 +809,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -895,11 +901,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -908,7 +914,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556018, 3)},
 			3,
 			200000,	//latency usec
@@ -932,6 +938,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -1023,11 +1030,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //C states
 	Name(_CST, Package() {
-		6,
+		2,
 		Package() {	//C1 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557014, 3)},
 			1,
-			1,	//latency usec
+			0,	//latency usec
 			2500	//power mW
 		}, //C1 state
 		Package() {	//C2 state
@@ -1036,7 +1043,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-		Package() {	//C3 state
+/*		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557018, 3)},
 			3,
 			200000,	//latency usec
@@ -1060,6 +1067,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
+*/
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -2083,8 +2091,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F210000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F21D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F21E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Memory32Fixed (ReadWrite, 0x1f21a000, 0x100)
 			Memory32Fixed (ReadWrite, 0x1f217000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA6}
 		})
@@ -2102,8 +2108,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F220000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F22D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F22E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Memory32Fixed (ReadWrite, 0x1f22a000, 0x100)
 			Memory32Fixed (ReadWrite, 0x1f227000, 0x1000)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA7}
 		})
@@ -2121,8 +2125,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed (ReadWrite, 0x1F230000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F23D000, 0x1000)
 			Memory32Fixed (ReadWrite, 0x1F23E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1C000200, 0x100)
-			Memory32Fixed (ReadWrite, 0x1f23a000, 0x100)
 			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA8}
 		})
 	} //SAT2
@@ -2375,26 +2377,27 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 ///////////////////////////////////////////////////////////////////////////////
 // Ethernet Device
+    // APMC0D05: For Open Source
+	// APMC0D19: For APM's driver. When APM driver sync up with open source then
+	// this ID will be changed to APMC0D05
 	Device(\_SB.ET08) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
-		Name(_STR, Unicode("Ethernet RGMII Device"))
+		Name(_STR, Unicode("Ethernet RGMII Device Node Open Source"))
 		Name(_CID, "APMC0D05")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
 		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x17020000, 0x30, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
+			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
+			Memory32Fixed(ReadWrite, 0x17030000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x10000000, 0x400000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5c }
 		})
 
-		OperationRegion(\ETHD, SystemMemory, 0x17000238, 4)
-		Field(\ETHD, DWordAcc, NoLock, Preserve) {
+		OperationRegion(ETHD, SystemMemory, 0x17000238, 4)
+		Field(ETHD, DWordAcc, NoLock, Preserve) {
 			NDIV, 9,
 		}
 		Method(S10, 0, NotSerialized) {
@@ -2420,7 +2423,70 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			CLKE, 2,
 		}
 		Method(_INI, 0, NotSerialized) {
-			Store(0x2, CLKE)
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "8",
+				"slave_name", "RGMII",
+				"slave_info", "3 0 4 32 4",
+				"max-frame-size", "9018",
+				"phyid", "3",
+				"phy-mode", "rgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
+
+	Device(\_SB.ET8) {
+		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_DDN, "ET08")
+		Name(_UID, "ET08")
+		Name(_STR, Unicode("Ethernet RGMII Device for APM kernel"))
+		Name(_CID, "APMC0D19")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
+		})
+
+		OperationRegion(ETHD, SystemMemory, 0x17000238, 4)
+		Field(ETHD, DWordAcc, NoLock, Preserve) {
+			NDIV, 9,
+		}
+		Method(S10, 0, NotSerialized) {
+			// 10Mbps requires 2.5MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/2500000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 2500000), NDIV)
+		}
+		Method(S100, 0, NotSerialized) {
+			// 100Mbps requires 25MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// 100Mbps = (SOC DIV 2)/25000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 25000000), NDIV)
+		}
+		Method(S1G, 0, NotSerialized) {
+			// 1Gbps requires 125MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/125000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 125000000), NDIV)
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x1702c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
 			Stall(100)
 		}
 		Method(_DSM, 4, NotSerialized) {
@@ -2439,11 +2505,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET00) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D19") // Device Identification Objects
 		Name(_DDN, "ET00")
 		Name(_UID, "ET00")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
@@ -2479,11 +2545,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET01) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D19") // Device Identification Objects
 		Name(_DDN, "ET01")
 		Name(_UID, "ET01")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
@@ -2519,11 +2585,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET04) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D19") // Device Identification Objects
 		Name(_DDN, "ET04")
 		Name(_UID, "ET04")
 		Name(_STR, Unicode("Ethernet 10Gb Device"))
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
@@ -2559,11 +2625,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET05) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D19") // Device Identification Objects
 		Name(_DDN, "ET05")
 		Name(_UID, "ET05")
 		Name(_STR, Unicode("Ethernet 10Gb Device"))
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x0)
 		}

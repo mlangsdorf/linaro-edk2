@@ -15,7 +15,7 @@
 [0008]                       Oem Table ID : "XGENESPC"
 [0004]                       Oem Revision : 00000000
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20100528
+[0004]              Asl Compiler Revision : 20140724
 
 [0001]                     Interface Type : 00
 [0003]                           Reserved : 000000

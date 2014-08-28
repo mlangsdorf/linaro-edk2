@@ -21,8 +21,12 @@
 #include <Ppi/ArmMpCoreInfo.h>
 #include <Ppi/TemporaryRamSupport.h>
 #include <Universal/SetupBrowserDxe/Setup.h>
+#include <Library/SlimproLib.h>
 #include "APMXGeneClock.h"
 #include "APMXGenePMD.h"
+
+#define FWSTRINGMAXLEN 32
+#define MHZ_SCALE_FACTOR  1000000
 
 #ifdef AARCH64_MP_PROTOCOL
 ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
@@ -356,7 +360,8 @@ VOID
 ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   )
 {
-  #define MHZ_SCALE_FACTOR	1000000
+  CHAR16 FWRevision[FWSTRINGMAXLEN];
+
   PrintFunc(L"TianoCore %s UEFI %d.%d.%d %a %a\n\r",
             (CHAR16*) PcdGetPtr(PcdFirmwareVersionString), 
             EFI_IFR_SPECIFICATION_VERSION >> 8,
@@ -374,4 +379,6 @@ ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   PrintFunc(L" GFC %dMHz\n", get_GFC_CLK()/MHZ_SCALE_FACTOR);
   if (PcdGetPtr(PcdFirmwareVendor) != NULL)
     PrintFunc(L"Board: %a\n\r", PcdGetPtr(PcdFirmwareVendor));
+  XGeneIppGetFWRevision(FWRevision, FWSTRINGMAXLEN);
+  PrintFunc(L"SLIMpro FW : %s\n\r", FWRevision);
 }

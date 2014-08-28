@@ -69,6 +69,7 @@
   NorFlashPlatformLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneNorFlashPlatformLib/APMXGeneNorFlashPlatformLib.inf
   SerialPortExtLib|ArmPlatformPkg/APMXGenePkg/Library/DWSerialPortLib/DWSerialPortExtLib.inf
   RealTimeClockLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneRTCLib/APMXGeneRealTimeClockLib.inf
+  SlimproLib|ArmPlatformPkg/APMXGenePkg/Library/SlimproLib/SlimproLib.inf
 
   # EBL Related Libraries
   EblCmdLib|ArmPlatformPkg/Library/EblCmdLib/EblCmdLib.inf

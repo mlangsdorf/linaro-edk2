@@ -31,4 +31,8 @@ EFIAPI
 XGeneIppLoadFile(CHAR8* f_name, UINT64 addr,
         UINTN offset, UINTN size);
 
+EFI_STATUS
+EFIAPI
+XGeneIppGetFWRevision(CHAR16* Str, UINT32 Len);
+
 #endif /* _SLIMPROLIB_H_*/

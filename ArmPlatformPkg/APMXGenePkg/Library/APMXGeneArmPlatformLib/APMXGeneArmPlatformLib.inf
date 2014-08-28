@@ -33,6 +33,7 @@
   PcdLib
   SerialPortLib
   APMXGeneMemcLib
+  SlimproLib
 
 [Sources.common]
   APMXGeneArmPlatformLib.c

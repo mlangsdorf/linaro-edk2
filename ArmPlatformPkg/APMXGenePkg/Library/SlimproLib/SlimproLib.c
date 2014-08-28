@@ -15,6 +15,7 @@
 #include <Base.h>
 #include <Uefi/UefiBaseType.h>
 #include <Library/DebugLib.h>
+#include <Library/PrintLib.h>
 
 #include <ipp_csr.h>
 #include <ipp_interface.h>
@@ -33,6 +34,9 @@
 #define APM_CFG_MEM_RAM_SHUTDOWN_ADDR   0x70
 
 #define CONFIG_SYS_SCU_BASE  0x17000000
+
+#define SLIMPRO_MAJOR_VER(x)    (((x) & 0xf0) >> 4)
+#define SLIMPRO_MINOR_VER(x)    ((x) & 0xf)
 
 #ifdef DEBUG
 #define DBG_PRINT(arg...) DEBUG ((EFI_D_VERBOSE,## arg))
@@ -299,6 +303,18 @@ XGeneIppLoadFile(CHAR8* f_name, UINT64 addr,
       IOB_RELAX(1000);
     }
   }
+
+  return EFI_SUCCESS;
+}
+
+EFI_STATUS
+EFIAPI
+XGeneIppGetFWRevision(CHAR16* Str, UINT32 Len)
+{
+  UINT32 Val = mmioread32(CONFIG_SYS_SCU_BASE +
+                          APM_MPA_REG_OFFSET + MPA_SCRATCH_ADDR);
+  UnicodeSPrint(Str, Len, L"%d.%d", SLIMPRO_MAJOR_VER(Val),
+                SLIMPRO_MINOR_VER(Val));
 
   return EFI_SUCCESS;
 }

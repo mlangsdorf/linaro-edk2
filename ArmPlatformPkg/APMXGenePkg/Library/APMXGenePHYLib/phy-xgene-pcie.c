@@ -288,7 +288,10 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 	}
 
 	serdes_rd(ctx, lane, RXTX_REG1, &dt);
-	dt = RXTX_REG1_CTLE_EQ_SET(dt, 0x10);
+	if (xgene_is_preB0())
+		dt = RXTX_REG1_CTLE_EQ_SET(dt, 0x1c);
+	else
+		dt = RXTX_REG1_CTLE_EQ_SET(dt, 0x10);
 	serdes_wr(ctx, lane, RXTX_REG1, dt);
 
 	serdes_rd(ctx, lane, RXTX_REG0, &dt);
@@ -312,7 +315,10 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 	serdes_wr(ctx, lane, RXTX_REG8, dt);
 
 	serdes_rd(ctx, lane, RXTX_REG125, &dt);
-	dt = RXTX_REG125_PQ_REG_SET(dt, 0x11);
+	if (xgene_is_preB0())
+		dt = RXTX_REG125_PQ_REG_SET(dt, 0xA);
+	else
+		dt = RXTX_REG125_PQ_REG_SET(dt, 0x11);
 	dt = RXTX_REG125_PHZ_MANUAL_SET(dt, 0x1);
 	serdes_wr(ctx, lane, RXTX_REG125, dt);
 
@@ -384,12 +390,14 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 	serdes_rd(ctx, lane, RXTX_REG145, &dt);
 	dt = RXTX_REG145_RXDFE_CONFIG_SET(dt, 0x3);
 	serdes_wr(ctx, lane, RXTX_REG145, dt);
-
-	serdes_rd(ctx, lane, RXTX_REG92, &dt);
-	dt = RXTX_REG92_MU_BCA9_SET(dt, 0xa);
-	serdes_wr(ctx, lane, RXTX_REG92, dt);
-
-	serdes_wr(ctx, lane, RXTX_REG28, 0x7);
+	if (xgene_is_preB0())
+		serdes_wr(ctx, lane, RXTX_REG28, 0x3);
+	else {
+		serdes_rd(ctx, lane, RXTX_REG92, &dt);
+		dt = RXTX_REG92_MU_BCA9_SET(dt, 0xa);
+		serdes_wr(ctx, lane, RXTX_REG92, dt);
+		serdes_wr(ctx, lane, RXTX_REG28, 0x7);
+	}
 
 	serdes_rd(ctx, lane, RXTX_REG7, &dt);
 	dt = RXTX_REG7_RESETB_RXD_SET(dt, 0x1);
@@ -454,41 +462,33 @@ static void xgene_phy_pcie_cfg(struct xgene_phy_ctx *ctx)
 	}
 }
 
-static int __attribute__((__unused__)) xgene_phy_pcie_wait_pll_lock(struct xgene_phy_ctx *ctx)
+static int xgene_phy_pcie_wait_pll_lock(struct xgene_phy_ctx *ctx)
 {
-	u32 dt1 = 0;
-	u32 dt2 = 0x4000;
-	u32 dt1_fail = 0;
-	u32 dt2_fail = 0;
-	int try = 10000; /* wait for at least 10 ms per CMU */
+	void __iomem *base = ctx->sds_base;
+	u32 dt1 = 0, dt2 = 0x7;
 
+	/* wait for at least 10 ms per CMU */
+	int try = 10000;
 	do {
-		cmu_rd(ctx, PHY_CMU, CMU_REG7, &dt1);
-		dt1_fail = CMU_REG7_VCO_CAL_FAIL_RD(dt1) & 0x1;
+		dt1 = readl(base + SDS0_CMU_STATUS0);
 		if (ctx->lane > 4) {
-			cmu_rd(ctx, PHY_CMU + 1, CMU_REG7, &dt2);
-			dt2_fail = CMU_REG7_VCO_CAL_FAIL_RD(dt2) & 0x1;
+			dt2 = readl(base + SDS1_CMU_STATUS0);
 		}
-		if ((CMU_REG7_PLL_CALIB_DONE_RD(dt1) && !dt1_fail) &&
-		    (CMU_REG7_PLL_CALIB_DONE_RD(dt2) && !dt2_fail)) {
+		if (((dt1 & 0x7) == 0x7) && ((dt2 & 0x7) == 0x7)) {
 			dev_dbg(ctx->dev, "PHY PLL calibration successful\n");
 			return 0;
 		}
 		usleep_range(1, 10);
 	} while (try--);
-	dev_err(ctx->dev,
-		"PHY PLL calibration failed - error Status: 0x%X 0x%X\n",
-		dt1, dt2);
+	dev_err(ctx->dev, "PHY PLL calibration failed - error Status: 0x%X 0x%X\n",
+			(dt1 & 0x7), (dt2 & 0x7));
 	return -ENODEV;
 }
-
 static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		enum cmu_type_t cmu_type)
 {
 	u32 dt;
-	u32 loop;
-	u32 vco_fail;
-	int try = 100;
+	int try = 10000;
 
 	do {
 		cmu_rd(ctx, cmu_type, CMU_REG32, &dt);
@@ -499,37 +499,18 @@ static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		dt = CMU_REG32_VCOCAL_START_SET(dt, 0x0);
 		cmu_wr(ctx, cmu_type, CMU_REG32, dt);
 
-		/* Wait for calibration completed for 10 ms */
-		loop = 1000;
-		do {
 			cmu_rd(ctx, cmu_type, CMU_REG7, &dt);
 			if (CMU_REG7_PLL_CALIB_DONE_RD(dt))
 				break;
+		usleep_range(1, 10);
+		if (try == 5000) {
 			/*
-			 * As per PHY design spec, PLL calibration status
-			 * requires a minimum of 10us to be updated.
-			 */
-			usleep_range(10, 100);
-		} while (--loop > 0);
-
-		vco_fail = CMU_REG7_VCO_CAL_FAIL_RD(dt) & 0x1;
-		if (!vco_fail)
-			break;
-		/*
 		 * If calibration failed, power down and reset PLL.
 		 * Do calibration again
 		 */
-		dev_dbg(ctx->dev, "VCO status 0x%08X\n", dt);
 		cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
 		dt = CMU_REG0_PDOWN_SET(dt, 0x1);
 		cmu_wr(ctx, cmu_type, CMU_REG0, dt);
-
-		cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
-		dt = CMU_REG0_PDOWN_SET(dt, 0x0);
-		cmu_wr(ctx, cmu_type, CMU_REG0, dt);
-
-		/* 1 us for PLL to power up */
-		usleep_range(1, 100);
 
 		cmu_rd(ctx, cmu_type, CMU_REG5, &dt);
 		dt = PLL_RESETB_SET(dt, 0x0);
@@ -539,13 +520,14 @@ static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		dt = PLL_RESETB_SET(dt, 0x1);
 		cmu_wr(ctx, cmu_type, CMU_REG5, dt);
 
-		cmu_rd(ctx, cmu_type, CMU_REG7, &dt);
-		dev_dbg(ctx->dev, "VCO not successful loop val 0x%08X\n", dt);
-	} while (--try);
+			cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
+			dt = CMU_REG0_PDOWN_SET(dt, 0x0);
+			cmu_wr(ctx, cmu_type, CMU_REG0, dt);
+		}
+	} while (try--);
 
-	if (!CMU_REG7_PLL_CALIB_DONE_RD(dt) ||
-		(CMU_REG7_PLL_CALIB_DONE_RD(dt) && vco_fail)) {
-		dev_err(ctx->dev, "vco momsel calibration failed\n");
+	if (!CMU_REG7_PLL_CALIB_DONE_RD(dt)) {
+		dev_err(ctx->dev, "PHY PLL calibration failed\n");
 		return -ENODEV;
 	}
 	return 0;
@@ -599,8 +581,9 @@ static int xgene_phy_pcie_get_momsel(struct xgene_phy_ctx *ctx,
 	dt = CMU_REG0_CAL_COUNT_RESOL_SET(dt, 0x7);
 	cmu_wr(ctx, cmu_type, CMU_REG0, dt);
 
-	if (xgene_phy_pcie_vco_cal(ctx, cmu_type) < 0)
+	if (xgene_phy_pcie_vco_cal(ctx, cmu_type) < 0) {
 		return -ENODEV;
+	}
 
 	cmu_rd(ctx, cmu_type, CMU_REG19, &dt);
 	*momsel_pcie = CMU_REG19_PLL_VCOMOMSEL_RD(dt);
@@ -791,12 +774,15 @@ int xgene_phy_hw_init_pcie(struct xgene_phy_ctx *ctx, enum clk_type_t clk_type,
 	val = readl(ctx->clk_base);
 	writel(val & ~0x100, ctx->clk_base);
 
-	dev_dbg(ctx->dev, "Initial PLL lock check skipped\n");
+	rc = xgene_phy_pcie_wait_pll_lock(ctx);
+	if (rc)
+		return rc;
+
 	rc = xgene_phy_pcie_wait_phy_rdy(ctx);
 	if (rc)
 		return rc;
 
 	xgene_phy_pcie_manual_cal(ctx);
 
-	return rc;
+	return 0;
 }

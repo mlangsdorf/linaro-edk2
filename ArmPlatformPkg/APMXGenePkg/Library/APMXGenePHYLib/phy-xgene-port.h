@@ -32,10 +32,10 @@ typedef UINT8  u8;
 #define ENODEV			19
 #define dev_err(d, arg...)	DEBUG((EFI_D_ERROR,## arg))
 #define dev_dbg(d, arg...)	DEBUG((EFI_D_BLKIO,## arg))
+#define printf(arg...)		DEBUG((EFI_D_BLKIO,## arg))
 #define dev_warn(d, arg...)	DEBUG((EFI_D_INFO,## arg))
 #define pr_err(arg...)		DEBUG((EFI_D_ERROR,## arg))
 #define pr_debug(arg...)	DEBUG((EFI_D_BLKIO,## arg))
-#define printf(arg...)		DEBUG((EFI_D_BLKIO,## arg))
 #define usleep_range(x, y)	MicroSecondDelay((x))
 #define mdelay(x)		MicroSecondDelay((x*1000))
 #define udelay(x)		MicroSecondDelay((x))

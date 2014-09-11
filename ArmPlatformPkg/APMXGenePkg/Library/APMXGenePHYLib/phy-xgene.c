@@ -2484,18 +2484,10 @@ void dump_momsel(struct xgene_phy_ctx *ctx, int lane)
 
 void xgene_reprogram_vco(struct xgene_phy_ctx *ctx, int ref_clk)
 {
-	void __iomem *csr_serdes;
 	u32 val;
 	int i;
 
-	csr_serdes = ctx->sds_base;
-
-	printf(" Re-Calibration PLL and Summer latch \n");
-	/* put serdes under reset */
-	writel(0xde, csr_serdes + SATA_ENET_SDS_RST_CTL);
-
-	/* trigger power down */
-	cmu_toggle1to0(ctx,PHY_CMU, CMU_REG0, CMU_REG0_PDOWN_MASK);
+	printf("remove manual summer and latch calibration lanes \n");
 
 	for(i = 0; i < ctx->lane ; i++) {
 		serdes_rd(ctx, i, RXTX_REG14, &val);
@@ -2506,7 +2498,7 @@ void xgene_reprogram_vco(struct xgene_phy_ctx *ctx, int ref_clk)
 		val = RXTX_REG127_LATCH_MAN_CAL_ENA_SET(val, 0x0);
 		serdes_wr(ctx, i, RXTX_REG127, val);
 	}	
-	
+
 	/* Configure the PLL for either 100MHz or 50MHz */
 	cmu_rd(ctx, PHY_CMU, CMU_REG2, &val);
 	if (ref_clk == 0) {

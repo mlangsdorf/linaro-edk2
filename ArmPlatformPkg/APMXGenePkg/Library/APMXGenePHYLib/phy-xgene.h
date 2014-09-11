@@ -83,5 +83,4 @@ void xgene_dump_serdes(struct xgene_phy_ctx *ctx, int lane);
 void xgene_eyescan(struct xgene_phy_ctx *ctx , int lane); 
 void dump_momsel(struct xgene_phy_ctx *ctx , int lane);
 void xgene_reprogram_vco(struct xgene_phy_ctx *ctx, int ref_clk);
-
 #endif /* __XGENEPHY_H__ */

@@ -317,6 +317,7 @@
   # ARM Pcds
   #
   gArmTokenSpaceGuid.PcdArmUncachedMemoryMask|0x0000000000000000
+  gArmTokenSpaceGuid.PcdMaxTftpFileSize|0x08000000
 
   #
   # ARM PrimeCell

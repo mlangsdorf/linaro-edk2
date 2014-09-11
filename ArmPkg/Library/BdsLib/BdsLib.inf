@@ -95,6 +95,8 @@
   gArmTokenSpaceGuid.PcdArmLinuxFdtAlignment
   gArmTokenSpaceGuid.PcdArmLinuxKernelMaxOffset
   gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset
+  
+  gArmTokenSpaceGuid.PcdMaxTftpFileSize
 
 [FixedPcd.ARM]
   gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset

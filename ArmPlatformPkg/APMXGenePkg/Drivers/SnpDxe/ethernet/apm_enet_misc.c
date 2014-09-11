@@ -1,15 +1,25 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro APM88xxxx Ethernet Driver
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Mahesh Pujara <mpujara@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_enet_misc.c
+ *
+ * This file implements driver for RGMII, MAC and statistics blocks of
+ * APM88xxxx Ethernet subsystem
+ *
+ */
 
 #include "apm_enet_access.h"
 #include "apm_enet_csr.h"
@@ -147,7 +157,7 @@ int apm_enet_parse_error(u8 LErr, u8 HC, int qid)
 	return 0;
 }
 
-int apm_enet_get_pb_cnt(struct apm_data_priv *priv, int pbn)
+int apm_enet_get_pb_cnt(struct apm_enet_priv *priv, int pbn)
 {
 	u32 val;
 	u32 reg_offset = ENET_STSSSQMIFPNUMENTRIES0_ADDR + ((pbn / 8) * 4);
@@ -155,13 +165,13 @@ int apm_enet_get_pb_cnt(struct apm_data_priv *priv, int pbn)
 
 	apm_enet_read(priv, BLOCK_ETH_QMI, reg_offset, &val);
 
-	ENET_DEBUG("apm_enet_get_pb_cnt %d: reg_offset 0x%08x pbn_offset 0x%08x val 0x%08x\n",
-		/*__FUNCTION__, */__LINE__, reg_offset, pbn_offset, val);
+	ENET_DEBUG("%a: %d: reg_offset 0x%08x pbn_offset 0x%08x val 0x%08x\n",
+		__func__, __LINE__, reg_offset, pbn_offset, val);
 
 	return (val >> (pbn_offset * 4)) & 0xf;
 }
 
-void apm_enet_qmi_read_pb_msg(struct apm_data_priv *priv, u32 pbn,
+void apm_enet_qmi_read_pb_msg(struct apm_enet_priv *priv, u32 pbn,
 				u32 addroffset, u32 last, u32 *msg)
 {
 	u32 data = 0;
@@ -198,7 +208,7 @@ void apm_enet_qmi_read_pb_msg(struct apm_data_priv *priv, u32 pbn,
 			ENET_STSSSQMIDBGDATA_ADDR, msg);
 }
 
-void apm_enet_qmi_pop_pb_msg(struct apm_data_priv *priv, u32 pbn,
+void apm_enet_qmi_pop_pb_msg(struct apm_enet_priv *priv, u32 pbn,
 				u32 addroffset, u32 last, u32 *msg)
 {
 	u32 data = 0;
@@ -231,7 +241,7 @@ void apm_enet_qmi_pop_pb_msg(struct apm_data_priv *priv, u32 pbn,
 }
 
 #ifdef INT_SUPPORT
-void apm_enet_unmask_int(struct apm_data_priv *priv)
+void apm_enet_unmask_int(struct apm_enet_priv *priv)
 {
 #if defined(INT_ENABLE)
 	/* Unmask Enet Error Interrupts per port */
@@ -258,7 +268,7 @@ void apm_enet_unmask_int(struct apm_data_priv *priv)
 
 irqreturn_t apm_enet_qmi_err_irq(int irq, void *dev_instance)
 {
-	struct apm_data_priv *priv = get_priv(dev_instance);
+	struct apm_enet_priv *priv = get_priv(dev_instance);
 	int rc;
 	u32 data;
 	u32 int_mask = 0;
@@ -334,7 +344,7 @@ irqreturn_t apm_enet_qmi_err_irq(int irq, void *dev_instance)
 
 irqreturn_t apm_enet_mac_err_irq(int irq, void *dev_instance)
 {
-	struct apm_data_priv *priv = get_priv(dev_instance);
+	struct apm_enet_priv *priv = get_priv(dev_instance);
 	int rc;
 	u32 data;
 	u32 int_mask = 0;
@@ -470,7 +480,7 @@ irqreturn_t apm_enet_mac_err_irq(int irq, void *dev_instance)
 
 irqreturn_t apm_enet_err_irq(int irq, void *dev_instance)
 {
-	struct apm_data_priv *priv = get_priv(dev_instance);
+	struct apm_enet_priv *priv = get_priv(dev_instance);
 	int rc;
 	u32 data;
 	u32 int_mask = 0;

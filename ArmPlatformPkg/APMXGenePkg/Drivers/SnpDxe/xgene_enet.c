@@ -21,6 +21,7 @@ UINT32 eth_initialized;
 /*
   Functions in Net Library
 */
+#define PREFIX_VARIABLE_NAME            L"MAC"
 static UINT8 apm_mac_addr[][6] = {{0x00, 0x11, 0x22, 0x33, 0x44, 0x55},
 			{0x00, 0x11, 0x22, 0x33, 0x44, 0x56},
 			{0x00, 0x11, 0x22, 0x33, 0x44, 0x57},
@@ -46,23 +47,22 @@ static void GetEnvMacAddr(int index, UINT8* MacBuf)
   EFI_STATUS  Status;
   UINTN       Size;
   CHAR16      Buf[20];
-  char name[8];
+  CHAR16      MACEnv[30];
 
   if (index > sizeof(apm_mac_addr)/sizeof(apm_mac_addr[0])) {
     memcpy(MacBuf, invalid_mac, sizeof(invalid_mac));
     return;
   }
-  memset(&name, 0, sizeof(name));
-  AsciiSPrint(name, sizeof(name), "MAC%d", index);
+  UnicodeSPrint(MACEnv, sizeof(MACEnv), L"%s%d", PREFIX_VARIABLE_NAME, index);
   Size = sizeof(Buf);
-  Status = gRT->GetVariable((CHAR16 *)name,
+  Status = gRT->GetVariable(MACEnv,
                             &gShellVariableGuid,
                             0,
                             &Size,
                             (void *)Buf);
 
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "GetVariable MAC ERROR !!! %d", AsciiStrLen(name)));
+    DEBUG((EFI_D_ERROR, "GetVariable %s ERROR !!!", MACEnv));
     *((UINT8*)MacBuf+0) = apm_mac_addr[index][0];
     *((UINT8*)MacBuf+1) = apm_mac_addr[index][1];
     *((UINT8*)MacBuf+2) = apm_mac_addr[index][2];
@@ -152,32 +152,41 @@ APMXGeneNet_Transmit (
   )
 {
 
-  UINT16 prot;
+	UINT16 prot;
   DBG("APMXGeneNet_Transmit emac_dev[%d]=0x%p\n",  Index, emac_dev[Index]);
 
-  if (!eth_initialized) {
-    if (Index == 0)
-      emac_dev[Index]->index = MENET;
-    else if (Index == 1) 
-      emac_dev[Index]->index = ENET_0;
-    else if (Index == 2) 
-      emac_dev[Index]->index = ENET_1;
-    else if (Index == 3) 
-      emac_dev[Index]->index = XGENET_0;
-    else
-      return EFI_SUCCESS;
-    (emac_dev[Index])->init(emac_dev[Index]);
-    eth_initialized = 1;
-  }
+   if (!eth_initialized) {
+#ifdef CONFIG_STORM
+	if (Index == 0)
+		emac_dev[Index]->index = MENET;
+	else if (Index == 1) 
+		emac_dev[Index]->index = ENET_0;
+	else if (Index == 2) 
+		emac_dev[Index]->index = ENET_1;
+	else if (Index == 3) 
+		emac_dev[Index]->index = XGENET_0;
+	else
+		return EFI_SUCCESS;
+#else
+	if (Index == 0)
+		emac_dev[Index]->index = XGENET_0;
+	else if (Index == 1)
+		emac_dev[Index]->index = XGENET_1;
+	else
+		return EFI_SUCCESS;
+#endif
+   	(emac_dev[Index])->init(emac_dev[Index]);
+	eth_initialized = 1;
+   }
 
-  if (HeaderSize) {
-    CopyMem (Buffer, DestAddr, 6);
-    CopyMem (Buffer + 6, SrcAddr, 6);
-    prot = PXE_SWAP_UINT16(*Protocol);
-    DBG("APMXGeneNet_Transmit prot=0x%x\n", prot);
-    CopyMem (Buffer + 12, &prot, 2);
-  }
-  apm_eth_tx( emac_dev[Index], Buffer, BufferSize);
+   if (HeaderSize) {
+	CopyMem (Buffer, DestAddr, 6);
+	CopyMem (Buffer + 6, SrcAddr, 6);
+	prot = PXE_SWAP_UINT16(*Protocol);
+	DBG("APMXGeneNet_Transmit prot=0x%x\n", prot);
+	CopyMem (Buffer + 12, &prot, 2);
+   }
+   apm_eth_tx( emac_dev[Index], Buffer, BufferSize);
 
   return EFI_SUCCESS;
 }

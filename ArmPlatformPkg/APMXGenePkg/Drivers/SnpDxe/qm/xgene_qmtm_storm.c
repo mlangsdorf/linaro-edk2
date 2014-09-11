@@ -28,8 +28,11 @@ typedef UINT64 u64;
 #include "xgene_qmtm.h"
 #include "xgene_qmtm_core.h"
 #include "xgene_qmtm_storm.h"
+#ifdef CONFIG_SHADOWCAT
+#include "xgene_qmtm_shadowcat_csr.h"
+#else
 #include "xgene_qmtm_csr.h"
-
+#endif
 #ifndef APM_XGENE
 #include <misc/xgene/qmtm/xgene_qmtm.h>
 #ifdef CONFIG_ARCH_MSLIM

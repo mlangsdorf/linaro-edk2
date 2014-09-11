@@ -1,15 +1,24 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro APM88xxxx SoC Classifier Driver
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Mahesh Pujara <mpujara@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_cle_access.h
+ *
+ * This file defines access layer for APM88xxxx SoC Classifier driver
+ *
+ */
 
 #ifndef __APM_CLE_ACCESS_H__
 #define __APM_CLE_ACCESS_H__
@@ -18,9 +27,6 @@
 #include <config.h>
 #include <common.h>
 #else
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <string.h>
 #include <Library/IoLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
@@ -49,6 +55,7 @@ typedef UINT8 u8;
 typedef UINT16 u16;
 typedef UINT32 u32;
 typedef UINT64 u64;
+
 #endif
 
 #if 1
@@ -78,7 +85,7 @@ typedef UINT64 u64;
 
 #if 1
 #define PRECLASS_FATAL
-#endif 
+#endif
 
 #if 1
 #define PRECLASS_ERR
@@ -89,7 +96,7 @@ typedef UINT64 u64;
 #endif
 
 #if 0
-#define PRECLASS_PRINT	
+#define PRECLASS_PRINT
 #endif
 
 #if 0
@@ -130,6 +137,9 @@ typedef UINT64 u64;
 
 #define CPU_TO_LE32 cpu_to_le32
 #define LE32_TO_CPU le32_to_cpu
+#define swahw32(x) ((u32)(				\
+	(((u32)(x) & (u32)0x0000ffffUL) << 16) |	\
+	(((u32)(x) & (u32)0xffff0000UL) >> 16)))
 
 /**
  * @brief   Global Low Level API to read Pre Classifier/Parser CSRs.

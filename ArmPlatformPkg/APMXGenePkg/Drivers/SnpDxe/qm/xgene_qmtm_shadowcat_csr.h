@@ -1,32 +1,23 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (C) 2011 AppliedMicro Confidential Information
+ * All Rights Reserved.
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * THIS WORK CONTAINS PROPRIETARY INFORMATION WHICH IS THE PROPERTY OF
+ * AppliedMicro AND IS SUBJECT TO THE TERMS OF NON-DISCLOSURE AGREEMENT
+ * BETWEEN AppliedMicro AND THE COMPANY USING THIS FILE.
  *
- **/
-
+ * WARNING !!!
+ * This is an auto-generated C header file for register definitions 
+ * PLEASE DON'T MANUALLY MODIFY IN THIS FILE AS CHANGES WILL BE LOST
+ */
 #ifndef _APM_QM_CSR_H__
 #define _APM_QM_CSR_H__
 
-#ifndef CONFIG_STORM
-#define CONFIG_STORM
-#endif
-#if defined(CONFIG_STORM)
-/* For APM88xxxx */
-
 /*	Global Base Address	*/
-#define QM0_CSR_BASE_ADDR			0x01f600000ULL
-#define QM1_CSR_BASE_ADDR			0x01f200000ULL
-#define QM2_CSR_BASE_ADDR			0x01f700000ULL
-#define QML_CSR_BASE_ADDR			0x017030000ULL
+#define QM_CSR_BASE_ADDR			0x01f600000ULL
 
-/*    Address QM_CSR Registers */
+/*    Address QM_CSR  Registers */
 #define CSR_IPBRR_ADDR                                               0x00000000
 #define CSR_IPBRR_DEFAULT                                            0x00000070
 #define CSR_QM_CONFIG_ADDR                                           0x00000004
@@ -39,14 +30,14 @@
 #define CSR_PBM_BUF_RD_DEFAULT                                       0x00000000
 #define CSR_PBM_COAL_ADDR                                            0x00000014
 #define CSR_PBM_COAL_DEFAULT                                         0x00000109
-#define CSR_PBM_CTICK0_ADDR                                          0x00000018
-#define CSR_PBM_CTICK0_DEFAULT                                       0x00000000
-#define CSR_PBM_CTICK1_ADDR                                          0x0000001c
-#define CSR_PBM_CTICK1_DEFAULT                                       0x00000000
-#define CSR_PBM_CTICK2_ADDR                                          0x00000020
-#define CSR_PBM_CTICK2_DEFAULT                                       0x00000000
-#define CSR_PBM_CTICK3_ADDR                                          0x00000024
-#define CSR_PBM_CTICK3_DEFAULT                                       0x00000000
+#define CSR_CTICK0_ADDR                                              0x00000018
+#define CSR_CTICK0_DEFAULT                                           0x00000000
+#define CSR_CTICK1_ADDR                                              0x0000001c
+#define CSR_CTICK1_DEFAULT                                           0x00000000
+#define CSR_CTICK2_ADDR                                              0x00000020
+#define CSR_CTICK2_DEFAULT                                           0x00000000
+#define CSR_CTICK3_ADDR                                              0x00000024
+#define CSR_CTICK3_DEFAULT                                           0x00000000
 #define CSR_THRESHOLD0_SET0_ADDR                                     0x00000028
 #define CSR_THRESHOLD0_SET0_DEFAULT                                  0x00000000
 #define CSR_THRESHOLD1_SET0_ADDR                                     0x0000002c
@@ -93,50 +84,30 @@
 #define CSR_QSTATE_WR_3_DEFAULT                                      0x00000000
 #define CSR_QSTATE_WR_4_ADDR                                         0x00000080
 #define CSR_QSTATE_WR_4_DEFAULT                                      0x00000000
-#define CSR_QSTATE_RD_0_ADDR                                         0x00000084
+#define CSR_QSTATE_WR_5_ADDR                                         0x00000084
+#define CSR_QSTATE_WR_5_DEFAULT                                      0x00000000
+#define CSR_QSTATE_RD_0_ADDR                                         0x00000088
 #define CSR_QSTATE_RD_0_DEFAULT                                      0x00000000
-#define CSR_QSTATE_RD_1_ADDR                                         0x00000088
+#define CSR_QSTATE_RD_1_ADDR                                         0x0000008c
 #define CSR_QSTATE_RD_1_DEFAULT                                      0x00000000
-#define CSR_QSTATE_RD_2_ADDR                                         0x0000008c
+#define CSR_QSTATE_RD_2_ADDR                                         0x00000090
 #define CSR_QSTATE_RD_2_DEFAULT                                      0x00000000
-#define CSR_QSTATE_RD_3_ADDR                                         0x00000090
+#define CSR_QSTATE_RD_3_ADDR                                         0x00000094
 #define CSR_QSTATE_RD_3_DEFAULT                                      0x00000000
-#define CSR_QSTATE_RD_4_ADDR                                         0x00000094
+#define CSR_QSTATE_RD_4_ADDR                                         0x00000098
 #define CSR_QSTATE_RD_4_DEFAULT                                      0x00000000
-#define CSR_CSTATE_WR_0_ADDR                                         0x0000009c
+#define CSR_QSTATE_RD_5_ADDR                                         0x0000009c
+#define CSR_QSTATE_RD_5_DEFAULT                                      0x00000000
+#define CSR_CSTATE_WR_0_ADDR                                         0x000000a0
 #define CSR_CSTATE_WR_0_DEFAULT                                      0x00000000
-#define CSR_CSTATE_WR_1_ADDR                                         0x000000a0
+#define CSR_CSTATE_WR_1_ADDR                                         0x000000a4
 #define CSR_CSTATE_WR_1_DEFAULT                                      0x00000000
-#define CSR_CSTATE_RD_0_ADDR                                         0x000000a4
+#define CSR_CSTATE_RD_0_ADDR                                         0x000000a8
 #define CSR_CSTATE_RD_0_DEFAULT                                      0x00000000
-#define CSR_CSTATE_RD_1_ADDR                                         0x000000a8
+#define CSR_CSTATE_RD_1_ADDR                                         0x000000ac
 #define CSR_CSTATE_RD_1_DEFAULT                                      0x00000000
-#define CSR_CU_TIMER_ADDR                                            0x000000ac
+#define CSR_CU_TIMER_ADDR                                            0x000000b0
 #define CSR_CU_TIMER_DEFAULT                                         0x00000000
-#define CSR_PROC_MBOX_BASE_0_ADDR                                    0x000000b0
-#define CSR_PROC_MBOX_BASE_0_DEFAULT                                 0x00000000
-#define CSR_PROC_MBOX_BASE_1_ADDR                                    0x000000b4
-#define CSR_PROC_MBOX_BASE_1_DEFAULT                                 0x00000000
-#define CSR_PROC_MBOX_BASE_2_ADDR                                    0x000000b8
-#define CSR_PROC_MBOX_BASE_2_DEFAULT                                 0x00000000
-#define CSR_PROC_MBOX_BASE_3_ADDR                                    0x000000bc
-#define CSR_PROC_MBOX_BASE_3_DEFAULT                                 0x00000000
-#define CSR_PROC_FPOOL_BASE_0_ADDR                                   0x000000c0
-#define CSR_PROC_FPOOL_BASE_0_DEFAULT                                0x00000000
-#define CSR_PROC_FPOOL_BASE_1_ADDR                                   0x000000c4
-#define CSR_PROC_FPOOL_BASE_1_DEFAULT                                0x00000000
-#define CSR_PROC_FPOOL_BASE_2_ADDR                                   0x000000c8
-#define CSR_PROC_FPOOL_BASE_2_DEFAULT                                0x00000000
-#define CSR_PROC_FPOOL_BASE_3_ADDR                                   0x000000cc
-#define CSR_PROC_FPOOL_BASE_3_DEFAULT                                0x00000000
-#define CSR_ENQ_BASE_0_ADDR                                          0x000000d4
-#define CSR_ENQ_BASE_0_DEFAULT                                       0x00000000
-#define CSR_ENQ_BASE_1_ADDR                                          0x000000d8
-#define CSR_ENQ_BASE_1_DEFAULT                                       0x00000000
-#define CSR_ENQ_BASE_2_ADDR                                          0x000000dc
-#define CSR_ENQ_BASE_2_DEFAULT                                       0x00000000
-#define CSR_ENQ_BASE_3_ADDR                                          0x000000e0
-#define CSR_ENQ_BASE_3_DEFAULT                                       0x00000000
 #define CSR_ENQ_STATUS_0_ADDR                                        0x000000e4
 #define CSR_ENQ_STATUS_0_DEFAULT                                     0x00000000
 #define CSR_ENQ_STATUS_1_ADDR                                        0x000000e8
@@ -172,37 +143,14 @@
 #define QM_INTERRUPT_ADDR                                            0x00000124
 #define QM_INTERRUPT_DEFAULT                                         0x00000000
 #define QM_INTERRUPTMASK_ADDR                                        0x00000128
-#define QM_SAB_QNE_INTERRUPT_ADDR                                    0x0000012c
-#define QM_SAB_QNE_INTERRUPT_DEFAULT                                 0x00000000
-#define QM_SAB_QNE_INTERRUPTMASK_ADDR                                0x00000130
 #define CSR_PBM_ERRINF_ADDR                                          0x00000134
 #define CSR_PBM_ERRINF_DEFAULT                                       0x00000000
 #define CSR_MSGRD_ERRINF_ADDR                                        0x00000138
 #define CSR_MSGRD_ERRINF_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC0_ADDR                                        0x0000013c
-#define CSR_QM_SAB_PROC0_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC0MASK_ADDR                                    0x00000140
-#define CSR_QM_SAB_PROC1_ADDR                                        0x00000144
-#define CSR_QM_SAB_PROC1_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC1MASK_ADDR                                    0x00000148
-#define CSR_QM_SAB_PROC2_ADDR                                        0x0000014c
-#define CSR_QM_SAB_PROC2_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC2MASK_ADDR                                    0x00000150
-#define CSR_QM_SAB_PROC3_ADDR                                        0x00000154
-#define CSR_QM_SAB_PROC3_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC3MASK_ADDR                                    0x00000158
-#define CSR_QM_SAB_PROC4_ADDR                                        0x0000015c
-#define CSR_QM_SAB_PROC4_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC4MASK_ADDR                                    0x00000160
-#define CSR_QM_SAB_PROC5_ADDR                                        0x00000164
-#define CSR_QM_SAB_PROC5_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC5MASK_ADDR                                    0x00000168
-#define CSR_QM_SAB_PROC6_ADDR                                        0x0000016c
-#define CSR_QM_SAB_PROC6_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC6MASK_ADDR                                    0x00000170
-#define CSR_QM_SAB_PROC7_ADDR                                        0x00000174
-#define CSR_QM_SAB_PROC7_DEFAULT                                     0x00000000
-#define CSR_QM_SAB_PROC7MASK_ADDR                                    0x00000178
+#define CSR_QM_SAB_CRITICAL_STS_ADDR                                 0x0000013c
+#define CSR_QM_SAB_CRITICAL_STS_DEFAULT                              0x00000000
+#define CSR_QPCORE_ERRINF_ADDR                                       0x00000140
+#define CSR_QPCORE_ERRINF_DEFAULT                                    0x00000000
 #define CSR_QM_MBOX_NE_INT_MODE_ADDR                                 0x0000017c
 #define CSR_QM_MBOX_NE_INT_MODE_DEFAULT                              0x00000000
 #define CSR_QM_MBOX_NE_ADDR                                          0x00000180
@@ -281,8 +229,6 @@
 #define CSR_FIFO_STATUS_DEFAULT                                      0x00000000
 #define CSR_ACR_FIFO_CTRL_ADDR                                       0x00000214
 #define CSR_ACR_FIFO_CTRL_DEFAULT                                    0xc0e08020
-#define CSR_ERRQ_ADDR                                                0x00000218
-#define CSR_ERRQ_DEFAULT                                             0x00000000
 #define CSR_QM_RAM_MARGIN_ADDR                                       0x0000021c
 #define CSR_QM_RAM_MARGIN_DEFAULT                                    0x00000000
 #define CSR_QM_TESTINT0_ADDR                                         0x00000220
@@ -294,9 +240,9 @@
 #define CSR_QMLITE_PBN_MAP_1_ADDR                                    0x0000022c
 #define CSR_QMLITE_PBN_MAP_1_DEFAULT                                 0x00000000
 #define CSR_RECOMB_CTRL_0_ADDR                                       0x00000230
-#define CSR_RECOMB_CTRL_0_DEFAULT                                    0x00000104
+#define CSR_RECOMB_CTRL_0_DEFAULT                                    0x1ff00104
 #define CSR_RECOMB_CTRL_1_ADDR                                       0x00000234
-#define CSR_RECOMB_CTRL_1_DEFAULT                                    0x02080208
+#define CSR_RECOMB_CTRL_1_DEFAULT                                    0x6e080208
 #define CSR_RECOMB_CTRL_2_ADDR                                       0x00000238
 #define CSR_RECOMB_CTRL_2_DEFAULT                                    0x80202020
 #define CSR_QM_RECOMB_RAM_MARGIN_ADDR                                0x00000240
@@ -307,49 +253,698 @@
 #define CSR_RECOMB_STS_1_DEFAULT                                     0xffffffff
 #define CSR_RECOMB_STS_2_ADDR                                        0x0000024c
 #define CSR_RECOMB_STS_2_DEFAULT                                     0xffffffff
-#define RECOMB_INTERRUPT_ADDR                                        0x00000250
+#define CSR_RECOMB_STS_3_ADDR                                        0x00000250
+#define CSR_RECOMB_STS_3_DEFAULT                                     0xffffffff
+#define CSR_RECOMB_STS_4_ADDR                                        0x00000254
+#define CSR_RECOMB_STS_4_DEFAULT                                     0xffffffff
+#define RECOMB_INTERRUPT_ADDR                                        0x00000258
 #define RECOMB_INTERRUPT_DEFAULT                                     0x00000000
-#define RECOMB_INTERRUPTMASK_ADDR                                    0x00000254
-#define CSR_DEQ_CTRL_0_ADDR                                          0x00000258
+#define RECOMB_INTERRUPTMASK_ADDR                                    0x0000025c
+#define CSR_DEQ_CTRL_0_ADDR                                          0x00000260
 #define CSR_DEQ_CTRL_0_DEFAULT                                       0x00000007
-#define CSR_MPIC_CTRL_0_ADDR                                         0x0000025c
+#define CSR_MPIC_CTRL_0_ADDR                                         0x00000264
 #define CSR_MPIC_CTRL_0_DEFAULT                                      0x00000001
-#define CSR_MISC_CTRL_0_ADDR                                         0x00000260
-#define CSR_MISC_CTRL_0_DEFAULT                                      0x00000000
-#define PBM_DIAGDATA_CTRL_0_ADDR                                     0x00000264
-#define PBM_DIAGDATA_CTRL_0_DEFAULT                                  0x00000000
+#define CSR_MISC_CTRL_0_ADDR                                         0x00000268
+#define CSR_MISC_CTRL_0_DEFAULT                                      0x00000003
+#define CSR_VMID0_INTR_MBOX_BASEADDR_ADDR                            0x00000270
+#define CSR_VMID0_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID1_INTR_MBOX_BASEADDR_ADDR                            0x00000274
+#define CSR_VMID1_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID2_INTR_MBOX_BASEADDR_ADDR                            0x00000278
+#define CSR_VMID2_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID3_INTR_MBOX_BASEADDR_ADDR                            0x0000027c
+#define CSR_VMID3_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID4_INTR_MBOX_BASEADDR_ADDR                            0x00000280
+#define CSR_VMID4_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID5_INTR_MBOX_BASEADDR_ADDR                            0x00000284
+#define CSR_VMID5_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID6_INTR_MBOX_BASEADDR_ADDR                            0x00000288
+#define CSR_VMID6_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID7_INTR_MBOX_BASEADDR_ADDR                            0x0000028c
+#define CSR_VMID7_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID8_INTR_MBOX_BASEADDR_ADDR                            0x00000290
+#define CSR_VMID8_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID9_INTR_MBOX_BASEADDR_ADDR                            0x00000294
+#define CSR_VMID9_INTR_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID10_INTR_MBOX_BASEADDR_ADDR                           0x00000298
+#define CSR_VMID10_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID11_INTR_MBOX_BASEADDR_ADDR                           0x0000029c
+#define CSR_VMID11_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID12_INTR_MBOX_BASEADDR_ADDR                           0x000002a0
+#define CSR_VMID12_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID13_INTR_MBOX_BASEADDR_ADDR                           0x000002a4
+#define CSR_VMID13_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID14_INTR_MBOX_BASEADDR_ADDR                           0x000002a8
+#define CSR_VMID14_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID15_INTR_MBOX_BASEADDR_ADDR                           0x000002ac
+#define CSR_VMID15_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID16_INTR_MBOX_BASEADDR_ADDR                           0x000002b0
+#define CSR_VMID16_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID17_INTR_MBOX_BASEADDR_ADDR                           0x000002b4
+#define CSR_VMID17_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID18_INTR_MBOX_BASEADDR_ADDR                           0x000002b8
+#define CSR_VMID18_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID19_INTR_MBOX_BASEADDR_ADDR                           0x000002bc
+#define CSR_VMID19_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID20_INTR_MBOX_BASEADDR_ADDR                           0x000002c0
+#define CSR_VMID20_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID21_INTR_MBOX_BASEADDR_ADDR                           0x000002c4
+#define CSR_VMID21_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID22_INTR_MBOX_BASEADDR_ADDR                           0x000002c8
+#define CSR_VMID22_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID23_INTR_MBOX_BASEADDR_ADDR                           0x000002cc
+#define CSR_VMID23_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID24_INTR_MBOX_BASEADDR_ADDR                           0x000002d0
+#define CSR_VMID24_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID25_INTR_MBOX_BASEADDR_ADDR                           0x000002d4
+#define CSR_VMID25_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID26_INTR_MBOX_BASEADDR_ADDR                           0x000002d8
+#define CSR_VMID26_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID27_INTR_MBOX_BASEADDR_ADDR                           0x000002dc
+#define CSR_VMID27_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID28_INTR_MBOX_BASEADDR_ADDR                           0x000002e0
+#define CSR_VMID28_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID29_INTR_MBOX_BASEADDR_ADDR                           0x000002e4
+#define CSR_VMID29_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID30_INTR_MBOX_BASEADDR_ADDR                           0x000002e8
+#define CSR_VMID30_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID31_INTR_MBOX_BASEADDR_ADDR                           0x000002ec
+#define CSR_VMID31_INTR_MBOX_BASEADDR_DEFAULT                        0x00000000
+#define CSR_VMID0_INTR_MBOX_AXISB_ADDR                               0x000002f0
+#define CSR_VMID0_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID1_INTR_MBOX_AXISB_ADDR                               0x000002f4
+#define CSR_VMID1_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID2_INTR_MBOX_AXISB_ADDR                               0x000002f8
+#define CSR_VMID2_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID3_INTR_MBOX_AXISB_ADDR                               0x000002fc
+#define CSR_VMID3_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID4_INTR_MBOX_AXISB_ADDR                               0x00000300
+#define CSR_VMID4_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID5_INTR_MBOX_AXISB_ADDR                               0x00000304
+#define CSR_VMID5_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID6_INTR_MBOX_AXISB_ADDR                               0x00000308
+#define CSR_VMID6_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID7_INTR_MBOX_AXISB_ADDR                               0x0000030c
+#define CSR_VMID7_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID8_INTR_MBOX_AXISB_ADDR                               0x00000310
+#define CSR_VMID8_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID9_INTR_MBOX_AXISB_ADDR                               0x00000314
+#define CSR_VMID9_INTR_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID10_INTR_MBOX_AXISB_ADDR                              0x00000318
+#define CSR_VMID10_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID11_INTR_MBOX_AXISB_ADDR                              0x0000031c
+#define CSR_VMID11_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID12_INTR_MBOX_AXISB_ADDR                              0x00000320
+#define CSR_VMID12_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID13_INTR_MBOX_AXISB_ADDR                              0x00000324
+#define CSR_VMID13_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID14_INTR_MBOX_AXISB_ADDR                              0x00000328
+#define CSR_VMID14_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID15_INTR_MBOX_AXISB_ADDR                              0x0000032c
+#define CSR_VMID15_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID16_INTR_MBOX_AXISB_ADDR                              0x00000330
+#define CSR_VMID16_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID17_INTR_MBOX_AXISB_ADDR                              0x00000334
+#define CSR_VMID17_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID18_INTR_MBOX_AXISB_ADDR                              0x00000338
+#define CSR_VMID18_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID19_INTR_MBOX_AXISB_ADDR                              0x0000033c
+#define CSR_VMID19_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID20_INTR_MBOX_AXISB_ADDR                              0x00000340
+#define CSR_VMID20_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID21_INTR_MBOX_AXISB_ADDR                              0x00000344
+#define CSR_VMID21_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID22_INTR_MBOX_AXISB_ADDR                              0x00000348
+#define CSR_VMID22_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID23_INTR_MBOX_AXISB_ADDR                              0x0000034c
+#define CSR_VMID23_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID24_INTR_MBOX_AXISB_ADDR                              0x00000350
+#define CSR_VMID24_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID25_INTR_MBOX_AXISB_ADDR                              0x00000354
+#define CSR_VMID25_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID26_INTR_MBOX_AXISB_ADDR                              0x00000358
+#define CSR_VMID26_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID27_INTR_MBOX_AXISB_ADDR                              0x0000035c
+#define CSR_VMID27_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID28_INTR_MBOX_AXISB_ADDR                              0x00000360
+#define CSR_VMID28_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID29_INTR_MBOX_AXISB_ADDR                              0x00000364
+#define CSR_VMID29_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID30_INTR_MBOX_AXISB_ADDR                              0x00000368
+#define CSR_VMID30_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_VMID31_INTR_MBOX_AXISB_ADDR                              0x0000036c
+#define CSR_VMID31_INTR_MBOX_AXISB_DEFAULT                           0x00000000
+#define CSR_INTR_MBOX_RECOMBINATION_ADDR                             0x00000370
+#define CSR_INTR_MBOX_RECOMBINATION_DEFAULT                          0x00000080
+#define CSR_VMID0_DEQ_MBOX_BASEADDR_ADDR                             0x00000380
+#define CSR_VMID0_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID1_DEQ_MBOX_BASEADDR_ADDR                             0x00000384
+#define CSR_VMID1_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID2_DEQ_MBOX_BASEADDR_ADDR                             0x00000388
+#define CSR_VMID2_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID3_DEQ_MBOX_BASEADDR_ADDR                             0x0000038c
+#define CSR_VMID3_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID4_DEQ_MBOX_BASEADDR_ADDR                             0x00000390
+#define CSR_VMID4_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID5_DEQ_MBOX_BASEADDR_ADDR                             0x00000394
+#define CSR_VMID5_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID6_DEQ_MBOX_BASEADDR_ADDR                             0x00000398
+#define CSR_VMID6_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID7_DEQ_MBOX_BASEADDR_ADDR                             0x0000039c
+#define CSR_VMID7_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID8_DEQ_MBOX_BASEADDR_ADDR                             0x000003a0
+#define CSR_VMID8_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID9_DEQ_MBOX_BASEADDR_ADDR                             0x000003a4
+#define CSR_VMID9_DEQ_MBOX_BASEADDR_DEFAULT                          0x00000000
+#define CSR_VMID10_DEQ_MBOX_BASEADDR_ADDR                            0x000003a8
+#define CSR_VMID10_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID11_DEQ_MBOX_BASEADDR_ADDR                            0x000003ac
+#define CSR_VMID11_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID12_DEQ_MBOX_BASEADDR_ADDR                            0x000003b0
+#define CSR_VMID12_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID13_DEQ_MBOX_BASEADDR_ADDR                            0x000003b4
+#define CSR_VMID13_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID14_DEQ_MBOX_BASEADDR_ADDR                            0x000003b8
+#define CSR_VMID14_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID15_DEQ_MBOX_BASEADDR_ADDR                            0x000003bc
+#define CSR_VMID15_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID16_DEQ_MBOX_BASEADDR_ADDR                            0x000003c0
+#define CSR_VMID16_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID17_DEQ_MBOX_BASEADDR_ADDR                            0x000003c4
+#define CSR_VMID17_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID18_DEQ_MBOX_BASEADDR_ADDR                            0x000003c8
+#define CSR_VMID18_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID19_DEQ_MBOX_BASEADDR_ADDR                            0x000003cc
+#define CSR_VMID19_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID20_DEQ_MBOX_BASEADDR_ADDR                            0x000003d0
+#define CSR_VMID20_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID21_DEQ_MBOX_BASEADDR_ADDR                            0x000003d4
+#define CSR_VMID21_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID22_DEQ_MBOX_BASEADDR_ADDR                            0x000003d8
+#define CSR_VMID22_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID23_DEQ_MBOX_BASEADDR_ADDR                            0x000003dc
+#define CSR_VMID23_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID24_DEQ_MBOX_BASEADDR_ADDR                            0x000003e0
+#define CSR_VMID24_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID25_DEQ_MBOX_BASEADDR_ADDR                            0x000003e4
+#define CSR_VMID25_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID26_DEQ_MBOX_BASEADDR_ADDR                            0x000003e8
+#define CSR_VMID26_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID27_DEQ_MBOX_BASEADDR_ADDR                            0x000003ec
+#define CSR_VMID27_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID28_DEQ_MBOX_BASEADDR_ADDR                            0x000003f0
+#define CSR_VMID28_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID29_DEQ_MBOX_BASEADDR_ADDR                            0x000003f4
+#define CSR_VMID29_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID30_DEQ_MBOX_BASEADDR_ADDR                            0x000003f8
+#define CSR_VMID30_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID31_DEQ_MBOX_BASEADDR_ADDR                            0x000003fc
+#define CSR_VMID31_DEQ_MBOX_BASEADDR_DEFAULT                         0x00000000
+#define CSR_VMID0_DEQ_MBOX_AXISB_ADDR                                0x00000400
+#define CSR_VMID0_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID1_DEQ_MBOX_AXISB_ADDR                                0x00000404
+#define CSR_VMID1_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID2_DEQ_MBOX_AXISB_ADDR                                0x00000408
+#define CSR_VMID2_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID3_DEQ_MBOX_AXISB_ADDR                                0x0000040c
+#define CSR_VMID3_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID4_DEQ_MBOX_AXISB_ADDR                                0x00000410
+#define CSR_VMID4_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID5_DEQ_MBOX_AXISB_ADDR                                0x00000414
+#define CSR_VMID5_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID6_DEQ_MBOX_AXISB_ADDR                                0x00000418
+#define CSR_VMID6_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID7_DEQ_MBOX_AXISB_ADDR                                0x0000041c
+#define CSR_VMID7_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID8_DEQ_MBOX_AXISB_ADDR                                0x00000420
+#define CSR_VMID8_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID9_DEQ_MBOX_AXISB_ADDR                                0x00000424
+#define CSR_VMID9_DEQ_MBOX_AXISB_DEFAULT                             0x00000000
+#define CSR_VMID10_DEQ_MBOX_AXISB_ADDR                               0x00000428
+#define CSR_VMID10_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID11_DEQ_MBOX_AXISB_ADDR                               0x0000042c
+#define CSR_VMID11_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID12_DEQ_MBOX_AXISB_ADDR                               0x00000430
+#define CSR_VMID12_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID13_DEQ_MBOX_AXISB_ADDR                               0x00000434
+#define CSR_VMID13_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID14_DEQ_MBOX_AXISB_ADDR                               0x00000438
+#define CSR_VMID14_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID15_DEQ_MBOX_AXISB_ADDR                               0x0000043c
+#define CSR_VMID15_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID16_DEQ_MBOX_AXISB_ADDR                               0x00000440
+#define CSR_VMID16_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID17_DEQ_MBOX_AXISB_ADDR                               0x00000444
+#define CSR_VMID17_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID18_DEQ_MBOX_AXISB_ADDR                               0x00000448
+#define CSR_VMID18_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID19_DEQ_MBOX_AXISB_ADDR                               0x0000044c
+#define CSR_VMID19_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID20_DEQ_MBOX_AXISB_ADDR                               0x00000450
+#define CSR_VMID20_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID21_DEQ_MBOX_AXISB_ADDR                               0x00000454
+#define CSR_VMID21_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID22_DEQ_MBOX_AXISB_ADDR                               0x00000458
+#define CSR_VMID22_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID23_DEQ_MBOX_AXISB_ADDR                               0x0000045c
+#define CSR_VMID23_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID24_DEQ_MBOX_AXISB_ADDR                               0x00000460
+#define CSR_VMID24_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID25_DEQ_MBOX_AXISB_ADDR                               0x00000464
+#define CSR_VMID25_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID26_DEQ_MBOX_AXISB_ADDR                               0x00000468
+#define CSR_VMID26_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID27_DEQ_MBOX_AXISB_ADDR                               0x0000046c
+#define CSR_VMID27_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID28_DEQ_MBOX_AXISB_ADDR                               0x00000470
+#define CSR_VMID28_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID29_DEQ_MBOX_AXISB_ADDR                               0x00000474
+#define CSR_VMID29_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID30_DEQ_MBOX_AXISB_ADDR                               0x00000478
+#define CSR_VMID30_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_VMID31_DEQ_MBOX_AXISB_ADDR                               0x0000047c
+#define CSR_VMID31_DEQ_MBOX_AXISB_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_0_ADDR                               0x00000490
+#define CSR_PROC_FPOOL_BASEADDR_0_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_1_ADDR                               0x00000494
+#define CSR_PROC_FPOOL_BASEADDR_1_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_2_ADDR                               0x00000498
+#define CSR_PROC_FPOOL_BASEADDR_2_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_3_ADDR                               0x0000049c
+#define CSR_PROC_FPOOL_BASEADDR_3_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_4_ADDR                               0x000004a0
+#define CSR_PROC_FPOOL_BASEADDR_4_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_5_ADDR                               0x000004a4
+#define CSR_PROC_FPOOL_BASEADDR_5_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_6_ADDR                               0x000004a8
+#define CSR_PROC_FPOOL_BASEADDR_6_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_7_ADDR                               0x000004ac
+#define CSR_PROC_FPOOL_BASEADDR_7_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_8_ADDR                               0x000004b0
+#define CSR_PROC_FPOOL_BASEADDR_8_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_9_ADDR                               0x000004b4
+#define CSR_PROC_FPOOL_BASEADDR_9_DEFAULT                            0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_10_ADDR                              0x000004b8
+#define CSR_PROC_FPOOL_BASEADDR_10_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_11_ADDR                              0x000004bc
+#define CSR_PROC_FPOOL_BASEADDR_11_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_12_ADDR                              0x000004c0
+#define CSR_PROC_FPOOL_BASEADDR_12_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_13_ADDR                              0x000004c4
+#define CSR_PROC_FPOOL_BASEADDR_13_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_14_ADDR                              0x000004c8
+#define CSR_PROC_FPOOL_BASEADDR_14_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_15_ADDR                              0x000004cc
+#define CSR_PROC_FPOOL_BASEADDR_15_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_16_ADDR                              0x000004d0
+#define CSR_PROC_FPOOL_BASEADDR_16_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_17_ADDR                              0x000004d4
+#define CSR_PROC_FPOOL_BASEADDR_17_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_18_ADDR                              0x000004d8
+#define CSR_PROC_FPOOL_BASEADDR_18_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_19_ADDR                              0x000004dc
+#define CSR_PROC_FPOOL_BASEADDR_19_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_20_ADDR                              0x000004e0
+#define CSR_PROC_FPOOL_BASEADDR_20_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_21_ADDR                              0x000004e4
+#define CSR_PROC_FPOOL_BASEADDR_21_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_22_ADDR                              0x000004e8
+#define CSR_PROC_FPOOL_BASEADDR_22_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_23_ADDR                              0x000004ec
+#define CSR_PROC_FPOOL_BASEADDR_23_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_24_ADDR                              0x000004f0
+#define CSR_PROC_FPOOL_BASEADDR_24_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_25_ADDR                              0x000004f4
+#define CSR_PROC_FPOOL_BASEADDR_25_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_26_ADDR                              0x000004f8
+#define CSR_PROC_FPOOL_BASEADDR_26_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_27_ADDR                              0x000004fc
+#define CSR_PROC_FPOOL_BASEADDR_27_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_28_ADDR                              0x00000500
+#define CSR_PROC_FPOOL_BASEADDR_28_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_29_ADDR                              0x00000504
+#define CSR_PROC_FPOOL_BASEADDR_29_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_30_ADDR                              0x00000508
+#define CSR_PROC_FPOOL_BASEADDR_30_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_BASEADDR_31_ADDR                              0x0000050c
+#define CSR_PROC_FPOOL_BASEADDR_31_DEFAULT                           0x00000000
+#define CSR_PROC_FPOOL_AXISB_0_ADDR                                  0x00000520
+#define CSR_PROC_FPOOL_AXISB_0_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_1_ADDR                                  0x00000524
+#define CSR_PROC_FPOOL_AXISB_1_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_2_ADDR                                  0x00000528
+#define CSR_PROC_FPOOL_AXISB_2_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_3_ADDR                                  0x0000052c
+#define CSR_PROC_FPOOL_AXISB_3_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_4_ADDR                                  0x00000530
+#define CSR_PROC_FPOOL_AXISB_4_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_5_ADDR                                  0x00000534
+#define CSR_PROC_FPOOL_AXISB_5_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_6_ADDR                                  0x00000538
+#define CSR_PROC_FPOOL_AXISB_6_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_7_ADDR                                  0x0000053c
+#define CSR_PROC_FPOOL_AXISB_7_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_8_ADDR                                  0x00000540
+#define CSR_PROC_FPOOL_AXISB_8_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_9_ADDR                                  0x00000544
+#define CSR_PROC_FPOOL_AXISB_9_DEFAULT                               0x00000000
+#define CSR_PROC_FPOOL_AXISB_10_ADDR                                 0x00000548
+#define CSR_PROC_FPOOL_AXISB_10_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_11_ADDR                                 0x0000054c
+#define CSR_PROC_FPOOL_AXISB_11_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_12_ADDR                                 0x00000550
+#define CSR_PROC_FPOOL_AXISB_12_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_13_ADDR                                 0x00000554
+#define CSR_PROC_FPOOL_AXISB_13_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_14_ADDR                                 0x00000558
+#define CSR_PROC_FPOOL_AXISB_14_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_15_ADDR                                 0x0000055c
+#define CSR_PROC_FPOOL_AXISB_15_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_16_ADDR                                 0x00000560
+#define CSR_PROC_FPOOL_AXISB_16_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_17_ADDR                                 0x00000564
+#define CSR_PROC_FPOOL_AXISB_17_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_18_ADDR                                 0x00000568
+#define CSR_PROC_FPOOL_AXISB_18_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_19_ADDR                                 0x0000056c
+#define CSR_PROC_FPOOL_AXISB_19_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_20_ADDR                                 0x00000570
+#define CSR_PROC_FPOOL_AXISB_20_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_21_ADDR                                 0x00000574
+#define CSR_PROC_FPOOL_AXISB_21_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_22_ADDR                                 0x00000578
+#define CSR_PROC_FPOOL_AXISB_22_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_23_ADDR                                 0x0000057c
+#define CSR_PROC_FPOOL_AXISB_23_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_24_ADDR                                 0x00000580
+#define CSR_PROC_FPOOL_AXISB_24_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_25_ADDR                                 0x00000584
+#define CSR_PROC_FPOOL_AXISB_25_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_26_ADDR                                 0x00000588
+#define CSR_PROC_FPOOL_AXISB_26_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_27_ADDR                                 0x0000058c
+#define CSR_PROC_FPOOL_AXISB_27_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_28_ADDR                                 0x00000590
+#define CSR_PROC_FPOOL_AXISB_28_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_29_ADDR                                 0x00000594
+#define CSR_PROC_FPOOL_AXISB_29_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_30_ADDR                                 0x00000598
+#define CSR_PROC_FPOOL_AXISB_30_DEFAULT                              0x00000000
+#define CSR_PROC_FPOOL_AXISB_31_ADDR                                 0x0000059c
+#define CSR_PROC_FPOOL_AXISB_31_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_0_ADDR                                 0x000005a0
+#define CSR_ENQ_MBOX_BASEADDR_0_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_1_ADDR                                 0x000005a4
+#define CSR_ENQ_MBOX_BASEADDR_1_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_2_ADDR                                 0x000005a8
+#define CSR_ENQ_MBOX_BASEADDR_2_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_3_ADDR                                 0x000005ac
+#define CSR_ENQ_MBOX_BASEADDR_3_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_4_ADDR                                 0x000005b0
+#define CSR_ENQ_MBOX_BASEADDR_4_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_5_ADDR                                 0x000005b4
+#define CSR_ENQ_MBOX_BASEADDR_5_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_6_ADDR                                 0x000005b8
+#define CSR_ENQ_MBOX_BASEADDR_6_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_7_ADDR                                 0x000005bc
+#define CSR_ENQ_MBOX_BASEADDR_7_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_8_ADDR                                 0x000005c0
+#define CSR_ENQ_MBOX_BASEADDR_8_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_9_ADDR                                 0x000005c4
+#define CSR_ENQ_MBOX_BASEADDR_9_DEFAULT                              0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_10_ADDR                                0x000005c8
+#define CSR_ENQ_MBOX_BASEADDR_10_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_11_ADDR                                0x000005cc
+#define CSR_ENQ_MBOX_BASEADDR_11_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_12_ADDR                                0x000005d0
+#define CSR_ENQ_MBOX_BASEADDR_12_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_13_ADDR                                0x000005d4
+#define CSR_ENQ_MBOX_BASEADDR_13_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_14_ADDR                                0x000005d8
+#define CSR_ENQ_MBOX_BASEADDR_14_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_15_ADDR                                0x000005dc
+#define CSR_ENQ_MBOX_BASEADDR_15_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_16_ADDR                                0x000005e0
+#define CSR_ENQ_MBOX_BASEADDR_16_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_17_ADDR                                0x000005e4
+#define CSR_ENQ_MBOX_BASEADDR_17_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_18_ADDR                                0x000005e8
+#define CSR_ENQ_MBOX_BASEADDR_18_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_19_ADDR                                0x000005ec
+#define CSR_ENQ_MBOX_BASEADDR_19_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_20_ADDR                                0x000005f0
+#define CSR_ENQ_MBOX_BASEADDR_20_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_21_ADDR                                0x000005f4
+#define CSR_ENQ_MBOX_BASEADDR_21_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_22_ADDR                                0x000005f8
+#define CSR_ENQ_MBOX_BASEADDR_22_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_23_ADDR                                0x000005fc
+#define CSR_ENQ_MBOX_BASEADDR_23_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_24_ADDR                                0x00000600
+#define CSR_ENQ_MBOX_BASEADDR_24_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_25_ADDR                                0x00000604
+#define CSR_ENQ_MBOX_BASEADDR_25_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_26_ADDR                                0x00000608
+#define CSR_ENQ_MBOX_BASEADDR_26_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_27_ADDR                                0x0000060c
+#define CSR_ENQ_MBOX_BASEADDR_27_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_28_ADDR                                0x00000610
+#define CSR_ENQ_MBOX_BASEADDR_28_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_29_ADDR                                0x00000614
+#define CSR_ENQ_MBOX_BASEADDR_29_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_30_ADDR                                0x00000618
+#define CSR_ENQ_MBOX_BASEADDR_30_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_BASEADDR_31_ADDR                                0x0000061c
+#define CSR_ENQ_MBOX_BASEADDR_31_DEFAULT                             0x00000000
+#define CSR_ENQ_MBOX_AXISB_0_ADDR                                    0x00000620
+#define CSR_ENQ_MBOX_AXISB_0_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_1_ADDR                                    0x00000624
+#define CSR_ENQ_MBOX_AXISB_1_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_2_ADDR                                    0x00000628
+#define CSR_ENQ_MBOX_AXISB_2_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_3_ADDR                                    0x0000062c
+#define CSR_ENQ_MBOX_AXISB_3_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_4_ADDR                                    0x00000630
+#define CSR_ENQ_MBOX_AXISB_4_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_5_ADDR                                    0x00000634
+#define CSR_ENQ_MBOX_AXISB_5_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_6_ADDR                                    0x00000638
+#define CSR_ENQ_MBOX_AXISB_6_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_7_ADDR                                    0x0000063c
+#define CSR_ENQ_MBOX_AXISB_7_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_8_ADDR                                    0x00000640
+#define CSR_ENQ_MBOX_AXISB_8_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_9_ADDR                                    0x00000644
+#define CSR_ENQ_MBOX_AXISB_9_DEFAULT                                 0x00000000
+#define CSR_ENQ_MBOX_AXISB_10_ADDR                                   0x00000648
+#define CSR_ENQ_MBOX_AXISB_10_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_11_ADDR                                   0x0000064c
+#define CSR_ENQ_MBOX_AXISB_11_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_12_ADDR                                   0x00000650
+#define CSR_ENQ_MBOX_AXISB_12_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_13_ADDR                                   0x00000654
+#define CSR_ENQ_MBOX_AXISB_13_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_14_ADDR                                   0x00000658
+#define CSR_ENQ_MBOX_AXISB_14_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_15_ADDR                                   0x0000065c
+#define CSR_ENQ_MBOX_AXISB_15_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_16_ADDR                                   0x00000660
+#define CSR_ENQ_MBOX_AXISB_16_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_17_ADDR                                   0x00000664
+#define CSR_ENQ_MBOX_AXISB_17_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_18_ADDR                                   0x00000668
+#define CSR_ENQ_MBOX_AXISB_18_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_19_ADDR                                   0x0000066c
+#define CSR_ENQ_MBOX_AXISB_19_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_20_ADDR                                   0x00000670
+#define CSR_ENQ_MBOX_AXISB_20_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_21_ADDR                                   0x00000674
+#define CSR_ENQ_MBOX_AXISB_21_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_22_ADDR                                   0x00000678
+#define CSR_ENQ_MBOX_AXISB_22_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_23_ADDR                                   0x0000067c
+#define CSR_ENQ_MBOX_AXISB_23_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_24_ADDR                                   0x00000680
+#define CSR_ENQ_MBOX_AXISB_24_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_25_ADDR                                   0x00000684
+#define CSR_ENQ_MBOX_AXISB_25_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_26_ADDR                                   0x00000688
+#define CSR_ENQ_MBOX_AXISB_26_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_27_ADDR                                   0x0000068c
+#define CSR_ENQ_MBOX_AXISB_27_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_28_ADDR                                   0x00000690
+#define CSR_ENQ_MBOX_AXISB_28_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_29_ADDR                                   0x00000694
+#define CSR_ENQ_MBOX_AXISB_29_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_30_ADDR                                   0x00000698
+#define CSR_ENQ_MBOX_AXISB_30_DEFAULT                                0x00000000
+#define CSR_ENQ_MBOX_AXISB_31_ADDR                                   0x0000069c
+#define CSR_ENQ_MBOX_AXISB_31_DEFAULT                                0x00000000
+#define CSR_ERRQ_PTYPE0_ADDR                                         0x000006b0
+#define CSR_ERRQ_PTYPE0_DEFAULT                                      0x00000000
+#define CSR_ERRQ_PTYPE1_ADDR                                         0x000006b4
+#define CSR_ERRQ_PTYPE1_DEFAULT                                      0x00000000
+#define CSR_ERRQ_PTYPE2_ADDR                                         0x000006b8
+#define CSR_ERRQ_PTYPE2_DEFAULT                                      0x00000000
+#define CSR_ERRQ_PTYPE3_ADDR                                         0x000006bc
+#define CSR_ERRQ_PTYPE3_DEFAULT                                      0x00000000
+#define CSR_QM_MBOXINTR_FIFO_THRESHOLD_ADDR                          0x000006c0
+#define CSR_QM_MBOXINTR_FIFO_THRESHOLD_DEFAULT                       0x440c0c28
+#define CSR_SAB_INTR_MBOX_BASEADDR_ADDR                              0x000006c4
+#define CSR_SAB_INTR_MBOX_BASEADDR_DEFAULT                           0x00000000
+#define CSR_SAB_INTR_MBOX_ADDR                                       0x000006c8
+#define CSR_SAB_INTR_MBOX_DEFAULT                                    0x00800000
+#define CSR_MSGWR_ERRINF_ADDR                                        0x000006d0
+#define CSR_MSGWR_ERRINF_DEFAULT                                     0x00000000
+#define CSR_QM_MSGRD_FIFO_THRESHOLD0_ADDR                            0x000006d4
+#define CSR_QM_MSGRD_FIFO_THRESHOLD0_DEFAULT                         0x00101010
+#define CSR_QM_MSGRD_FIFO_THRESHOLD1_ADDR                            0x000006d8
+#define CSR_QM_MSGRD_FIFO_THRESHOLD1_DEFAULT                         0x00101010
+#define CSR_QM_MSGRD_FIFO_THRESHOLD2_ADDR                            0x000006dc
+#define CSR_QM_MSGRD_FIFO_THRESHOLD2_DEFAULT                         0x40404040
+#define CSR_QM_MSGRD_FIFO_STS_ADDR                                   0x000006e4
+#define CSR_QM_MSGRD_FIFO_STS_DEFAULT                                0x000003ff
+#define CSR_QM_MSGWR_FIFO_THRESHOLD0_ADDR                            0x000006e8
+#define CSR_QM_MSGWR_FIFO_THRESHOLD0_DEFAULT                         0x00000804
+#define CSR_QM_MSGWR_FIFO_STS_ADDR                                   0x000006ec
+#define CSR_QM_MSGWR_FIFO_STS_DEFAULT                                0x00000003
+#define CSR_MSG_INTR_TIMER_ADDR                                      0x000006f0
+#define CSR_MSG_INTR_TIMER_DEFAULT                                   0x00000003
+#define CSR_QM_PERVM_MBOX_TEMP_BUFFER_STS_ADDR                       0x000006f4
+#define CSR_QM_PERVM_MBOX_TEMP_BUFFER_STS_DEFAULT                    0xffffffff
+#define CSR_QM_SAB_INTR_MSG_FIFO_STS_ADDR                            0x000006f8
+#define CSR_QM_SAB_INTR_MSG_FIFO_STS_DEFAULT                         0x00000001
+#define CSR_SAB_INTR_FIFO_THRESHOLD_ADDR                             0x000006fc
+#define CSR_SAB_INTR_FIFO_THRESHOLD_DEFAULT                          0x00002088
+#define CSR_HIGH_THROUGHPUT_ADDR                                     0x00000700
+#define CSR_HIGH_THROUGHPUT_DEFAULT                                  0x00000003
+#define CSR_PBM_FIFO_THRESHOLD_ADDR                                  0x00000704
+#define CSR_PBM_FIFO_THRESHOLD_DEFAULT                               0x00000010
+#define CSR_MBOXINTR_ERRINF_ADDR                                     0x00000708
+#define CSR_MBOXINTR_ERRINF_DEFAULT                                  0x00000000
+#define CSR_MSGRD_ERRINF1_ADDR                                       0x00000710
+#define CSR_MSGRD_ERRINF1_DEFAULT                                    0x00000000
+#define CSR_ACR_ERRINF_ADDR                                          0x00000714
+#define CSR_ACR_ERRINF_DEFAULT                                       0x00000000
+#define CSR_PERVM_ERRINF_0_ADDR                                      0x00000720
+#define CSR_PERVM_ERRINF_0_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_1_ADDR                                      0x00000724
+#define CSR_PERVM_ERRINF_1_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_2_ADDR                                      0x00000728
+#define CSR_PERVM_ERRINF_2_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_3_ADDR                                      0x0000072c
+#define CSR_PERVM_ERRINF_3_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_4_ADDR                                      0x00000730
+#define CSR_PERVM_ERRINF_4_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_5_ADDR                                      0x00000734
+#define CSR_PERVM_ERRINF_5_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_6_ADDR                                      0x00000738
+#define CSR_PERVM_ERRINF_6_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_7_ADDR                                      0x0000073c
+#define CSR_PERVM_ERRINF_7_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_8_ADDR                                      0x00000740
+#define CSR_PERVM_ERRINF_8_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_9_ADDR                                      0x00000744
+#define CSR_PERVM_ERRINF_9_DEFAULT                                   0x00000000
+#define CSR_PERVM_ERRINF_10_ADDR                                     0x00000748
+#define CSR_PERVM_ERRINF_10_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_11_ADDR                                     0x0000074c
+#define CSR_PERVM_ERRINF_11_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_12_ADDR                                     0x00000750
+#define CSR_PERVM_ERRINF_12_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_13_ADDR                                     0x00000754
+#define CSR_PERVM_ERRINF_13_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_14_ADDR                                     0x00000758
+#define CSR_PERVM_ERRINF_14_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_15_ADDR                                     0x0000075c
+#define CSR_PERVM_ERRINF_15_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_16_ADDR                                     0x00000760
+#define CSR_PERVM_ERRINF_16_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_17_ADDR                                     0x00000764
+#define CSR_PERVM_ERRINF_17_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_18_ADDR                                     0x00000768
+#define CSR_PERVM_ERRINF_18_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_19_ADDR                                     0x0000076c
+#define CSR_PERVM_ERRINF_19_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_20_ADDR                                     0x00000770
+#define CSR_PERVM_ERRINF_20_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_21_ADDR                                     0x00000774
+#define CSR_PERVM_ERRINF_21_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_22_ADDR                                     0x00000778
+#define CSR_PERVM_ERRINF_22_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_23_ADDR                                     0x0000077c
+#define CSR_PERVM_ERRINF_23_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_24_ADDR                                     0x00000780
+#define CSR_PERVM_ERRINF_24_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_25_ADDR                                     0x00000784
+#define CSR_PERVM_ERRINF_25_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_26_ADDR                                     0x00000788
+#define CSR_PERVM_ERRINF_26_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_27_ADDR                                     0x0000078c
+#define CSR_PERVM_ERRINF_27_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_28_ADDR                                     0x00000790
+#define CSR_PERVM_ERRINF_28_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_29_ADDR                                     0x00000794
+#define CSR_PERVM_ERRINF_29_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_30_ADDR                                     0x00000798
+#define CSR_PERVM_ERRINF_30_DEFAULT                                  0x00000000
+#define CSR_PERVM_ERRINF_31_ADDR                                     0x0000079c
+#define CSR_PERVM_ERRINF_31_DEFAULT                                  0x00000000
+#define CSR_PERVM_FAULTY_INTRCLR_ADDR                                0x000007a0
+#define CSR_PERVM_FAULTY_INTRCLR_DEFAULT                             0x00000000
+#define CSR_PERVM_FAULTY_INTRCLRMASK_ADDR                            0x000007a4
+#define CSR_PERVM_FIFO_OVERFLOW_INTR_ADDR                            0x000007a8
+#define CSR_PERVM_FIFO_OVERFLOW_INTR_DEFAULT                         0x00000000
+#define CSR_PERVM_FIFO_OVERFLOW_INTRMASK_ADDR                        0x000007ac
+#define CSR_PERVM_FIFO_UNDERFLOW_INTR_ADDR                           0x000007b0
+#define CSR_PERVM_FIFO_UNDERFLOW_INTR_DEFAULT                        0x00000000
+#define CSR_PERVM_FIFO_UNDERFLOW_INTRMASK_ADDR                       0x000007b4
+#define CSR_MBOX_INTR_FIFO_OVERFLOW_INTR_ADDR                        0x000007b8
+#define CSR_MBOX_INTR_FIFO_OVERFLOW_INTR_DEFAULT                     0x00000000
+#define CSR_MBOX_INTR_FIFO_OVERFLOW_INTRMASK_ADDR                    0x000007bc
+#define CSR_MBOX_INTR_FIFO_UNDERFLOW_INTR_ADDR                       0x000007c0
+#define CSR_MBOX_INTR_FIFO_UNDERFLOW_INTR_DEFAULT                    0x00000000
+#define CSR_MBOX_INTR_FIFO_UNDERFLOW_INTRMASK_ADDR                   0x000007c4
+#define CSR_QM_PERVM_MBOX_TEMP_BUFFER_FULL_ADDR                      0x000007c8
+#define CSR_QM_PERVM_MBOX_TEMP_BUFFER_FULL_DEFAULT                   0x00000000
+#define CSR_TBU_SHIM_RAM_MARGIN_ADDR                                 0x000007cc
+#define CSR_TBU_SHIM_RAM_MARGIN_DEFAULT                              0x00000000
+#define CSR_MPIC_INTR_STATUS_ADDR                                    0x000007d0
+#define CSR_MPIC_INTR_STATUS_DEFAULT                                 0x00000000
+#define CSR_MPIC_SAB_INTR_STATUS_ADDR                                0x000007d4
+#define CSR_MPIC_SAB_INTR_STATUS_DEFAULT                             0x00000000
 
 /*	Register csr_ipbrr	*/ 
 /*	 Fields revno	 */
-#define QM_REVNO_WIDTH                                                   2
-#define QM_REVNO_SHIFT                                                  14
-#define QM_REVNO_MASK                                           0x0000c000
-#define QM_REVNO_RD(src)                        (((src) & 0x0000c000)>>14)
-#define QM_REVNO_SET(dst,src) \
+#define REGSPEC_REVNO_WIDTH                                                   2
+#define REGSPEC_REVNO_SHIFT                                                  14
+#define REGSPEC_REVNO_MASK                                           0x0000c000
+#define REGSPEC_REVNO_RD(src)                        (((src) & 0x0000c000)>>14)
+#define REGSPEC_REVNO_SET(dst,src) \
                       (((dst) & ~0x0000c000) | (((u32)(src)<<14) & 0x0000c000))
 /*	 Fields busid	 */
-#define QM_BUSID_WIDTH                                                   2
-#define QM_BUSID_SHIFT                                                  12
-#define QM_BUSID_MASK                                           0x00003000
-#define QM_BUSID_RD(src)                        (((src) & 0x00003000)>>12)
-#define QM_BUSID_SET(dst,src) \
+#define REGSPEC_BUSID_WIDTH                                                   2
+#define REGSPEC_BUSID_SHIFT                                                  12
+#define REGSPEC_BUSID_MASK                                           0x00003000
+#define REGSPEC_BUSID_RD(src)                        (((src) & 0x00003000)>>12)
+#define REGSPEC_BUSID_SET(dst,src) \
                       (((dst) & ~0x00003000) | (((u32)(src)<<12) & 0x00003000))
 /*	 Fields deviceid	 */
-#define QM_DEVICEID_WIDTH                                               12
-#define QM_DEVICEID_SHIFT                                                0
-#define QM_DEVICEID_MASK                                        0x00000fff
-#define QM_DEVICEID_RD(src)                         (((src) & 0x00000fff))
-#define QM_DEVICEID_SET(dst,src) \
+#define REGSPEC_DEVICEID_WIDTH                                               12
+#define REGSPEC_DEVICEID_SHIFT                                                0
+#define REGSPEC_DEVICEID_MASK                                        0x00000fff
+#define REGSPEC_DEVICEID_RD(src)                         (((src) & 0x00000fff))
+#define REGSPEC_DEVICEID_SET(dst,src) \
                           (((dst) & ~0x00000fff) | (((u32)(src)) & 0x00000fff))
 
 /*	Register csr_qm_config	*/ 
 /*	 Fields enable	 */
-#define QM_ENABLE_WIDTH                                                  1
-#define QM_ENABLE_SHIFT                                                 31
-#define QM_ENABLE_MASK                                          0x80000000
-#define QM_ENABLE_RD(src)                       (((src) & 0x80000000)>>31)
-#define QM_ENABLE_WR(src)                  (((u32)(src)<<31) & 0x80000000)
-#define QM_ENABLE_SET(dst,src) \
+#define REGSPEC_ENABLE_WIDTH                                                  1
+#define REGSPEC_ENABLE_SHIFT                                                 31
+#define REGSPEC_ENABLE_MASK                                          0x80000000
+#define REGSPEC_ENABLE_RD(src)                       (((src) & 0x80000000)>>31)
+#define REGSPEC_ENABLE_WR(src)                  (((u32)(src)<<31) & 0x80000000)
+#define REGSPEC_ENABLE_SET(dst,src) \
                       (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
 /*	 Fields erq_ovr_protect	 */
 #define ERQ_OVR_PROTECT_WIDTH                                                 1
@@ -360,13 +955,13 @@
 #define ERQ_OVR_PROTECT_SET(dst,src) \
                       (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
 /*	 Fields mbox_enq_status_toggle_mode	 */
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_WIDTH                             1
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_SHIFT                            29
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_MASK                     0x20000000
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_RD(src)  (((src) & 0x20000000)>>29)
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_WR(src) \
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_WIDTH                             1
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_SHIFT                            29
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_MASK                     0x20000000
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_RD(src)  (((src) & 0x20000000)>>29)
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_WR(src) \
                                                 (((u32)(src)<<29) & 0x20000000)
-#define QM_MBOX_ENQ_STATUS_TOGGLE_MODE_SET(dst,src) \
+#define REGSPEC_MBOX_ENQ_STATUS_TOGGLE_MODE_SET(dst,src) \
                       (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
 
 /*	Register csr_pbm	*/ 
@@ -496,268 +1091,268 @@
 #define COUNT_RANGE_SET(dst,src) \
                           (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
 
-/*	Register csr_pbm_ctick0	*/ 
-/*	 Fields mbox0	 */
-#define MBOX00_WIDTH                                                          3
-#define MBOX00_SHIFT                                                         28
-#define MBOX00_MASK                                                  0x70000000
-#define MBOX00_RD(src)                               (((src) & 0x70000000)>>28)
-#define MBOX00_WR(src)                          (((u32)(src)<<28) & 0x70000000)
-#define MBOX00_SET(dst,src) \
+/*	Register csr_ctick0	*/ 
+/*	 Fields intrline0	 */
+#define INTRLINE00_WIDTH                                                      3
+#define INTRLINE00_SHIFT                                                     28
+#define INTRLINE00_MASK                                              0x70000000
+#define INTRLINE00_RD(src)                           (((src) & 0x70000000)>>28)
+#define INTRLINE00_WR(src)                      (((u32)(src)<<28) & 0x70000000)
+#define INTRLINE00_SET(dst,src) \
                       (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
-/*	 Fields mbox1	 */
-#define MBOX10_WIDTH                                                          3
-#define MBOX10_SHIFT                                                         24
-#define MBOX10_MASK                                                  0x07000000
-#define MBOX10_RD(src)                               (((src) & 0x07000000)>>24)
-#define MBOX10_WR(src)                          (((u32)(src)<<24) & 0x07000000)
-#define MBOX10_SET(dst,src) \
+/*	 Fields intrline1	 */
+#define INTRLINE10_WIDTH                                                      3
+#define INTRLINE10_SHIFT                                                     24
+#define INTRLINE10_MASK                                              0x07000000
+#define INTRLINE10_RD(src)                           (((src) & 0x07000000)>>24)
+#define INTRLINE10_WR(src)                      (((u32)(src)<<24) & 0x07000000)
+#define INTRLINE10_SET(dst,src) \
                       (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
-/*	 Fields mbox2	 */
-#define MBOX20_WIDTH                                                          3
-#define MBOX20_SHIFT                                                         20
-#define MBOX20_MASK                                                  0x00700000
-#define MBOX20_RD(src)                               (((src) & 0x00700000)>>20)
-#define MBOX20_WR(src)                          (((u32)(src)<<20) & 0x00700000)
-#define MBOX20_SET(dst,src) \
+/*	 Fields intrline2	 */
+#define INTRLINE20_WIDTH                                                      3
+#define INTRLINE20_SHIFT                                                     20
+#define INTRLINE20_MASK                                              0x00700000
+#define INTRLINE20_RD(src)                           (((src) & 0x00700000)>>20)
+#define INTRLINE20_WR(src)                      (((u32)(src)<<20) & 0x00700000)
+#define INTRLINE20_SET(dst,src) \
                       (((dst) & ~0x00700000) | (((u32)(src)<<20) & 0x00700000))
-/*	 Fields mbox3	 */
-#define MBOX30_WIDTH                                                          3
-#define MBOX30_SHIFT                                                         16
-#define MBOX30_MASK                                                  0x00070000
-#define MBOX30_RD(src)                               (((src) & 0x00070000)>>16)
-#define MBOX30_WR(src)                          (((u32)(src)<<16) & 0x00070000)
-#define MBOX30_SET(dst,src) \
+/*	 Fields intrline3	 */
+#define INTRLINE30_WIDTH                                                      3
+#define INTRLINE30_SHIFT                                                     16
+#define INTRLINE30_MASK                                              0x00070000
+#define INTRLINE30_RD(src)                           (((src) & 0x00070000)>>16)
+#define INTRLINE30_WR(src)                      (((u32)(src)<<16) & 0x00070000)
+#define INTRLINE30_SET(dst,src) \
                       (((dst) & ~0x00070000) | (((u32)(src)<<16) & 0x00070000))
-/*	 Fields mbox4	 */
-#define MBOX40_WIDTH                                                          3
-#define MBOX40_SHIFT                                                         12
-#define MBOX40_MASK                                                  0x00007000
-#define MBOX40_RD(src)                               (((src) & 0x00007000)>>12)
-#define MBOX40_WR(src)                          (((u32)(src)<<12) & 0x00007000)
-#define MBOX40_SET(dst,src) \
+/*	 Fields intrline4	 */
+#define INTRLINE40_WIDTH                                                      3
+#define INTRLINE40_SHIFT                                                     12
+#define INTRLINE40_MASK                                              0x00007000
+#define INTRLINE40_RD(src)                           (((src) & 0x00007000)>>12)
+#define INTRLINE40_WR(src)                      (((u32)(src)<<12) & 0x00007000)
+#define INTRLINE40_SET(dst,src) \
                       (((dst) & ~0x00007000) | (((u32)(src)<<12) & 0x00007000))
-/*	 Fields mbox5	 */
-#define MBOX50_WIDTH                                                          3
-#define MBOX50_SHIFT                                                          8
-#define MBOX50_MASK                                                  0x00000700
-#define MBOX50_RD(src)                                (((src) & 0x00000700)>>8)
-#define MBOX50_WR(src)                           (((u32)(src)<<8) & 0x00000700)
-#define MBOX50_SET(dst,src) \
+/*	 Fields intrline5	 */
+#define INTRLINE50_WIDTH                                                      3
+#define INTRLINE50_SHIFT                                                      8
+#define INTRLINE50_MASK                                              0x00000700
+#define INTRLINE50_RD(src)                            (((src) & 0x00000700)>>8)
+#define INTRLINE50_WR(src)                       (((u32)(src)<<8) & 0x00000700)
+#define INTRLINE50_SET(dst,src) \
                        (((dst) & ~0x00000700) | (((u32)(src)<<8) & 0x00000700))
-/*	 Fields mbox6	 */
-#define MBOX60_WIDTH                                                          3
-#define MBOX60_SHIFT                                                          4
-#define MBOX60_MASK                                                  0x00000070
-#define MBOX60_RD(src)                                (((src) & 0x00000070)>>4)
-#define MBOX60_WR(src)                           (((u32)(src)<<4) & 0x00000070)
-#define MBOX60_SET(dst,src) \
+/*	 Fields intrline6	 */
+#define INTRLINE60_WIDTH                                                      3
+#define INTRLINE60_SHIFT                                                      4
+#define INTRLINE60_MASK                                              0x00000070
+#define INTRLINE60_RD(src)                            (((src) & 0x00000070)>>4)
+#define INTRLINE60_WR(src)                       (((u32)(src)<<4) & 0x00000070)
+#define INTRLINE60_SET(dst,src) \
                        (((dst) & ~0x00000070) | (((u32)(src)<<4) & 0x00000070))
-/*	 Fields mbox7	 */
-#define MBOX70_WIDTH                                                          3
-#define MBOX70_SHIFT                                                          0
-#define MBOX70_MASK                                                  0x00000007
-#define MBOX70_RD(src)                                   (((src) & 0x00000007))
-#define MBOX70_WR(src)                              (((u32)(src)) & 0x00000007)
-#define MBOX70_SET(dst,src) \
+/*	 Fields intrline7	 */
+#define INTRLINE70_WIDTH                                                      3
+#define INTRLINE70_SHIFT                                                      0
+#define INTRLINE70_MASK                                              0x00000007
+#define INTRLINE70_RD(src)                               (((src) & 0x00000007))
+#define INTRLINE70_WR(src)                          (((u32)(src)) & 0x00000007)
+#define INTRLINE70_SET(dst,src) \
                           (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
 
-/*	Register csr_pbm_ctick1	*/ 
-/*	 Fields mbox8	 */
-#define MBOX81_WIDTH                                                          3
-#define MBOX81_SHIFT                                                         28
-#define MBOX81_MASK                                                  0x70000000
-#define MBOX81_RD(src)                               (((src) & 0x70000000)>>28)
-#define MBOX81_WR(src)                          (((u32)(src)<<28) & 0x70000000)
-#define MBOX81_SET(dst,src) \
+/*	Register csr_ctick1	*/ 
+/*	 Fields intrline8	 */
+#define INTRLINE81_WIDTH                                                      3
+#define INTRLINE81_SHIFT                                                     28
+#define INTRLINE81_MASK                                              0x70000000
+#define INTRLINE81_RD(src)                           (((src) & 0x70000000)>>28)
+#define INTRLINE81_WR(src)                      (((u32)(src)<<28) & 0x70000000)
+#define INTRLINE81_SET(dst,src) \
                       (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
-/*	 Fields mbox9	 */
-#define MBOX91_WIDTH                                                          3
-#define MBOX91_SHIFT                                                         24
-#define MBOX91_MASK                                                  0x07000000
-#define MBOX91_RD(src)                               (((src) & 0x07000000)>>24)
-#define MBOX91_WR(src)                          (((u32)(src)<<24) & 0x07000000)
-#define MBOX91_SET(dst,src) \
+/*	 Fields intrline9	 */
+#define INTRLINE91_WIDTH                                                      3
+#define INTRLINE91_SHIFT                                                     24
+#define INTRLINE91_MASK                                              0x07000000
+#define INTRLINE91_RD(src)                           (((src) & 0x07000000)>>24)
+#define INTRLINE91_WR(src)                      (((u32)(src)<<24) & 0x07000000)
+#define INTRLINE91_SET(dst,src) \
                       (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
-/*	 Fields mbox10	 */
-#define MBOX101_WIDTH                                                         3
-#define MBOX101_SHIFT                                                        20
-#define MBOX101_MASK                                                 0x00700000
-#define MBOX101_RD(src)                              (((src) & 0x00700000)>>20)
-#define MBOX101_WR(src)                         (((u32)(src)<<20) & 0x00700000)
-#define MBOX101_SET(dst,src) \
+/*	 Fields intrline10	 */
+#define INTRLINE101_WIDTH                                                     3
+#define INTRLINE101_SHIFT                                                    20
+#define INTRLINE101_MASK                                             0x00700000
+#define INTRLINE101_RD(src)                          (((src) & 0x00700000)>>20)
+#define INTRLINE101_WR(src)                     (((u32)(src)<<20) & 0x00700000)
+#define INTRLINE101_SET(dst,src) \
                       (((dst) & ~0x00700000) | (((u32)(src)<<20) & 0x00700000))
-/*	 Fields mbox11	 */
-#define MBOX111_WIDTH                                                         3
-#define MBOX111_SHIFT                                                        16
-#define MBOX111_MASK                                                 0x00070000
-#define MBOX111_RD(src)                              (((src) & 0x00070000)>>16)
-#define MBOX111_WR(src)                         (((u32)(src)<<16) & 0x00070000)
-#define MBOX111_SET(dst,src) \
+/*	 Fields intrline11	 */
+#define INTRLINE111_WIDTH                                                     3
+#define INTRLINE111_SHIFT                                                    16
+#define INTRLINE111_MASK                                             0x00070000
+#define INTRLINE111_RD(src)                          (((src) & 0x00070000)>>16)
+#define INTRLINE111_WR(src)                     (((u32)(src)<<16) & 0x00070000)
+#define INTRLINE111_SET(dst,src) \
                       (((dst) & ~0x00070000) | (((u32)(src)<<16) & 0x00070000))
-/*	 Fields mbox12	 */
-#define MBOX121_WIDTH                                                         3
-#define MBOX121_SHIFT                                                        12
-#define MBOX121_MASK                                                 0x00007000
-#define MBOX121_RD(src)                              (((src) & 0x00007000)>>12)
-#define MBOX121_WR(src)                         (((u32)(src)<<12) & 0x00007000)
-#define MBOX121_SET(dst,src) \
+/*	 Fields intrline12	 */
+#define INTRLINE121_WIDTH                                                     3
+#define INTRLINE121_SHIFT                                                    12
+#define INTRLINE121_MASK                                             0x00007000
+#define INTRLINE121_RD(src)                          (((src) & 0x00007000)>>12)
+#define INTRLINE121_WR(src)                     (((u32)(src)<<12) & 0x00007000)
+#define INTRLINE121_SET(dst,src) \
                       (((dst) & ~0x00007000) | (((u32)(src)<<12) & 0x00007000))
-/*	 Fields mbox13	 */
-#define MBOX131_WIDTH                                                         3
-#define MBOX131_SHIFT                                                         8
-#define MBOX131_MASK                                                 0x00000700
-#define MBOX131_RD(src)                               (((src) & 0x00000700)>>8)
-#define MBOX131_WR(src)                          (((u32)(src)<<8) & 0x00000700)
-#define MBOX131_SET(dst,src) \
+/*	 Fields intrline13	 */
+#define INTRLINE131_WIDTH                                                     3
+#define INTRLINE131_SHIFT                                                     8
+#define INTRLINE131_MASK                                             0x00000700
+#define INTRLINE131_RD(src)                           (((src) & 0x00000700)>>8)
+#define INTRLINE131_WR(src)                      (((u32)(src)<<8) & 0x00000700)
+#define INTRLINE131_SET(dst,src) \
                        (((dst) & ~0x00000700) | (((u32)(src)<<8) & 0x00000700))
-/*	 Fields mbox14	 */
-#define MBOX141_WIDTH                                                         3
-#define MBOX141_SHIFT                                                         4
-#define MBOX141_MASK                                                 0x00000070
-#define MBOX141_RD(src)                               (((src) & 0x00000070)>>4)
-#define MBOX141_WR(src)                          (((u32)(src)<<4) & 0x00000070)
-#define MBOX141_SET(dst,src) \
+/*	 Fields intrline14	 */
+#define INTRLINE141_WIDTH                                                     3
+#define INTRLINE141_SHIFT                                                     4
+#define INTRLINE141_MASK                                             0x00000070
+#define INTRLINE141_RD(src)                           (((src) & 0x00000070)>>4)
+#define INTRLINE141_WR(src)                      (((u32)(src)<<4) & 0x00000070)
+#define INTRLINE141_SET(dst,src) \
                        (((dst) & ~0x00000070) | (((u32)(src)<<4) & 0x00000070))
-/*	 Fields mbox15	 */
-#define MBOX151_WIDTH                                                         3
-#define MBOX151_SHIFT                                                         0
-#define MBOX151_MASK                                                 0x00000007
-#define MBOX151_RD(src)                                  (((src) & 0x00000007))
-#define MBOX151_WR(src)                             (((u32)(src)) & 0x00000007)
-#define MBOX151_SET(dst,src) \
+/*	 Fields intrline15	 */
+#define INTRLINE151_WIDTH                                                     3
+#define INTRLINE151_SHIFT                                                     0
+#define INTRLINE151_MASK                                             0x00000007
+#define INTRLINE151_RD(src)                              (((src) & 0x00000007))
+#define INTRLINE151_WR(src)                         (((u32)(src)) & 0x00000007)
+#define INTRLINE151_SET(dst,src) \
                           (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
 
-/*	Register csr_pbm_ctick2	*/ 
-/*	 Fields mbox16	 */
-#define MBOX162_WIDTH                                                         3
-#define MBOX162_SHIFT                                                        28
-#define MBOX162_MASK                                                 0x70000000
-#define MBOX162_RD(src)                              (((src) & 0x70000000)>>28)
-#define MBOX162_WR(src)                         (((u32)(src)<<28) & 0x70000000)
-#define MBOX162_SET(dst,src) \
+/*	Register csr_ctick2	*/ 
+/*	 Fields intrline16	 */
+#define INTRLINE162_WIDTH                                                     3
+#define INTRLINE162_SHIFT                                                    28
+#define INTRLINE162_MASK                                             0x70000000
+#define INTRLINE162_RD(src)                          (((src) & 0x70000000)>>28)
+#define INTRLINE162_WR(src)                     (((u32)(src)<<28) & 0x70000000)
+#define INTRLINE162_SET(dst,src) \
                       (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
-/*	 Fields mbox17	 */
-#define MBOX172_WIDTH                                                         3
-#define MBOX172_SHIFT                                                        24
-#define MBOX172_MASK                                                 0x07000000
-#define MBOX172_RD(src)                              (((src) & 0x07000000)>>24)
-#define MBOX172_WR(src)                         (((u32)(src)<<24) & 0x07000000)
-#define MBOX172_SET(dst,src) \
+/*	 Fields intrline17	 */
+#define INTRLINE172_WIDTH                                                     3
+#define INTRLINE172_SHIFT                                                    24
+#define INTRLINE172_MASK                                             0x07000000
+#define INTRLINE172_RD(src)                          (((src) & 0x07000000)>>24)
+#define INTRLINE172_WR(src)                     (((u32)(src)<<24) & 0x07000000)
+#define INTRLINE172_SET(dst,src) \
                       (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
-/*	 Fields mbox18	 */
-#define MBOX182_WIDTH                                                         3
-#define MBOX182_SHIFT                                                        20
-#define MBOX182_MASK                                                 0x00700000
-#define MBOX182_RD(src)                              (((src) & 0x00700000)>>20)
-#define MBOX182_WR(src)                         (((u32)(src)<<20) & 0x00700000)
-#define MBOX182_SET(dst,src) \
+/*	 Fields intrline18	 */
+#define INTRLINE182_WIDTH                                                     3
+#define INTRLINE182_SHIFT                                                    20
+#define INTRLINE182_MASK                                             0x00700000
+#define INTRLINE182_RD(src)                          (((src) & 0x00700000)>>20)
+#define INTRLINE182_WR(src)                     (((u32)(src)<<20) & 0x00700000)
+#define INTRLINE182_SET(dst,src) \
                       (((dst) & ~0x00700000) | (((u32)(src)<<20) & 0x00700000))
-/*	 Fields mbox19	 */
-#define MBOX192_WIDTH                                                         3
-#define MBOX192_SHIFT                                                        16
-#define MBOX192_MASK                                                 0x00070000
-#define MBOX192_RD(src)                              (((src) & 0x00070000)>>16)
-#define MBOX192_WR(src)                         (((u32)(src)<<16) & 0x00070000)
-#define MBOX192_SET(dst,src) \
+/*	 Fields intrline19	 */
+#define INTRLINE192_WIDTH                                                     3
+#define INTRLINE192_SHIFT                                                    16
+#define INTRLINE192_MASK                                             0x00070000
+#define INTRLINE192_RD(src)                          (((src) & 0x00070000)>>16)
+#define INTRLINE192_WR(src)                     (((u32)(src)<<16) & 0x00070000)
+#define INTRLINE192_SET(dst,src) \
                       (((dst) & ~0x00070000) | (((u32)(src)<<16) & 0x00070000))
-/*	 Fields mbox20	 */
-#define MBOX202_WIDTH                                                         3
-#define MBOX202_SHIFT                                                        12
-#define MBOX202_MASK                                                 0x00007000
-#define MBOX202_RD(src)                              (((src) & 0x00007000)>>12)
-#define MBOX202_WR(src)                         (((u32)(src)<<12) & 0x00007000)
-#define MBOX202_SET(dst,src) \
+/*	 Fields intrline20	 */
+#define INTRLINE202_WIDTH                                                     3
+#define INTRLINE202_SHIFT                                                    12
+#define INTRLINE202_MASK                                             0x00007000
+#define INTRLINE202_RD(src)                          (((src) & 0x00007000)>>12)
+#define INTRLINE202_WR(src)                     (((u32)(src)<<12) & 0x00007000)
+#define INTRLINE202_SET(dst,src) \
                       (((dst) & ~0x00007000) | (((u32)(src)<<12) & 0x00007000))
-/*	 Fields mbox21	 */
-#define MBOX212_WIDTH                                                         3
-#define MBOX212_SHIFT                                                         8
-#define MBOX212_MASK                                                 0x00000700
-#define MBOX212_RD(src)                               (((src) & 0x00000700)>>8)
-#define MBOX212_WR(src)                          (((u32)(src)<<8) & 0x00000700)
-#define MBOX212_SET(dst,src) \
+/*	 Fields intrline21	 */
+#define INTRLINE212_WIDTH                                                     3
+#define INTRLINE212_SHIFT                                                     8
+#define INTRLINE212_MASK                                             0x00000700
+#define INTRLINE212_RD(src)                           (((src) & 0x00000700)>>8)
+#define INTRLINE212_WR(src)                      (((u32)(src)<<8) & 0x00000700)
+#define INTRLINE212_SET(dst,src) \
                        (((dst) & ~0x00000700) | (((u32)(src)<<8) & 0x00000700))
-/*	 Fields mbox22	 */
-#define MBOX222_WIDTH                                                         3
-#define MBOX222_SHIFT                                                         4
-#define MBOX222_MASK                                                 0x00000070
-#define MBOX222_RD(src)                               (((src) & 0x00000070)>>4)
-#define MBOX222_WR(src)                          (((u32)(src)<<4) & 0x00000070)
-#define MBOX222_SET(dst,src) \
+/*	 Fields intrline22	 */
+#define INTRLINE222_WIDTH                                                     3
+#define INTRLINE222_SHIFT                                                     4
+#define INTRLINE222_MASK                                             0x00000070
+#define INTRLINE222_RD(src)                           (((src) & 0x00000070)>>4)
+#define INTRLINE222_WR(src)                      (((u32)(src)<<4) & 0x00000070)
+#define INTRLINE222_SET(dst,src) \
                        (((dst) & ~0x00000070) | (((u32)(src)<<4) & 0x00000070))
-/*	 Fields mbox23	 */
-#define MBOX232_WIDTH                                                         3
-#define MBOX232_SHIFT                                                         0
-#define MBOX232_MASK                                                 0x00000007
-#define MBOX232_RD(src)                                  (((src) & 0x00000007))
-#define MBOX232_WR(src)                             (((u32)(src)) & 0x00000007)
-#define MBOX232_SET(dst,src) \
+/*	 Fields intrline23	 */
+#define INTRLINE232_WIDTH                                                     3
+#define INTRLINE232_SHIFT                                                     0
+#define INTRLINE232_MASK                                             0x00000007
+#define INTRLINE232_RD(src)                              (((src) & 0x00000007))
+#define INTRLINE232_WR(src)                         (((u32)(src)) & 0x00000007)
+#define INTRLINE232_SET(dst,src) \
                           (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
 
-/*	Register csr_pbm_ctick3	*/ 
-/*	 Fields mbox24	 */
-#define MBOX243_WIDTH                                                         3
-#define MBOX243_SHIFT                                                        28
-#define MBOX243_MASK                                                 0x70000000
-#define MBOX243_RD(src)                              (((src) & 0x70000000)>>28)
-#define MBOX243_WR(src)                         (((u32)(src)<<28) & 0x70000000)
-#define MBOX243_SET(dst,src) \
+/*	Register csr_ctick3	*/ 
+/*	 Fields intrline24	 */
+#define INTRLINE243_WIDTH                                                     3
+#define INTRLINE243_SHIFT                                                    28
+#define INTRLINE243_MASK                                             0x70000000
+#define INTRLINE243_RD(src)                          (((src) & 0x70000000)>>28)
+#define INTRLINE243_WR(src)                     (((u32)(src)<<28) & 0x70000000)
+#define INTRLINE243_SET(dst,src) \
                       (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
-/*	 Fields mbox25	 */
-#define MBOX253_WIDTH                                                         3
-#define MBOX253_SHIFT                                                        24
-#define MBOX253_MASK                                                 0x07000000
-#define MBOX253_RD(src)                              (((src) & 0x07000000)>>24)
-#define MBOX253_WR(src)                         (((u32)(src)<<24) & 0x07000000)
-#define MBOX253_SET(dst,src) \
+/*	 Fields intrline25	 */
+#define INTRLINE253_WIDTH                                                     3
+#define INTRLINE253_SHIFT                                                    24
+#define INTRLINE253_MASK                                             0x07000000
+#define INTRLINE253_RD(src)                          (((src) & 0x07000000)>>24)
+#define INTRLINE253_WR(src)                     (((u32)(src)<<24) & 0x07000000)
+#define INTRLINE253_SET(dst,src) \
                       (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
-/*	 Fields mbox26	 */
-#define MBOX263_WIDTH                                                         3
-#define MBOX263_SHIFT                                                        20
-#define MBOX263_MASK                                                 0x00700000
-#define MBOX263_RD(src)                              (((src) & 0x00700000)>>20)
-#define MBOX263_WR(src)                         (((u32)(src)<<20) & 0x00700000)
-#define MBOX263_SET(dst,src) \
+/*	 Fields intrline26	 */
+#define INTRLINE263_WIDTH                                                     3
+#define INTRLINE263_SHIFT                                                    20
+#define INTRLINE263_MASK                                             0x00700000
+#define INTRLINE263_RD(src)                          (((src) & 0x00700000)>>20)
+#define INTRLINE263_WR(src)                     (((u32)(src)<<20) & 0x00700000)
+#define INTRLINE263_SET(dst,src) \
                       (((dst) & ~0x00700000) | (((u32)(src)<<20) & 0x00700000))
-/*	 Fields mbox27	 */
-#define MBOX273_WIDTH                                                         3
-#define MBOX273_SHIFT                                                        16
-#define MBOX273_MASK                                                 0x00070000
-#define MBOX273_RD(src)                              (((src) & 0x00070000)>>16)
-#define MBOX273_WR(src)                         (((u32)(src)<<16) & 0x00070000)
-#define MBOX273_SET(dst,src) \
+/*	 Fields intrline27	 */
+#define INTRLINE273_WIDTH                                                     3
+#define INTRLINE273_SHIFT                                                    16
+#define INTRLINE273_MASK                                             0x00070000
+#define INTRLINE273_RD(src)                          (((src) & 0x00070000)>>16)
+#define INTRLINE273_WR(src)                     (((u32)(src)<<16) & 0x00070000)
+#define INTRLINE273_SET(dst,src) \
                       (((dst) & ~0x00070000) | (((u32)(src)<<16) & 0x00070000))
-/*	 Fields mbox28	 */
-#define MBOX283_WIDTH                                                         3
-#define MBOX283_SHIFT                                                        12
-#define MBOX283_MASK                                                 0x00007000
-#define MBOX283_RD(src)                              (((src) & 0x00007000)>>12)
-#define MBOX283_WR(src)                         (((u32)(src)<<12) & 0x00007000)
-#define MBOX283_SET(dst,src) \
+/*	 Fields intrline28	 */
+#define INTRLINE283_WIDTH                                                     3
+#define INTRLINE283_SHIFT                                                    12
+#define INTRLINE283_MASK                                             0x00007000
+#define INTRLINE283_RD(src)                          (((src) & 0x00007000)>>12)
+#define INTRLINE283_WR(src)                     (((u32)(src)<<12) & 0x00007000)
+#define INTRLINE283_SET(dst,src) \
                       (((dst) & ~0x00007000) | (((u32)(src)<<12) & 0x00007000))
-/*	 Fields mbox29	 */
-#define MBOX293_WIDTH                                                         3
-#define MBOX293_SHIFT                                                         8
-#define MBOX293_MASK                                                 0x00000700
-#define MBOX293_RD(src)                               (((src) & 0x00000700)>>8)
-#define MBOX293_WR(src)                          (((u32)(src)<<8) & 0x00000700)
-#define MBOX293_SET(dst,src) \
+/*	 Fields intrline29	 */
+#define INTRLINE293_WIDTH                                                     3
+#define INTRLINE293_SHIFT                                                     8
+#define INTRLINE293_MASK                                             0x00000700
+#define INTRLINE293_RD(src)                           (((src) & 0x00000700)>>8)
+#define INTRLINE293_WR(src)                      (((u32)(src)<<8) & 0x00000700)
+#define INTRLINE293_SET(dst,src) \
                        (((dst) & ~0x00000700) | (((u32)(src)<<8) & 0x00000700))
-/*	 Fields mbox30	 */
-#define MBOX303_WIDTH                                                         3
-#define MBOX303_SHIFT                                                         4
-#define MBOX303_MASK                                                 0x00000070
-#define MBOX303_RD(src)                               (((src) & 0x00000070)>>4)
-#define MBOX303_WR(src)                          (((u32)(src)<<4) & 0x00000070)
-#define MBOX303_SET(dst,src) \
+/*	 Fields intrline30	 */
+#define INTRLINE303_WIDTH                                                     3
+#define INTRLINE303_SHIFT                                                     4
+#define INTRLINE303_MASK                                             0x00000070
+#define INTRLINE303_RD(src)                           (((src) & 0x00000070)>>4)
+#define INTRLINE303_WR(src)                      (((u32)(src)<<4) & 0x00000070)
+#define INTRLINE303_SET(dst,src) \
                        (((dst) & ~0x00000070) | (((u32)(src)<<4) & 0x00000070))
-/*	 Fields mbox31	 */
-#define MBOX313_WIDTH                                                         3
-#define MBOX313_SHIFT                                                         0
-#define MBOX313_MASK                                                 0x00000007
-#define MBOX313_RD(src)                                  (((src) & 0x00000007))
-#define MBOX313_WR(src)                             (((u32)(src)) & 0x00000007)
-#define MBOX313_SET(dst,src) \
+/*	 Fields intrline31	 */
+#define INTRLINE313_WIDTH                                                     3
+#define INTRLINE313_SHIFT                                                     0
+#define INTRLINE313_MASK                                             0x00000007
+#define INTRLINE313_RD(src)                              (((src) & 0x00000007))
+#define INTRLINE313_WR(src)                         (((u32)(src)) & 0x00000007)
+#define INTRLINE313_SET(dst,src) \
                           (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
 
 /*	Register csr_threshold0_set0	*/ 
@@ -1038,13 +1633,23 @@
 
 /*	Register csr_qstate_wr_4	*/ 
 /*	 Fields data	 */
-#define QM_DATA4_WIDTH                                                       21
-#define QM_DATA4_SHIFT                                                        0
-#define QM_DATA4_MASK                                                0x001fffff
-#define QM_DATA4_RD(src)                                 (((src) & 0x001fffff))
-#define QM_DATA4_WR(src)                            (((u32)(src)) & 0x001fffff)
-#define QM_DATA4_SET(dst,src) \
-                          (((dst) & ~0x001fffff) | (((u32)(src)) & 0x001fffff))
+#define DATA4_WIDTH                                                          32
+#define DATA4_SHIFT                                                           0
+#define DATA4_MASK                                                   0xffffffff
+#define DATA4_RD(src)                                    (((src) & 0xffffffff))
+#define DATA4_WR(src)                               (((u32)(src)) & 0xffffffff)
+#define DATA4_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_qstate_wr_5	*/ 
+/*	 Fields data	 */
+#define DATA5_WIDTH                                                          19
+#define DATA5_SHIFT                                                           0
+#define DATA5_MASK                                                   0x0007ffff
+#define DATA5_RD(src)                                    (((src) & 0x0007ffff))
+#define DATA5_WR(src)                               (((u32)(src)) & 0x0007ffff)
+#define DATA5_SET(dst,src) \
+                          (((dst) & ~0x0007ffff) | (((u32)(src)) & 0x0007ffff))
 
 /*	Register csr_qstate_rd_0	*/ 
 /*	 Fields data	 */
@@ -1084,12 +1689,21 @@
 
 /*	Register csr_qstate_rd_4	*/ 
 /*	 Fields data	 */
-#define QM_DATA4_F1_WIDTH                                                    21
-#define QM_DATA4_F1_SHIFT                                                     0
-#define QM_DATA4_F1_MASK                                             0x001fffff
-#define QM_DATA4_F1_RD(src)                              (((src) & 0x001fffff))
-#define QM_DATA4_F1_SET(dst,src) \
-                          (((dst) & ~0x001fffff) | (((u32)(src)) & 0x001fffff))
+#define DATA4_F1_WIDTH                                                       32
+#define DATA4_F1_SHIFT                                                        0
+#define DATA4_F1_MASK                                                0xffffffff
+#define DATA4_F1_RD(src)                                 (((src) & 0xffffffff))
+#define DATA4_F1_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_qstate_rd_5	*/ 
+/*	 Fields data	 */
+#define DATA5_F1_WIDTH                                                       19
+#define DATA5_F1_SHIFT                                                        0
+#define DATA5_F1_MASK                                                0x0007ffff
+#define DATA5_F1_RD(src)                                 (((src) & 0x0007ffff))
+#define DATA5_F1_SET(dst,src) \
+                          (((dst) & ~0x0007ffff) | (((u32)(src)) & 0x0007ffff))
 
 /*	Register csr_cstate_wr_0	*/ 
 /*	 Fields data	 */
@@ -1138,414 +1752,6 @@
 #define INIT_WR(src)                                (((u32)(src)) & 0x000fffff)
 #define INIT_SET(dst,src) \
                           (((dst) & ~0x000fffff) | (((u32)(src)) & 0x000fffff))
-
-/*	Register csr_proc_mbox_base_0	*/ 
-/*	 Fields coherent	 */
-#define COHERENT0_WIDTH                                                       1
-#define COHERENT0_SHIFT                                                      31
-#define COHERENT0_MASK                                               0x80000000
-#define COHERENT0_RD(src)                            (((src) & 0x80000000)>>31)
-#define COHERENT0_WR(src)                       (((u32)(src)<<31) & 0x80000000)
-#define COHERENT0_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC0_WIDTH                                                             2
-#define VC0_SHIFT                                                            29
-#define VC0_MASK                                                     0x60000000
-#define VC0_RD(src)                                  (((src) & 0x60000000)>>29)
-#define VC0_WR(src)                             (((u32)(src)<<29) & 0x60000000)
-#define VC0_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING0_WIDTH                                                       1
-#define STASHING0_SHIFT                                                      28
-#define STASHING0_MASK                                               0x10000000
-#define STASHING0_RD(src)                            (((src) & 0x10000000)>>28)
-#define STASHING0_WR(src)                       (((u32)(src)<<28) & 0x10000000)
-#define STASHING0_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR0_WIDTH                                                  26
-#define QM_ADDR0_SHIFT                                                   0
-#define QM_ADDR0_MASK                                           0x03ffffff
-#define QM_ADDR0_RD(src)                            (((src) & 0x03ffffff))
-#define QM_ADDR0_WR(src)                       (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR0_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_proc_mbox_base_1	*/ 
-/*	 Fields coherent	 */
-#define COHERENT1_WIDTH                                                       1
-#define COHERENT1_SHIFT                                                      31
-#define COHERENT1_MASK                                               0x80000000
-#define COHERENT1_RD(src)                            (((src) & 0x80000000)>>31)
-#define COHERENT1_WR(src)                       (((u32)(src)<<31) & 0x80000000)
-#define COHERENT1_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC1_WIDTH                                                             2
-#define VC1_SHIFT                                                            29
-#define VC1_MASK                                                     0x60000000
-#define VC1_RD(src)                                  (((src) & 0x60000000)>>29)
-#define VC1_WR(src)                             (((u32)(src)<<29) & 0x60000000)
-#define VC1_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING1_WIDTH                                                       1
-#define STASHING1_SHIFT                                                      28
-#define STASHING1_MASK                                               0x10000000
-#define STASHING1_RD(src)                            (((src) & 0x10000000)>>28)
-#define STASHING1_WR(src)                       (((u32)(src)<<28) & 0x10000000)
-#define STASHING1_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR1_WIDTH                                                  26
-#define QM_ADDR1_SHIFT                                                   0
-#define QM_ADDR1_MASK                                           0x03ffffff
-#define QM_ADDR1_RD(src)                            (((src) & 0x03ffffff))
-#define QM_ADDR1_WR(src)                       (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR1_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_proc_mbox_base_2	*/ 
-/*	 Fields coherent	 */
-#define COHERENT2_WIDTH                                                       1
-#define COHERENT2_SHIFT                                                      31
-#define COHERENT2_MASK                                               0x80000000
-#define COHERENT2_RD(src)                            (((src) & 0x80000000)>>31)
-#define COHERENT2_WR(src)                       (((u32)(src)<<31) & 0x80000000)
-#define COHERENT2_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC2_WIDTH                                                             2
-#define VC2_SHIFT                                                            29
-#define VC2_MASK                                                     0x60000000
-#define VC2_RD(src)                                  (((src) & 0x60000000)>>29)
-#define VC2_WR(src)                             (((u32)(src)<<29) & 0x60000000)
-#define VC2_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING2_WIDTH                                                       1
-#define STASHING2_SHIFT                                                      28
-#define STASHING2_MASK                                               0x10000000
-#define STASHING2_RD(src)                            (((src) & 0x10000000)>>28)
-#define STASHING2_WR(src)                       (((u32)(src)<<28) & 0x10000000)
-#define STASHING2_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR2_WIDTH                                                  26
-#define QM_ADDR2_SHIFT                                                   0
-#define QM_ADDR2_MASK                                           0x03ffffff
-#define QM_ADDR2_RD(src)                            (((src) & 0x03ffffff))
-#define QM_ADDR2_WR(src)                       (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR2_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_proc_mbox_base_3	*/ 
-/*	 Fields coherent	 */
-#define COHERENT3_WIDTH                                                       1
-#define COHERENT3_SHIFT                                                      31
-#define COHERENT3_MASK                                               0x80000000
-#define COHERENT3_RD(src)                            (((src) & 0x80000000)>>31)
-#define COHERENT3_WR(src)                       (((u32)(src)<<31) & 0x80000000)
-#define COHERENT3_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC3_WIDTH                                                             2
-#define VC3_SHIFT                                                            29
-#define VC3_MASK                                                     0x60000000
-#define VC3_RD(src)                                  (((src) & 0x60000000)>>29)
-#define VC3_WR(src)                             (((u32)(src)<<29) & 0x60000000)
-#define VC3_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING3_WIDTH                                                       1
-#define STASHING3_SHIFT                                                      28
-#define STASHING3_MASK                                               0x10000000
-#define STASHING3_RD(src)                            (((src) & 0x10000000)>>28)
-#define STASHING3_WR(src)                       (((u32)(src)<<28) & 0x10000000)
-#define STASHING3_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR3_WIDTH                                                  26
-#define QM_ADDR3_SHIFT                                                   0
-#define QM_ADDR3_MASK                                           0x03ffffff
-#define QM_ADDR3_RD(src)                            (((src) & 0x03ffffff))
-#define QM_ADDR3_WR(src)                       (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR3_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_proc_fpool_base_0	*/ 
-/*	 Fields coherent	 */
-#define COHERENT0_F1_WIDTH                                                    1
-#define COHERENT0_F1_SHIFT                                                   31
-#define COHERENT0_F1_MASK                                            0x80000000
-#define COHERENT0_F1_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT0_F1_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT0_F1_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC0_F1_WIDTH                                                          2
-#define VC0_F1_SHIFT                                                         29
-#define VC0_F1_MASK                                                  0x60000000
-#define VC0_F1_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC0_F1_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC0_F1_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING0_F1_WIDTH                                                    1
-#define STASHING0_F1_SHIFT                                                   28
-#define STASHING0_F1_MASK                                            0x10000000
-#define STASHING0_F1_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING0_F1_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING0_F1_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR0_F1_WIDTH                                               27
-#define QM_ADDR0_F1_SHIFT                                                0
-#define QM_ADDR0_F1_MASK                                        0x07ffffff
-#define QM_ADDR0_F1_RD(src)                         (((src) & 0x07ffffff))
-#define QM_ADDR0_F1_WR(src)                    (((u32)(src)) & 0x07ffffff)
-#define QM_ADDR0_F1_SET(dst,src) \
-                          (((dst) & ~0x07ffffff) | (((u32)(src)) & 0x07ffffff))
-
-/*	Register csr_proc_fpool_base_1	*/ 
-/*	 Fields coherent	 */
-#define COHERENT1_F1_WIDTH                                                    1
-#define COHERENT1_F1_SHIFT                                                   31
-#define COHERENT1_F1_MASK                                            0x80000000
-#define COHERENT1_F1_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT1_F1_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT1_F1_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC1_F1_WIDTH                                                          2
-#define VC1_F1_SHIFT                                                         29
-#define VC1_F1_MASK                                                  0x60000000
-#define VC1_F1_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC1_F1_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC1_F1_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING1_F1_WIDTH                                                    1
-#define STASHING1_F1_SHIFT                                                   28
-#define STASHING1_F1_MASK                                            0x10000000
-#define STASHING1_F1_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING1_F1_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING1_F1_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR1_F1_WIDTH                                               27
-#define QM_ADDR1_F1_SHIFT                                                0
-#define QM_ADDR1_F1_MASK                                        0x07ffffff
-#define QM_ADDR1_F1_RD(src)                         (((src) & 0x07ffffff))
-#define QM_ADDR1_F1_WR(src)                    (((u32)(src)) & 0x07ffffff)
-#define QM_ADDR1_F1_SET(dst,src) \
-                          (((dst) & ~0x07ffffff) | (((u32)(src)) & 0x07ffffff))
-
-/*	Register csr_proc_fpool_base_2	*/ 
-/*	 Fields coherent	 */
-#define COHERENT2_F1_WIDTH                                                    1
-#define COHERENT2_F1_SHIFT                                                   31
-#define COHERENT2_F1_MASK                                            0x80000000
-#define COHERENT2_F1_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT2_F1_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT2_F1_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC2_F1_WIDTH                                                          2
-#define VC2_F1_SHIFT                                                         29
-#define VC2_F1_MASK                                                  0x60000000
-#define VC2_F1_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC2_F1_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC2_F1_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING2_F1_WIDTH                                                    1
-#define STASHING2_F1_SHIFT                                                   28
-#define STASHING2_F1_MASK                                            0x10000000
-#define STASHING2_F1_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING2_F1_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING2_F1_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR2_F1_WIDTH                                               27
-#define QM_ADDR2_F1_SHIFT                                                0
-#define QM_ADDR2_F1_MASK                                        0x07ffffff
-#define QM_ADDR2_F1_RD(src)                         (((src) & 0x07ffffff))
-#define QM_ADDR2_F1_WR(src)                    (((u32)(src)) & 0x07ffffff)
-#define QM_ADDR2_F1_SET(dst,src) \
-                          (((dst) & ~0x07ffffff) | (((u32)(src)) & 0x07ffffff))
-
-/*	Register csr_proc_fpool_base_3	*/ 
-/*	 Fields coherent	 */
-#define COHERENT3_F1_WIDTH                                                    1
-#define COHERENT3_F1_SHIFT                                                   31
-#define COHERENT3_F1_MASK                                            0x80000000
-#define COHERENT3_F1_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT3_F1_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT3_F1_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC3_F1_WIDTH                                                          2
-#define VC3_F1_SHIFT                                                         29
-#define VC3_F1_MASK                                                  0x60000000
-#define VC3_F1_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC3_F1_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC3_F1_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING3_F1_WIDTH                                                    1
-#define STASHING3_F1_SHIFT                                                   28
-#define STASHING3_F1_MASK                                            0x10000000
-#define STASHING3_F1_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING3_F1_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING3_F1_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR3_F1_WIDTH                                               27
-#define QM_ADDR3_F1_SHIFT                                                0
-#define QM_ADDR3_F1_MASK                                        0x07ffffff
-#define QM_ADDR3_F1_RD(src)                         (((src) & 0x07ffffff))
-#define QM_ADDR3_F1_WR(src)                    (((u32)(src)) & 0x07ffffff)
-#define QM_ADDR3_F1_SET(dst,src) \
-                          (((dst) & ~0x07ffffff) | (((u32)(src)) & 0x07ffffff))
-
-/*	Register csr_enq_base_0	*/ 
-/*	 Fields coherent	 */
-#define COHERENT0_F2_WIDTH                                                    1
-#define COHERENT0_F2_SHIFT                                                   31
-#define COHERENT0_F2_MASK                                            0x80000000
-#define COHERENT0_F2_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT0_F2_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT0_F2_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC0_F2_WIDTH                                                          2
-#define VC0_F2_SHIFT                                                         29
-#define VC0_F2_MASK                                                  0x60000000
-#define VC0_F2_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC0_F2_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC0_F2_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING0_F2_WIDTH                                                    1
-#define STASHING0_F2_SHIFT                                                   28
-#define STASHING0_F2_MASK                                            0x10000000
-#define STASHING0_F2_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING0_F2_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING0_F2_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR0_F2_WIDTH                                               26
-#define QM_ADDR0_F2_SHIFT                                                0
-#define QM_ADDR0_F2_MASK                                        0x03ffffff
-#define QM_ADDR0_F2_RD(src)                         (((src) & 0x03ffffff))
-#define QM_ADDR0_F2_WR(src)                    (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR0_F2_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_enq_base_1	*/ 
-/*	 Fields coherent	 */
-#define COHERENT1_F2_WIDTH                                                    1
-#define COHERENT1_F2_SHIFT                                                   31
-#define COHERENT1_F2_MASK                                            0x80000000
-#define COHERENT1_F2_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT1_F2_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT1_F2_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC1_F2_WIDTH                                                          2
-#define VC1_F2_SHIFT                                                         29
-#define VC1_F2_MASK                                                  0x60000000
-#define VC1_F2_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC1_F2_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC1_F2_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING1_F2_WIDTH                                                    1
-#define STASHING1_F2_SHIFT                                                   28
-#define STASHING1_F2_MASK                                            0x10000000
-#define STASHING1_F2_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING1_F2_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING1_F2_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR1_F2_WIDTH                                               26
-#define QM_ADDR1_F2_SHIFT                                                0
-#define QM_ADDR1_F2_MASK                                        0x03ffffff
-#define QM_ADDR1_F2_RD(src)                         (((src) & 0x03ffffff))
-#define QM_ADDR1_F2_WR(src)                    (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR1_F2_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_enq_base_2	*/ 
-/*	 Fields coherent	 */
-#define COHERENT2_F2_WIDTH                                                    1
-#define COHERENT2_F2_SHIFT                                                   31
-#define COHERENT2_F2_MASK                                            0x80000000
-#define COHERENT2_F2_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT2_F2_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT2_F2_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC2_F2_WIDTH                                                          2
-#define VC2_F2_SHIFT                                                         29
-#define VC2_F2_MASK                                                  0x60000000
-#define VC2_F2_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC2_F2_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC2_F2_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING2_F2_WIDTH                                                    1
-#define STASHING2_F2_SHIFT                                                   28
-#define STASHING2_F2_MASK                                            0x10000000
-#define STASHING2_F2_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING2_F2_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING2_F2_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR2_F2_WIDTH                                               26
-#define QM_ADDR2_F2_SHIFT                                                0
-#define QM_ADDR2_F2_MASK                                        0x03ffffff
-#define QM_ADDR2_F2_RD(src)                         (((src) & 0x03ffffff))
-#define QM_ADDR2_F2_WR(src)                    (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR2_F2_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
-
-/*	Register csr_enq_base_3	*/ 
-/*	 Fields coherent	 */
-#define COHERENT3_F2_WIDTH                                                    1
-#define COHERENT3_F2_SHIFT                                                   31
-#define COHERENT3_F2_MASK                                            0x80000000
-#define COHERENT3_F2_RD(src)                         (((src) & 0x80000000)>>31)
-#define COHERENT3_F2_WR(src)                    (((u32)(src)<<31) & 0x80000000)
-#define COHERENT3_F2_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields vc	 */
-#define VC3_F2_WIDTH                                                          2
-#define VC3_F2_SHIFT                                                         29
-#define VC3_F2_MASK                                                  0x60000000
-#define VC3_F2_RD(src)                               (((src) & 0x60000000)>>29)
-#define VC3_F2_WR(src)                          (((u32)(src)<<29) & 0x60000000)
-#define VC3_F2_SET(dst,src) \
-                      (((dst) & ~0x60000000) | (((u32)(src)<<29) & 0x60000000))
-/*	 Fields stashing	 */
-#define STASHING3_F2_WIDTH                                                    1
-#define STASHING3_F2_SHIFT                                                   28
-#define STASHING3_F2_MASK                                            0x10000000
-#define STASHING3_F2_RD(src)                         (((src) & 0x10000000)>>28)
-#define STASHING3_F2_WR(src)                    (((u32)(src)<<28) & 0x10000000)
-#define STASHING3_F2_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields addr	 */
-#define QM_ADDR3_F2_WIDTH                                               26
-#define QM_ADDR3_F2_SHIFT                                                0
-#define QM_ADDR3_F2_MASK                                        0x03ffffff
-#define QM_ADDR3_F2_RD(src)                         (((src) & 0x03ffffff))
-#define QM_ADDR3_F2_WR(src)                    (((u32)(src)) & 0x03ffffff)
-#define QM_ADDR3_F2_SET(dst,src) \
-                          (((dst) & ~0x03ffffff) | (((u32)(src)) & 0x03ffffff))
 
 /*	Register csr_enq_status_0	*/ 
 /*	 Fields mbox_0_15	 */
@@ -5164,14 +5370,54 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register qm_INT	*/ 
-/*	 Fields queue_not_empty	 */
-#define QUEUE_NOT_EMPTY_WIDTH                                                 1
-#define QUEUE_NOT_EMPTY_SHIFT                                                31
-#define QUEUE_NOT_EMPTY_MASK                                         0x80000000
-#define QUEUE_NOT_EMPTY_RD(src)                      (((src) & 0x80000000)>>31)
-#define QUEUE_NOT_EMPTY_WR(src)                 (((u32)(src)<<31) & 0x80000000)
-#define QUEUE_NOT_EMPTY_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields intr_bresp_ctrl_faulty_intrclr	 */
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_WIDTH                                  1
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_SHIFT                                  9
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_MASK                          0x00000200
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_RD(src)        (((src) & 0x00000200)>>9)
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_WR(src)   (((u32)(src)<<9) & 0x00000200)
+#define INTR_BRESP_CTRL_FAULTY_INTRCLR_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*	 Fields mboxintr_axi_wr_err	 */
+#define MBOXINTR_AXI_WR_ERR_WIDTH                                             1
+#define MBOXINTR_AXI_WR_ERR_SHIFT                                             8
+#define MBOXINTR_AXI_WR_ERR_MASK                                     0x00000100
+#define MBOXINTR_AXI_WR_ERR_RD(src)                   (((src) & 0x00000100)>>8)
+#define MBOXINTR_AXI_WR_ERR_WR(src)              (((u32)(src)<<8) & 0x00000100)
+#define MBOXINTR_AXI_WR_ERR_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields deq_axi_wrerror	 */
+#define DEQ_AXI_WRERROR_WIDTH                                                 1
+#define DEQ_AXI_WRERROR_SHIFT                                                 7
+#define DEQ_AXI_WRERROR_MASK                                         0x00000080
+#define DEQ_AXI_WRERROR_RD(src)                       (((src) & 0x00000080)>>7)
+#define DEQ_AXI_WRERROR_WR(src)                  (((u32)(src)<<7) & 0x00000080)
+#define DEQ_AXI_WRERROR_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields acr_axi_error	 */
+#define ACR_AXI_ERROR_WIDTH                                                   1
+#define ACR_AXI_ERROR_SHIFT                                                   6
+#define ACR_AXI_ERROR_MASK                                           0x00000040
+#define ACR_AXI_ERROR_RD(src)                         (((src) & 0x00000040)>>6)
+#define ACR_AXI_ERROR_WR(src)                    (((u32)(src)<<6) & 0x00000040)
+#define ACR_AXI_ERROR_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields qpcore_over_decr	 */
+#define QPCORE_OVER_DECR_WIDTH                                                1
+#define QPCORE_OVER_DECR_SHIFT                                                5
+#define QPCORE_OVER_DECR_MASK                                        0x00000020
+#define QPCORE_OVER_DECR_RD(src)                      (((src) & 0x00000020)>>5)
+#define QPCORE_OVER_DECR_WR(src)                 (((u32)(src)<<5) & 0x00000020)
+#define QPCORE_OVER_DECR_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields enq_axi_error	 */
+#define ENQ_AXI_ERROR_WIDTH                                                   1
+#define ENQ_AXI_ERROR_SHIFT                                                   4
+#define ENQ_AXI_ERROR_MASK                                           0x00000010
+#define ENQ_AXI_ERROR_RD(src)                         (((src) & 0x00000010)>>4)
+#define ENQ_AXI_ERROR_WR(src)                    (((u32)(src)<<4) & 0x00000010)
+#define ENQ_AXI_ERROR_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
 /*	 Fields acr_fifo_critical	 */
 #define ACR_FIFO_CRITICAL_WIDTH                                               1
 #define ACR_FIFO_CRITICAL_SHIFT                                               3
@@ -5206,14 +5452,55 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register qm_interruptMask	*/
-/*    Mask Register Fields queue_not_emptyMask    */
-#define QUEUE_NOT_EMPTYMASK_WIDTH                                             1
-#define QUEUE_NOT_EMPTYMASK_SHIFT                                            31
-#define QUEUE_NOT_EMPTYMASK_MASK                                     0x80000000
-#define QUEUE_NOT_EMPTYMASK_RD(src)                  (((src) & 0x80000000)>>31)
-#define QUEUE_NOT_EMPTYMASK_WR(src)             (((u32)(src)<<31) & 0x80000000)
-#define QUEUE_NOT_EMPTYMASK_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*    Mask Register Fields intr_bresp_ctrl_faulty_intrclrMask    */
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_WIDTH                              1
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_SHIFT                              9
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_MASK                      0x00000200
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_RD(src)    (((src) & 0x00000200)>>9)
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_WR(src) \
+                                                 (((u32)(src)<<9) & 0x00000200)
+#define INTR_BRESP_CTRL_FAULTY_INTRCLRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*    Mask Register Fields mboxintr_axi_wr_errMask    */
+#define MBOXINTR_AXI_WR_ERRMASK_WIDTH                                         1
+#define MBOXINTR_AXI_WR_ERRMASK_SHIFT                                         8
+#define MBOXINTR_AXI_WR_ERRMASK_MASK                                 0x00000100
+#define MBOXINTR_AXI_WR_ERRMASK_RD(src)               (((src) & 0x00000100)>>8)
+#define MBOXINTR_AXI_WR_ERRMASK_WR(src)          (((u32)(src)<<8) & 0x00000100)
+#define MBOXINTR_AXI_WR_ERRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*    Mask Register Fields deq_axi_wrerrorMask    */
+#define DEQ_AXI_WRERRORMASK_WIDTH                                             1
+#define DEQ_AXI_WRERRORMASK_SHIFT                                             7
+#define DEQ_AXI_WRERRORMASK_MASK                                     0x00000080
+#define DEQ_AXI_WRERRORMASK_RD(src)                   (((src) & 0x00000080)>>7)
+#define DEQ_AXI_WRERRORMASK_WR(src)              (((u32)(src)<<7) & 0x00000080)
+#define DEQ_AXI_WRERRORMASK_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*    Mask Register Fields acr_axi_errorMask    */
+#define ACR_AXI_ERRORMASK_WIDTH                                               1
+#define ACR_AXI_ERRORMASK_SHIFT                                               6
+#define ACR_AXI_ERRORMASK_MASK                                       0x00000040
+#define ACR_AXI_ERRORMASK_RD(src)                     (((src) & 0x00000040)>>6)
+#define ACR_AXI_ERRORMASK_WR(src)                (((u32)(src)<<6) & 0x00000040)
+#define ACR_AXI_ERRORMASK_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*    Mask Register Fields qpcore_over_decrMask    */
+#define QPCORE_OVER_DECRMASK_WIDTH                                            1
+#define QPCORE_OVER_DECRMASK_SHIFT                                            5
+#define QPCORE_OVER_DECRMASK_MASK                                    0x00000020
+#define QPCORE_OVER_DECRMASK_RD(src)                  (((src) & 0x00000020)>>5)
+#define QPCORE_OVER_DECRMASK_WR(src)             (((u32)(src)<<5) & 0x00000020)
+#define QPCORE_OVER_DECRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields enq_axi_errorMask    */
+#define ENQ_AXI_ERRORMASK_WIDTH                                               1
+#define ENQ_AXI_ERRORMASK_SHIFT                                               4
+#define ENQ_AXI_ERRORMASK_MASK                                       0x00000010
+#define ENQ_AXI_ERRORMASK_RD(src)                     (((src) & 0x00000010)>>4)
+#define ENQ_AXI_ERRORMASK_WR(src)                (((u32)(src)<<4) & 0x00000010)
+#define ENQ_AXI_ERRORMASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
 /*    Mask Register Fields acr_fifo_criticalMask    */
 #define ACR_FIFO_CRITICALMASK_WIDTH                                           1
 #define ACR_FIFO_CRITICALMASK_SHIFT                                           3
@@ -5246,26 +5533,6 @@
 #define PBM_DEC_ERRORMASK_WR(src)                   (((u32)(src)) & 0x00000001)
 #define PBM_DEC_ERRORMASK_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
-
-/*	Register qm_SAB_qne_INT	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR_WIDTH                                               32
-#define INTERRUPTING_CSR_SHIFT                                                0
-#define INTERRUPTING_CSR_MASK                                        0xffffffff
-#define INTERRUPTING_CSR_RD(src)                         (((src) & 0xffffffff))
-#define INTERRUPTING_CSR_WR(src)                    (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register qm_SAB_qne_interruptMask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_WIDTH                                           32
-#define INTERRUPTING_CSRMASK_SHIFT                                            0
-#define INTERRUPTING_CSRMASK_MASK                                    0xffffffff
-#define INTERRUPTING_CSRMASK_RD(src)                     (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_WR(src)                (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register csr_pbm_errinf	*/ 
 /*	 Fields pbm_config_err	 */
@@ -5333,165 +5600,23 @@
 #define QID_RD(src)                                      (((src) & 0x000003ff))
 #define QID_SET(dst,src) (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
-/*	Register csr_qm_sab_proc0	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR0_WIDTH                                              32
-#define INTERRUPTING_CSR0_SHIFT                                               0
-#define INTERRUPTING_CSR0_MASK                                       0xffffffff
-#define INTERRUPTING_CSR0_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR0_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR0_SET(dst,src) \
+/*	Register csr_qm_sab_critical_sts	*/ 
+/*	 Fields critical_csr	 */
+#define CRITICAL_CSR_WIDTH                                                   32
+#define CRITICAL_CSR_SHIFT                                                    0
+#define CRITICAL_CSR_MASK                                            0xffffffff
+#define CRITICAL_CSR_RD(src)                             (((src) & 0xffffffff))
+#define CRITICAL_CSR_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
-/*	Register csr_qm_sab_proc0Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F1_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F1_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F1_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F1_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F1_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F1_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc1	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR1_WIDTH                                              32
-#define INTERRUPTING_CSR1_SHIFT                                               0
-#define INTERRUPTING_CSR1_MASK                                       0xffffffff
-#define INTERRUPTING_CSR1_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR1_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR1_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc1Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F2_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F2_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F2_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F2_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F2_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F2_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc2	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR2_WIDTH                                              32
-#define INTERRUPTING_CSR2_SHIFT                                               0
-#define INTERRUPTING_CSR2_MASK                                       0xffffffff
-#define INTERRUPTING_CSR2_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR2_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR2_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc2Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F3_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F3_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F3_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F3_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F3_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F3_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc3	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR3_WIDTH                                              32
-#define INTERRUPTING_CSR3_SHIFT                                               0
-#define INTERRUPTING_CSR3_MASK                                       0xffffffff
-#define INTERRUPTING_CSR3_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR3_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR3_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc3Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F4_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F4_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F4_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F4_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F4_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F4_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc4	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR4_WIDTH                                              32
-#define INTERRUPTING_CSR4_SHIFT                                               0
-#define INTERRUPTING_CSR4_MASK                                       0xffffffff
-#define INTERRUPTING_CSR4_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR4_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR4_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc4Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F5_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F5_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F5_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F5_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F5_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F5_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc5	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR5_WIDTH                                              32
-#define INTERRUPTING_CSR5_SHIFT                                               0
-#define INTERRUPTING_CSR5_MASK                                       0xffffffff
-#define INTERRUPTING_CSR5_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR5_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR5_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc5Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F6_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F6_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F6_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F6_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F6_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F6_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc6	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR6_WIDTH                                              32
-#define INTERRUPTING_CSR6_SHIFT                                               0
-#define INTERRUPTING_CSR6_MASK                                       0xffffffff
-#define INTERRUPTING_CSR6_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR6_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR6_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc6Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F7_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F7_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F7_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F7_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F7_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F7_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc7	*/ 
-/*	 Fields interrupting_csr	 */
-#define INTERRUPTING_CSR7_WIDTH                                              32
-#define INTERRUPTING_CSR7_SHIFT                                               0
-#define INTERRUPTING_CSR7_MASK                                       0xffffffff
-#define INTERRUPTING_CSR7_RD(src)                        (((src) & 0xffffffff))
-#define INTERRUPTING_CSR7_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSR7_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register csr_qm_sab_proc7Mask	*/
-/*    Mask Register Fields interrupting_csrMask    */
-#define INTERRUPTING_CSRMASK_F8_WIDTH                                        32
-#define INTERRUPTING_CSRMASK_F8_SHIFT                                         0
-#define INTERRUPTING_CSRMASK_F8_MASK                                 0xffffffff
-#define INTERRUPTING_CSRMASK_F8_RD(src)                  (((src) & 0xffffffff))
-#define INTERRUPTING_CSRMASK_F8_WR(src)             (((u32)(src)) & 0xffffffff)
-#define INTERRUPTING_CSRMASK_F8_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+/*	Register csr_qpcore_errinf	*/ 
+/*	 Fields over_decr_qid	 */
+#define OVER_DECR_QID_WIDTH                                                  10
+#define OVER_DECR_QID_SHIFT                                                   0
+#define OVER_DECR_QID_MASK                                           0x000003ff
+#define OVER_DECR_QID_RD(src)                            (((src) & 0x000003ff))
+#define OVER_DECR_QID_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
 /*	Register csr_qm_mbox_ne_int_mode	*/ 
 /*	 Fields mbox_0_31	 */
@@ -6146,40 +6271,6 @@
 #define QMI_HOLD_LEVEL_SET(dst,src) \
                           (((dst) & ~0x000000ff) | (((u32)(src)) & 0x000000ff))
 
-/*	Register csr_errq	*/ 
-/*	 Fields unexpected_en	 */
-#define UNEXPECTED_EN_WIDTH                                                   1
-#define UNEXPECTED_EN_SHIFT                                                  31
-#define UNEXPECTED_EN_MASK                                           0x80000000
-#define UNEXPECTED_EN_RD(src)                        (((src) & 0x80000000)>>31)
-#define UNEXPECTED_EN_WR(src)                   (((u32)(src)<<31) & 0x80000000)
-#define UNEXPECTED_EN_SET(dst,src) \
-                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields unexpected_qid	 */
-#define UNEXPECTED_QID_WIDTH                                                 10
-#define UNEXPECTED_QID_SHIFT                                                 16
-#define UNEXPECTED_QID_MASK                                          0x03ff0000
-#define UNEXPECTED_QID_RD(src)                       (((src) & 0x03ff0000)>>16)
-#define UNEXPECTED_QID_WR(src)                  (((u32)(src)<<16) & 0x03ff0000)
-#define UNEXPECTED_QID_SET(dst,src) \
-                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
-/*	 Fields expected_en	 */
-#define EXPECTED_EN_WIDTH                                                     1
-#define EXPECTED_EN_SHIFT                                                    15
-#define EXPECTED_EN_MASK                                             0x00008000
-#define EXPECTED_EN_RD(src)                          (((src) & 0x00008000)>>15)
-#define EXPECTED_EN_WR(src)                     (((u32)(src)<<15) & 0x00008000)
-#define EXPECTED_EN_SET(dst,src) \
-                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
-/*	 Fields expected_qid	 */
-#define EXPECTED_QID_WIDTH                                                   10
-#define EXPECTED_QID_SHIFT                                                    0
-#define EXPECTED_QID_MASK                                            0x000003ff
-#define EXPECTED_QID_RD(src)                             (((src) & 0x000003ff))
-#define EXPECTED_QID_WR(src)                        (((u32)(src)) & 0x000003ff)
-#define EXPECTED_QID_SET(dst,src) \
-                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
-
 /*	Register csr_qm_ram_margin	*/ 
 /*	 Fields recomb_rmea	 */
 #define RECOMB_RMEA_WIDTH                                                     1
@@ -6321,94 +6412,38 @@
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register csr_qm_testint1	*/ 
-/*	 Fields sab_proc7	 */
-#define SAB_PROC71_WIDTH                                                      1
-#define SAB_PROC71_SHIFT                                                     31
-#define SAB_PROC71_MASK                                              0x80000000
-#define SAB_PROC71_RD(src)                           (((src) & 0x80000000)>>31)
-#define SAB_PROC71_WR(src)                      (((u32)(src)<<31) & 0x80000000)
-#define SAB_PROC71_SET(dst,src) \
+/*	 Fields sab_intr	 */
+#define SAB_INTR1_WIDTH                                                       1
+#define SAB_INTR1_SHIFT                                                      31
+#define SAB_INTR1_MASK                                               0x80000000
+#define SAB_INTR1_RD(src)                            (((src) & 0x80000000)>>31)
+#define SAB_INTR1_WR(src)                       (((u32)(src)<<31) & 0x80000000)
+#define SAB_INTR1_SET(dst,src) \
                       (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
-/*	 Fields sab_proc6	 */
-#define SAB_PROC61_WIDTH                                                      1
-#define SAB_PROC61_SHIFT                                                     30
-#define SAB_PROC61_MASK                                              0x40000000
-#define SAB_PROC61_RD(src)                           (((src) & 0x40000000)>>30)
-#define SAB_PROC61_WR(src)                      (((u32)(src)<<30) & 0x40000000)
-#define SAB_PROC61_SET(dst,src) \
-                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
-/*	 Fields sab_proc5	 */
-#define SAB_PROC51_WIDTH                                                      1
-#define SAB_PROC51_SHIFT                                                     29
-#define SAB_PROC51_MASK                                              0x20000000
-#define SAB_PROC51_RD(src)                           (((src) & 0x20000000)>>29)
-#define SAB_PROC51_WR(src)                      (((u32)(src)<<29) & 0x20000000)
-#define SAB_PROC51_SET(dst,src) \
-                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
-/*	 Fields sab_proc4	 */
-#define SAB_PROC41_WIDTH                                                      1
-#define SAB_PROC41_SHIFT                                                     28
-#define SAB_PROC41_MASK                                              0x10000000
-#define SAB_PROC41_RD(src)                           (((src) & 0x10000000)>>28)
-#define SAB_PROC41_WR(src)                      (((u32)(src)<<28) & 0x10000000)
-#define SAB_PROC41_SET(dst,src) \
-                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
-/*	 Fields sab_proc3	 */
-#define SAB_PROC31_WIDTH                                                      1
-#define SAB_PROC31_SHIFT                                                     27
-#define SAB_PROC31_MASK                                              0x08000000
-#define SAB_PROC31_RD(src)                           (((src) & 0x08000000)>>27)
-#define SAB_PROC31_WR(src)                      (((u32)(src)<<27) & 0x08000000)
-#define SAB_PROC31_SET(dst,src) \
-                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
-/*	 Fields sab_proc2	 */
-#define SAB_PROC21_WIDTH                                                      1
-#define SAB_PROC21_SHIFT                                                     26
-#define SAB_PROC21_MASK                                              0x04000000
-#define SAB_PROC21_RD(src)                           (((src) & 0x04000000)>>26)
-#define SAB_PROC21_WR(src)                      (((u32)(src)<<26) & 0x04000000)
-#define SAB_PROC21_SET(dst,src) \
-                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
-/*	 Fields sab_proc1	 */
-#define SAB_PROC11_WIDTH                                                      1
-#define SAB_PROC11_SHIFT                                                     25
-#define SAB_PROC11_MASK                                              0x02000000
-#define SAB_PROC11_RD(src)                           (((src) & 0x02000000)>>25)
-#define SAB_PROC11_WR(src)                      (((u32)(src)<<25) & 0x02000000)
-#define SAB_PROC11_SET(dst,src) \
-                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
-/*	 Fields sab_proc0	 */
-#define SAB_PROC01_WIDTH                                                      1
-#define SAB_PROC01_SHIFT                                                     24
-#define SAB_PROC01_MASK                                              0x01000000
-#define SAB_PROC01_RD(src)                           (((src) & 0x01000000)>>24)
-#define SAB_PROC01_WR(src)                      (((u32)(src)<<24) & 0x01000000)
-#define SAB_PROC01_SET(dst,src) \
-                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
 /*	 Fields qm_int	 */
 #define QM_INT1_WIDTH                                                         1
-#define QM_INT1_SHIFT                                                        20
-#define QM_INT1_MASK                                                 0x00100000
-#define QM_INT1_RD(src)                              (((src) & 0x00100000)>>20)
-#define QM_INT1_WR(src)                         (((u32)(src)<<20) & 0x00100000)
+#define QM_INT1_SHIFT                                                        30
+#define QM_INT1_MASK                                                 0x40000000
+#define QM_INT1_RD(src)                              (((src) & 0x40000000)>>30)
+#define QM_INT1_WR(src)                         (((u32)(src)<<30) & 0x40000000)
 #define QM_INT1_SET(dst,src) \
-                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
 /*	 Fields ecc_sec	 */
-#define ECC_SEC1_WIDTH                                                        6
-#define ECC_SEC1_SHIFT                                                       10
-#define ECC_SEC1_MASK                                                0x0000fc00
-#define ECC_SEC1_RD(src)                             (((src) & 0x0000fc00)>>10)
-#define ECC_SEC1_WR(src)                        (((u32)(src)<<10) & 0x0000fc00)
+#define ECC_SEC1_WIDTH                                                       14
+#define ECC_SEC1_SHIFT                                                       14
+#define ECC_SEC1_MASK                                                0x0fffc000
+#define ECC_SEC1_RD(src)                             (((src) & 0x0fffc000)>>14)
+#define ECC_SEC1_WR(src)                        (((u32)(src)<<14) & 0x0fffc000)
 #define ECC_SEC1_SET(dst,src) \
-                      (((dst) & ~0x0000fc00) | (((u32)(src)<<10) & 0x0000fc00))
+                      (((dst) & ~0x0fffc000) | (((u32)(src)<<14) & 0x0fffc000))
 /*	 Fields ecc_ded	 */
-#define ECC_DED1_WIDTH                                                        6
+#define ECC_DED1_WIDTH                                                       14
 #define ECC_DED1_SHIFT                                                        0
-#define ECC_DED1_MASK                                                0x0000003f
-#define ECC_DED1_RD(src)                                 (((src) & 0x0000003f))
-#define ECC_DED1_WR(src)                            (((u32)(src)) & 0x0000003f)
+#define ECC_DED1_MASK                                                0x00003fff
+#define ECC_DED1_RD(src)                                 (((src) & 0x00003fff))
+#define ECC_DED1_WR(src)                            (((u32)(src)) & 0x00003fff)
 #define ECC_DED1_SET(dst,src) \
-                          (((dst) & ~0x0000003f) | (((u32)(src)) & 0x0000003f))
+                          (((dst) & ~0x00003fff) | (((u32)(src)) & 0x00003fff))
 
 /*	Register csr_qmlite_pbn_map_0	*/ 
 /*	 Fields slimpro_fpq0_mbox	 */
@@ -6479,14 +6514,30 @@
                           (((dst) & ~0x0000001f) | (((u32)(src)) & 0x0000001f))
 
 /*	Register csr_recomb_ctrl_0	*/ 
+/*	 Fields bresp_buff_timeout_cnt	 */
+#define BRESP_BUFF_TIMEOUT_CNT0_WIDTH                                        11
+#define BRESP_BUFF_TIMEOUT_CNT0_SHIFT                                        21
+#define BRESP_BUFF_TIMEOUT_CNT0_MASK                                 0xffe00000
+#define BRESP_BUFF_TIMEOUT_CNT0_RD(src)              (((src) & 0xffe00000)>>21)
+#define BRESP_BUFF_TIMEOUT_CNT0_WR(src)         (((u32)(src)<<21) & 0xffe00000)
+#define BRESP_BUFF_TIMEOUT_CNT0_SET(dst,src) \
+                      (((dst) & ~0xffe00000) | (((u32)(src)<<21) & 0xffe00000))
+/*	 Fields bresp_recomb_en	 */
+#define BRESP_RECOMB_EN0_WIDTH                                                1
+#define BRESP_RECOMB_EN0_SHIFT                                               20
+#define BRESP_RECOMB_EN0_MASK                                        0x00100000
+#define BRESP_RECOMB_EN0_RD(src)                     (((src) & 0x00100000)>>20)
+#define BRESP_RECOMB_EN0_WR(src)                (((u32)(src)<<20) & 0x00100000)
+#define BRESP_RECOMB_EN0_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
 /*	 Fields force_eviction_cstate_address	 */
-#define FORCE_EVICTION_CSTATE_ADDRESS0_WIDTH                                  6
+#define FORCE_EVICTION_CSTATE_ADDRESS0_WIDTH                                  7
 #define FORCE_EVICTION_CSTATE_ADDRESS0_SHIFT                                 12
-#define FORCE_EVICTION_CSTATE_ADDRESS0_MASK                          0x0003f000
-#define FORCE_EVICTION_CSTATE_ADDRESS0_RD(src)       (((src) & 0x0003f000)>>12)
-#define FORCE_EVICTION_CSTATE_ADDRESS0_WR(src)  (((u32)(src)<<12) & 0x0003f000)
+#define FORCE_EVICTION_CSTATE_ADDRESS0_MASK                          0x0007f000
+#define FORCE_EVICTION_CSTATE_ADDRESS0_RD(src)       (((src) & 0x0007f000)>>12)
+#define FORCE_EVICTION_CSTATE_ADDRESS0_WR(src)  (((u32)(src)<<12) & 0x0007f000)
 #define FORCE_EVICTION_CSTATE_ADDRESS0_SET(dst,src) \
-                      (((dst) & ~0x0003f000) | (((u32)(src)<<12) & 0x0003f000))
+                      (((dst) & ~0x0007f000) | (((u32)(src)<<12) & 0x0007f000))
 /*	 Fields prescale_cntr	 */
 #define PRESCALE_CNTR0_WIDTH                                                  2
 #define PRESCALE_CNTR0_SHIFT                                                  8
@@ -6529,6 +6580,14 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register csr_recomb_ctrl_1	*/ 
+/*	 Fields bresp_max_recomb_cnt	 */
+#define BRESP_MAX_RECOMB_CNT1_WIDTH                                           6
+#define BRESP_MAX_RECOMB_CNT1_SHIFT                                          26
+#define BRESP_MAX_RECOMB_CNT1_MASK                                   0xfc000000
+#define BRESP_MAX_RECOMB_CNT1_RD(src)                (((src) & 0xfc000000)>>26)
+#define BRESP_MAX_RECOMB_CNT1_WR(src)           (((u32)(src)<<26) & 0xfc000000)
+#define BRESP_MAX_RECOMB_CNT1_SET(dst,src) \
+                      (((dst) & ~0xfc000000) | (((u32)(src)<<26) & 0xfc000000))
 /*	 Fields amareq_afifo_thresh	 */
 #define AMAREQ_AFIFO_THRESH1_WIDTH                                            2
 #define AMAREQ_AFIFO_THRESH1_SHIFT                                           24
@@ -6597,6 +6656,38 @@
                           (((dst) & ~0x0000003f) | (((u32)(src)) & 0x0000003f))
 
 /*	Register csr_qm_recomb_ram_margin	*/ 
+/*	 Fields addrmem_rmea	 */
+#define ADDRMEM_RMEA_WIDTH                                                    1
+#define ADDRMEM_RMEA_SHIFT                                                   21
+#define ADDRMEM_RMEA_MASK                                            0x00200000
+#define ADDRMEM_RMEA_RD(src)                         (((src) & 0x00200000)>>21)
+#define ADDRMEM_RMEA_WR(src)                    (((u32)(src)<<21) & 0x00200000)
+#define ADDRMEM_RMEA_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*	 Fields addrmem_rmeb	 */
+#define ADDRMEM_RMEB_WIDTH                                                    1
+#define ADDRMEM_RMEB_SHIFT                                                   20
+#define ADDRMEM_RMEB_MASK                                            0x00100000
+#define ADDRMEM_RMEB_RD(src)                         (((src) & 0x00100000)>>20)
+#define ADDRMEM_RMEB_WR(src)                    (((u32)(src)<<20) & 0x00100000)
+#define ADDRMEM_RMEB_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*	 Fields addrmem_rma	 */
+#define ADDRMEM_RMA_WIDTH                                                     2
+#define ADDRMEM_RMA_SHIFT                                                    18
+#define ADDRMEM_RMA_MASK                                             0x000c0000
+#define ADDRMEM_RMA_RD(src)                          (((src) & 0x000c0000)>>18)
+#define ADDRMEM_RMA_WR(src)                     (((u32)(src)<<18) & 0x000c0000)
+#define ADDRMEM_RMA_SET(dst,src) \
+                      (((dst) & ~0x000c0000) | (((u32)(src)<<18) & 0x000c0000))
+/*	 Fields addrmem_rmb	 */
+#define ADDRMEM_RMB_WIDTH                                                     2
+#define ADDRMEM_RMB_SHIFT                                                    16
+#define ADDRMEM_RMB_MASK                                             0x00030000
+#define ADDRMEM_RMB_RD(src)                          (((src) & 0x00030000)>>16)
+#define ADDRMEM_RMB_WR(src)                     (((u32)(src)<<16) & 0x00030000)
+#define ADDRMEM_RMB_SET(dst,src) \
+                      (((dst) & ~0x00030000) | (((u32)(src)<<16) & 0x00030000))
 /*	 Fields qidsbmem_rmea	 */
 #define QIDSBMEM_RMEA_WIDTH                                                   1
 #define QIDSBMEM_RMEA_SHIFT                                                  13
@@ -6743,6 +6834,24 @@
 #define CSTATE_EMPTY2_MASK                                           0xffffffff
 #define CSTATE_EMPTY2_RD(src)                            (((src) & 0xffffffff))
 #define CSTATE_EMPTY2_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_recomb_sts_3	*/ 
+/*	 Fields cstate_empty	 */
+#define CSTATE_EMPTY3_WIDTH                                                  32
+#define CSTATE_EMPTY3_SHIFT                                                   0
+#define CSTATE_EMPTY3_MASK                                           0xffffffff
+#define CSTATE_EMPTY3_RD(src)                            (((src) & 0xffffffff))
+#define CSTATE_EMPTY3_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_recomb_sts_4	*/ 
+/*	 Fields cstate_empty	 */
+#define CSTATE_EMPTY4_WIDTH                                                  32
+#define CSTATE_EMPTY4_SHIFT                                                   0
+#define CSTATE_EMPTY4_MASK                                           0xffffffff
+#define CSTATE_EMPTY4_RD(src)                            (((src) & 0xffffffff))
+#define CSTATE_EMPTY4_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register recomb_INT	*/ 
@@ -7061,19 +7170,8486 @@
 #define QMI_HOLD_HYST0_SET(dst,src) \
                           (((dst) & ~0x0000000f) | (((u32)(src)) & 0x0000000f))
 
-/*	Register pbm_diagdata_ctrl_0	*/ 
-/*	 Fields sel	 */
-#define QM_SEL0_WIDTH                                                    8
-#define QM_SEL0_SHIFT                                                    0
-#define QM_SEL0_MASK                                            0x000000ff
-#define QM_SEL0_RD(src)                             (((src) & 0x000000ff))
-#define QM_SEL0_WR(src)                        (((u32)(src)) & 0x000000ff)
-#define QM_SEL0_SET(dst,src) \
+/*	Register csr_vmid0_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_WIDTH                                                   32
+#define REGSPEC_ADDR_SHIFT                                                    0
+#define REGSPEC_ADDR_MASK                                            0xffffffff
+#define REGSPEC_ADDR_RD(src)                             (((src) & 0xffffffff))
+#define REGSPEC_ADDR_WR(src)                        (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid1_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F1_WIDTH                                                32
+#define REGSPEC_ADDR_F1_SHIFT                                                 0
+#define REGSPEC_ADDR_F1_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F1_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F1_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F1_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid2_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F2_WIDTH                                                32
+#define REGSPEC_ADDR_F2_SHIFT                                                 0
+#define REGSPEC_ADDR_F2_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F2_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F2_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F2_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid3_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F3_WIDTH                                                32
+#define REGSPEC_ADDR_F3_SHIFT                                                 0
+#define REGSPEC_ADDR_F3_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F3_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F3_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F3_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid4_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F4_WIDTH                                                32
+#define REGSPEC_ADDR_F4_SHIFT                                                 0
+#define REGSPEC_ADDR_F4_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F4_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F4_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F4_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid5_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F5_WIDTH                                                32
+#define REGSPEC_ADDR_F5_SHIFT                                                 0
+#define REGSPEC_ADDR_F5_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F5_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F5_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F5_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid6_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F6_WIDTH                                                32
+#define REGSPEC_ADDR_F6_SHIFT                                                 0
+#define REGSPEC_ADDR_F6_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F6_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F6_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F6_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid7_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F7_WIDTH                                                32
+#define REGSPEC_ADDR_F7_SHIFT                                                 0
+#define REGSPEC_ADDR_F7_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F7_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F7_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F7_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid8_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F8_WIDTH                                                32
+#define REGSPEC_ADDR_F8_SHIFT                                                 0
+#define REGSPEC_ADDR_F8_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F8_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F8_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F8_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid9_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F9_WIDTH                                                32
+#define REGSPEC_ADDR_F9_SHIFT                                                 0
+#define REGSPEC_ADDR_F9_MASK                                         0xffffffff
+#define REGSPEC_ADDR_F9_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F9_WR(src)                     (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F9_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid10_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F10_WIDTH                                               32
+#define REGSPEC_ADDR_F10_SHIFT                                                0
+#define REGSPEC_ADDR_F10_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F10_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F10_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F10_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid11_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F11_WIDTH                                               32
+#define REGSPEC_ADDR_F11_SHIFT                                                0
+#define REGSPEC_ADDR_F11_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F11_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F11_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F11_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid12_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F12_WIDTH                                               32
+#define REGSPEC_ADDR_F12_SHIFT                                                0
+#define REGSPEC_ADDR_F12_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F12_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F12_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F12_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid13_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F13_WIDTH                                               32
+#define REGSPEC_ADDR_F13_SHIFT                                                0
+#define REGSPEC_ADDR_F13_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F13_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F13_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F13_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid14_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F14_WIDTH                                               32
+#define REGSPEC_ADDR_F14_SHIFT                                                0
+#define REGSPEC_ADDR_F14_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F14_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F14_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F14_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid15_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F15_WIDTH                                               32
+#define REGSPEC_ADDR_F15_SHIFT                                                0
+#define REGSPEC_ADDR_F15_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F15_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F15_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F15_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid16_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F16_WIDTH                                               32
+#define REGSPEC_ADDR_F16_SHIFT                                                0
+#define REGSPEC_ADDR_F16_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F16_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F16_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F16_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid17_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F17_WIDTH                                               32
+#define REGSPEC_ADDR_F17_SHIFT                                                0
+#define REGSPEC_ADDR_F17_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F17_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F17_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F17_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid18_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F18_WIDTH                                               32
+#define REGSPEC_ADDR_F18_SHIFT                                                0
+#define REGSPEC_ADDR_F18_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F18_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F18_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F18_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid19_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F19_WIDTH                                               32
+#define REGSPEC_ADDR_F19_SHIFT                                                0
+#define REGSPEC_ADDR_F19_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F19_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F19_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F19_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid20_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F20_WIDTH                                               32
+#define REGSPEC_ADDR_F20_SHIFT                                                0
+#define REGSPEC_ADDR_F20_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F20_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F20_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F20_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid21_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F21_WIDTH                                               32
+#define REGSPEC_ADDR_F21_SHIFT                                                0
+#define REGSPEC_ADDR_F21_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F21_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F21_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F21_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid22_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F22_WIDTH                                               32
+#define REGSPEC_ADDR_F22_SHIFT                                                0
+#define REGSPEC_ADDR_F22_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F22_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F22_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F22_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid23_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F23_WIDTH                                               32
+#define REGSPEC_ADDR_F23_SHIFT                                                0
+#define REGSPEC_ADDR_F23_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F23_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F23_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F23_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid24_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F24_WIDTH                                               32
+#define REGSPEC_ADDR_F24_SHIFT                                                0
+#define REGSPEC_ADDR_F24_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F24_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F24_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F24_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid25_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F25_WIDTH                                               32
+#define REGSPEC_ADDR_F25_SHIFT                                                0
+#define REGSPEC_ADDR_F25_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F25_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F25_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F25_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid26_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F26_WIDTH                                               32
+#define REGSPEC_ADDR_F26_SHIFT                                                0
+#define REGSPEC_ADDR_F26_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F26_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F26_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F26_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid27_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F27_WIDTH                                               32
+#define REGSPEC_ADDR_F27_SHIFT                                                0
+#define REGSPEC_ADDR_F27_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F27_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F27_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F27_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid28_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F28_WIDTH                                               32
+#define REGSPEC_ADDR_F28_SHIFT                                                0
+#define REGSPEC_ADDR_F28_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F28_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F28_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F28_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid29_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F29_WIDTH                                               32
+#define REGSPEC_ADDR_F29_SHIFT                                                0
+#define REGSPEC_ADDR_F29_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F29_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F29_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F29_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid30_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F30_WIDTH                                               32
+#define REGSPEC_ADDR_F30_SHIFT                                                0
+#define REGSPEC_ADDR_F30_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F30_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F30_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F30_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid31_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F31_WIDTH                                               32
+#define REGSPEC_ADDR_F31_SHIFT                                                0
+#define REGSPEC_ADDR_F31_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F31_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F31_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F31_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_vmid0_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_WIDTH                                                        1
+#define COHERENT_SHIFT                                                        8
+#define COHERENT_MASK                                                0x00000100
+#define COHERENT_RD(src)                              (((src) & 0x00000100)>>8)
+#define COHERENT_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_WIDTH                                                              2
+#define VC_SHIFT                                                              4
+#define VC_MASK                                                      0x00000030
+#define VC_RD(src)                                    (((src) & 0x00000030)>>4)
+#define VC_WR(src)                               (((u32)(src)<<4) & 0x00000030)
+#define VC_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_WIDTH                                                        1
+#define STASHING_SHIFT                                                        0
+#define STASHING_MASK                                                0x00000001
+#define STASHING_RD(src)                                 (((src) & 0x00000001))
+#define STASHING_WR(src)                            (((u32)(src)) & 0x00000001)
+#define STASHING_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid1_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F1_WIDTH                                                     1
+#define COHERENT_F1_SHIFT                                                     8
+#define COHERENT_F1_MASK                                             0x00000100
+#define COHERENT_F1_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F1_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F1_WIDTH                                                           2
+#define VC_F1_SHIFT                                                           4
+#define VC_F1_MASK                                                   0x00000030
+#define VC_F1_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F1_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F1_WIDTH                                                     1
+#define STASHING_F1_SHIFT                                                     0
+#define STASHING_F1_MASK                                             0x00000001
+#define STASHING_F1_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F1_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid2_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F2_WIDTH                                                     1
+#define COHERENT_F2_SHIFT                                                     8
+#define COHERENT_F2_MASK                                             0x00000100
+#define COHERENT_F2_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F2_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F2_WIDTH                                                           2
+#define VC_F2_SHIFT                                                           4
+#define VC_F2_MASK                                                   0x00000030
+#define VC_F2_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F2_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F2_WIDTH                                                     1
+#define STASHING_F2_SHIFT                                                     0
+#define STASHING_F2_MASK                                             0x00000001
+#define STASHING_F2_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F2_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid3_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F3_WIDTH                                                     1
+#define COHERENT_F3_SHIFT                                                     8
+#define COHERENT_F3_MASK                                             0x00000100
+#define COHERENT_F3_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F3_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F3_WIDTH                                                           2
+#define VC_F3_SHIFT                                                           4
+#define VC_F3_MASK                                                   0x00000030
+#define VC_F3_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F3_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F3_WIDTH                                                     1
+#define STASHING_F3_SHIFT                                                     0
+#define STASHING_F3_MASK                                             0x00000001
+#define STASHING_F3_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F3_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid4_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F4_WIDTH                                                     1
+#define COHERENT_F4_SHIFT                                                     8
+#define COHERENT_F4_MASK                                             0x00000100
+#define COHERENT_F4_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F4_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F4_WIDTH                                                           2
+#define VC_F4_SHIFT                                                           4
+#define VC_F4_MASK                                                   0x00000030
+#define VC_F4_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F4_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F4_WIDTH                                                     1
+#define STASHING_F4_SHIFT                                                     0
+#define STASHING_F4_MASK                                             0x00000001
+#define STASHING_F4_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F4_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid5_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F5_WIDTH                                                     1
+#define COHERENT_F5_SHIFT                                                     8
+#define COHERENT_F5_MASK                                             0x00000100
+#define COHERENT_F5_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F5_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F5_WIDTH                                                           2
+#define VC_F5_SHIFT                                                           4
+#define VC_F5_MASK                                                   0x00000030
+#define VC_F5_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F5_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F5_WIDTH                                                     1
+#define STASHING_F5_SHIFT                                                     0
+#define STASHING_F5_MASK                                             0x00000001
+#define STASHING_F5_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F5_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid6_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F6_WIDTH                                                     1
+#define COHERENT_F6_SHIFT                                                     8
+#define COHERENT_F6_MASK                                             0x00000100
+#define COHERENT_F6_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F6_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F6_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F6_WIDTH                                                           2
+#define VC_F6_SHIFT                                                           4
+#define VC_F6_MASK                                                   0x00000030
+#define VC_F6_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F6_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F6_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F6_WIDTH                                                     1
+#define STASHING_F6_SHIFT                                                     0
+#define STASHING_F6_MASK                                             0x00000001
+#define STASHING_F6_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F6_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F6_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid7_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F7_WIDTH                                                     1
+#define COHERENT_F7_SHIFT                                                     8
+#define COHERENT_F7_MASK                                             0x00000100
+#define COHERENT_F7_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F7_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F7_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F7_WIDTH                                                           2
+#define VC_F7_SHIFT                                                           4
+#define VC_F7_MASK                                                   0x00000030
+#define VC_F7_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F7_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F7_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F7_WIDTH                                                     1
+#define STASHING_F7_SHIFT                                                     0
+#define STASHING_F7_MASK                                             0x00000001
+#define STASHING_F7_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F7_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F7_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid8_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F8_WIDTH                                                     1
+#define COHERENT_F8_SHIFT                                                     8
+#define COHERENT_F8_MASK                                             0x00000100
+#define COHERENT_F8_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F8_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F8_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F8_WIDTH                                                           2
+#define VC_F8_SHIFT                                                           4
+#define VC_F8_MASK                                                   0x00000030
+#define VC_F8_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F8_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F8_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F8_WIDTH                                                     1
+#define STASHING_F8_SHIFT                                                     0
+#define STASHING_F8_MASK                                             0x00000001
+#define STASHING_F8_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F8_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F8_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid9_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F9_WIDTH                                                     1
+#define COHERENT_F9_SHIFT                                                     8
+#define COHERENT_F9_MASK                                             0x00000100
+#define COHERENT_F9_RD(src)                           (((src) & 0x00000100)>>8)
+#define COHERENT_F9_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F9_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F9_WIDTH                                                           2
+#define VC_F9_SHIFT                                                           4
+#define VC_F9_MASK                                                   0x00000030
+#define VC_F9_RD(src)                                 (((src) & 0x00000030)>>4)
+#define VC_F9_WR(src)                            (((u32)(src)<<4) & 0x00000030)
+#define VC_F9_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F9_WIDTH                                                     1
+#define STASHING_F9_SHIFT                                                     0
+#define STASHING_F9_MASK                                             0x00000001
+#define STASHING_F9_RD(src)                              (((src) & 0x00000001))
+#define STASHING_F9_WR(src)                         (((u32)(src)) & 0x00000001)
+#define STASHING_F9_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid10_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F10_WIDTH                                                    1
+#define COHERENT_F10_SHIFT                                                    8
+#define COHERENT_F10_MASK                                            0x00000100
+#define COHERENT_F10_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F10_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F10_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F10_WIDTH                                                          2
+#define VC_F10_SHIFT                                                          4
+#define VC_F10_MASK                                                  0x00000030
+#define VC_F10_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F10_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F10_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F10_WIDTH                                                    1
+#define STASHING_F10_SHIFT                                                    0
+#define STASHING_F10_MASK                                            0x00000001
+#define STASHING_F10_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F10_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F10_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid11_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F11_WIDTH                                                    1
+#define COHERENT_F11_SHIFT                                                    8
+#define COHERENT_F11_MASK                                            0x00000100
+#define COHERENT_F11_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F11_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F11_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F11_WIDTH                                                          2
+#define VC_F11_SHIFT                                                          4
+#define VC_F11_MASK                                                  0x00000030
+#define VC_F11_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F11_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F11_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F11_WIDTH                                                    1
+#define STASHING_F11_SHIFT                                                    0
+#define STASHING_F11_MASK                                            0x00000001
+#define STASHING_F11_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F11_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F11_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid12_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F12_WIDTH                                                    1
+#define COHERENT_F12_SHIFT                                                    8
+#define COHERENT_F12_MASK                                            0x00000100
+#define COHERENT_F12_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F12_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F12_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F12_WIDTH                                                          2
+#define VC_F12_SHIFT                                                          4
+#define VC_F12_MASK                                                  0x00000030
+#define VC_F12_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F12_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F12_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F12_WIDTH                                                    1
+#define STASHING_F12_SHIFT                                                    0
+#define STASHING_F12_MASK                                            0x00000001
+#define STASHING_F12_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F12_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F12_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid13_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F13_WIDTH                                                    1
+#define COHERENT_F13_SHIFT                                                    8
+#define COHERENT_F13_MASK                                            0x00000100
+#define COHERENT_F13_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F13_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F13_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F13_WIDTH                                                          2
+#define VC_F13_SHIFT                                                          4
+#define VC_F13_MASK                                                  0x00000030
+#define VC_F13_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F13_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F13_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F13_WIDTH                                                    1
+#define STASHING_F13_SHIFT                                                    0
+#define STASHING_F13_MASK                                            0x00000001
+#define STASHING_F13_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F13_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F13_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid14_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F14_WIDTH                                                    1
+#define COHERENT_F14_SHIFT                                                    8
+#define COHERENT_F14_MASK                                            0x00000100
+#define COHERENT_F14_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F14_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F14_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F14_WIDTH                                                          2
+#define VC_F14_SHIFT                                                          4
+#define VC_F14_MASK                                                  0x00000030
+#define VC_F14_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F14_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F14_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F14_WIDTH                                                    1
+#define STASHING_F14_SHIFT                                                    0
+#define STASHING_F14_MASK                                            0x00000001
+#define STASHING_F14_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F14_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F14_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid15_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F15_WIDTH                                                    1
+#define COHERENT_F15_SHIFT                                                    8
+#define COHERENT_F15_MASK                                            0x00000100
+#define COHERENT_F15_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F15_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F15_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F15_WIDTH                                                          2
+#define VC_F15_SHIFT                                                          4
+#define VC_F15_MASK                                                  0x00000030
+#define VC_F15_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F15_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F15_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F15_WIDTH                                                    1
+#define STASHING_F15_SHIFT                                                    0
+#define STASHING_F15_MASK                                            0x00000001
+#define STASHING_F15_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F15_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F15_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid16_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F16_WIDTH                                                    1
+#define COHERENT_F16_SHIFT                                                    8
+#define COHERENT_F16_MASK                                            0x00000100
+#define COHERENT_F16_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F16_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F16_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F16_WIDTH                                                          2
+#define VC_F16_SHIFT                                                          4
+#define VC_F16_MASK                                                  0x00000030
+#define VC_F16_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F16_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F16_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F16_WIDTH                                                    1
+#define STASHING_F16_SHIFT                                                    0
+#define STASHING_F16_MASK                                            0x00000001
+#define STASHING_F16_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F16_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F16_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid17_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F17_WIDTH                                                    1
+#define COHERENT_F17_SHIFT                                                    8
+#define COHERENT_F17_MASK                                            0x00000100
+#define COHERENT_F17_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F17_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F17_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F17_WIDTH                                                          2
+#define VC_F17_SHIFT                                                          4
+#define VC_F17_MASK                                                  0x00000030
+#define VC_F17_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F17_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F17_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F17_WIDTH                                                    1
+#define STASHING_F17_SHIFT                                                    0
+#define STASHING_F17_MASK                                            0x00000001
+#define STASHING_F17_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F17_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F17_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid18_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F18_WIDTH                                                    1
+#define COHERENT_F18_SHIFT                                                    8
+#define COHERENT_F18_MASK                                            0x00000100
+#define COHERENT_F18_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F18_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F18_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F18_WIDTH                                                          2
+#define VC_F18_SHIFT                                                          4
+#define VC_F18_MASK                                                  0x00000030
+#define VC_F18_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F18_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F18_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F18_WIDTH                                                    1
+#define STASHING_F18_SHIFT                                                    0
+#define STASHING_F18_MASK                                            0x00000001
+#define STASHING_F18_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F18_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F18_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid19_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F19_WIDTH                                                    1
+#define COHERENT_F19_SHIFT                                                    8
+#define COHERENT_F19_MASK                                            0x00000100
+#define COHERENT_F19_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F19_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F19_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F19_WIDTH                                                          2
+#define VC_F19_SHIFT                                                          4
+#define VC_F19_MASK                                                  0x00000030
+#define VC_F19_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F19_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F19_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F19_WIDTH                                                    1
+#define STASHING_F19_SHIFT                                                    0
+#define STASHING_F19_MASK                                            0x00000001
+#define STASHING_F19_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F19_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F19_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid20_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F20_WIDTH                                                    1
+#define COHERENT_F20_SHIFT                                                    8
+#define COHERENT_F20_MASK                                            0x00000100
+#define COHERENT_F20_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F20_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F20_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F20_WIDTH                                                          2
+#define VC_F20_SHIFT                                                          4
+#define VC_F20_MASK                                                  0x00000030
+#define VC_F20_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F20_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F20_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F20_WIDTH                                                    1
+#define STASHING_F20_SHIFT                                                    0
+#define STASHING_F20_MASK                                            0x00000001
+#define STASHING_F20_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F20_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F20_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid21_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F21_WIDTH                                                    1
+#define COHERENT_F21_SHIFT                                                    8
+#define COHERENT_F21_MASK                                            0x00000100
+#define COHERENT_F21_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F21_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F21_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F21_WIDTH                                                          2
+#define VC_F21_SHIFT                                                          4
+#define VC_F21_MASK                                                  0x00000030
+#define VC_F21_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F21_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F21_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F21_WIDTH                                                    1
+#define STASHING_F21_SHIFT                                                    0
+#define STASHING_F21_MASK                                            0x00000001
+#define STASHING_F21_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F21_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F21_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid22_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F22_WIDTH                                                    1
+#define COHERENT_F22_SHIFT                                                    8
+#define COHERENT_F22_MASK                                            0x00000100
+#define COHERENT_F22_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F22_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F22_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F22_WIDTH                                                          2
+#define VC_F22_SHIFT                                                          4
+#define VC_F22_MASK                                                  0x00000030
+#define VC_F22_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F22_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F22_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F22_WIDTH                                                    1
+#define STASHING_F22_SHIFT                                                    0
+#define STASHING_F22_MASK                                            0x00000001
+#define STASHING_F22_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F22_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F22_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid23_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F23_WIDTH                                                    1
+#define COHERENT_F23_SHIFT                                                    8
+#define COHERENT_F23_MASK                                            0x00000100
+#define COHERENT_F23_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F23_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F23_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F23_WIDTH                                                          2
+#define VC_F23_SHIFT                                                          4
+#define VC_F23_MASK                                                  0x00000030
+#define VC_F23_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F23_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F23_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F23_WIDTH                                                    1
+#define STASHING_F23_SHIFT                                                    0
+#define STASHING_F23_MASK                                            0x00000001
+#define STASHING_F23_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F23_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F23_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid24_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F24_WIDTH                                                    1
+#define COHERENT_F24_SHIFT                                                    8
+#define COHERENT_F24_MASK                                            0x00000100
+#define COHERENT_F24_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F24_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F24_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F24_WIDTH                                                          2
+#define VC_F24_SHIFT                                                          4
+#define VC_F24_MASK                                                  0x00000030
+#define VC_F24_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F24_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F24_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F24_WIDTH                                                    1
+#define STASHING_F24_SHIFT                                                    0
+#define STASHING_F24_MASK                                            0x00000001
+#define STASHING_F24_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F24_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F24_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid25_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F25_WIDTH                                                    1
+#define COHERENT_F25_SHIFT                                                    8
+#define COHERENT_F25_MASK                                            0x00000100
+#define COHERENT_F25_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F25_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F25_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F25_WIDTH                                                          2
+#define VC_F25_SHIFT                                                          4
+#define VC_F25_MASK                                                  0x00000030
+#define VC_F25_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F25_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F25_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F25_WIDTH                                                    1
+#define STASHING_F25_SHIFT                                                    0
+#define STASHING_F25_MASK                                            0x00000001
+#define STASHING_F25_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F25_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F25_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid26_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F26_WIDTH                                                    1
+#define COHERENT_F26_SHIFT                                                    8
+#define COHERENT_F26_MASK                                            0x00000100
+#define COHERENT_F26_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F26_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F26_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F26_WIDTH                                                          2
+#define VC_F26_SHIFT                                                          4
+#define VC_F26_MASK                                                  0x00000030
+#define VC_F26_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F26_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F26_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F26_WIDTH                                                    1
+#define STASHING_F26_SHIFT                                                    0
+#define STASHING_F26_MASK                                            0x00000001
+#define STASHING_F26_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F26_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F26_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid27_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F27_WIDTH                                                    1
+#define COHERENT_F27_SHIFT                                                    8
+#define COHERENT_F27_MASK                                            0x00000100
+#define COHERENT_F27_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F27_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F27_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F27_WIDTH                                                          2
+#define VC_F27_SHIFT                                                          4
+#define VC_F27_MASK                                                  0x00000030
+#define VC_F27_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F27_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F27_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F27_WIDTH                                                    1
+#define STASHING_F27_SHIFT                                                    0
+#define STASHING_F27_MASK                                            0x00000001
+#define STASHING_F27_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F27_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F27_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid28_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F28_WIDTH                                                    1
+#define COHERENT_F28_SHIFT                                                    8
+#define COHERENT_F28_MASK                                            0x00000100
+#define COHERENT_F28_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F28_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F28_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F28_WIDTH                                                          2
+#define VC_F28_SHIFT                                                          4
+#define VC_F28_MASK                                                  0x00000030
+#define VC_F28_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F28_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F28_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F28_WIDTH                                                    1
+#define STASHING_F28_SHIFT                                                    0
+#define STASHING_F28_MASK                                            0x00000001
+#define STASHING_F28_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F28_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F28_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid29_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F29_WIDTH                                                    1
+#define COHERENT_F29_SHIFT                                                    8
+#define COHERENT_F29_MASK                                            0x00000100
+#define COHERENT_F29_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F29_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F29_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F29_WIDTH                                                          2
+#define VC_F29_SHIFT                                                          4
+#define VC_F29_MASK                                                  0x00000030
+#define VC_F29_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F29_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F29_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F29_WIDTH                                                    1
+#define STASHING_F29_SHIFT                                                    0
+#define STASHING_F29_MASK                                            0x00000001
+#define STASHING_F29_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F29_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F29_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid30_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F30_WIDTH                                                    1
+#define COHERENT_F30_SHIFT                                                    8
+#define COHERENT_F30_MASK                                            0x00000100
+#define COHERENT_F30_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F30_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F30_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F30_WIDTH                                                          2
+#define VC_F30_SHIFT                                                          4
+#define VC_F30_MASK                                                  0x00000030
+#define VC_F30_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F30_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F30_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F30_WIDTH                                                    1
+#define STASHING_F30_SHIFT                                                    0
+#define STASHING_F30_MASK                                            0x00000001
+#define STASHING_F30_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F30_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F30_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid31_intr_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F31_WIDTH                                                    1
+#define COHERENT_F31_SHIFT                                                    8
+#define COHERENT_F31_MASK                                            0x00000100
+#define COHERENT_F31_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F31_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F31_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F31_WIDTH                                                          2
+#define VC_F31_SHIFT                                                          4
+#define VC_F31_MASK                                                  0x00000030
+#define VC_F31_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F31_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F31_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F31_WIDTH                                                    1
+#define STASHING_F31_SHIFT                                                    0
+#define STASHING_F31_MASK                                            0x00000001
+#define STASHING_F31_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F31_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F31_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_intr_mbox_recombination	*/ 
+/*	 Fields timer	 */
+#define TIMER_WIDTH                                                          10
+#define TIMER_SHIFT                                                           0
+#define TIMER_MASK                                                   0x000003ff
+#define TIMER_RD(src)                                    (((src) & 0x000003ff))
+#define TIMER_WR(src)                               (((u32)(src)) & 0x000003ff)
+#define TIMER_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_vmid0_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F32_WIDTH                                               29
+#define REGSPEC_ADDR_F32_SHIFT                                                0
+#define REGSPEC_ADDR_F32_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F32_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F32_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F32_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid1_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F33_WIDTH                                               29
+#define REGSPEC_ADDR_F33_SHIFT                                                0
+#define REGSPEC_ADDR_F33_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F33_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F33_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F33_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid2_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F34_WIDTH                                               29
+#define REGSPEC_ADDR_F34_SHIFT                                                0
+#define REGSPEC_ADDR_F34_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F34_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F34_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F34_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid3_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F35_WIDTH                                               29
+#define REGSPEC_ADDR_F35_SHIFT                                                0
+#define REGSPEC_ADDR_F35_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F35_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F35_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F35_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid4_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F36_WIDTH                                               29
+#define REGSPEC_ADDR_F36_SHIFT                                                0
+#define REGSPEC_ADDR_F36_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F36_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F36_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F36_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid5_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F37_WIDTH                                               29
+#define REGSPEC_ADDR_F37_SHIFT                                                0
+#define REGSPEC_ADDR_F37_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F37_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F37_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F37_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid6_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F38_WIDTH                                               29
+#define REGSPEC_ADDR_F38_SHIFT                                                0
+#define REGSPEC_ADDR_F38_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F38_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F38_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F38_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid7_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F39_WIDTH                                               29
+#define REGSPEC_ADDR_F39_SHIFT                                                0
+#define REGSPEC_ADDR_F39_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F39_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F39_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F39_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid8_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F40_WIDTH                                               29
+#define REGSPEC_ADDR_F40_SHIFT                                                0
+#define REGSPEC_ADDR_F40_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F40_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F40_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F40_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid9_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F41_WIDTH                                               29
+#define REGSPEC_ADDR_F41_SHIFT                                                0
+#define REGSPEC_ADDR_F41_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F41_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F41_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F41_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid10_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F42_WIDTH                                               29
+#define REGSPEC_ADDR_F42_SHIFT                                                0
+#define REGSPEC_ADDR_F42_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F42_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F42_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F42_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid11_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F43_WIDTH                                               29
+#define REGSPEC_ADDR_F43_SHIFT                                                0
+#define REGSPEC_ADDR_F43_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F43_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F43_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F43_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid12_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F44_WIDTH                                               29
+#define REGSPEC_ADDR_F44_SHIFT                                                0
+#define REGSPEC_ADDR_F44_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F44_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F44_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F44_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid13_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F45_WIDTH                                               29
+#define REGSPEC_ADDR_F45_SHIFT                                                0
+#define REGSPEC_ADDR_F45_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F45_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F45_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F45_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid14_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F46_WIDTH                                               29
+#define REGSPEC_ADDR_F46_SHIFT                                                0
+#define REGSPEC_ADDR_F46_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F46_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F46_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F46_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid15_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F47_WIDTH                                               29
+#define REGSPEC_ADDR_F47_SHIFT                                                0
+#define REGSPEC_ADDR_F47_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F47_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F47_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F47_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid16_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F48_WIDTH                                               29
+#define REGSPEC_ADDR_F48_SHIFT                                                0
+#define REGSPEC_ADDR_F48_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F48_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F48_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F48_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid17_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F49_WIDTH                                               29
+#define REGSPEC_ADDR_F49_SHIFT                                                0
+#define REGSPEC_ADDR_F49_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F49_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F49_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F49_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid18_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F50_WIDTH                                               29
+#define REGSPEC_ADDR_F50_SHIFT                                                0
+#define REGSPEC_ADDR_F50_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F50_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F50_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F50_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid19_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F51_WIDTH                                               29
+#define REGSPEC_ADDR_F51_SHIFT                                                0
+#define REGSPEC_ADDR_F51_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F51_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F51_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F51_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid20_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F52_WIDTH                                               29
+#define REGSPEC_ADDR_F52_SHIFT                                                0
+#define REGSPEC_ADDR_F52_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F52_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F52_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F52_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid21_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F53_WIDTH                                               29
+#define REGSPEC_ADDR_F53_SHIFT                                                0
+#define REGSPEC_ADDR_F53_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F53_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F53_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F53_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid22_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F54_WIDTH                                               29
+#define REGSPEC_ADDR_F54_SHIFT                                                0
+#define REGSPEC_ADDR_F54_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F54_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F54_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F54_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid23_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F55_WIDTH                                               29
+#define REGSPEC_ADDR_F55_SHIFT                                                0
+#define REGSPEC_ADDR_F55_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F55_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F55_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F55_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid24_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F56_WIDTH                                               29
+#define REGSPEC_ADDR_F56_SHIFT                                                0
+#define REGSPEC_ADDR_F56_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F56_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F56_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F56_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid25_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F57_WIDTH                                               29
+#define REGSPEC_ADDR_F57_SHIFT                                                0
+#define REGSPEC_ADDR_F57_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F57_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F57_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F57_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid26_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F58_WIDTH                                               29
+#define REGSPEC_ADDR_F58_SHIFT                                                0
+#define REGSPEC_ADDR_F58_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F58_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F58_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F58_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid27_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F59_WIDTH                                               29
+#define REGSPEC_ADDR_F59_SHIFT                                                0
+#define REGSPEC_ADDR_F59_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F59_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F59_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F59_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid28_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F60_WIDTH                                               29
+#define REGSPEC_ADDR_F60_SHIFT                                                0
+#define REGSPEC_ADDR_F60_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F60_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F60_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F60_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid29_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F61_WIDTH                                               29
+#define REGSPEC_ADDR_F61_SHIFT                                                0
+#define REGSPEC_ADDR_F61_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F61_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F61_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F61_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid30_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F62_WIDTH                                               29
+#define REGSPEC_ADDR_F62_SHIFT                                                0
+#define REGSPEC_ADDR_F62_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F62_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F62_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F62_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid31_deq_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F63_WIDTH                                               29
+#define REGSPEC_ADDR_F63_SHIFT                                                0
+#define REGSPEC_ADDR_F63_MASK                                        0x1fffffff
+#define REGSPEC_ADDR_F63_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR_F63_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR_F63_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_vmid0_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F32_WIDTH                                                    1
+#define COHERENT_F32_SHIFT                                                    8
+#define COHERENT_F32_MASK                                            0x00000100
+#define COHERENT_F32_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F32_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F32_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F32_WIDTH                                                          2
+#define VC_F32_SHIFT                                                          4
+#define VC_F32_MASK                                                  0x00000030
+#define VC_F32_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F32_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F32_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F32_WIDTH                                                    1
+#define STASHING_F32_SHIFT                                                    0
+#define STASHING_F32_MASK                                            0x00000001
+#define STASHING_F32_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F32_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F32_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid1_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F33_WIDTH                                                    1
+#define COHERENT_F33_SHIFT                                                    8
+#define COHERENT_F33_MASK                                            0x00000100
+#define COHERENT_F33_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F33_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F33_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F33_WIDTH                                                          2
+#define VC_F33_SHIFT                                                          4
+#define VC_F33_MASK                                                  0x00000030
+#define VC_F33_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F33_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F33_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F33_WIDTH                                                    1
+#define STASHING_F33_SHIFT                                                    0
+#define STASHING_F33_MASK                                            0x00000001
+#define STASHING_F33_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F33_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F33_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid2_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F34_WIDTH                                                    1
+#define COHERENT_F34_SHIFT                                                    8
+#define COHERENT_F34_MASK                                            0x00000100
+#define COHERENT_F34_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F34_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F34_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F34_WIDTH                                                          2
+#define VC_F34_SHIFT                                                          4
+#define VC_F34_MASK                                                  0x00000030
+#define VC_F34_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F34_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F34_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F34_WIDTH                                                    1
+#define STASHING_F34_SHIFT                                                    0
+#define STASHING_F34_MASK                                            0x00000001
+#define STASHING_F34_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F34_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F34_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid3_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F35_WIDTH                                                    1
+#define COHERENT_F35_SHIFT                                                    8
+#define COHERENT_F35_MASK                                            0x00000100
+#define COHERENT_F35_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F35_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F35_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F35_WIDTH                                                          2
+#define VC_F35_SHIFT                                                          4
+#define VC_F35_MASK                                                  0x00000030
+#define VC_F35_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F35_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F35_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F35_WIDTH                                                    1
+#define STASHING_F35_SHIFT                                                    0
+#define STASHING_F35_MASK                                            0x00000001
+#define STASHING_F35_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F35_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F35_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid4_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F36_WIDTH                                                    1
+#define COHERENT_F36_SHIFT                                                    8
+#define COHERENT_F36_MASK                                            0x00000100
+#define COHERENT_F36_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F36_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F36_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F36_WIDTH                                                          2
+#define VC_F36_SHIFT                                                          4
+#define VC_F36_MASK                                                  0x00000030
+#define VC_F36_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F36_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F36_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F36_WIDTH                                                    1
+#define STASHING_F36_SHIFT                                                    0
+#define STASHING_F36_MASK                                            0x00000001
+#define STASHING_F36_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F36_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F36_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid5_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F37_WIDTH                                                    1
+#define COHERENT_F37_SHIFT                                                    8
+#define COHERENT_F37_MASK                                            0x00000100
+#define COHERENT_F37_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F37_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F37_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F37_WIDTH                                                          2
+#define VC_F37_SHIFT                                                          4
+#define VC_F37_MASK                                                  0x00000030
+#define VC_F37_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F37_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F37_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F37_WIDTH                                                    1
+#define STASHING_F37_SHIFT                                                    0
+#define STASHING_F37_MASK                                            0x00000001
+#define STASHING_F37_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F37_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F37_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid6_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F38_WIDTH                                                    1
+#define COHERENT_F38_SHIFT                                                    8
+#define COHERENT_F38_MASK                                            0x00000100
+#define COHERENT_F38_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F38_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F38_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F38_WIDTH                                                          2
+#define VC_F38_SHIFT                                                          4
+#define VC_F38_MASK                                                  0x00000030
+#define VC_F38_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F38_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F38_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F38_WIDTH                                                    1
+#define STASHING_F38_SHIFT                                                    0
+#define STASHING_F38_MASK                                            0x00000001
+#define STASHING_F38_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F38_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F38_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid7_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F39_WIDTH                                                    1
+#define COHERENT_F39_SHIFT                                                    8
+#define COHERENT_F39_MASK                                            0x00000100
+#define COHERENT_F39_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F39_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F39_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F39_WIDTH                                                          2
+#define VC_F39_SHIFT                                                          4
+#define VC_F39_MASK                                                  0x00000030
+#define VC_F39_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F39_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F39_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F39_WIDTH                                                    1
+#define STASHING_F39_SHIFT                                                    0
+#define STASHING_F39_MASK                                            0x00000001
+#define STASHING_F39_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F39_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F39_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid8_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F40_WIDTH                                                    1
+#define COHERENT_F40_SHIFT                                                    8
+#define COHERENT_F40_MASK                                            0x00000100
+#define COHERENT_F40_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F40_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F40_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F40_WIDTH                                                          2
+#define VC_F40_SHIFT                                                          4
+#define VC_F40_MASK                                                  0x00000030
+#define VC_F40_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F40_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F40_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F40_WIDTH                                                    1
+#define STASHING_F40_SHIFT                                                    0
+#define STASHING_F40_MASK                                            0x00000001
+#define STASHING_F40_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F40_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F40_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid9_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F41_WIDTH                                                    1
+#define COHERENT_F41_SHIFT                                                    8
+#define COHERENT_F41_MASK                                            0x00000100
+#define COHERENT_F41_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F41_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F41_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F41_WIDTH                                                          2
+#define VC_F41_SHIFT                                                          4
+#define VC_F41_MASK                                                  0x00000030
+#define VC_F41_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F41_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F41_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F41_WIDTH                                                    1
+#define STASHING_F41_SHIFT                                                    0
+#define STASHING_F41_MASK                                            0x00000001
+#define STASHING_F41_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F41_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F41_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid10_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F42_WIDTH                                                    1
+#define COHERENT_F42_SHIFT                                                    8
+#define COHERENT_F42_MASK                                            0x00000100
+#define COHERENT_F42_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F42_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F42_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F42_WIDTH                                                          2
+#define VC_F42_SHIFT                                                          4
+#define VC_F42_MASK                                                  0x00000030
+#define VC_F42_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F42_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F42_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F42_WIDTH                                                    1
+#define STASHING_F42_SHIFT                                                    0
+#define STASHING_F42_MASK                                            0x00000001
+#define STASHING_F42_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F42_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F42_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid11_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F43_WIDTH                                                    1
+#define COHERENT_F43_SHIFT                                                    8
+#define COHERENT_F43_MASK                                            0x00000100
+#define COHERENT_F43_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F43_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F43_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F43_WIDTH                                                          2
+#define VC_F43_SHIFT                                                          4
+#define VC_F43_MASK                                                  0x00000030
+#define VC_F43_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F43_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F43_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F43_WIDTH                                                    1
+#define STASHING_F43_SHIFT                                                    0
+#define STASHING_F43_MASK                                            0x00000001
+#define STASHING_F43_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F43_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F43_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid12_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F44_WIDTH                                                    1
+#define COHERENT_F44_SHIFT                                                    8
+#define COHERENT_F44_MASK                                            0x00000100
+#define COHERENT_F44_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F44_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F44_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F44_WIDTH                                                          2
+#define VC_F44_SHIFT                                                          4
+#define VC_F44_MASK                                                  0x00000030
+#define VC_F44_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F44_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F44_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F44_WIDTH                                                    1
+#define STASHING_F44_SHIFT                                                    0
+#define STASHING_F44_MASK                                            0x00000001
+#define STASHING_F44_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F44_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F44_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid13_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F45_WIDTH                                                    1
+#define COHERENT_F45_SHIFT                                                    8
+#define COHERENT_F45_MASK                                            0x00000100
+#define COHERENT_F45_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F45_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F45_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F45_WIDTH                                                          2
+#define VC_F45_SHIFT                                                          4
+#define VC_F45_MASK                                                  0x00000030
+#define VC_F45_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F45_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F45_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F45_WIDTH                                                    1
+#define STASHING_F45_SHIFT                                                    0
+#define STASHING_F45_MASK                                            0x00000001
+#define STASHING_F45_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F45_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F45_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid14_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F46_WIDTH                                                    1
+#define COHERENT_F46_SHIFT                                                    8
+#define COHERENT_F46_MASK                                            0x00000100
+#define COHERENT_F46_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F46_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F46_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F46_WIDTH                                                          2
+#define VC_F46_SHIFT                                                          4
+#define VC_F46_MASK                                                  0x00000030
+#define VC_F46_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F46_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F46_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F46_WIDTH                                                    1
+#define STASHING_F46_SHIFT                                                    0
+#define STASHING_F46_MASK                                            0x00000001
+#define STASHING_F46_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F46_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F46_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid15_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F47_WIDTH                                                    1
+#define COHERENT_F47_SHIFT                                                    8
+#define COHERENT_F47_MASK                                            0x00000100
+#define COHERENT_F47_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F47_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F47_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F47_WIDTH                                                          2
+#define VC_F47_SHIFT                                                          4
+#define VC_F47_MASK                                                  0x00000030
+#define VC_F47_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F47_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F47_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F47_WIDTH                                                    1
+#define STASHING_F47_SHIFT                                                    0
+#define STASHING_F47_MASK                                            0x00000001
+#define STASHING_F47_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F47_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F47_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid16_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F48_WIDTH                                                    1
+#define COHERENT_F48_SHIFT                                                    8
+#define COHERENT_F48_MASK                                            0x00000100
+#define COHERENT_F48_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F48_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F48_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F48_WIDTH                                                          2
+#define VC_F48_SHIFT                                                          4
+#define VC_F48_MASK                                                  0x00000030
+#define VC_F48_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F48_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F48_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F48_WIDTH                                                    1
+#define STASHING_F48_SHIFT                                                    0
+#define STASHING_F48_MASK                                            0x00000001
+#define STASHING_F48_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F48_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F48_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid17_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F49_WIDTH                                                    1
+#define COHERENT_F49_SHIFT                                                    8
+#define COHERENT_F49_MASK                                            0x00000100
+#define COHERENT_F49_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F49_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F49_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F49_WIDTH                                                          2
+#define VC_F49_SHIFT                                                          4
+#define VC_F49_MASK                                                  0x00000030
+#define VC_F49_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F49_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F49_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F49_WIDTH                                                    1
+#define STASHING_F49_SHIFT                                                    0
+#define STASHING_F49_MASK                                            0x00000001
+#define STASHING_F49_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F49_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F49_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid18_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F50_WIDTH                                                    1
+#define COHERENT_F50_SHIFT                                                    8
+#define COHERENT_F50_MASK                                            0x00000100
+#define COHERENT_F50_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F50_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F50_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F50_WIDTH                                                          2
+#define VC_F50_SHIFT                                                          4
+#define VC_F50_MASK                                                  0x00000030
+#define VC_F50_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F50_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F50_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F50_WIDTH                                                    1
+#define STASHING_F50_SHIFT                                                    0
+#define STASHING_F50_MASK                                            0x00000001
+#define STASHING_F50_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F50_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F50_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid19_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F51_WIDTH                                                    1
+#define COHERENT_F51_SHIFT                                                    8
+#define COHERENT_F51_MASK                                            0x00000100
+#define COHERENT_F51_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F51_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F51_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F51_WIDTH                                                          2
+#define VC_F51_SHIFT                                                          4
+#define VC_F51_MASK                                                  0x00000030
+#define VC_F51_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F51_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F51_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F51_WIDTH                                                    1
+#define STASHING_F51_SHIFT                                                    0
+#define STASHING_F51_MASK                                            0x00000001
+#define STASHING_F51_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F51_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F51_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid20_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F52_WIDTH                                                    1
+#define COHERENT_F52_SHIFT                                                    8
+#define COHERENT_F52_MASK                                            0x00000100
+#define COHERENT_F52_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F52_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F52_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F52_WIDTH                                                          2
+#define VC_F52_SHIFT                                                          4
+#define VC_F52_MASK                                                  0x00000030
+#define VC_F52_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F52_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F52_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F52_WIDTH                                                    1
+#define STASHING_F52_SHIFT                                                    0
+#define STASHING_F52_MASK                                            0x00000001
+#define STASHING_F52_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F52_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F52_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid21_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F53_WIDTH                                                    1
+#define COHERENT_F53_SHIFT                                                    8
+#define COHERENT_F53_MASK                                            0x00000100
+#define COHERENT_F53_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F53_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F53_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F53_WIDTH                                                          2
+#define VC_F53_SHIFT                                                          4
+#define VC_F53_MASK                                                  0x00000030
+#define VC_F53_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F53_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F53_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F53_WIDTH                                                    1
+#define STASHING_F53_SHIFT                                                    0
+#define STASHING_F53_MASK                                            0x00000001
+#define STASHING_F53_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F53_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F53_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid22_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F54_WIDTH                                                    1
+#define COHERENT_F54_SHIFT                                                    8
+#define COHERENT_F54_MASK                                            0x00000100
+#define COHERENT_F54_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F54_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F54_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F54_WIDTH                                                          2
+#define VC_F54_SHIFT                                                          4
+#define VC_F54_MASK                                                  0x00000030
+#define VC_F54_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F54_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F54_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F54_WIDTH                                                    1
+#define STASHING_F54_SHIFT                                                    0
+#define STASHING_F54_MASK                                            0x00000001
+#define STASHING_F54_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F54_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F54_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid23_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F55_WIDTH                                                    1
+#define COHERENT_F55_SHIFT                                                    8
+#define COHERENT_F55_MASK                                            0x00000100
+#define COHERENT_F55_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F55_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F55_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F55_WIDTH                                                          2
+#define VC_F55_SHIFT                                                          4
+#define VC_F55_MASK                                                  0x00000030
+#define VC_F55_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F55_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F55_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F55_WIDTH                                                    1
+#define STASHING_F55_SHIFT                                                    0
+#define STASHING_F55_MASK                                            0x00000001
+#define STASHING_F55_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F55_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F55_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid24_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F56_WIDTH                                                    1
+#define COHERENT_F56_SHIFT                                                    8
+#define COHERENT_F56_MASK                                            0x00000100
+#define COHERENT_F56_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F56_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F56_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F56_WIDTH                                                          2
+#define VC_F56_SHIFT                                                          4
+#define VC_F56_MASK                                                  0x00000030
+#define VC_F56_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F56_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F56_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F56_WIDTH                                                    1
+#define STASHING_F56_SHIFT                                                    0
+#define STASHING_F56_MASK                                            0x00000001
+#define STASHING_F56_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F56_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F56_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid25_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F57_WIDTH                                                    1
+#define COHERENT_F57_SHIFT                                                    8
+#define COHERENT_F57_MASK                                            0x00000100
+#define COHERENT_F57_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F57_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F57_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F57_WIDTH                                                          2
+#define VC_F57_SHIFT                                                          4
+#define VC_F57_MASK                                                  0x00000030
+#define VC_F57_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F57_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F57_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F57_WIDTH                                                    1
+#define STASHING_F57_SHIFT                                                    0
+#define STASHING_F57_MASK                                            0x00000001
+#define STASHING_F57_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F57_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F57_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid26_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F58_WIDTH                                                    1
+#define COHERENT_F58_SHIFT                                                    8
+#define COHERENT_F58_MASK                                            0x00000100
+#define COHERENT_F58_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F58_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F58_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F58_WIDTH                                                          2
+#define VC_F58_SHIFT                                                          4
+#define VC_F58_MASK                                                  0x00000030
+#define VC_F58_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F58_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F58_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F58_WIDTH                                                    1
+#define STASHING_F58_SHIFT                                                    0
+#define STASHING_F58_MASK                                            0x00000001
+#define STASHING_F58_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F58_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F58_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid27_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F59_WIDTH                                                    1
+#define COHERENT_F59_SHIFT                                                    8
+#define COHERENT_F59_MASK                                            0x00000100
+#define COHERENT_F59_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F59_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F59_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F59_WIDTH                                                          2
+#define VC_F59_SHIFT                                                          4
+#define VC_F59_MASK                                                  0x00000030
+#define VC_F59_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F59_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F59_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F59_WIDTH                                                    1
+#define STASHING_F59_SHIFT                                                    0
+#define STASHING_F59_MASK                                            0x00000001
+#define STASHING_F59_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F59_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F59_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid28_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F60_WIDTH                                                    1
+#define COHERENT_F60_SHIFT                                                    8
+#define COHERENT_F60_MASK                                            0x00000100
+#define COHERENT_F60_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F60_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F60_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F60_WIDTH                                                          2
+#define VC_F60_SHIFT                                                          4
+#define VC_F60_MASK                                                  0x00000030
+#define VC_F60_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F60_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F60_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F60_WIDTH                                                    1
+#define STASHING_F60_SHIFT                                                    0
+#define STASHING_F60_MASK                                            0x00000001
+#define STASHING_F60_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F60_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F60_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid29_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F61_WIDTH                                                    1
+#define COHERENT_F61_SHIFT                                                    8
+#define COHERENT_F61_MASK                                            0x00000100
+#define COHERENT_F61_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F61_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F61_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F61_WIDTH                                                          2
+#define VC_F61_SHIFT                                                          4
+#define VC_F61_MASK                                                  0x00000030
+#define VC_F61_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F61_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F61_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F61_WIDTH                                                    1
+#define STASHING_F61_SHIFT                                                    0
+#define STASHING_F61_MASK                                            0x00000001
+#define STASHING_F61_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F61_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F61_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid30_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F62_WIDTH                                                    1
+#define COHERENT_F62_SHIFT                                                    8
+#define COHERENT_F62_MASK                                            0x00000100
+#define COHERENT_F62_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F62_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F62_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F62_WIDTH                                                          2
+#define VC_F62_SHIFT                                                          4
+#define VC_F62_MASK                                                  0x00000030
+#define VC_F62_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F62_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F62_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F62_WIDTH                                                    1
+#define STASHING_F62_SHIFT                                                    0
+#define STASHING_F62_MASK                                            0x00000001
+#define STASHING_F62_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F62_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F62_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_vmid31_deq_mbox_axisb	*/ 
+/*	 Fields coherent	 */
+#define COHERENT_F63_WIDTH                                                    1
+#define COHERENT_F63_SHIFT                                                    8
+#define COHERENT_F63_MASK                                            0x00000100
+#define COHERENT_F63_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT_F63_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT_F63_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC_F63_WIDTH                                                          2
+#define VC_F63_SHIFT                                                          4
+#define VC_F63_MASK                                                  0x00000030
+#define VC_F63_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC_F63_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC_F63_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING_F63_WIDTH                                                    1
+#define STASHING_F63_SHIFT                                                    0
+#define STASHING_F63_MASK                                            0x00000001
+#define STASHING_F63_RD(src)                             (((src) & 0x00000001))
+#define STASHING_F63_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING_F63_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_baseaddr_0	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_WIDTH                                                  30
+#define REGSPEC_ADDR0_SHIFT                                                   0
+#define REGSPEC_ADDR0_MASK                                           0x3fffffff
+#define REGSPEC_ADDR0_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR0_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR0_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_1	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_WIDTH                                                  30
+#define REGSPEC_ADDR1_SHIFT                                                   0
+#define REGSPEC_ADDR1_MASK                                           0x3fffffff
+#define REGSPEC_ADDR1_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR1_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_2	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_WIDTH                                                  30
+#define REGSPEC_ADDR2_SHIFT                                                   0
+#define REGSPEC_ADDR2_MASK                                           0x3fffffff
+#define REGSPEC_ADDR2_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR2_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_3	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_WIDTH                                                  30
+#define REGSPEC_ADDR3_SHIFT                                                   0
+#define REGSPEC_ADDR3_MASK                                           0x3fffffff
+#define REGSPEC_ADDR3_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR3_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR3_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_4	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_WIDTH                                                  30
+#define REGSPEC_ADDR4_SHIFT                                                   0
+#define REGSPEC_ADDR4_MASK                                           0x3fffffff
+#define REGSPEC_ADDR4_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR4_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR4_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_5	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_WIDTH                                                  30
+#define REGSPEC_ADDR5_SHIFT                                                   0
+#define REGSPEC_ADDR5_MASK                                           0x3fffffff
+#define REGSPEC_ADDR5_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR5_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR5_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_6	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_WIDTH                                                  30
+#define REGSPEC_ADDR6_SHIFT                                                   0
+#define REGSPEC_ADDR6_MASK                                           0x3fffffff
+#define REGSPEC_ADDR6_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR6_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR6_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_7	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_WIDTH                                                  30
+#define REGSPEC_ADDR7_SHIFT                                                   0
+#define REGSPEC_ADDR7_MASK                                           0x3fffffff
+#define REGSPEC_ADDR7_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR7_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR7_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_8	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_WIDTH                                                  30
+#define REGSPEC_ADDR8_SHIFT                                                   0
+#define REGSPEC_ADDR8_MASK                                           0x3fffffff
+#define REGSPEC_ADDR8_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR8_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR8_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_9	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_WIDTH                                                  30
+#define REGSPEC_ADDR9_SHIFT                                                   0
+#define REGSPEC_ADDR9_MASK                                           0x3fffffff
+#define REGSPEC_ADDR9_RD(src)                            (((src) & 0x3fffffff))
+#define REGSPEC_ADDR9_WR(src)                       (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR9_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_10	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F1_WIDTH                                               30
+#define REGSPEC_ADDR0_F1_SHIFT                                                0
+#define REGSPEC_ADDR0_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR0_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR0_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR0_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_11	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F1_WIDTH                                               30
+#define REGSPEC_ADDR1_F1_SHIFT                                                0
+#define REGSPEC_ADDR1_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR1_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR1_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR1_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_12	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_F1_WIDTH                                               30
+#define REGSPEC_ADDR2_F1_SHIFT                                                0
+#define REGSPEC_ADDR2_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR2_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR2_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR2_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_13	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_F1_WIDTH                                               30
+#define REGSPEC_ADDR3_F1_SHIFT                                                0
+#define REGSPEC_ADDR3_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR3_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR3_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR3_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_14	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_F1_WIDTH                                               30
+#define REGSPEC_ADDR4_F1_SHIFT                                                0
+#define REGSPEC_ADDR4_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR4_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR4_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR4_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_15	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_F1_WIDTH                                               30
+#define REGSPEC_ADDR5_F1_SHIFT                                                0
+#define REGSPEC_ADDR5_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR5_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR5_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR5_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_16	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_F1_WIDTH                                               30
+#define REGSPEC_ADDR6_F1_SHIFT                                                0
+#define REGSPEC_ADDR6_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR6_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR6_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR6_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_17	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_F1_WIDTH                                               30
+#define REGSPEC_ADDR7_F1_SHIFT                                                0
+#define REGSPEC_ADDR7_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR7_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR7_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR7_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_18	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_F1_WIDTH                                               30
+#define REGSPEC_ADDR8_F1_SHIFT                                                0
+#define REGSPEC_ADDR8_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR8_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR8_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR8_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_19	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_F1_WIDTH                                               30
+#define REGSPEC_ADDR9_F1_SHIFT                                                0
+#define REGSPEC_ADDR9_F1_MASK                                        0x3fffffff
+#define REGSPEC_ADDR9_F1_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR9_F1_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR9_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_20	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F2_WIDTH                                               30
+#define REGSPEC_ADDR0_F2_SHIFT                                                0
+#define REGSPEC_ADDR0_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR0_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR0_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR0_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_21	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F2_WIDTH                                               30
+#define REGSPEC_ADDR1_F2_SHIFT                                                0
+#define REGSPEC_ADDR1_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR1_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR1_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR1_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_22	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_F2_WIDTH                                               30
+#define REGSPEC_ADDR2_F2_SHIFT                                                0
+#define REGSPEC_ADDR2_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR2_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR2_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR2_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_23	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_F2_WIDTH                                               30
+#define REGSPEC_ADDR3_F2_SHIFT                                                0
+#define REGSPEC_ADDR3_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR3_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR3_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR3_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_24	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_F2_WIDTH                                               30
+#define REGSPEC_ADDR4_F2_SHIFT                                                0
+#define REGSPEC_ADDR4_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR4_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR4_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR4_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_25	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_F2_WIDTH                                               30
+#define REGSPEC_ADDR5_F2_SHIFT                                                0
+#define REGSPEC_ADDR5_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR5_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR5_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR5_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_26	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_F2_WIDTH                                               30
+#define REGSPEC_ADDR6_F2_SHIFT                                                0
+#define REGSPEC_ADDR6_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR6_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR6_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR6_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_27	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_F2_WIDTH                                               30
+#define REGSPEC_ADDR7_F2_SHIFT                                                0
+#define REGSPEC_ADDR7_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR7_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR7_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR7_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_28	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_F2_WIDTH                                               30
+#define REGSPEC_ADDR8_F2_SHIFT                                                0
+#define REGSPEC_ADDR8_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR8_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR8_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR8_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_29	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_F2_WIDTH                                               30
+#define REGSPEC_ADDR9_F2_SHIFT                                                0
+#define REGSPEC_ADDR9_F2_MASK                                        0x3fffffff
+#define REGSPEC_ADDR9_F2_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR9_F2_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR9_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_30	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F3_WIDTH                                               30
+#define REGSPEC_ADDR0_F3_SHIFT                                                0
+#define REGSPEC_ADDR0_F3_MASK                                        0x3fffffff
+#define REGSPEC_ADDR0_F3_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR0_F3_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR0_F3_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_baseaddr_31	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F3_WIDTH                                               30
+#define REGSPEC_ADDR1_F3_SHIFT                                                0
+#define REGSPEC_ADDR1_F3_MASK                                        0x3fffffff
+#define REGSPEC_ADDR1_F3_RD(src)                         (((src) & 0x3fffffff))
+#define REGSPEC_ADDR1_F3_WR(src)                    (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_ADDR1_F3_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register csr_proc_fpool_axisb_0	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_WIDTH                                                       1
+#define COHERENT0_SHIFT                                                       8
+#define COHERENT0_MASK                                               0x00000100
+#define COHERENT0_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT0_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_WIDTH                                                             2
+#define VC0_SHIFT                                                             4
+#define VC0_MASK                                                     0x00000030
+#define VC0_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC0_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC0_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_WIDTH                                                       1
+#define STASHING0_SHIFT                                                       0
+#define STASHING0_MASK                                               0x00000001
+#define STASHING0_RD(src)                                (((src) & 0x00000001))
+#define STASHING0_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING0_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_1	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_WIDTH                                                       1
+#define COHERENT1_SHIFT                                                       8
+#define COHERENT1_MASK                                               0x00000100
+#define COHERENT1_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT1_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_WIDTH                                                             2
+#define VC1_SHIFT                                                             4
+#define VC1_MASK                                                     0x00000030
+#define VC1_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC1_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_WIDTH                                                       1
+#define STASHING1_SHIFT                                                       0
+#define STASHING1_MASK                                               0x00000001
+#define STASHING1_RD(src)                                (((src) & 0x00000001))
+#define STASHING1_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_2	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_WIDTH                                                       1
+#define COHERENT2_SHIFT                                                       8
+#define COHERENT2_MASK                                               0x00000100
+#define COHERENT2_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT2_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_WIDTH                                                             2
+#define VC2_SHIFT                                                             4
+#define VC2_MASK                                                     0x00000030
+#define VC2_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC2_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_WIDTH                                                       1
+#define STASHING2_SHIFT                                                       0
+#define STASHING2_MASK                                               0x00000001
+#define STASHING2_RD(src)                                (((src) & 0x00000001))
+#define STASHING2_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_3	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_WIDTH                                                       1
+#define COHERENT3_SHIFT                                                       8
+#define COHERENT3_MASK                                               0x00000100
+#define COHERENT3_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT3_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_WIDTH                                                             2
+#define VC3_SHIFT                                                             4
+#define VC3_MASK                                                     0x00000030
+#define VC3_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC3_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_WIDTH                                                       1
+#define STASHING3_SHIFT                                                       0
+#define STASHING3_MASK                                               0x00000001
+#define STASHING3_RD(src)                                (((src) & 0x00000001))
+#define STASHING3_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_4	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_WIDTH                                                       1
+#define COHERENT4_SHIFT                                                       8
+#define COHERENT4_MASK                                               0x00000100
+#define COHERENT4_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT4_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_WIDTH                                                             2
+#define VC4_SHIFT                                                             4
+#define VC4_MASK                                                     0x00000030
+#define VC4_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC4_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_WIDTH                                                       1
+#define STASHING4_SHIFT                                                       0
+#define STASHING4_MASK                                               0x00000001
+#define STASHING4_RD(src)                                (((src) & 0x00000001))
+#define STASHING4_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_5	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_WIDTH                                                       1
+#define COHERENT5_SHIFT                                                       8
+#define COHERENT5_MASK                                               0x00000100
+#define COHERENT5_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT5_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_WIDTH                                                             2
+#define VC5_SHIFT                                                             4
+#define VC5_MASK                                                     0x00000030
+#define VC5_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC5_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_WIDTH                                                       1
+#define STASHING5_SHIFT                                                       0
+#define STASHING5_MASK                                               0x00000001
+#define STASHING5_RD(src)                                (((src) & 0x00000001))
+#define STASHING5_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_6	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_WIDTH                                                       1
+#define COHERENT6_SHIFT                                                       8
+#define COHERENT6_MASK                                               0x00000100
+#define COHERENT6_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT6_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_WIDTH                                                             2
+#define VC6_SHIFT                                                             4
+#define VC6_MASK                                                     0x00000030
+#define VC6_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC6_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC6_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_WIDTH                                                       1
+#define STASHING6_SHIFT                                                       0
+#define STASHING6_MASK                                               0x00000001
+#define STASHING6_RD(src)                                (((src) & 0x00000001))
+#define STASHING6_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING6_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_7	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_WIDTH                                                       1
+#define COHERENT7_SHIFT                                                       8
+#define COHERENT7_MASK                                               0x00000100
+#define COHERENT7_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT7_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_WIDTH                                                             2
+#define VC7_SHIFT                                                             4
+#define VC7_MASK                                                     0x00000030
+#define VC7_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC7_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC7_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_WIDTH                                                       1
+#define STASHING7_SHIFT                                                       0
+#define STASHING7_MASK                                               0x00000001
+#define STASHING7_RD(src)                                (((src) & 0x00000001))
+#define STASHING7_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING7_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_8	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_WIDTH                                                       1
+#define COHERENT8_SHIFT                                                       8
+#define COHERENT8_MASK                                               0x00000100
+#define COHERENT8_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT8_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_WIDTH                                                             2
+#define VC8_SHIFT                                                             4
+#define VC8_MASK                                                     0x00000030
+#define VC8_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC8_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC8_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_WIDTH                                                       1
+#define STASHING8_SHIFT                                                       0
+#define STASHING8_MASK                                               0x00000001
+#define STASHING8_RD(src)                                (((src) & 0x00000001))
+#define STASHING8_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING8_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_9	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_WIDTH                                                       1
+#define COHERENT9_SHIFT                                                       8
+#define COHERENT9_MASK                                               0x00000100
+#define COHERENT9_RD(src)                             (((src) & 0x00000100)>>8)
+#define COHERENT9_WR(src)                        (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_WIDTH                                                             2
+#define VC9_SHIFT                                                             4
+#define VC9_MASK                                                     0x00000030
+#define VC9_RD(src)                                   (((src) & 0x00000030)>>4)
+#define VC9_WR(src)                              (((u32)(src)<<4) & 0x00000030)
+#define VC9_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_WIDTH                                                       1
+#define STASHING9_SHIFT                                                       0
+#define STASHING9_MASK                                               0x00000001
+#define STASHING9_RD(src)                                (((src) & 0x00000001))
+#define STASHING9_WR(src)                           (((u32)(src)) & 0x00000001)
+#define STASHING9_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_10	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F1_WIDTH                                                    1
+#define COHERENT0_F1_SHIFT                                                    8
+#define COHERENT0_F1_MASK                                            0x00000100
+#define COHERENT0_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F1_WIDTH                                                          2
+#define VC0_F1_SHIFT                                                          4
+#define VC0_F1_MASK                                                  0x00000030
+#define VC0_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F1_WIDTH                                                    1
+#define STASHING0_F1_SHIFT                                                    0
+#define STASHING0_F1_MASK                                            0x00000001
+#define STASHING0_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_11	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F1_WIDTH                                                    1
+#define COHERENT1_F1_SHIFT                                                    8
+#define COHERENT1_F1_MASK                                            0x00000100
+#define COHERENT1_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F1_WIDTH                                                          2
+#define VC1_F1_SHIFT                                                          4
+#define VC1_F1_MASK                                                  0x00000030
+#define VC1_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F1_WIDTH                                                    1
+#define STASHING1_F1_SHIFT                                                    0
+#define STASHING1_F1_MASK                                            0x00000001
+#define STASHING1_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_12	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_F1_WIDTH                                                    1
+#define COHERENT2_F1_SHIFT                                                    8
+#define COHERENT2_F1_MASK                                            0x00000100
+#define COHERENT2_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT2_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_F1_WIDTH                                                          2
+#define VC2_F1_SHIFT                                                          4
+#define VC2_F1_MASK                                                  0x00000030
+#define VC2_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC2_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC2_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_F1_WIDTH                                                    1
+#define STASHING2_F1_SHIFT                                                    0
+#define STASHING2_F1_MASK                                            0x00000001
+#define STASHING2_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING2_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING2_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_13	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_F1_WIDTH                                                    1
+#define COHERENT3_F1_SHIFT                                                    8
+#define COHERENT3_F1_MASK                                            0x00000100
+#define COHERENT3_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT3_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_F1_WIDTH                                                          2
+#define VC3_F1_SHIFT                                                          4
+#define VC3_F1_MASK                                                  0x00000030
+#define VC3_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC3_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC3_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_F1_WIDTH                                                    1
+#define STASHING3_F1_SHIFT                                                    0
+#define STASHING3_F1_MASK                                            0x00000001
+#define STASHING3_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING3_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING3_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_14	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_F1_WIDTH                                                    1
+#define COHERENT4_F1_SHIFT                                                    8
+#define COHERENT4_F1_MASK                                            0x00000100
+#define COHERENT4_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT4_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_F1_WIDTH                                                          2
+#define VC4_F1_SHIFT                                                          4
+#define VC4_F1_MASK                                                  0x00000030
+#define VC4_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC4_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC4_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_F1_WIDTH                                                    1
+#define STASHING4_F1_SHIFT                                                    0
+#define STASHING4_F1_MASK                                            0x00000001
+#define STASHING4_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING4_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING4_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_15	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_F1_WIDTH                                                    1
+#define COHERENT5_F1_SHIFT                                                    8
+#define COHERENT5_F1_MASK                                            0x00000100
+#define COHERENT5_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT5_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_F1_WIDTH                                                          2
+#define VC5_F1_SHIFT                                                          4
+#define VC5_F1_MASK                                                  0x00000030
+#define VC5_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC5_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC5_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_F1_WIDTH                                                    1
+#define STASHING5_F1_SHIFT                                                    0
+#define STASHING5_F1_MASK                                            0x00000001
+#define STASHING5_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING5_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING5_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_16	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_F1_WIDTH                                                    1
+#define COHERENT6_F1_SHIFT                                                    8
+#define COHERENT6_F1_MASK                                            0x00000100
+#define COHERENT6_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT6_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_F1_WIDTH                                                          2
+#define VC6_F1_SHIFT                                                          4
+#define VC6_F1_MASK                                                  0x00000030
+#define VC6_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC6_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC6_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_F1_WIDTH                                                    1
+#define STASHING6_F1_SHIFT                                                    0
+#define STASHING6_F1_MASK                                            0x00000001
+#define STASHING6_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING6_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING6_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_17	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_F1_WIDTH                                                    1
+#define COHERENT7_F1_SHIFT                                                    8
+#define COHERENT7_F1_MASK                                            0x00000100
+#define COHERENT7_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT7_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_F1_WIDTH                                                          2
+#define VC7_F1_SHIFT                                                          4
+#define VC7_F1_MASK                                                  0x00000030
+#define VC7_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC7_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC7_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_F1_WIDTH                                                    1
+#define STASHING7_F1_SHIFT                                                    0
+#define STASHING7_F1_MASK                                            0x00000001
+#define STASHING7_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING7_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING7_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_18	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_F1_WIDTH                                                    1
+#define COHERENT8_F1_SHIFT                                                    8
+#define COHERENT8_F1_MASK                                            0x00000100
+#define COHERENT8_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT8_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_F1_WIDTH                                                          2
+#define VC8_F1_SHIFT                                                          4
+#define VC8_F1_MASK                                                  0x00000030
+#define VC8_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC8_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC8_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_F1_WIDTH                                                    1
+#define STASHING8_F1_SHIFT                                                    0
+#define STASHING8_F1_MASK                                            0x00000001
+#define STASHING8_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING8_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING8_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_19	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_F1_WIDTH                                                    1
+#define COHERENT9_F1_SHIFT                                                    8
+#define COHERENT9_F1_MASK                                            0x00000100
+#define COHERENT9_F1_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT9_F1_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_F1_WIDTH                                                          2
+#define VC9_F1_SHIFT                                                          4
+#define VC9_F1_MASK                                                  0x00000030
+#define VC9_F1_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC9_F1_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC9_F1_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_F1_WIDTH                                                    1
+#define STASHING9_F1_SHIFT                                                    0
+#define STASHING9_F1_MASK                                            0x00000001
+#define STASHING9_F1_RD(src)                             (((src) & 0x00000001))
+#define STASHING9_F1_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING9_F1_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_20	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F2_WIDTH                                                    1
+#define COHERENT0_F2_SHIFT                                                    8
+#define COHERENT0_F2_MASK                                            0x00000100
+#define COHERENT0_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F2_WIDTH                                                          2
+#define VC0_F2_SHIFT                                                          4
+#define VC0_F2_MASK                                                  0x00000030
+#define VC0_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F2_WIDTH                                                    1
+#define STASHING0_F2_SHIFT                                                    0
+#define STASHING0_F2_MASK                                            0x00000001
+#define STASHING0_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_21	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F2_WIDTH                                                    1
+#define COHERENT1_F2_SHIFT                                                    8
+#define COHERENT1_F2_MASK                                            0x00000100
+#define COHERENT1_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F2_WIDTH                                                          2
+#define VC1_F2_SHIFT                                                          4
+#define VC1_F2_MASK                                                  0x00000030
+#define VC1_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F2_WIDTH                                                    1
+#define STASHING1_F2_SHIFT                                                    0
+#define STASHING1_F2_MASK                                            0x00000001
+#define STASHING1_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_22	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_F2_WIDTH                                                    1
+#define COHERENT2_F2_SHIFT                                                    8
+#define COHERENT2_F2_MASK                                            0x00000100
+#define COHERENT2_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT2_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_F2_WIDTH                                                          2
+#define VC2_F2_SHIFT                                                          4
+#define VC2_F2_MASK                                                  0x00000030
+#define VC2_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC2_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC2_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_F2_WIDTH                                                    1
+#define STASHING2_F2_SHIFT                                                    0
+#define STASHING2_F2_MASK                                            0x00000001
+#define STASHING2_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING2_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING2_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_23	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_F2_WIDTH                                                    1
+#define COHERENT3_F2_SHIFT                                                    8
+#define COHERENT3_F2_MASK                                            0x00000100
+#define COHERENT3_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT3_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_F2_WIDTH                                                          2
+#define VC3_F2_SHIFT                                                          4
+#define VC3_F2_MASK                                                  0x00000030
+#define VC3_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC3_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC3_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_F2_WIDTH                                                    1
+#define STASHING3_F2_SHIFT                                                    0
+#define STASHING3_F2_MASK                                            0x00000001
+#define STASHING3_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING3_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING3_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_24	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_F2_WIDTH                                                    1
+#define COHERENT4_F2_SHIFT                                                    8
+#define COHERENT4_F2_MASK                                            0x00000100
+#define COHERENT4_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT4_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_F2_WIDTH                                                          2
+#define VC4_F2_SHIFT                                                          4
+#define VC4_F2_MASK                                                  0x00000030
+#define VC4_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC4_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC4_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_F2_WIDTH                                                    1
+#define STASHING4_F2_SHIFT                                                    0
+#define STASHING4_F2_MASK                                            0x00000001
+#define STASHING4_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING4_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING4_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_25	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_F2_WIDTH                                                    1
+#define COHERENT5_F2_SHIFT                                                    8
+#define COHERENT5_F2_MASK                                            0x00000100
+#define COHERENT5_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT5_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_F2_WIDTH                                                          2
+#define VC5_F2_SHIFT                                                          4
+#define VC5_F2_MASK                                                  0x00000030
+#define VC5_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC5_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC5_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_F2_WIDTH                                                    1
+#define STASHING5_F2_SHIFT                                                    0
+#define STASHING5_F2_MASK                                            0x00000001
+#define STASHING5_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING5_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING5_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_26	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_F2_WIDTH                                                    1
+#define COHERENT6_F2_SHIFT                                                    8
+#define COHERENT6_F2_MASK                                            0x00000100
+#define COHERENT6_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT6_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_F2_WIDTH                                                          2
+#define VC6_F2_SHIFT                                                          4
+#define VC6_F2_MASK                                                  0x00000030
+#define VC6_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC6_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC6_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_F2_WIDTH                                                    1
+#define STASHING6_F2_SHIFT                                                    0
+#define STASHING6_F2_MASK                                            0x00000001
+#define STASHING6_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING6_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING6_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_27	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_F2_WIDTH                                                    1
+#define COHERENT7_F2_SHIFT                                                    8
+#define COHERENT7_F2_MASK                                            0x00000100
+#define COHERENT7_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT7_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_F2_WIDTH                                                          2
+#define VC7_F2_SHIFT                                                          4
+#define VC7_F2_MASK                                                  0x00000030
+#define VC7_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC7_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC7_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_F2_WIDTH                                                    1
+#define STASHING7_F2_SHIFT                                                    0
+#define STASHING7_F2_MASK                                            0x00000001
+#define STASHING7_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING7_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING7_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_28	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_F2_WIDTH                                                    1
+#define COHERENT8_F2_SHIFT                                                    8
+#define COHERENT8_F2_MASK                                            0x00000100
+#define COHERENT8_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT8_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_F2_WIDTH                                                          2
+#define VC8_F2_SHIFT                                                          4
+#define VC8_F2_MASK                                                  0x00000030
+#define VC8_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC8_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC8_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_F2_WIDTH                                                    1
+#define STASHING8_F2_SHIFT                                                    0
+#define STASHING8_F2_MASK                                            0x00000001
+#define STASHING8_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING8_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING8_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_29	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_F2_WIDTH                                                    1
+#define COHERENT9_F2_SHIFT                                                    8
+#define COHERENT9_F2_MASK                                            0x00000100
+#define COHERENT9_F2_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT9_F2_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_F2_WIDTH                                                          2
+#define VC9_F2_SHIFT                                                          4
+#define VC9_F2_MASK                                                  0x00000030
+#define VC9_F2_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC9_F2_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC9_F2_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_F2_WIDTH                                                    1
+#define STASHING9_F2_SHIFT                                                    0
+#define STASHING9_F2_MASK                                            0x00000001
+#define STASHING9_F2_RD(src)                             (((src) & 0x00000001))
+#define STASHING9_F2_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING9_F2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_30	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F3_WIDTH                                                    1
+#define COHERENT0_F3_SHIFT                                                    8
+#define COHERENT0_F3_MASK                                            0x00000100
+#define COHERENT0_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F3_WIDTH                                                          2
+#define VC0_F3_SHIFT                                                          4
+#define VC0_F3_MASK                                                  0x00000030
+#define VC0_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F3_WIDTH                                                    1
+#define STASHING0_F3_SHIFT                                                    0
+#define STASHING0_F3_MASK                                            0x00000001
+#define STASHING0_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_proc_fpool_axisb_31	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F3_WIDTH                                                    1
+#define COHERENT1_F3_SHIFT                                                    8
+#define COHERENT1_F3_MASK                                            0x00000100
+#define COHERENT1_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F3_WIDTH                                                          2
+#define VC1_F3_SHIFT                                                          4
+#define VC1_F3_MASK                                                  0x00000030
+#define VC1_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F3_WIDTH                                                    1
+#define STASHING1_F3_SHIFT                                                    0
+#define STASHING1_F3_MASK                                            0x00000001
+#define STASHING1_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_baseaddr_0	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F4_WIDTH                                               29
+#define REGSPEC_ADDR0_F4_SHIFT                                                0
+#define REGSPEC_ADDR0_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR0_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR0_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR0_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_1	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F4_WIDTH                                               29
+#define REGSPEC_ADDR1_F4_SHIFT                                                0
+#define REGSPEC_ADDR1_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR1_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR1_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR1_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_2	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_F3_WIDTH                                               29
+#define REGSPEC_ADDR2_F3_SHIFT                                                0
+#define REGSPEC_ADDR2_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR2_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR2_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR2_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_3	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_F3_WIDTH                                               29
+#define REGSPEC_ADDR3_F3_SHIFT                                                0
+#define REGSPEC_ADDR3_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR3_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR3_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR3_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_4	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_F3_WIDTH                                               29
+#define REGSPEC_ADDR4_F3_SHIFT                                                0
+#define REGSPEC_ADDR4_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR4_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR4_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR4_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_5	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_F3_WIDTH                                               29
+#define REGSPEC_ADDR5_F3_SHIFT                                                0
+#define REGSPEC_ADDR5_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR5_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR5_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR5_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_6	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_F3_WIDTH                                               29
+#define REGSPEC_ADDR6_F3_SHIFT                                                0
+#define REGSPEC_ADDR6_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR6_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR6_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR6_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_7	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_F3_WIDTH                                               29
+#define REGSPEC_ADDR7_F3_SHIFT                                                0
+#define REGSPEC_ADDR7_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR7_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR7_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR7_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_8	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_F3_WIDTH                                               29
+#define REGSPEC_ADDR8_F3_SHIFT                                                0
+#define REGSPEC_ADDR8_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR8_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR8_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR8_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_9	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_F3_WIDTH                                               29
+#define REGSPEC_ADDR9_F3_SHIFT                                                0
+#define REGSPEC_ADDR9_F3_MASK                                        0x1fffffff
+#define REGSPEC_ADDR9_F3_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR9_F3_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR9_F3_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_10	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F5_WIDTH                                               29
+#define REGSPEC_ADDR0_F5_SHIFT                                                0
+#define REGSPEC_ADDR0_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR0_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR0_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR0_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_11	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F5_WIDTH                                               29
+#define REGSPEC_ADDR1_F5_SHIFT                                                0
+#define REGSPEC_ADDR1_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR1_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR1_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR1_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_12	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_F4_WIDTH                                               29
+#define REGSPEC_ADDR2_F4_SHIFT                                                0
+#define REGSPEC_ADDR2_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR2_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR2_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR2_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_13	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_F4_WIDTH                                               29
+#define REGSPEC_ADDR3_F4_SHIFT                                                0
+#define REGSPEC_ADDR3_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR3_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR3_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR3_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_14	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_F4_WIDTH                                               29
+#define REGSPEC_ADDR4_F4_SHIFT                                                0
+#define REGSPEC_ADDR4_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR4_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR4_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR4_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_15	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_F4_WIDTH                                               29
+#define REGSPEC_ADDR5_F4_SHIFT                                                0
+#define REGSPEC_ADDR5_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR5_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR5_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR5_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_16	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_F4_WIDTH                                               29
+#define REGSPEC_ADDR6_F4_SHIFT                                                0
+#define REGSPEC_ADDR6_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR6_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR6_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR6_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_17	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_F4_WIDTH                                               29
+#define REGSPEC_ADDR7_F4_SHIFT                                                0
+#define REGSPEC_ADDR7_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR7_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR7_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR7_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_18	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_F4_WIDTH                                               29
+#define REGSPEC_ADDR8_F4_SHIFT                                                0
+#define REGSPEC_ADDR8_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR8_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR8_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR8_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_19	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_F4_WIDTH                                               29
+#define REGSPEC_ADDR9_F4_SHIFT                                                0
+#define REGSPEC_ADDR9_F4_MASK                                        0x1fffffff
+#define REGSPEC_ADDR9_F4_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR9_F4_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR9_F4_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_20	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F6_WIDTH                                               29
+#define REGSPEC_ADDR0_F6_SHIFT                                                0
+#define REGSPEC_ADDR0_F6_MASK                                        0x1fffffff
+#define REGSPEC_ADDR0_F6_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR0_F6_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR0_F6_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_21	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F6_WIDTH                                               29
+#define REGSPEC_ADDR1_F6_SHIFT                                                0
+#define REGSPEC_ADDR1_F6_MASK                                        0x1fffffff
+#define REGSPEC_ADDR1_F6_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR1_F6_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR1_F6_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_22	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR2_F5_WIDTH                                               29
+#define REGSPEC_ADDR2_F5_SHIFT                                                0
+#define REGSPEC_ADDR2_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR2_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR2_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR2_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_23	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR3_F5_WIDTH                                               29
+#define REGSPEC_ADDR3_F5_SHIFT                                                0
+#define REGSPEC_ADDR3_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR3_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR3_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR3_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_24	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR4_F5_WIDTH                                               29
+#define REGSPEC_ADDR4_F5_SHIFT                                                0
+#define REGSPEC_ADDR4_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR4_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR4_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR4_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_25	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR5_F5_WIDTH                                               29
+#define REGSPEC_ADDR5_F5_SHIFT                                                0
+#define REGSPEC_ADDR5_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR5_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR5_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR5_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_26	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR6_F5_WIDTH                                               29
+#define REGSPEC_ADDR6_F5_SHIFT                                                0
+#define REGSPEC_ADDR6_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR6_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR6_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR6_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_27	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR7_F5_WIDTH                                               29
+#define REGSPEC_ADDR7_F5_SHIFT                                                0
+#define REGSPEC_ADDR7_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR7_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR7_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR7_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_28	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR8_F5_WIDTH                                               29
+#define REGSPEC_ADDR8_F5_SHIFT                                                0
+#define REGSPEC_ADDR8_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR8_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR8_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR8_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_29	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR9_F5_WIDTH                                               29
+#define REGSPEC_ADDR9_F5_SHIFT                                                0
+#define REGSPEC_ADDR9_F5_MASK                                        0x1fffffff
+#define REGSPEC_ADDR9_F5_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR9_F5_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR9_F5_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_30	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR0_F7_WIDTH                                               29
+#define REGSPEC_ADDR0_F7_SHIFT                                                0
+#define REGSPEC_ADDR0_F7_MASK                                        0x1fffffff
+#define REGSPEC_ADDR0_F7_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR0_F7_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR0_F7_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_baseaddr_31	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR1_F7_WIDTH                                               29
+#define REGSPEC_ADDR1_F7_SHIFT                                                0
+#define REGSPEC_ADDR1_F7_MASK                                        0x1fffffff
+#define REGSPEC_ADDR1_F7_RD(src)                         (((src) & 0x1fffffff))
+#define REGSPEC_ADDR1_F7_WR(src)                    (((u32)(src)) & 0x1fffffff)
+#define REGSPEC_ADDR1_F7_SET(dst,src) \
+                          (((dst) & ~0x1fffffff) | (((u32)(src)) & 0x1fffffff))
+
+/*	Register csr_enq_mbox_axisb_0	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F4_WIDTH                                                    1
+#define COHERENT0_F4_SHIFT                                                    8
+#define COHERENT0_F4_MASK                                            0x00000100
+#define COHERENT0_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F4_WIDTH                                                          2
+#define VC0_F4_SHIFT                                                          4
+#define VC0_F4_MASK                                                  0x00000030
+#define VC0_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F4_WIDTH                                                    1
+#define STASHING0_F4_SHIFT                                                    0
+#define STASHING0_F4_MASK                                            0x00000001
+#define STASHING0_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_1	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F4_WIDTH                                                    1
+#define COHERENT1_F4_SHIFT                                                    8
+#define COHERENT1_F4_MASK                                            0x00000100
+#define COHERENT1_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F4_WIDTH                                                          2
+#define VC1_F4_SHIFT                                                          4
+#define VC1_F4_MASK                                                  0x00000030
+#define VC1_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F4_WIDTH                                                    1
+#define STASHING1_F4_SHIFT                                                    0
+#define STASHING1_F4_MASK                                            0x00000001
+#define STASHING1_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_2	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_F3_WIDTH                                                    1
+#define COHERENT2_F3_SHIFT                                                    8
+#define COHERENT2_F3_MASK                                            0x00000100
+#define COHERENT2_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT2_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_F3_WIDTH                                                          2
+#define VC2_F3_SHIFT                                                          4
+#define VC2_F3_MASK                                                  0x00000030
+#define VC2_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC2_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC2_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_F3_WIDTH                                                    1
+#define STASHING2_F3_SHIFT                                                    0
+#define STASHING2_F3_MASK                                            0x00000001
+#define STASHING2_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING2_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING2_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_3	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_F3_WIDTH                                                    1
+#define COHERENT3_F3_SHIFT                                                    8
+#define COHERENT3_F3_MASK                                            0x00000100
+#define COHERENT3_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT3_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_F3_WIDTH                                                          2
+#define VC3_F3_SHIFT                                                          4
+#define VC3_F3_MASK                                                  0x00000030
+#define VC3_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC3_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC3_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_F3_WIDTH                                                    1
+#define STASHING3_F3_SHIFT                                                    0
+#define STASHING3_F3_MASK                                            0x00000001
+#define STASHING3_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING3_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING3_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_4	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_F3_WIDTH                                                    1
+#define COHERENT4_F3_SHIFT                                                    8
+#define COHERENT4_F3_MASK                                            0x00000100
+#define COHERENT4_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT4_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_F3_WIDTH                                                          2
+#define VC4_F3_SHIFT                                                          4
+#define VC4_F3_MASK                                                  0x00000030
+#define VC4_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC4_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC4_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_F3_WIDTH                                                    1
+#define STASHING4_F3_SHIFT                                                    0
+#define STASHING4_F3_MASK                                            0x00000001
+#define STASHING4_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING4_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING4_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_5	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_F3_WIDTH                                                    1
+#define COHERENT5_F3_SHIFT                                                    8
+#define COHERENT5_F3_MASK                                            0x00000100
+#define COHERENT5_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT5_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_F3_WIDTH                                                          2
+#define VC5_F3_SHIFT                                                          4
+#define VC5_F3_MASK                                                  0x00000030
+#define VC5_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC5_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC5_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_F3_WIDTH                                                    1
+#define STASHING5_F3_SHIFT                                                    0
+#define STASHING5_F3_MASK                                            0x00000001
+#define STASHING5_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING5_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING5_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_6	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_F3_WIDTH                                                    1
+#define COHERENT6_F3_SHIFT                                                    8
+#define COHERENT6_F3_MASK                                            0x00000100
+#define COHERENT6_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT6_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_F3_WIDTH                                                          2
+#define VC6_F3_SHIFT                                                          4
+#define VC6_F3_MASK                                                  0x00000030
+#define VC6_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC6_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC6_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_F3_WIDTH                                                    1
+#define STASHING6_F3_SHIFT                                                    0
+#define STASHING6_F3_MASK                                            0x00000001
+#define STASHING6_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING6_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING6_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_7	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_F3_WIDTH                                                    1
+#define COHERENT7_F3_SHIFT                                                    8
+#define COHERENT7_F3_MASK                                            0x00000100
+#define COHERENT7_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT7_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_F3_WIDTH                                                          2
+#define VC7_F3_SHIFT                                                          4
+#define VC7_F3_MASK                                                  0x00000030
+#define VC7_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC7_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC7_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_F3_WIDTH                                                    1
+#define STASHING7_F3_SHIFT                                                    0
+#define STASHING7_F3_MASK                                            0x00000001
+#define STASHING7_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING7_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING7_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_8	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_F3_WIDTH                                                    1
+#define COHERENT8_F3_SHIFT                                                    8
+#define COHERENT8_F3_MASK                                            0x00000100
+#define COHERENT8_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT8_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_F3_WIDTH                                                          2
+#define VC8_F3_SHIFT                                                          4
+#define VC8_F3_MASK                                                  0x00000030
+#define VC8_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC8_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC8_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_F3_WIDTH                                                    1
+#define STASHING8_F3_SHIFT                                                    0
+#define STASHING8_F3_MASK                                            0x00000001
+#define STASHING8_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING8_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING8_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_9	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_F3_WIDTH                                                    1
+#define COHERENT9_F3_SHIFT                                                    8
+#define COHERENT9_F3_MASK                                            0x00000100
+#define COHERENT9_F3_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT9_F3_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_F3_WIDTH                                                          2
+#define VC9_F3_SHIFT                                                          4
+#define VC9_F3_MASK                                                  0x00000030
+#define VC9_F3_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC9_F3_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC9_F3_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_F3_WIDTH                                                    1
+#define STASHING9_F3_SHIFT                                                    0
+#define STASHING9_F3_MASK                                            0x00000001
+#define STASHING9_F3_RD(src)                             (((src) & 0x00000001))
+#define STASHING9_F3_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING9_F3_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_10	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F5_WIDTH                                                    1
+#define COHERENT0_F5_SHIFT                                                    8
+#define COHERENT0_F5_MASK                                            0x00000100
+#define COHERENT0_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F5_WIDTH                                                          2
+#define VC0_F5_SHIFT                                                          4
+#define VC0_F5_MASK                                                  0x00000030
+#define VC0_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F5_WIDTH                                                    1
+#define STASHING0_F5_SHIFT                                                    0
+#define STASHING0_F5_MASK                                            0x00000001
+#define STASHING0_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_11	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F5_WIDTH                                                    1
+#define COHERENT1_F5_SHIFT                                                    8
+#define COHERENT1_F5_MASK                                            0x00000100
+#define COHERENT1_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F5_WIDTH                                                          2
+#define VC1_F5_SHIFT                                                          4
+#define VC1_F5_MASK                                                  0x00000030
+#define VC1_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F5_WIDTH                                                    1
+#define STASHING1_F5_SHIFT                                                    0
+#define STASHING1_F5_MASK                                            0x00000001
+#define STASHING1_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_12	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_F4_WIDTH                                                    1
+#define COHERENT2_F4_SHIFT                                                    8
+#define COHERENT2_F4_MASK                                            0x00000100
+#define COHERENT2_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT2_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_F4_WIDTH                                                          2
+#define VC2_F4_SHIFT                                                          4
+#define VC2_F4_MASK                                                  0x00000030
+#define VC2_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC2_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC2_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_F4_WIDTH                                                    1
+#define STASHING2_F4_SHIFT                                                    0
+#define STASHING2_F4_MASK                                            0x00000001
+#define STASHING2_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING2_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING2_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_13	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_F4_WIDTH                                                    1
+#define COHERENT3_F4_SHIFT                                                    8
+#define COHERENT3_F4_MASK                                            0x00000100
+#define COHERENT3_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT3_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_F4_WIDTH                                                          2
+#define VC3_F4_SHIFT                                                          4
+#define VC3_F4_MASK                                                  0x00000030
+#define VC3_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC3_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC3_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_F4_WIDTH                                                    1
+#define STASHING3_F4_SHIFT                                                    0
+#define STASHING3_F4_MASK                                            0x00000001
+#define STASHING3_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING3_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING3_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_14	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_F4_WIDTH                                                    1
+#define COHERENT4_F4_SHIFT                                                    8
+#define COHERENT4_F4_MASK                                            0x00000100
+#define COHERENT4_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT4_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_F4_WIDTH                                                          2
+#define VC4_F4_SHIFT                                                          4
+#define VC4_F4_MASK                                                  0x00000030
+#define VC4_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC4_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC4_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_F4_WIDTH                                                    1
+#define STASHING4_F4_SHIFT                                                    0
+#define STASHING4_F4_MASK                                            0x00000001
+#define STASHING4_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING4_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING4_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_15	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_F4_WIDTH                                                    1
+#define COHERENT5_F4_SHIFT                                                    8
+#define COHERENT5_F4_MASK                                            0x00000100
+#define COHERENT5_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT5_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_F4_WIDTH                                                          2
+#define VC5_F4_SHIFT                                                          4
+#define VC5_F4_MASK                                                  0x00000030
+#define VC5_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC5_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC5_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_F4_WIDTH                                                    1
+#define STASHING5_F4_SHIFT                                                    0
+#define STASHING5_F4_MASK                                            0x00000001
+#define STASHING5_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING5_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING5_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_16	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_F4_WIDTH                                                    1
+#define COHERENT6_F4_SHIFT                                                    8
+#define COHERENT6_F4_MASK                                            0x00000100
+#define COHERENT6_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT6_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_F4_WIDTH                                                          2
+#define VC6_F4_SHIFT                                                          4
+#define VC6_F4_MASK                                                  0x00000030
+#define VC6_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC6_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC6_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_F4_WIDTH                                                    1
+#define STASHING6_F4_SHIFT                                                    0
+#define STASHING6_F4_MASK                                            0x00000001
+#define STASHING6_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING6_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING6_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_17	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_F4_WIDTH                                                    1
+#define COHERENT7_F4_SHIFT                                                    8
+#define COHERENT7_F4_MASK                                            0x00000100
+#define COHERENT7_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT7_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_F4_WIDTH                                                          2
+#define VC7_F4_SHIFT                                                          4
+#define VC7_F4_MASK                                                  0x00000030
+#define VC7_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC7_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC7_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_F4_WIDTH                                                    1
+#define STASHING7_F4_SHIFT                                                    0
+#define STASHING7_F4_MASK                                            0x00000001
+#define STASHING7_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING7_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING7_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_18	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_F4_WIDTH                                                    1
+#define COHERENT8_F4_SHIFT                                                    8
+#define COHERENT8_F4_MASK                                            0x00000100
+#define COHERENT8_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT8_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_F4_WIDTH                                                          2
+#define VC8_F4_SHIFT                                                          4
+#define VC8_F4_MASK                                                  0x00000030
+#define VC8_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC8_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC8_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_F4_WIDTH                                                    1
+#define STASHING8_F4_SHIFT                                                    0
+#define STASHING8_F4_MASK                                            0x00000001
+#define STASHING8_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING8_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING8_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_19	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_F4_WIDTH                                                    1
+#define COHERENT9_F4_SHIFT                                                    8
+#define COHERENT9_F4_MASK                                            0x00000100
+#define COHERENT9_F4_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT9_F4_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_F4_WIDTH                                                          2
+#define VC9_F4_SHIFT                                                          4
+#define VC9_F4_MASK                                                  0x00000030
+#define VC9_F4_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC9_F4_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC9_F4_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_F4_WIDTH                                                    1
+#define STASHING9_F4_SHIFT                                                    0
+#define STASHING9_F4_MASK                                            0x00000001
+#define STASHING9_F4_RD(src)                             (((src) & 0x00000001))
+#define STASHING9_F4_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING9_F4_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_20	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F6_WIDTH                                                    1
+#define COHERENT0_F6_SHIFT                                                    8
+#define COHERENT0_F6_MASK                                            0x00000100
+#define COHERENT0_F6_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F6_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F6_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F6_WIDTH                                                          2
+#define VC0_F6_SHIFT                                                          4
+#define VC0_F6_MASK                                                  0x00000030
+#define VC0_F6_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F6_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F6_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F6_WIDTH                                                    1
+#define STASHING0_F6_SHIFT                                                    0
+#define STASHING0_F6_MASK                                            0x00000001
+#define STASHING0_F6_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F6_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F6_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_21	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F6_WIDTH                                                    1
+#define COHERENT1_F6_SHIFT                                                    8
+#define COHERENT1_F6_MASK                                            0x00000100
+#define COHERENT1_F6_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F6_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F6_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F6_WIDTH                                                          2
+#define VC1_F6_SHIFT                                                          4
+#define VC1_F6_MASK                                                  0x00000030
+#define VC1_F6_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F6_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F6_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F6_WIDTH                                                    1
+#define STASHING1_F6_SHIFT                                                    0
+#define STASHING1_F6_MASK                                            0x00000001
+#define STASHING1_F6_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F6_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F6_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_22	*/ 
+/*	 Fields coherent	 */
+#define COHERENT2_F5_WIDTH                                                    1
+#define COHERENT2_F5_SHIFT                                                    8
+#define COHERENT2_F5_MASK                                            0x00000100
+#define COHERENT2_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT2_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT2_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC2_F5_WIDTH                                                          2
+#define VC2_F5_SHIFT                                                          4
+#define VC2_F5_MASK                                                  0x00000030
+#define VC2_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC2_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC2_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING2_F5_WIDTH                                                    1
+#define STASHING2_F5_SHIFT                                                    0
+#define STASHING2_F5_MASK                                            0x00000001
+#define STASHING2_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING2_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING2_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_23	*/ 
+/*	 Fields coherent	 */
+#define COHERENT3_F5_WIDTH                                                    1
+#define COHERENT3_F5_SHIFT                                                    8
+#define COHERENT3_F5_MASK                                            0x00000100
+#define COHERENT3_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT3_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT3_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC3_F5_WIDTH                                                          2
+#define VC3_F5_SHIFT                                                          4
+#define VC3_F5_MASK                                                  0x00000030
+#define VC3_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC3_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC3_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING3_F5_WIDTH                                                    1
+#define STASHING3_F5_SHIFT                                                    0
+#define STASHING3_F5_MASK                                            0x00000001
+#define STASHING3_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING3_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING3_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_24	*/ 
+/*	 Fields coherent	 */
+#define COHERENT4_F5_WIDTH                                                    1
+#define COHERENT4_F5_SHIFT                                                    8
+#define COHERENT4_F5_MASK                                            0x00000100
+#define COHERENT4_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT4_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT4_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC4_F5_WIDTH                                                          2
+#define VC4_F5_SHIFT                                                          4
+#define VC4_F5_MASK                                                  0x00000030
+#define VC4_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC4_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC4_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING4_F5_WIDTH                                                    1
+#define STASHING4_F5_SHIFT                                                    0
+#define STASHING4_F5_MASK                                            0x00000001
+#define STASHING4_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING4_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING4_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_25	*/ 
+/*	 Fields coherent	 */
+#define COHERENT5_F5_WIDTH                                                    1
+#define COHERENT5_F5_SHIFT                                                    8
+#define COHERENT5_F5_MASK                                            0x00000100
+#define COHERENT5_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT5_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT5_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC5_F5_WIDTH                                                          2
+#define VC5_F5_SHIFT                                                          4
+#define VC5_F5_MASK                                                  0x00000030
+#define VC5_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC5_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC5_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING5_F5_WIDTH                                                    1
+#define STASHING5_F5_SHIFT                                                    0
+#define STASHING5_F5_MASK                                            0x00000001
+#define STASHING5_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING5_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING5_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_26	*/ 
+/*	 Fields coherent	 */
+#define COHERENT6_F5_WIDTH                                                    1
+#define COHERENT6_F5_SHIFT                                                    8
+#define COHERENT6_F5_MASK                                            0x00000100
+#define COHERENT6_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT6_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT6_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC6_F5_WIDTH                                                          2
+#define VC6_F5_SHIFT                                                          4
+#define VC6_F5_MASK                                                  0x00000030
+#define VC6_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC6_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC6_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING6_F5_WIDTH                                                    1
+#define STASHING6_F5_SHIFT                                                    0
+#define STASHING6_F5_MASK                                            0x00000001
+#define STASHING6_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING6_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING6_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_27	*/ 
+/*	 Fields coherent	 */
+#define COHERENT7_F5_WIDTH                                                    1
+#define COHERENT7_F5_SHIFT                                                    8
+#define COHERENT7_F5_MASK                                            0x00000100
+#define COHERENT7_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT7_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT7_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC7_F5_WIDTH                                                          2
+#define VC7_F5_SHIFT                                                          4
+#define VC7_F5_MASK                                                  0x00000030
+#define VC7_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC7_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC7_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING7_F5_WIDTH                                                    1
+#define STASHING7_F5_SHIFT                                                    0
+#define STASHING7_F5_MASK                                            0x00000001
+#define STASHING7_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING7_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING7_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_28	*/ 
+/*	 Fields coherent	 */
+#define COHERENT8_F5_WIDTH                                                    1
+#define COHERENT8_F5_SHIFT                                                    8
+#define COHERENT8_F5_MASK                                            0x00000100
+#define COHERENT8_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT8_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT8_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC8_F5_WIDTH                                                          2
+#define VC8_F5_SHIFT                                                          4
+#define VC8_F5_MASK                                                  0x00000030
+#define VC8_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC8_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC8_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING8_F5_WIDTH                                                    1
+#define STASHING8_F5_SHIFT                                                    0
+#define STASHING8_F5_MASK                                            0x00000001
+#define STASHING8_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING8_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING8_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_29	*/ 
+/*	 Fields coherent	 */
+#define COHERENT9_F5_WIDTH                                                    1
+#define COHERENT9_F5_SHIFT                                                    8
+#define COHERENT9_F5_MASK                                            0x00000100
+#define COHERENT9_F5_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT9_F5_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT9_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC9_F5_WIDTH                                                          2
+#define VC9_F5_SHIFT                                                          4
+#define VC9_F5_MASK                                                  0x00000030
+#define VC9_F5_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC9_F5_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC9_F5_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING9_F5_WIDTH                                                    1
+#define STASHING9_F5_SHIFT                                                    0
+#define STASHING9_F5_MASK                                            0x00000001
+#define STASHING9_F5_RD(src)                             (((src) & 0x00000001))
+#define STASHING9_F5_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING9_F5_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_30	*/ 
+/*	 Fields coherent	 */
+#define COHERENT0_F7_WIDTH                                                    1
+#define COHERENT0_F7_SHIFT                                                    8
+#define COHERENT0_F7_MASK                                            0x00000100
+#define COHERENT0_F7_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT0_F7_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT0_F7_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC0_F7_WIDTH                                                          2
+#define VC0_F7_SHIFT                                                          4
+#define VC0_F7_MASK                                                  0x00000030
+#define VC0_F7_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC0_F7_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC0_F7_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING0_F7_WIDTH                                                    1
+#define STASHING0_F7_SHIFT                                                    0
+#define STASHING0_F7_MASK                                            0x00000001
+#define STASHING0_F7_RD(src)                             (((src) & 0x00000001))
+#define STASHING0_F7_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING0_F7_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_enq_mbox_axisb_31	*/ 
+/*	 Fields coherent	 */
+#define COHERENT1_F7_WIDTH                                                    1
+#define COHERENT1_F7_SHIFT                                                    8
+#define COHERENT1_F7_MASK                                            0x00000100
+#define COHERENT1_F7_RD(src)                          (((src) & 0x00000100)>>8)
+#define COHERENT1_F7_WR(src)                     (((u32)(src)<<8) & 0x00000100)
+#define COHERENT1_F7_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields vc	 */
+#define VC1_F7_WIDTH                                                          2
+#define VC1_F7_SHIFT                                                          4
+#define VC1_F7_MASK                                                  0x00000030
+#define VC1_F7_RD(src)                                (((src) & 0x00000030)>>4)
+#define VC1_F7_WR(src)                           (((u32)(src)<<4) & 0x00000030)
+#define VC1_F7_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields stashing	 */
+#define STASHING1_F7_WIDTH                                                    1
+#define STASHING1_F7_SHIFT                                                    0
+#define STASHING1_F7_MASK                                            0x00000001
+#define STASHING1_F7_RD(src)                             (((src) & 0x00000001))
+#define STASHING1_F7_WR(src)                        (((u32)(src)) & 0x00000001)
+#define STASHING1_F7_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_errq_ptype0	*/ 
+/*	 Fields ovr_protect	 */
+#define OVR_PROTECT0_WIDTH                                                    1
+#define OVR_PROTECT0_SHIFT                                                   31
+#define OVR_PROTECT0_MASK                                            0x80000000
+#define OVR_PROTECT0_RD(src)                         (((src) & 0x80000000)>>31)
+#define OVR_PROTECT0_WR(src)                    (((u32)(src)<<31) & 0x80000000)
+#define OVR_PROTECT0_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields unexpected_en	 */
+#define UNEXPECTED_EN0_WIDTH                                                  1
+#define UNEXPECTED_EN0_SHIFT                                                 30
+#define UNEXPECTED_EN0_MASK                                          0x40000000
+#define UNEXPECTED_EN0_RD(src)                       (((src) & 0x40000000)>>30)
+#define UNEXPECTED_EN0_WR(src)                  (((u32)(src)<<30) & 0x40000000)
+#define UNEXPECTED_EN0_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields unexpected_qid	 */
+#define UNEXPECTED_QID0_WIDTH                                                10
+#define UNEXPECTED_QID0_SHIFT                                                16
+#define UNEXPECTED_QID0_MASK                                         0x03ff0000
+#define UNEXPECTED_QID0_RD(src)                      (((src) & 0x03ff0000)>>16)
+#define UNEXPECTED_QID0_WR(src)                 (((u32)(src)<<16) & 0x03ff0000)
+#define UNEXPECTED_QID0_SET(dst,src) \
+                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
+/*	 Fields expected_en	 */
+#define EXPECTED_EN0_WIDTH                                                    1
+#define EXPECTED_EN0_SHIFT                                                   14
+#define EXPECTED_EN0_MASK                                            0x00004000
+#define EXPECTED_EN0_RD(src)                         (((src) & 0x00004000)>>14)
+#define EXPECTED_EN0_WR(src)                    (((u32)(src)<<14) & 0x00004000)
+#define EXPECTED_EN0_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields expected_qid	 */
+#define EXPECTED_QID0_WIDTH                                                  10
+#define EXPECTED_QID0_SHIFT                                                   0
+#define EXPECTED_QID0_MASK                                           0x000003ff
+#define EXPECTED_QID0_RD(src)                            (((src) & 0x000003ff))
+#define EXPECTED_QID0_WR(src)                       (((u32)(src)) & 0x000003ff)
+#define EXPECTED_QID0_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_errq_ptype1	*/ 
+/*	 Fields ovr_protect	 */
+#define OVR_PROTECT1_WIDTH                                                    1
+#define OVR_PROTECT1_SHIFT                                                   31
+#define OVR_PROTECT1_MASK                                            0x80000000
+#define OVR_PROTECT1_RD(src)                         (((src) & 0x80000000)>>31)
+#define OVR_PROTECT1_WR(src)                    (((u32)(src)<<31) & 0x80000000)
+#define OVR_PROTECT1_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields unexpected_en	 */
+#define UNEXPECTED_EN1_WIDTH                                                  1
+#define UNEXPECTED_EN1_SHIFT                                                 30
+#define UNEXPECTED_EN1_MASK                                          0x40000000
+#define UNEXPECTED_EN1_RD(src)                       (((src) & 0x40000000)>>30)
+#define UNEXPECTED_EN1_WR(src)                  (((u32)(src)<<30) & 0x40000000)
+#define UNEXPECTED_EN1_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields unexpected_qid	 */
+#define UNEXPECTED_QID1_WIDTH                                                10
+#define UNEXPECTED_QID1_SHIFT                                                16
+#define UNEXPECTED_QID1_MASK                                         0x03ff0000
+#define UNEXPECTED_QID1_RD(src)                      (((src) & 0x03ff0000)>>16)
+#define UNEXPECTED_QID1_WR(src)                 (((u32)(src)<<16) & 0x03ff0000)
+#define UNEXPECTED_QID1_SET(dst,src) \
+                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
+/*	 Fields expected_en	 */
+#define EXPECTED_EN1_WIDTH                                                    1
+#define EXPECTED_EN1_SHIFT                                                   14
+#define EXPECTED_EN1_MASK                                            0x00004000
+#define EXPECTED_EN1_RD(src)                         (((src) & 0x00004000)>>14)
+#define EXPECTED_EN1_WR(src)                    (((u32)(src)<<14) & 0x00004000)
+#define EXPECTED_EN1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields expected_qid	 */
+#define EXPECTED_QID1_WIDTH                                                  10
+#define EXPECTED_QID1_SHIFT                                                   0
+#define EXPECTED_QID1_MASK                                           0x000003ff
+#define EXPECTED_QID1_RD(src)                            (((src) & 0x000003ff))
+#define EXPECTED_QID1_WR(src)                       (((u32)(src)) & 0x000003ff)
+#define EXPECTED_QID1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_errq_ptype2	*/ 
+/*	 Fields ovr_protect	 */
+#define OVR_PROTECT2_WIDTH                                                    1
+#define OVR_PROTECT2_SHIFT                                                   31
+#define OVR_PROTECT2_MASK                                            0x80000000
+#define OVR_PROTECT2_RD(src)                         (((src) & 0x80000000)>>31)
+#define OVR_PROTECT2_WR(src)                    (((u32)(src)<<31) & 0x80000000)
+#define OVR_PROTECT2_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields unexpected_en	 */
+#define UNEXPECTED_EN2_WIDTH                                                  1
+#define UNEXPECTED_EN2_SHIFT                                                 30
+#define UNEXPECTED_EN2_MASK                                          0x40000000
+#define UNEXPECTED_EN2_RD(src)                       (((src) & 0x40000000)>>30)
+#define UNEXPECTED_EN2_WR(src)                  (((u32)(src)<<30) & 0x40000000)
+#define UNEXPECTED_EN2_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields unexpected_qid	 */
+#define UNEXPECTED_QID2_WIDTH                                                10
+#define UNEXPECTED_QID2_SHIFT                                                16
+#define UNEXPECTED_QID2_MASK                                         0x03ff0000
+#define UNEXPECTED_QID2_RD(src)                      (((src) & 0x03ff0000)>>16)
+#define UNEXPECTED_QID2_WR(src)                 (((u32)(src)<<16) & 0x03ff0000)
+#define UNEXPECTED_QID2_SET(dst,src) \
+                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
+/*	 Fields expected_en	 */
+#define EXPECTED_EN2_WIDTH                                                    1
+#define EXPECTED_EN2_SHIFT                                                   14
+#define EXPECTED_EN2_MASK                                            0x00004000
+#define EXPECTED_EN2_RD(src)                         (((src) & 0x00004000)>>14)
+#define EXPECTED_EN2_WR(src)                    (((u32)(src)<<14) & 0x00004000)
+#define EXPECTED_EN2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields expected_qid	 */
+#define EXPECTED_QID2_WIDTH                                                  10
+#define EXPECTED_QID2_SHIFT                                                   0
+#define EXPECTED_QID2_MASK                                           0x000003ff
+#define EXPECTED_QID2_RD(src)                            (((src) & 0x000003ff))
+#define EXPECTED_QID2_WR(src)                       (((u32)(src)) & 0x000003ff)
+#define EXPECTED_QID2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_errq_ptype3	*/ 
+/*	 Fields ovr_protect	 */
+#define OVR_PROTECT3_WIDTH                                                    1
+#define OVR_PROTECT3_SHIFT                                                   31
+#define OVR_PROTECT3_MASK                                            0x80000000
+#define OVR_PROTECT3_RD(src)                         (((src) & 0x80000000)>>31)
+#define OVR_PROTECT3_WR(src)                    (((u32)(src)<<31) & 0x80000000)
+#define OVR_PROTECT3_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields unexpected_en	 */
+#define UNEXPECTED_EN3_WIDTH                                                  1
+#define UNEXPECTED_EN3_SHIFT                                                 30
+#define UNEXPECTED_EN3_MASK                                          0x40000000
+#define UNEXPECTED_EN3_RD(src)                       (((src) & 0x40000000)>>30)
+#define UNEXPECTED_EN3_WR(src)                  (((u32)(src)<<30) & 0x40000000)
+#define UNEXPECTED_EN3_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields unexpected_qid	 */
+#define UNEXPECTED_QID3_WIDTH                                                10
+#define UNEXPECTED_QID3_SHIFT                                                16
+#define UNEXPECTED_QID3_MASK                                         0x03ff0000
+#define UNEXPECTED_QID3_RD(src)                      (((src) & 0x03ff0000)>>16)
+#define UNEXPECTED_QID3_WR(src)                 (((u32)(src)<<16) & 0x03ff0000)
+#define UNEXPECTED_QID3_SET(dst,src) \
+                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
+/*	 Fields expected_en	 */
+#define EXPECTED_EN3_WIDTH                                                    1
+#define EXPECTED_EN3_SHIFT                                                   14
+#define EXPECTED_EN3_MASK                                            0x00004000
+#define EXPECTED_EN3_RD(src)                         (((src) & 0x00004000)>>14)
+#define EXPECTED_EN3_WR(src)                    (((u32)(src)<<14) & 0x00004000)
+#define EXPECTED_EN3_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields expected_qid	 */
+#define EXPECTED_QID3_WIDTH                                                  10
+#define EXPECTED_QID3_SHIFT                                                   0
+#define EXPECTED_QID3_MASK                                           0x000003ff
+#define EXPECTED_QID3_RD(src)                            (((src) & 0x000003ff))
+#define EXPECTED_QID3_WR(src)                       (((u32)(src)) & 0x000003ff)
+#define EXPECTED_QID3_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_qm_mboxintr_fifo_threshold	*/ 
+/*	 Fields deq_recomb_fifo_full_thrshld	 */
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_WIDTH                                    3
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_SHIFT                                   28
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_MASK                            0x70000000
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_RD(src)         (((src) & 0x70000000)>>28)
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_WR(src)    (((u32)(src)<<28) & 0x70000000)
+#define DEQ_RECOMB_FIFO_FULL_THRSHLD_SET(dst,src) \
+                      (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
+/*	 Fields deq_recomb_fifo_ram_depth	 */
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_WIDTH                                       3
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_SHIFT                                      24
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_MASK                               0x07000000
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_RD(src)            (((src) & 0x07000000)>>24)
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_WR(src)       (((u32)(src)<<24) & 0x07000000)
+#define DEQ_RECOMB_FIFO_RAM_DEPTH_SET(dst,src) \
+                      (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
+/*	 Fields dir_deq_fifo_full_level	 */
+#define DIR_DEQ_FIFO_FULL_LEVEL_WIDTH                                         5
+#define DIR_DEQ_FIFO_FULL_LEVEL_SHIFT                                        16
+#define DIR_DEQ_FIFO_FULL_LEVEL_MASK                                 0x001f0000
+#define DIR_DEQ_FIFO_FULL_LEVEL_RD(src)              (((src) & 0x001f0000)>>16)
+#define DIR_DEQ_FIFO_FULL_LEVEL_WR(src)         (((u32)(src)<<16) & 0x001f0000)
+#define DIR_DEQ_FIFO_FULL_LEVEL_SET(dst,src) \
+                      (((dst) & ~0x001f0000) | (((u32)(src)<<16) & 0x001f0000))
+/*	 Fields mbox_deq_fifo_full_level	 */
+#define MBOX_DEQ_FIFO_FULL_LEVEL_WIDTH                                        5
+#define MBOX_DEQ_FIFO_FULL_LEVEL_SHIFT                                        8
+#define MBOX_DEQ_FIFO_FULL_LEVEL_MASK                                0x00001f00
+#define MBOX_DEQ_FIFO_FULL_LEVEL_RD(src)              (((src) & 0x00001f00)>>8)
+#define MBOX_DEQ_FIFO_FULL_LEVEL_WR(src)         (((u32)(src)<<8) & 0x00001f00)
+#define MBOX_DEQ_FIFO_FULL_LEVEL_SET(dst,src) \
+                       (((dst) & ~0x00001f00) | (((u32)(src)<<8) & 0x00001f00))
+/*	 Fields amareq_afifo_thresh	 */
+#define AMAREQ_AFIFO_THRESH_WIDTH                                             2
+#define AMAREQ_AFIFO_THRESH_SHIFT                                             4
+#define AMAREQ_AFIFO_THRESH_MASK                                     0x00000030
+#define AMAREQ_AFIFO_THRESH_RD(src)                   (((src) & 0x00000030)>>4)
+#define AMAREQ_AFIFO_THRESH_WR(src)              (((u32)(src)<<4) & 0x00000030)
+#define AMAREQ_AFIFO_THRESH_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields amareq_dfifo_thresh	 */
+#define AMAREQ_DFIFO_THRESH_WIDTH                                             4
+#define AMAREQ_DFIFO_THRESH_SHIFT                                             0
+#define AMAREQ_DFIFO_THRESH_MASK                                     0x0000000f
+#define AMAREQ_DFIFO_THRESH_RD(src)                      (((src) & 0x0000000f))
+#define AMAREQ_DFIFO_THRESH_WR(src)                 (((u32)(src)) & 0x0000000f)
+#define AMAREQ_DFIFO_THRESH_SET(dst,src) \
+                          (((dst) & ~0x0000000f) | (((u32)(src)) & 0x0000000f))
+
+/*	Register csr_sab_intr_mbox_baseaddr	*/ 
+/*	 Fields addr	 */
+#define REGSPEC_ADDR_F64_WIDTH                                               32
+#define REGSPEC_ADDR_F64_SHIFT                                                0
+#define REGSPEC_ADDR_F64_MASK                                        0xffffffff
+#define REGSPEC_ADDR_F64_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F64_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_ADDR_F64_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_sab_intr_mbox	*/ 
+/*	 Fields recombination_timer	 */
+#define RECOMBINATION_TIMER_WIDTH                                            10
+#define RECOMBINATION_TIMER_SHIFT                                            16
+#define RECOMBINATION_TIMER_MASK                                     0x03ff0000
+#define RECOMBINATION_TIMER_RD(src)                  (((src) & 0x03ff0000)>>16)
+#define RECOMBINATION_TIMER_WR(src)             (((u32)(src)<<16) & 0x03ff0000)
+#define RECOMBINATION_TIMER_SET(dst,src) \
+                      (((dst) & ~0x03ff0000) | (((u32)(src)<<16) & 0x03ff0000))
+/*	 Fields axisb_coherent	 */
+#define AXISB_COHERENT_WIDTH                                                  1
+#define AXISB_COHERENT_SHIFT                                                  8
+#define AXISB_COHERENT_MASK                                          0x00000100
+#define AXISB_COHERENT_RD(src)                        (((src) & 0x00000100)>>8)
+#define AXISB_COHERENT_WR(src)                   (((u32)(src)<<8) & 0x00000100)
+#define AXISB_COHERENT_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields axisb_vc	 */
+#define AXISB_VC_WIDTH                                                        2
+#define AXISB_VC_SHIFT                                                        4
+#define AXISB_VC_MASK                                                0x00000030
+#define AXISB_VC_RD(src)                              (((src) & 0x00000030)>>4)
+#define AXISB_VC_WR(src)                         (((u32)(src)<<4) & 0x00000030)
+#define AXISB_VC_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields axisb_stashing	 */
+#define AXISB_STASHING_WIDTH                                                  1
+#define AXISB_STASHING_SHIFT                                                  0
+#define AXISB_STASHING_MASK                                          0x00000001
+#define AXISB_STASHING_RD(src)                           (((src) & 0x00000001))
+#define AXISB_STASHING_WR(src)                      (((u32)(src)) & 0x00000001)
+#define AXISB_STASHING_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_msgwr_errinf	*/ 
+/*	 Fields response_code	 */
+#define RESPONSE_CODE_F1_WIDTH                                                2
+#define RESPONSE_CODE_F1_SHIFT                                               10
+#define RESPONSE_CODE_F1_MASK                                        0x00000c00
+#define RESPONSE_CODE_F1_RD(src)                     (((src) & 0x00000c00)>>10)
+#define RESPONSE_CODE_F1_SET(dst,src) \
+                      (((dst) & ~0x00000c00) | (((u32)(src)<<10) & 0x00000c00))
+/*	 Fields qid	 */
+#define QID_F1_WIDTH                                                         10
+#define QID_F1_SHIFT                                                          0
+#define QID_F1_MASK                                                  0x000003ff
+#define QID_F1_RD(src)                                   (((src) & 0x000003ff))
+#define QID_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_qm_msgrd_fifo_threshold0	*/ 
+/*	 Fields s0_cmd_fifo_vc2_thresh	 */
+#define S0_CMD_FIFO_VC2_THRESH0_WIDTH                                         5
+#define S0_CMD_FIFO_VC2_THRESH0_SHIFT                                        16
+#define S0_CMD_FIFO_VC2_THRESH0_MASK                                 0x001f0000
+#define S0_CMD_FIFO_VC2_THRESH0_RD(src)              (((src) & 0x001f0000)>>16)
+#define S0_CMD_FIFO_VC2_THRESH0_WR(src)         (((u32)(src)<<16) & 0x001f0000)
+#define S0_CMD_FIFO_VC2_THRESH0_SET(dst,src) \
+                      (((dst) & ~0x001f0000) | (((u32)(src)<<16) & 0x001f0000))
+/*	 Fields s0_cmd_fifo_vc1_thresh	 */
+#define S0_CMD_FIFO_VC1_THRESH0_WIDTH                                         5
+#define S0_CMD_FIFO_VC1_THRESH0_SHIFT                                         8
+#define S0_CMD_FIFO_VC1_THRESH0_MASK                                 0x00001f00
+#define S0_CMD_FIFO_VC1_THRESH0_RD(src)               (((src) & 0x00001f00)>>8)
+#define S0_CMD_FIFO_VC1_THRESH0_WR(src)          (((u32)(src)<<8) & 0x00001f00)
+#define S0_CMD_FIFO_VC1_THRESH0_SET(dst,src) \
+                       (((dst) & ~0x00001f00) | (((u32)(src)<<8) & 0x00001f00))
+/*	 Fields s0_cmd_fifo_vc0_thresh	 */
+#define S0_CMD_FIFO_VC0_THRESH0_WIDTH                                         5
+#define S0_CMD_FIFO_VC0_THRESH0_SHIFT                                         0
+#define S0_CMD_FIFO_VC0_THRESH0_MASK                                 0x0000001f
+#define S0_CMD_FIFO_VC0_THRESH0_RD(src)                  (((src) & 0x0000001f))
+#define S0_CMD_FIFO_VC0_THRESH0_WR(src)             (((u32)(src)) & 0x0000001f)
+#define S0_CMD_FIFO_VC0_THRESH0_SET(dst,src) \
+                          (((dst) & ~0x0000001f) | (((u32)(src)) & 0x0000001f))
+
+/*	Register csr_qm_msgrd_fifo_threshold1	*/ 
+/*	 Fields s1_cmd_fifo_vc2_thresh	 */
+#define S1_CMD_FIFO_VC2_THRESH1_WIDTH                                         5
+#define S1_CMD_FIFO_VC2_THRESH1_SHIFT                                        16
+#define S1_CMD_FIFO_VC2_THRESH1_MASK                                 0x001f0000
+#define S1_CMD_FIFO_VC2_THRESH1_RD(src)              (((src) & 0x001f0000)>>16)
+#define S1_CMD_FIFO_VC2_THRESH1_WR(src)         (((u32)(src)<<16) & 0x001f0000)
+#define S1_CMD_FIFO_VC2_THRESH1_SET(dst,src) \
+                      (((dst) & ~0x001f0000) | (((u32)(src)<<16) & 0x001f0000))
+/*	 Fields s1_cmd_fifo_vc1_thresh	 */
+#define S1_CMD_FIFO_VC1_THRESH1_WIDTH                                         5
+#define S1_CMD_FIFO_VC1_THRESH1_SHIFT                                         8
+#define S1_CMD_FIFO_VC1_THRESH1_MASK                                 0x00001f00
+#define S1_CMD_FIFO_VC1_THRESH1_RD(src)               (((src) & 0x00001f00)>>8)
+#define S1_CMD_FIFO_VC1_THRESH1_WR(src)          (((u32)(src)<<8) & 0x00001f00)
+#define S1_CMD_FIFO_VC1_THRESH1_SET(dst,src) \
+                       (((dst) & ~0x00001f00) | (((u32)(src)<<8) & 0x00001f00))
+/*	 Fields s1_cmd_fifo_vc0_thresh	 */
+#define S1_CMD_FIFO_VC0_THRESH1_WIDTH                                         5
+#define S1_CMD_FIFO_VC0_THRESH1_SHIFT                                         0
+#define S1_CMD_FIFO_VC0_THRESH1_MASK                                 0x0000001f
+#define S1_CMD_FIFO_VC0_THRESH1_RD(src)                  (((src) & 0x0000001f))
+#define S1_CMD_FIFO_VC0_THRESH1_WR(src)             (((u32)(src)) & 0x0000001f)
+#define S1_CMD_FIFO_VC0_THRESH1_SET(dst,src) \
+                          (((dst) & ~0x0000001f) | (((u32)(src)) & 0x0000001f))
+
+/*	Register csr_qm_msgrd_fifo_threshold2	*/ 
+/*	 Fields rspqdat_thresh	 */
+#define RSPQDAT_THRESH2_WIDTH                                                 7
+#define RSPQDAT_THRESH2_SHIFT                                                24
+#define RSPQDAT_THRESH2_MASK                                         0x7f000000
+#define RSPQDAT_THRESH2_RD(src)                      (((src) & 0x7f000000)>>24)
+#define RSPQDAT_THRESH2_WR(src)                 (((u32)(src)<<24) & 0x7f000000)
+#define RSPQDAT_THRESH2_SET(dst,src) \
+                      (((dst) & ~0x7f000000) | (((u32)(src)<<24) & 0x7f000000))
+/*	 Fields s1_rsp_dfifo_vc2_thresh	 */
+#define S1_RSP_DFIFO_VC2_THRESH2_WIDTH                                        7
+#define S1_RSP_DFIFO_VC2_THRESH2_SHIFT                                       16
+#define S1_RSP_DFIFO_VC2_THRESH2_MASK                                0x007f0000
+#define S1_RSP_DFIFO_VC2_THRESH2_RD(src)             (((src) & 0x007f0000)>>16)
+#define S1_RSP_DFIFO_VC2_THRESH2_WR(src)        (((u32)(src)<<16) & 0x007f0000)
+#define S1_RSP_DFIFO_VC2_THRESH2_SET(dst,src) \
+                      (((dst) & ~0x007f0000) | (((u32)(src)<<16) & 0x007f0000))
+/*	 Fields s1_rsp_dfifo_vc1_thresh	 */
+#define S1_RSP_DFIFO_VC1_THRESH2_WIDTH                                        7
+#define S1_RSP_DFIFO_VC1_THRESH2_SHIFT                                        8
+#define S1_RSP_DFIFO_VC1_THRESH2_MASK                                0x00007f00
+#define S1_RSP_DFIFO_VC1_THRESH2_RD(src)              (((src) & 0x00007f00)>>8)
+#define S1_RSP_DFIFO_VC1_THRESH2_WR(src)         (((u32)(src)<<8) & 0x00007f00)
+#define S1_RSP_DFIFO_VC1_THRESH2_SET(dst,src) \
+                       (((dst) & ~0x00007f00) | (((u32)(src)<<8) & 0x00007f00))
+/*	 Fields s1_rsp_dfifo_vc0_thresh	 */
+#define S1_RSP_DFIFO_VC0_THRESH2_WIDTH                                        7
+#define S1_RSP_DFIFO_VC0_THRESH2_SHIFT                                        0
+#define S1_RSP_DFIFO_VC0_THRESH2_MASK                                0x0000007f
+#define S1_RSP_DFIFO_VC0_THRESH2_RD(src)                 (((src) & 0x0000007f))
+#define S1_RSP_DFIFO_VC0_THRESH2_WR(src)            (((u32)(src)) & 0x0000007f)
+#define S1_RSP_DFIFO_VC0_THRESH2_SET(dst,src) \
+                          (((dst) & ~0x0000007f) | (((u32)(src)) & 0x0000007f))
+
+/*	Register csr_qm_msgrd_fifo_sts	*/ 
+/*	 Fields rspqdat_empty	 */
+#define RSPQDAT_EMPTY_WIDTH                                                   1
+#define RSPQDAT_EMPTY_SHIFT                                                   9
+#define RSPQDAT_EMPTY_MASK                                           0x00000200
+#define RSPQDAT_EMPTY_RD(src)                         (((src) & 0x00000200)>>9)
+#define RSPQDAT_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*	 Fields s1_rsp_dfifo_vc2_empty	 */
+#define S1_RSP_DFIFO_VC2_EMPTY_WIDTH                                          1
+#define S1_RSP_DFIFO_VC2_EMPTY_SHIFT                                          8
+#define S1_RSP_DFIFO_VC2_EMPTY_MASK                                  0x00000100
+#define S1_RSP_DFIFO_VC2_EMPTY_RD(src)                (((src) & 0x00000100)>>8)
+#define S1_RSP_DFIFO_VC2_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields s1_rsp_dfifo_vc1_empty	 */
+#define S1_RSP_DFIFO_VC1_EMPTY_WIDTH                                          1
+#define S1_RSP_DFIFO_VC1_EMPTY_SHIFT                                          7
+#define S1_RSP_DFIFO_VC1_EMPTY_MASK                                  0x00000080
+#define S1_RSP_DFIFO_VC1_EMPTY_RD(src)                (((src) & 0x00000080)>>7)
+#define S1_RSP_DFIFO_VC1_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields s1_rsp_dfifo_vc0_empty	 */
+#define S1_RSP_DFIFO_VC0_EMPTY_WIDTH                                          1
+#define S1_RSP_DFIFO_VC0_EMPTY_SHIFT                                          6
+#define S1_RSP_DFIFO_VC0_EMPTY_MASK                                  0x00000040
+#define S1_RSP_DFIFO_VC0_EMPTY_RD(src)                (((src) & 0x00000040)>>6)
+#define S1_RSP_DFIFO_VC0_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields s1_cmd_fifo_vc2_empty	 */
+#define S1_CMD_FIFO_VC2_EMPTY_WIDTH                                           1
+#define S1_CMD_FIFO_VC2_EMPTY_SHIFT                                           5
+#define S1_CMD_FIFO_VC2_EMPTY_MASK                                   0x00000020
+#define S1_CMD_FIFO_VC2_EMPTY_RD(src)                 (((src) & 0x00000020)>>5)
+#define S1_CMD_FIFO_VC2_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields s1_cmd_fifo_vc1_empty	 */
+#define S1_CMD_FIFO_VC1_EMPTY_WIDTH                                           1
+#define S1_CMD_FIFO_VC1_EMPTY_SHIFT                                           4
+#define S1_CMD_FIFO_VC1_EMPTY_MASK                                   0x00000010
+#define S1_CMD_FIFO_VC1_EMPTY_RD(src)                 (((src) & 0x00000010)>>4)
+#define S1_CMD_FIFO_VC1_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields s1_cmd_fifo_vc0_empty	 */
+#define S1_CMD_FIFO_VC0_EMPTY_WIDTH                                           1
+#define S1_CMD_FIFO_VC0_EMPTY_SHIFT                                           3
+#define S1_CMD_FIFO_VC0_EMPTY_MASK                                   0x00000008
+#define S1_CMD_FIFO_VC0_EMPTY_RD(src)                 (((src) & 0x00000008)>>3)
+#define S1_CMD_FIFO_VC0_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields s0_cmd_fifo_vc2_empty	 */
+#define S0_CMD_FIFO_VC2_EMPTY_WIDTH                                           1
+#define S0_CMD_FIFO_VC2_EMPTY_SHIFT                                           2
+#define S0_CMD_FIFO_VC2_EMPTY_MASK                                   0x00000004
+#define S0_CMD_FIFO_VC2_EMPTY_RD(src)                 (((src) & 0x00000004)>>2)
+#define S0_CMD_FIFO_VC2_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields s0_cmd_fifo_vc1_empty	 */
+#define S0_CMD_FIFO_VC1_EMPTY_WIDTH                                           1
+#define S0_CMD_FIFO_VC1_EMPTY_SHIFT                                           1
+#define S0_CMD_FIFO_VC1_EMPTY_MASK                                   0x00000002
+#define S0_CMD_FIFO_VC1_EMPTY_RD(src)                 (((src) & 0x00000002)>>1)
+#define S0_CMD_FIFO_VC1_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields s0_cmd_fifo_vc0_empty	 */
+#define S0_CMD_FIFO_VC0_EMPTY_WIDTH                                           1
+#define S0_CMD_FIFO_VC0_EMPTY_SHIFT                                           0
+#define S0_CMD_FIFO_VC0_EMPTY_MASK                                   0x00000001
+#define S0_CMD_FIFO_VC0_EMPTY_RD(src)                    (((src) & 0x00000001))
+#define S0_CMD_FIFO_VC0_EMPTY_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_qm_msgwr_fifo_threshold0	*/ 
+/*	 Fields wdat_fifo_thresh	 */
+#define WDAT_FIFO_THRESH0_WIDTH                                               4
+#define WDAT_FIFO_THRESH0_SHIFT                                               8
+#define WDAT_FIFO_THRESH0_MASK                                       0x00000f00
+#define WDAT_FIFO_THRESH0_RD(src)                     (((src) & 0x00000f00)>>8)
+#define WDAT_FIFO_THRESH0_WR(src)                (((u32)(src)<<8) & 0x00000f00)
+#define WDAT_FIFO_THRESH0_SET(dst,src) \
+                       (((dst) & ~0x00000f00) | (((u32)(src)<<8) & 0x00000f00))
+/*	 Fields awreq_fifo_thresh	 */
+#define AWREQ_FIFO_THRESH0_WIDTH                                              4
+#define AWREQ_FIFO_THRESH0_SHIFT                                              0
+#define AWREQ_FIFO_THRESH0_MASK                                      0x0000000f
+#define AWREQ_FIFO_THRESH0_RD(src)                       (((src) & 0x0000000f))
+#define AWREQ_FIFO_THRESH0_WR(src)                  (((u32)(src)) & 0x0000000f)
+#define AWREQ_FIFO_THRESH0_SET(dst,src) \
+                          (((dst) & ~0x0000000f) | (((u32)(src)) & 0x0000000f))
+
+/*	Register csr_qm_msgwr_fifo_sts	*/ 
+/*	 Fields wdat_fifo_empty	 */
+#define WDAT_FIFO_EMPTY_WIDTH                                                 1
+#define WDAT_FIFO_EMPTY_SHIFT                                                 1
+#define WDAT_FIFO_EMPTY_MASK                                         0x00000002
+#define WDAT_FIFO_EMPTY_RD(src)                       (((src) & 0x00000002)>>1)
+#define WDAT_FIFO_EMPTY_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields awreq_fifo_empty	 */
+#define AWREQ_FIFO_EMPTY_WIDTH                                                1
+#define AWREQ_FIFO_EMPTY_SHIFT                                                0
+#define AWREQ_FIFO_EMPTY_MASK                                        0x00000001
+#define AWREQ_FIFO_EMPTY_RD(src)                         (((src) & 0x00000001))
+#define AWREQ_FIFO_EMPTY_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_msg_intr_timer	*/ 
+/*	 Fields cnt	 */
+#define REGSPEC_CNT_WIDTH                                                     3
+#define REGSPEC_CNT_SHIFT                                                     0
+#define REGSPEC_CNT_MASK                                             0x00000007
+#define REGSPEC_CNT_RD(src)                              (((src) & 0x00000007))
+#define REGSPEC_CNT_WR(src)                         (((u32)(src)) & 0x00000007)
+#define REGSPEC_CNT_SET(dst,src) \
+                          (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
+
+/*	Register csr_qm_pervm_mbox_temp_buffer_sts	*/ 
+/*	 Fields temp_buffer_empty	 */
+#define TEMP_BUFFER_EMPTY_WIDTH                                              32
+#define TEMP_BUFFER_EMPTY_SHIFT                                               0
+#define TEMP_BUFFER_EMPTY_MASK                                       0xffffffff
+#define TEMP_BUFFER_EMPTY_RD(src)                        (((src) & 0xffffffff))
+#define TEMP_BUFFER_EMPTY_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_qm_sab_intr_msg_fifo_sts	*/ 
+/*	 Fields sab_msg_fifo_empty	 */
+#define SAB_MSG_FIFO_EMPTY_WIDTH                                              1
+#define SAB_MSG_FIFO_EMPTY_SHIFT                                              0
+#define SAB_MSG_FIFO_EMPTY_MASK                                      0x00000001
+#define SAB_MSG_FIFO_EMPTY_RD(src)                       (((src) & 0x00000001))
+#define SAB_MSG_FIFO_EMPTY_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_sab_intr_fifo_threshold	*/ 
+/*	 Fields bresp_fifo_full_thrshld	 */
+#define BRESP_FIFO_FULL_THRSHLD_WIDTH                                         6
+#define BRESP_FIFO_FULL_THRSHLD_SHIFT                                         8
+#define BRESP_FIFO_FULL_THRSHLD_MASK                                 0x00003f00
+#define BRESP_FIFO_FULL_THRSHLD_RD(src)               (((src) & 0x00003f00)>>8)
+#define BRESP_FIFO_FULL_THRSHLD_WR(src)          (((u32)(src)<<8) & 0x00003f00)
+#define BRESP_FIFO_FULL_THRSHLD_SET(dst,src) \
+                       (((dst) & ~0x00003f00) | (((u32)(src)<<8) & 0x00003f00))
+/*	 Fields recomb_fifo_ram_depth	 */
+#define RECOMB_FIFO_RAM_DEPTH_WIDTH                                           4
+#define RECOMB_FIFO_RAM_DEPTH_SHIFT                                           4
+#define RECOMB_FIFO_RAM_DEPTH_MASK                                   0x000000f0
+#define RECOMB_FIFO_RAM_DEPTH_RD(src)                 (((src) & 0x000000f0)>>4)
+#define RECOMB_FIFO_RAM_DEPTH_WR(src)            (((u32)(src)<<4) & 0x000000f0)
+#define RECOMB_FIFO_RAM_DEPTH_SET(dst,src) \
+                       (((dst) & ~0x000000f0) | (((u32)(src)<<4) & 0x000000f0))
+/*	 Fields recomb_fifo_full_thrshld	 */
+#define RECOMB_FIFO_FULL_THRSHLD_WIDTH                                        4
+#define RECOMB_FIFO_FULL_THRSHLD_SHIFT                                        0
+#define RECOMB_FIFO_FULL_THRSHLD_MASK                                0x0000000f
+#define RECOMB_FIFO_FULL_THRSHLD_RD(src)                 (((src) & 0x0000000f))
+#define RECOMB_FIFO_FULL_THRSHLD_WR(src)            (((u32)(src)) & 0x0000000f)
+#define RECOMB_FIFO_FULL_THRSHLD_SET(dst,src) \
+                          (((dst) & ~0x0000000f) | (((u32)(src)) & 0x0000000f))
+
+/*	Register csr_high_throughput	*/ 
+/*	 Fields qstate_en	 */
+#define QSTATE_EN_WIDTH                                                       1
+#define QSTATE_EN_SHIFT                                                       1
+#define QSTATE_EN_MASK                                               0x00000002
+#define QSTATE_EN_RD(src)                             (((src) & 0x00000002)>>1)
+#define QSTATE_EN_WR(src)                        (((u32)(src)<<1) & 0x00000002)
+#define QSTATE_EN_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields acr_en	 */
+#define ACR_EN_WIDTH                                                          1
+#define ACR_EN_SHIFT                                                          0
+#define ACR_EN_MASK                                                  0x00000001
+#define ACR_EN_RD(src)                                   (((src) & 0x00000001))
+#define ACR_EN_WR(src)                              (((u32)(src)) & 0x00000001)
+#define ACR_EN_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pbm_fifo_threshold	*/ 
+/*	 Fields decrement_msg_fifo_threshold	 */
+#define DECREMENT_MSG_FIFO_THRESHOLD_WIDTH                                    5
+#define DECREMENT_MSG_FIFO_THRESHOLD_SHIFT                                    0
+#define DECREMENT_MSG_FIFO_THRESHOLD_MASK                            0x0000001f
+#define DECREMENT_MSG_FIFO_THRESHOLD_RD(src)             (((src) & 0x0000001f))
+#define DECREMENT_MSG_FIFO_THRESHOLD_WR(src)        (((u32)(src)) & 0x0000001f)
+#define DECREMENT_MSG_FIFO_THRESHOLD_SET(dst,src) \
+                          (((dst) & ~0x0000001f) | (((u32)(src)) & 0x0000001f))
+
+/*	Register csr_mboxintr_errinf	*/ 
+/*	 Fields interrupt_line_faulty_intrclr	 */
+#define INTERRUPT_LINE_FAULTY_INTRCLR_WIDTH                                   6
+#define INTERRUPT_LINE_FAULTY_INTRCLR_SHIFT                                   8
+#define INTERRUPT_LINE_FAULTY_INTRCLR_MASK                           0x00003f00
+#define INTERRUPT_LINE_FAULTY_INTRCLR_RD(src)         (((src) & 0x00003f00)>>8)
+#define INTERRUPT_LINE_FAULTY_INTRCLR_SET(dst,src) \
+                       (((dst) & ~0x00003f00) | (((u32)(src)<<8) & 0x00003f00))
+/*	 Fields interrupt_line	 */
+#define INTERRUPT_LINE_WIDTH                                                  6
+#define INTERRUPT_LINE_SHIFT                                                  0
+#define INTERRUPT_LINE_MASK                                          0x0000003f
+#define INTERRUPT_LINE_RD(src)                           (((src) & 0x0000003f))
+#define INTERRUPT_LINE_SET(dst,src) \
+                          (((dst) & ~0x0000003f) | (((u32)(src)) & 0x0000003f))
+
+/*	Register csr_msgrd_errinf1	*/ 
+/*	 Fields response_code	 */
+#define RESPONSE_CODE1_WIDTH                                                  2
+#define RESPONSE_CODE1_SHIFT                                                 10
+#define RESPONSE_CODE1_MASK                                          0x00000c00
+#define RESPONSE_CODE1_RD(src)                       (((src) & 0x00000c00)>>10)
+#define RESPONSE_CODE1_SET(dst,src) \
+                      (((dst) & ~0x00000c00) | (((u32)(src)<<10) & 0x00000c00))
+/*	 Fields push_slvid	 */
+#define PUSH_SLVID1_WIDTH                                                     4
+#define PUSH_SLVID1_SHIFT                                                     6
+#define PUSH_SLVID1_MASK                                             0x000003c0
+#define PUSH_SLVID1_RD(src)                           (((src) & 0x000003c0)>>6)
+#define PUSH_SLVID1_SET(dst,src) \
+                       (((dst) & ~0x000003c0) | (((u32)(src)<<6) & 0x000003c0))
+/*	 Fields push_pbn	 */
+#define PUSH_PBN1_WIDTH                                                       6
+#define PUSH_PBN1_SHIFT                                                       0
+#define PUSH_PBN1_MASK                                               0x0000003f
+#define PUSH_PBN1_RD(src)                                (((src) & 0x0000003f))
+#define PUSH_PBN1_SET(dst,src) \
+                          (((dst) & ~0x0000003f) | (((u32)(src)) & 0x0000003f))
+
+/*	Register csr_acr_errinf	*/ 
+/*	 Fields response_code	 */
+#define RESPONSE_CODE_F2_WIDTH                                                2
+#define RESPONSE_CODE_F2_SHIFT                                               13
+#define RESPONSE_CODE_F2_MASK                                        0x00006000
+#define RESPONSE_CODE_F2_RD(src)                     (((src) & 0x00006000)>>13)
+#define RESPONSE_CODE_F2_SET(dst,src) \
+                      (((dst) & ~0x00006000) | (((u32)(src)<<13) & 0x00006000))
+/*	 Fields mbox_number	 */
+#define MBOX_NUMBER_WIDTH                                                     5
+#define MBOX_NUMBER_SHIFT                                                     8
+#define MBOX_NUMBER_MASK                                             0x00001f00
+#define MBOX_NUMBER_RD(src)                           (((src) & 0x00001f00)>>8)
+#define MBOX_NUMBER_SET(dst,src) \
+                       (((dst) & ~0x00001f00) | (((u32)(src)<<8) & 0x00001f00))
+/*	 Fields slot_number	 */
+#define SLOT_NUMBER_WIDTH                                                     8
+#define SLOT_NUMBER_SHIFT                                                     0
+#define SLOT_NUMBER_MASK                                             0x000000ff
+#define SLOT_NUMBER_RD(src)                              (((src) & 0x000000ff))
+#define SLOT_NUMBER_SET(dst,src) \
                           (((dst) & ~0x000000ff) | (((u32)(src)) & 0x000000ff))
 
+/*	Register csr_pervm_errinf_0	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET0_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET0_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET0_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET0_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET0_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND0_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND0_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND0_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND0_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND0_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET0_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET0_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET0_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET0_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET0_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND0_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND0_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND0_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND0_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND0_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR0_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR0_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR0_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR0_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR0_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID0_WIDTH                                                           10
+#define QID0_SHIFT                                                            0
+#define QID0_MASK                                                    0x000003ff
+#define QID0_RD(src)                                     (((src) & 0x000003ff))
+#define QID0_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_1	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET1_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET1_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET1_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET1_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND1_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND1_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND1_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND1_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET1_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET1_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET1_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET1_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND1_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND1_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND1_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND1_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR1_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR1_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR1_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR1_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID1_WIDTH                                                           10
+#define QID1_SHIFT                                                            0
+#define QID1_MASK                                                    0x000003ff
+#define QID1_RD(src)                                     (((src) & 0x000003ff))
+#define QID1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_2	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET2_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET2_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET2_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET2_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND2_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND2_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND2_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND2_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET2_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET2_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET2_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET2_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND2_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND2_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND2_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND2_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR2_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR2_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR2_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR2_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID2_WIDTH                                                           10
+#define QID2_SHIFT                                                            0
+#define QID2_MASK                                                    0x000003ff
+#define QID2_RD(src)                                     (((src) & 0x000003ff))
+#define QID2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_3	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET3_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET3_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET3_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET3_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET3_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND3_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND3_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND3_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND3_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND3_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET3_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET3_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET3_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET3_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET3_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND3_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND3_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND3_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND3_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND3_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR3_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR3_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR3_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR3_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR3_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID3_WIDTH                                                           10
+#define QID3_SHIFT                                                            0
+#define QID3_MASK                                                    0x000003ff
+#define QID3_RD(src)                                     (((src) & 0x000003ff))
+#define QID3_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_4	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET4_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET4_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET4_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET4_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET4_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND4_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND4_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND4_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND4_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND4_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET4_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET4_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET4_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET4_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET4_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND4_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND4_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND4_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND4_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND4_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR4_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR4_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR4_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR4_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR4_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID4_WIDTH                                                           10
+#define QID4_SHIFT                                                            0
+#define QID4_MASK                                                    0x000003ff
+#define QID4_RD(src)                                     (((src) & 0x000003ff))
+#define QID4_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_5	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET5_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET5_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET5_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET5_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET5_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND5_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND5_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND5_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND5_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND5_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET5_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET5_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET5_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET5_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET5_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND5_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND5_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND5_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND5_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND5_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR5_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR5_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR5_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR5_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR5_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID5_WIDTH                                                           10
+#define QID5_SHIFT                                                            0
+#define QID5_MASK                                                    0x000003ff
+#define QID5_RD(src)                                     (((src) & 0x000003ff))
+#define QID5_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_6	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET6_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET6_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET6_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET6_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET6_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND6_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND6_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND6_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND6_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND6_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET6_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET6_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET6_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET6_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET6_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND6_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND6_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND6_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND6_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND6_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR6_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR6_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR6_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR6_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR6_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID6_WIDTH                                                           10
+#define QID6_SHIFT                                                            0
+#define QID6_MASK                                                    0x000003ff
+#define QID6_RD(src)                                     (((src) & 0x000003ff))
+#define QID6_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_7	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET7_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET7_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET7_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET7_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET7_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND7_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND7_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND7_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND7_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND7_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET7_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET7_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET7_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET7_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET7_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND7_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND7_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND7_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND7_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND7_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR7_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR7_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR7_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR7_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR7_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID7_WIDTH                                                           10
+#define QID7_SHIFT                                                            0
+#define QID7_MASK                                                    0x000003ff
+#define QID7_RD(src)                                     (((src) & 0x000003ff))
+#define QID7_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_8	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET8_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET8_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET8_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET8_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET8_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND8_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND8_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND8_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND8_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND8_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET8_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET8_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET8_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET8_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET8_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND8_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND8_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND8_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND8_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND8_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR8_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR8_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR8_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR8_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR8_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID8_WIDTH                                                           10
+#define QID8_SHIFT                                                            0
+#define QID8_MASK                                                    0x000003ff
+#define QID8_RD(src)                                     (((src) & 0x000003ff))
+#define QID8_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_9	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET9_WIDTH                                          1
+#define DIR_DEQ_BLOCK_NOT_SET9_SHIFT                                         16
+#define DIR_DEQ_BLOCK_NOT_SET9_MASK                                  0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET9_RD(src)               (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET9_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND9_WIDTH                                          1
+#define DIR_DEQ_QID_NOT_FOUND9_SHIFT                                         15
+#define DIR_DEQ_QID_NOT_FOUND9_MASK                                  0x00008000
+#define DIR_DEQ_QID_NOT_FOUND9_RD(src)               (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND9_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET9_WIDTH                                          1
+#define MBOXDEQ_BLOCK_NOT_SET9_SHIFT                                         14
+#define MBOXDEQ_BLOCK_NOT_SET9_MASK                                  0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET9_RD(src)               (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET9_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND9_WIDTH                                          1
+#define MBOXDEQ_QID_NOT_FOUND9_SHIFT                                         13
+#define MBOXDEQ_QID_NOT_FOUND9_MASK                                  0x00002000
+#define MBOXDEQ_QID_NOT_FOUND9_RD(src)               (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND9_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR9_WIDTH                                          1
+#define BACK_TO_BACK_INTR_CLR9_SHIFT                                         12
+#define BACK_TO_BACK_INTR_CLR9_MASK                                  0x00001000
+#define BACK_TO_BACK_INTR_CLR9_RD(src)               (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR9_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID9_WIDTH                                                           10
+#define QID9_SHIFT                                                            0
+#define QID9_MASK                                                    0x000003ff
+#define QID9_RD(src)                                     (((src) & 0x000003ff))
+#define QID9_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_10	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET0_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET0_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET0_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET0_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET0_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND0_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND0_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND0_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND0_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND0_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET0_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET0_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET0_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET0_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET0_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND0_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND0_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND0_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND0_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND0_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR0_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR0_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR0_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR0_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR0_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID0_F1_WIDTH                                                        10
+#define QID0_F1_SHIFT                                                         0
+#define QID0_F1_MASK                                                 0x000003ff
+#define QID0_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID0_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_11	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET1_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET1_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET1_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET1_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET1_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND1_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND1_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND1_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND1_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND1_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET1_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET1_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET1_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET1_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET1_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND1_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND1_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND1_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND1_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND1_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR1_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR1_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR1_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR1_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR1_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID1_F1_WIDTH                                                        10
+#define QID1_F1_SHIFT                                                         0
+#define QID1_F1_MASK                                                 0x000003ff
+#define QID1_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID1_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_12	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET2_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET2_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET2_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET2_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET2_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND2_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND2_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND2_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND2_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND2_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET2_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET2_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET2_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET2_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET2_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND2_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND2_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND2_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND2_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND2_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR2_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR2_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR2_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR2_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR2_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID2_F1_WIDTH                                                        10
+#define QID2_F1_SHIFT                                                         0
+#define QID2_F1_MASK                                                 0x000003ff
+#define QID2_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID2_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_13	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET3_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET3_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET3_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET3_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET3_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND3_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND3_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND3_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND3_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND3_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET3_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET3_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET3_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET3_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET3_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND3_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND3_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND3_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND3_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND3_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR3_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR3_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR3_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR3_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR3_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID3_F1_WIDTH                                                        10
+#define QID3_F1_SHIFT                                                         0
+#define QID3_F1_MASK                                                 0x000003ff
+#define QID3_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID3_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_14	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET4_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET4_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET4_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET4_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET4_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND4_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND4_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND4_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND4_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND4_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET4_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET4_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET4_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET4_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET4_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND4_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND4_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND4_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND4_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND4_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR4_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR4_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR4_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR4_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR4_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID4_F1_WIDTH                                                        10
+#define QID4_F1_SHIFT                                                         0
+#define QID4_F1_MASK                                                 0x000003ff
+#define QID4_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID4_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_15	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET5_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET5_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET5_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET5_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET5_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND5_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND5_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND5_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND5_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND5_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET5_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET5_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET5_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET5_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET5_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND5_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND5_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND5_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND5_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND5_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR5_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR5_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR5_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR5_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR5_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID5_F1_WIDTH                                                        10
+#define QID5_F1_SHIFT                                                         0
+#define QID5_F1_MASK                                                 0x000003ff
+#define QID5_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID5_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_16	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET6_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET6_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET6_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET6_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET6_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND6_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND6_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND6_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND6_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND6_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET6_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET6_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET6_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET6_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET6_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND6_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND6_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND6_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND6_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND6_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR6_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR6_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR6_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR6_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR6_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID6_F1_WIDTH                                                        10
+#define QID6_F1_SHIFT                                                         0
+#define QID6_F1_MASK                                                 0x000003ff
+#define QID6_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID6_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_17	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET7_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET7_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET7_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET7_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET7_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND7_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND7_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND7_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND7_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND7_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET7_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET7_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET7_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET7_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET7_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND7_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND7_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND7_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND7_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND7_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR7_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR7_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR7_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR7_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR7_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID7_F1_WIDTH                                                        10
+#define QID7_F1_SHIFT                                                         0
+#define QID7_F1_MASK                                                 0x000003ff
+#define QID7_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID7_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_18	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET8_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET8_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET8_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET8_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET8_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND8_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND8_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND8_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND8_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND8_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET8_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET8_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET8_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET8_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET8_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND8_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND8_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND8_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND8_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND8_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR8_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR8_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR8_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR8_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR8_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID8_F1_WIDTH                                                        10
+#define QID8_F1_SHIFT                                                         0
+#define QID8_F1_MASK                                                 0x000003ff
+#define QID8_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID8_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_19	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET9_F1_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET9_F1_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET9_F1_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET9_F1_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET9_F1_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND9_F1_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND9_F1_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND9_F1_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND9_F1_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND9_F1_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET9_F1_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET9_F1_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET9_F1_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET9_F1_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET9_F1_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND9_F1_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND9_F1_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND9_F1_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND9_F1_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND9_F1_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR9_F1_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR9_F1_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR9_F1_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR9_F1_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR9_F1_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID9_F1_WIDTH                                                        10
+#define QID9_F1_SHIFT                                                         0
+#define QID9_F1_MASK                                                 0x000003ff
+#define QID9_F1_RD(src)                                  (((src) & 0x000003ff))
+#define QID9_F1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_20	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET0_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET0_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET0_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET0_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET0_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND0_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND0_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND0_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND0_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND0_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET0_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET0_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET0_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET0_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET0_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND0_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND0_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND0_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND0_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND0_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR0_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR0_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR0_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR0_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR0_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID0_F2_WIDTH                                                        10
+#define QID0_F2_SHIFT                                                         0
+#define QID0_F2_MASK                                                 0x000003ff
+#define QID0_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID0_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_21	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET1_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET1_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET1_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET1_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET1_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND1_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND1_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND1_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND1_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND1_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET1_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET1_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET1_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET1_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET1_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND1_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND1_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND1_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND1_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND1_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR1_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR1_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR1_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR1_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR1_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID1_F2_WIDTH                                                        10
+#define QID1_F2_SHIFT                                                         0
+#define QID1_F2_MASK                                                 0x000003ff
+#define QID1_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID1_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_22	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET2_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET2_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET2_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET2_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET2_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND2_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND2_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND2_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND2_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND2_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET2_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET2_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET2_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET2_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET2_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND2_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND2_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND2_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND2_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND2_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR2_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR2_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR2_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR2_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR2_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID2_F2_WIDTH                                                        10
+#define QID2_F2_SHIFT                                                         0
+#define QID2_F2_MASK                                                 0x000003ff
+#define QID2_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID2_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_23	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET3_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET3_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET3_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET3_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET3_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND3_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND3_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND3_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND3_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND3_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET3_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET3_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET3_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET3_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET3_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND3_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND3_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND3_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND3_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND3_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR3_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR3_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR3_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR3_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR3_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID3_F2_WIDTH                                                        10
+#define QID3_F2_SHIFT                                                         0
+#define QID3_F2_MASK                                                 0x000003ff
+#define QID3_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID3_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_24	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET4_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET4_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET4_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET4_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET4_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND4_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND4_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND4_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND4_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND4_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET4_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET4_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET4_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET4_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET4_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND4_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND4_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND4_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND4_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND4_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR4_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR4_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR4_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR4_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR4_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID4_F2_WIDTH                                                        10
+#define QID4_F2_SHIFT                                                         0
+#define QID4_F2_MASK                                                 0x000003ff
+#define QID4_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID4_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_25	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET5_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET5_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET5_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET5_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET5_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND5_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND5_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND5_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND5_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND5_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET5_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET5_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET5_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET5_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET5_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND5_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND5_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND5_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND5_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND5_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR5_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR5_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR5_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR5_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR5_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID5_F2_WIDTH                                                        10
+#define QID5_F2_SHIFT                                                         0
+#define QID5_F2_MASK                                                 0x000003ff
+#define QID5_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID5_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_26	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET6_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET6_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET6_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET6_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET6_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND6_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND6_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND6_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND6_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND6_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET6_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET6_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET6_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET6_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET6_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND6_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND6_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND6_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND6_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND6_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR6_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR6_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR6_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR6_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR6_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID6_F2_WIDTH                                                        10
+#define QID6_F2_SHIFT                                                         0
+#define QID6_F2_MASK                                                 0x000003ff
+#define QID6_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID6_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_27	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET7_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET7_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET7_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET7_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET7_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND7_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND7_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND7_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND7_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND7_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET7_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET7_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET7_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET7_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET7_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND7_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND7_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND7_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND7_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND7_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR7_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR7_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR7_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR7_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR7_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID7_F2_WIDTH                                                        10
+#define QID7_F2_SHIFT                                                         0
+#define QID7_F2_MASK                                                 0x000003ff
+#define QID7_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID7_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_28	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET8_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET8_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET8_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET8_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET8_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND8_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND8_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND8_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND8_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND8_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET8_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET8_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET8_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET8_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET8_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND8_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND8_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND8_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND8_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND8_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR8_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR8_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR8_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR8_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR8_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID8_F2_WIDTH                                                        10
+#define QID8_F2_SHIFT                                                         0
+#define QID8_F2_MASK                                                 0x000003ff
+#define QID8_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID8_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_29	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET9_F2_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET9_F2_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET9_F2_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET9_F2_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET9_F2_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND9_F2_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND9_F2_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND9_F2_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND9_F2_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND9_F2_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET9_F2_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET9_F2_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET9_F2_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET9_F2_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET9_F2_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND9_F2_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND9_F2_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND9_F2_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND9_F2_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND9_F2_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR9_F2_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR9_F2_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR9_F2_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR9_F2_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR9_F2_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID9_F2_WIDTH                                                        10
+#define QID9_F2_SHIFT                                                         0
+#define QID9_F2_MASK                                                 0x000003ff
+#define QID9_F2_RD(src)                                  (((src) & 0x000003ff))
+#define QID9_F2_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_30	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET0_F3_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET0_F3_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET0_F3_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET0_F3_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET0_F3_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND0_F3_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND0_F3_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND0_F3_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND0_F3_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND0_F3_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET0_F3_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET0_F3_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET0_F3_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET0_F3_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET0_F3_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND0_F3_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND0_F3_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND0_F3_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND0_F3_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND0_F3_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR0_F3_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR0_F3_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR0_F3_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR0_F3_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR0_F3_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID0_F3_WIDTH                                                        10
+#define QID0_F3_SHIFT                                                         0
+#define QID0_F3_MASK                                                 0x000003ff
+#define QID0_F3_RD(src)                                  (((src) & 0x000003ff))
+#define QID0_F3_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_errinf_31	*/ 
+/*	 Fields dir_deq_block_not_set	 */
+#define DIR_DEQ_BLOCK_NOT_SET1_F3_WIDTH                                       1
+#define DIR_DEQ_BLOCK_NOT_SET1_F3_SHIFT                                      16
+#define DIR_DEQ_BLOCK_NOT_SET1_F3_MASK                               0x00010000
+#define DIR_DEQ_BLOCK_NOT_SET1_F3_RD(src)            (((src) & 0x00010000)>>16)
+#define DIR_DEQ_BLOCK_NOT_SET1_F3_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields dir_deq_qid_not_found	 */
+#define DIR_DEQ_QID_NOT_FOUND1_F3_WIDTH                                       1
+#define DIR_DEQ_QID_NOT_FOUND1_F3_SHIFT                                      15
+#define DIR_DEQ_QID_NOT_FOUND1_F3_MASK                               0x00008000
+#define DIR_DEQ_QID_NOT_FOUND1_F3_RD(src)            (((src) & 0x00008000)>>15)
+#define DIR_DEQ_QID_NOT_FOUND1_F3_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields mboxdeq_block_not_set	 */
+#define MBOXDEQ_BLOCK_NOT_SET1_F3_WIDTH                                       1
+#define MBOXDEQ_BLOCK_NOT_SET1_F3_SHIFT                                      14
+#define MBOXDEQ_BLOCK_NOT_SET1_F3_MASK                               0x00004000
+#define MBOXDEQ_BLOCK_NOT_SET1_F3_RD(src)            (((src) & 0x00004000)>>14)
+#define MBOXDEQ_BLOCK_NOT_SET1_F3_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields mboxdeq_qid_not_found	 */
+#define MBOXDEQ_QID_NOT_FOUND1_F3_WIDTH                                       1
+#define MBOXDEQ_QID_NOT_FOUND1_F3_SHIFT                                      13
+#define MBOXDEQ_QID_NOT_FOUND1_F3_MASK                               0x00002000
+#define MBOXDEQ_QID_NOT_FOUND1_F3_RD(src)            (((src) & 0x00002000)>>13)
+#define MBOXDEQ_QID_NOT_FOUND1_F3_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields back_to_back_intr_clr	 */
+#define BACK_TO_BACK_INTR_CLR1_F3_WIDTH                                       1
+#define BACK_TO_BACK_INTR_CLR1_F3_SHIFT                                      12
+#define BACK_TO_BACK_INTR_CLR1_F3_MASK                               0x00001000
+#define BACK_TO_BACK_INTR_CLR1_F3_RD(src)            (((src) & 0x00001000)>>12)
+#define BACK_TO_BACK_INTR_CLR1_F3_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields qid	 */
+#define QID1_F3_WIDTH                                                        10
+#define QID1_F3_SHIFT                                                         0
+#define QID1_F3_MASK                                                 0x000003ff
+#define QID1_F3_RD(src)                                  (((src) & 0x000003ff))
+#define QID1_F3_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
+
+/*	Register csr_pervm_faulty_intrclr	*/ 
+/*	 Fields intr_line_31	 */
+#define INTR_LINE_31_WIDTH                                                    1
+#define INTR_LINE_31_SHIFT                                                   31
+#define INTR_LINE_31_MASK                                            0x80000000
+#define INTR_LINE_31_RD(src)                         (((src) & 0x80000000)>>31)
+#define INTR_LINE_31_WR(src)                    (((u32)(src)<<31) & 0x80000000)
+#define INTR_LINE_31_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields intr_line_30	 */
+#define INTR_LINE_30_WIDTH                                                    1
+#define INTR_LINE_30_SHIFT                                                   30
+#define INTR_LINE_30_MASK                                            0x40000000
+#define INTR_LINE_30_RD(src)                         (((src) & 0x40000000)>>30)
+#define INTR_LINE_30_WR(src)                    (((u32)(src)<<30) & 0x40000000)
+#define INTR_LINE_30_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields intr_line_29	 */
+#define INTR_LINE_29_WIDTH                                                    1
+#define INTR_LINE_29_SHIFT                                                   29
+#define INTR_LINE_29_MASK                                            0x20000000
+#define INTR_LINE_29_RD(src)                         (((src) & 0x20000000)>>29)
+#define INTR_LINE_29_WR(src)                    (((u32)(src)<<29) & 0x20000000)
+#define INTR_LINE_29_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*	 Fields intr_line_28	 */
+#define INTR_LINE_28_WIDTH                                                    1
+#define INTR_LINE_28_SHIFT                                                   28
+#define INTR_LINE_28_MASK                                            0x10000000
+#define INTR_LINE_28_RD(src)                         (((src) & 0x10000000)>>28)
+#define INTR_LINE_28_WR(src)                    (((u32)(src)<<28) & 0x10000000)
+#define INTR_LINE_28_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*	 Fields intr_line_27	 */
+#define INTR_LINE_27_WIDTH                                                    1
+#define INTR_LINE_27_SHIFT                                                   27
+#define INTR_LINE_27_MASK                                            0x08000000
+#define INTR_LINE_27_RD(src)                         (((src) & 0x08000000)>>27)
+#define INTR_LINE_27_WR(src)                    (((u32)(src)<<27) & 0x08000000)
+#define INTR_LINE_27_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*	 Fields intr_line_26	 */
+#define INTR_LINE_26_WIDTH                                                    1
+#define INTR_LINE_26_SHIFT                                                   26
+#define INTR_LINE_26_MASK                                            0x04000000
+#define INTR_LINE_26_RD(src)                         (((src) & 0x04000000)>>26)
+#define INTR_LINE_26_WR(src)                    (((u32)(src)<<26) & 0x04000000)
+#define INTR_LINE_26_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*	 Fields intr_line_25	 */
+#define INTR_LINE_25_WIDTH                                                    1
+#define INTR_LINE_25_SHIFT                                                   25
+#define INTR_LINE_25_MASK                                            0x02000000
+#define INTR_LINE_25_RD(src)                         (((src) & 0x02000000)>>25)
+#define INTR_LINE_25_WR(src)                    (((u32)(src)<<25) & 0x02000000)
+#define INTR_LINE_25_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*	 Fields intr_line_24	 */
+#define INTR_LINE_24_WIDTH                                                    1
+#define INTR_LINE_24_SHIFT                                                   24
+#define INTR_LINE_24_MASK                                            0x01000000
+#define INTR_LINE_24_RD(src)                         (((src) & 0x01000000)>>24)
+#define INTR_LINE_24_WR(src)                    (((u32)(src)<<24) & 0x01000000)
+#define INTR_LINE_24_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*	 Fields intr_line_23	 */
+#define INTR_LINE_23_WIDTH                                                    1
+#define INTR_LINE_23_SHIFT                                                   23
+#define INTR_LINE_23_MASK                                            0x00800000
+#define INTR_LINE_23_RD(src)                         (((src) & 0x00800000)>>23)
+#define INTR_LINE_23_WR(src)                    (((u32)(src)<<23) & 0x00800000)
+#define INTR_LINE_23_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*	 Fields intr_line_22	 */
+#define INTR_LINE_22_WIDTH                                                    1
+#define INTR_LINE_22_SHIFT                                                   22
+#define INTR_LINE_22_MASK                                            0x00400000
+#define INTR_LINE_22_RD(src)                         (((src) & 0x00400000)>>22)
+#define INTR_LINE_22_WR(src)                    (((u32)(src)<<22) & 0x00400000)
+#define INTR_LINE_22_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*	 Fields intr_line_21	 */
+#define INTR_LINE_21_WIDTH                                                    1
+#define INTR_LINE_21_SHIFT                                                   21
+#define INTR_LINE_21_MASK                                            0x00200000
+#define INTR_LINE_21_RD(src)                         (((src) & 0x00200000)>>21)
+#define INTR_LINE_21_WR(src)                    (((u32)(src)<<21) & 0x00200000)
+#define INTR_LINE_21_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*	 Fields intr_line_20	 */
+#define INTR_LINE_20_WIDTH                                                    1
+#define INTR_LINE_20_SHIFT                                                   20
+#define INTR_LINE_20_MASK                                            0x00100000
+#define INTR_LINE_20_RD(src)                         (((src) & 0x00100000)>>20)
+#define INTR_LINE_20_WR(src)                    (((u32)(src)<<20) & 0x00100000)
+#define INTR_LINE_20_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*	 Fields intr_line_19	 */
+#define INTR_LINE_19_WIDTH                                                    1
+#define INTR_LINE_19_SHIFT                                                   19
+#define INTR_LINE_19_MASK                                            0x00080000
+#define INTR_LINE_19_RD(src)                         (((src) & 0x00080000)>>19)
+#define INTR_LINE_19_WR(src)                    (((u32)(src)<<19) & 0x00080000)
+#define INTR_LINE_19_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*	 Fields intr_line_18	 */
+#define INTR_LINE_18_WIDTH                                                    1
+#define INTR_LINE_18_SHIFT                                                   18
+#define INTR_LINE_18_MASK                                            0x00040000
+#define INTR_LINE_18_RD(src)                         (((src) & 0x00040000)>>18)
+#define INTR_LINE_18_WR(src)                    (((u32)(src)<<18) & 0x00040000)
+#define INTR_LINE_18_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*	 Fields intr_line_17	 */
+#define INTR_LINE_17_WIDTH                                                    1
+#define INTR_LINE_17_SHIFT                                                   17
+#define INTR_LINE_17_MASK                                            0x00020000
+#define INTR_LINE_17_RD(src)                         (((src) & 0x00020000)>>17)
+#define INTR_LINE_17_WR(src)                    (((u32)(src)<<17) & 0x00020000)
+#define INTR_LINE_17_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*	 Fields intr_line_16	 */
+#define INTR_LINE_16_WIDTH                                                    1
+#define INTR_LINE_16_SHIFT                                                   16
+#define INTR_LINE_16_MASK                                            0x00010000
+#define INTR_LINE_16_RD(src)                         (((src) & 0x00010000)>>16)
+#define INTR_LINE_16_WR(src)                    (((u32)(src)<<16) & 0x00010000)
+#define INTR_LINE_16_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields intr_line_15	 */
+#define INTR_LINE_15_WIDTH                                                    1
+#define INTR_LINE_15_SHIFT                                                   15
+#define INTR_LINE_15_MASK                                            0x00008000
+#define INTR_LINE_15_RD(src)                         (((src) & 0x00008000)>>15)
+#define INTR_LINE_15_WR(src)                    (((u32)(src)<<15) & 0x00008000)
+#define INTR_LINE_15_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields intr_line_14	 */
+#define INTR_LINE_14_WIDTH                                                    1
+#define INTR_LINE_14_SHIFT                                                   14
+#define INTR_LINE_14_MASK                                            0x00004000
+#define INTR_LINE_14_RD(src)                         (((src) & 0x00004000)>>14)
+#define INTR_LINE_14_WR(src)                    (((u32)(src)<<14) & 0x00004000)
+#define INTR_LINE_14_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields intr_line_13	 */
+#define INTR_LINE_13_WIDTH                                                    1
+#define INTR_LINE_13_SHIFT                                                   13
+#define INTR_LINE_13_MASK                                            0x00002000
+#define INTR_LINE_13_RD(src)                         (((src) & 0x00002000)>>13)
+#define INTR_LINE_13_WR(src)                    (((u32)(src)<<13) & 0x00002000)
+#define INTR_LINE_13_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields intr_line_12	 */
+#define INTR_LINE_12_WIDTH                                                    1
+#define INTR_LINE_12_SHIFT                                                   12
+#define INTR_LINE_12_MASK                                            0x00001000
+#define INTR_LINE_12_RD(src)                         (((src) & 0x00001000)>>12)
+#define INTR_LINE_12_WR(src)                    (((u32)(src)<<12) & 0x00001000)
+#define INTR_LINE_12_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields intr_line_11	 */
+#define INTR_LINE_11_WIDTH                                                    1
+#define INTR_LINE_11_SHIFT                                                   11
+#define INTR_LINE_11_MASK                                            0x00000800
+#define INTR_LINE_11_RD(src)                         (((src) & 0x00000800)>>11)
+#define INTR_LINE_11_WR(src)                    (((u32)(src)<<11) & 0x00000800)
+#define INTR_LINE_11_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*	 Fields intr_line_10	 */
+#define INTR_LINE_10_WIDTH                                                    1
+#define INTR_LINE_10_SHIFT                                                   10
+#define INTR_LINE_10_MASK                                            0x00000400
+#define INTR_LINE_10_RD(src)                         (((src) & 0x00000400)>>10)
+#define INTR_LINE_10_WR(src)                    (((u32)(src)<<10) & 0x00000400)
+#define INTR_LINE_10_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*	 Fields intr_line_9	 */
+#define INTR_LINE_9_WIDTH                                                     1
+#define INTR_LINE_9_SHIFT                                                     9
+#define INTR_LINE_9_MASK                                             0x00000200
+#define INTR_LINE_9_RD(src)                           (((src) & 0x00000200)>>9)
+#define INTR_LINE_9_WR(src)                      (((u32)(src)<<9) & 0x00000200)
+#define INTR_LINE_9_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*	 Fields intr_line_8	 */
+#define INTR_LINE_8_WIDTH                                                     1
+#define INTR_LINE_8_SHIFT                                                     8
+#define INTR_LINE_8_MASK                                             0x00000100
+#define INTR_LINE_8_RD(src)                           (((src) & 0x00000100)>>8)
+#define INTR_LINE_8_WR(src)                      (((u32)(src)<<8) & 0x00000100)
+#define INTR_LINE_8_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields intr_line_7	 */
+#define INTR_LINE_7_WIDTH                                                     1
+#define INTR_LINE_7_SHIFT                                                     7
+#define INTR_LINE_7_MASK                                             0x00000080
+#define INTR_LINE_7_RD(src)                           (((src) & 0x00000080)>>7)
+#define INTR_LINE_7_WR(src)                      (((u32)(src)<<7) & 0x00000080)
+#define INTR_LINE_7_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields intr_line_6	 */
+#define INTR_LINE_6_WIDTH                                                     1
+#define INTR_LINE_6_SHIFT                                                     6
+#define INTR_LINE_6_MASK                                             0x00000040
+#define INTR_LINE_6_RD(src)                           (((src) & 0x00000040)>>6)
+#define INTR_LINE_6_WR(src)                      (((u32)(src)<<6) & 0x00000040)
+#define INTR_LINE_6_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields intr_line_5	 */
+#define INTR_LINE_5_WIDTH                                                     1
+#define INTR_LINE_5_SHIFT                                                     5
+#define INTR_LINE_5_MASK                                             0x00000020
+#define INTR_LINE_5_RD(src)                           (((src) & 0x00000020)>>5)
+#define INTR_LINE_5_WR(src)                      (((u32)(src)<<5) & 0x00000020)
+#define INTR_LINE_5_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields intr_line_4	 */
+#define INTR_LINE_4_WIDTH                                                     1
+#define INTR_LINE_4_SHIFT                                                     4
+#define INTR_LINE_4_MASK                                             0x00000010
+#define INTR_LINE_4_RD(src)                           (((src) & 0x00000010)>>4)
+#define INTR_LINE_4_WR(src)                      (((u32)(src)<<4) & 0x00000010)
+#define INTR_LINE_4_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields intr_line_3	 */
+#define INTR_LINE_3_WIDTH                                                     1
+#define INTR_LINE_3_SHIFT                                                     3
+#define INTR_LINE_3_MASK                                             0x00000008
+#define INTR_LINE_3_RD(src)                           (((src) & 0x00000008)>>3)
+#define INTR_LINE_3_WR(src)                      (((u32)(src)<<3) & 0x00000008)
+#define INTR_LINE_3_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields intr_line_2	 */
+#define INTR_LINE_2_WIDTH                                                     1
+#define INTR_LINE_2_SHIFT                                                     2
+#define INTR_LINE_2_MASK                                             0x00000004
+#define INTR_LINE_2_RD(src)                           (((src) & 0x00000004)>>2)
+#define INTR_LINE_2_WR(src)                      (((u32)(src)<<2) & 0x00000004)
+#define INTR_LINE_2_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields intr_line_1	 */
+#define INTR_LINE_1_WIDTH                                                     1
+#define INTR_LINE_1_SHIFT                                                     1
+#define INTR_LINE_1_MASK                                             0x00000002
+#define INTR_LINE_1_RD(src)                           (((src) & 0x00000002)>>1)
+#define INTR_LINE_1_WR(src)                      (((u32)(src)<<1) & 0x00000002)
+#define INTR_LINE_1_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields intr_line_0	 */
+#define INTR_LINE_0_WIDTH                                                     1
+#define INTR_LINE_0_SHIFT                                                     0
+#define INTR_LINE_0_MASK                                             0x00000001
+#define INTR_LINE_0_RD(src)                              (((src) & 0x00000001))
+#define INTR_LINE_0_WR(src)                         (((u32)(src)) & 0x00000001)
+#define INTR_LINE_0_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pervm_faulty_intrclrMask	*/
+/*    Mask Register Fields intr_line_31Mask    */
+#define INTR_LINE_31MASK_WIDTH                                                1
+#define INTR_LINE_31MASK_SHIFT                                               31
+#define INTR_LINE_31MASK_MASK                                        0x80000000
+#define INTR_LINE_31MASK_RD(src)                     (((src) & 0x80000000)>>31)
+#define INTR_LINE_31MASK_WR(src)                (((u32)(src)<<31) & 0x80000000)
+#define INTR_LINE_31MASK_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*    Mask Register Fields intr_line_30Mask    */
+#define INTR_LINE_30MASK_WIDTH                                                1
+#define INTR_LINE_30MASK_SHIFT                                               30
+#define INTR_LINE_30MASK_MASK                                        0x40000000
+#define INTR_LINE_30MASK_RD(src)                     (((src) & 0x40000000)>>30)
+#define INTR_LINE_30MASK_WR(src)                (((u32)(src)<<30) & 0x40000000)
+#define INTR_LINE_30MASK_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*    Mask Register Fields intr_line_29Mask    */
+#define INTR_LINE_29MASK_WIDTH                                                1
+#define INTR_LINE_29MASK_SHIFT                                               29
+#define INTR_LINE_29MASK_MASK                                        0x20000000
+#define INTR_LINE_29MASK_RD(src)                     (((src) & 0x20000000)>>29)
+#define INTR_LINE_29MASK_WR(src)                (((u32)(src)<<29) & 0x20000000)
+#define INTR_LINE_29MASK_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*    Mask Register Fields intr_line_28Mask    */
+#define INTR_LINE_28MASK_WIDTH                                                1
+#define INTR_LINE_28MASK_SHIFT                                               28
+#define INTR_LINE_28MASK_MASK                                        0x10000000
+#define INTR_LINE_28MASK_RD(src)                     (((src) & 0x10000000)>>28)
+#define INTR_LINE_28MASK_WR(src)                (((u32)(src)<<28) & 0x10000000)
+#define INTR_LINE_28MASK_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*    Mask Register Fields intr_line_27Mask    */
+#define INTR_LINE_27MASK_WIDTH                                                1
+#define INTR_LINE_27MASK_SHIFT                                               27
+#define INTR_LINE_27MASK_MASK                                        0x08000000
+#define INTR_LINE_27MASK_RD(src)                     (((src) & 0x08000000)>>27)
+#define INTR_LINE_27MASK_WR(src)                (((u32)(src)<<27) & 0x08000000)
+#define INTR_LINE_27MASK_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*    Mask Register Fields intr_line_26Mask    */
+#define INTR_LINE_26MASK_WIDTH                                                1
+#define INTR_LINE_26MASK_SHIFT                                               26
+#define INTR_LINE_26MASK_MASK                                        0x04000000
+#define INTR_LINE_26MASK_RD(src)                     (((src) & 0x04000000)>>26)
+#define INTR_LINE_26MASK_WR(src)                (((u32)(src)<<26) & 0x04000000)
+#define INTR_LINE_26MASK_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*    Mask Register Fields intr_line_25Mask    */
+#define INTR_LINE_25MASK_WIDTH                                                1
+#define INTR_LINE_25MASK_SHIFT                                               25
+#define INTR_LINE_25MASK_MASK                                        0x02000000
+#define INTR_LINE_25MASK_RD(src)                     (((src) & 0x02000000)>>25)
+#define INTR_LINE_25MASK_WR(src)                (((u32)(src)<<25) & 0x02000000)
+#define INTR_LINE_25MASK_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*    Mask Register Fields intr_line_24Mask    */
+#define INTR_LINE_24MASK_WIDTH                                                1
+#define INTR_LINE_24MASK_SHIFT                                               24
+#define INTR_LINE_24MASK_MASK                                        0x01000000
+#define INTR_LINE_24MASK_RD(src)                     (((src) & 0x01000000)>>24)
+#define INTR_LINE_24MASK_WR(src)                (((u32)(src)<<24) & 0x01000000)
+#define INTR_LINE_24MASK_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*    Mask Register Fields intr_line_23Mask    */
+#define INTR_LINE_23MASK_WIDTH                                                1
+#define INTR_LINE_23MASK_SHIFT                                               23
+#define INTR_LINE_23MASK_MASK                                        0x00800000
+#define INTR_LINE_23MASK_RD(src)                     (((src) & 0x00800000)>>23)
+#define INTR_LINE_23MASK_WR(src)                (((u32)(src)<<23) & 0x00800000)
+#define INTR_LINE_23MASK_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*    Mask Register Fields intr_line_22Mask    */
+#define INTR_LINE_22MASK_WIDTH                                                1
+#define INTR_LINE_22MASK_SHIFT                                               22
+#define INTR_LINE_22MASK_MASK                                        0x00400000
+#define INTR_LINE_22MASK_RD(src)                     (((src) & 0x00400000)>>22)
+#define INTR_LINE_22MASK_WR(src)                (((u32)(src)<<22) & 0x00400000)
+#define INTR_LINE_22MASK_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*    Mask Register Fields intr_line_21Mask    */
+#define INTR_LINE_21MASK_WIDTH                                                1
+#define INTR_LINE_21MASK_SHIFT                                               21
+#define INTR_LINE_21MASK_MASK                                        0x00200000
+#define INTR_LINE_21MASK_RD(src)                     (((src) & 0x00200000)>>21)
+#define INTR_LINE_21MASK_WR(src)                (((u32)(src)<<21) & 0x00200000)
+#define INTR_LINE_21MASK_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*    Mask Register Fields intr_line_20Mask    */
+#define INTR_LINE_20MASK_WIDTH                                                1
+#define INTR_LINE_20MASK_SHIFT                                               20
+#define INTR_LINE_20MASK_MASK                                        0x00100000
+#define INTR_LINE_20MASK_RD(src)                     (((src) & 0x00100000)>>20)
+#define INTR_LINE_20MASK_WR(src)                (((u32)(src)<<20) & 0x00100000)
+#define INTR_LINE_20MASK_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*    Mask Register Fields intr_line_19Mask    */
+#define INTR_LINE_19MASK_WIDTH                                                1
+#define INTR_LINE_19MASK_SHIFT                                               19
+#define INTR_LINE_19MASK_MASK                                        0x00080000
+#define INTR_LINE_19MASK_RD(src)                     (((src) & 0x00080000)>>19)
+#define INTR_LINE_19MASK_WR(src)                (((u32)(src)<<19) & 0x00080000)
+#define INTR_LINE_19MASK_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*    Mask Register Fields intr_line_18Mask    */
+#define INTR_LINE_18MASK_WIDTH                                                1
+#define INTR_LINE_18MASK_SHIFT                                               18
+#define INTR_LINE_18MASK_MASK                                        0x00040000
+#define INTR_LINE_18MASK_RD(src)                     (((src) & 0x00040000)>>18)
+#define INTR_LINE_18MASK_WR(src)                (((u32)(src)<<18) & 0x00040000)
+#define INTR_LINE_18MASK_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*    Mask Register Fields intr_line_17Mask    */
+#define INTR_LINE_17MASK_WIDTH                                                1
+#define INTR_LINE_17MASK_SHIFT                                               17
+#define INTR_LINE_17MASK_MASK                                        0x00020000
+#define INTR_LINE_17MASK_RD(src)                     (((src) & 0x00020000)>>17)
+#define INTR_LINE_17MASK_WR(src)                (((u32)(src)<<17) & 0x00020000)
+#define INTR_LINE_17MASK_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*    Mask Register Fields intr_line_16Mask    */
+#define INTR_LINE_16MASK_WIDTH                                                1
+#define INTR_LINE_16MASK_SHIFT                                               16
+#define INTR_LINE_16MASK_MASK                                        0x00010000
+#define INTR_LINE_16MASK_RD(src)                     (((src) & 0x00010000)>>16)
+#define INTR_LINE_16MASK_WR(src)                (((u32)(src)<<16) & 0x00010000)
+#define INTR_LINE_16MASK_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*    Mask Register Fields intr_line_15Mask    */
+#define INTR_LINE_15MASK_WIDTH                                                1
+#define INTR_LINE_15MASK_SHIFT                                               15
+#define INTR_LINE_15MASK_MASK                                        0x00008000
+#define INTR_LINE_15MASK_RD(src)                     (((src) & 0x00008000)>>15)
+#define INTR_LINE_15MASK_WR(src)                (((u32)(src)<<15) & 0x00008000)
+#define INTR_LINE_15MASK_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*    Mask Register Fields intr_line_14Mask    */
+#define INTR_LINE_14MASK_WIDTH                                                1
+#define INTR_LINE_14MASK_SHIFT                                               14
+#define INTR_LINE_14MASK_MASK                                        0x00004000
+#define INTR_LINE_14MASK_RD(src)                     (((src) & 0x00004000)>>14)
+#define INTR_LINE_14MASK_WR(src)                (((u32)(src)<<14) & 0x00004000)
+#define INTR_LINE_14MASK_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*    Mask Register Fields intr_line_13Mask    */
+#define INTR_LINE_13MASK_WIDTH                                                1
+#define INTR_LINE_13MASK_SHIFT                                               13
+#define INTR_LINE_13MASK_MASK                                        0x00002000
+#define INTR_LINE_13MASK_RD(src)                     (((src) & 0x00002000)>>13)
+#define INTR_LINE_13MASK_WR(src)                (((u32)(src)<<13) & 0x00002000)
+#define INTR_LINE_13MASK_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*    Mask Register Fields intr_line_12Mask    */
+#define INTR_LINE_12MASK_WIDTH                                                1
+#define INTR_LINE_12MASK_SHIFT                                               12
+#define INTR_LINE_12MASK_MASK                                        0x00001000
+#define INTR_LINE_12MASK_RD(src)                     (((src) & 0x00001000)>>12)
+#define INTR_LINE_12MASK_WR(src)                (((u32)(src)<<12) & 0x00001000)
+#define INTR_LINE_12MASK_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*    Mask Register Fields intr_line_11Mask    */
+#define INTR_LINE_11MASK_WIDTH                                                1
+#define INTR_LINE_11MASK_SHIFT                                               11
+#define INTR_LINE_11MASK_MASK                                        0x00000800
+#define INTR_LINE_11MASK_RD(src)                     (((src) & 0x00000800)>>11)
+#define INTR_LINE_11MASK_WR(src)                (((u32)(src)<<11) & 0x00000800)
+#define INTR_LINE_11MASK_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*    Mask Register Fields intr_line_10Mask    */
+#define INTR_LINE_10MASK_WIDTH                                                1
+#define INTR_LINE_10MASK_SHIFT                                               10
+#define INTR_LINE_10MASK_MASK                                        0x00000400
+#define INTR_LINE_10MASK_RD(src)                     (((src) & 0x00000400)>>10)
+#define INTR_LINE_10MASK_WR(src)                (((u32)(src)<<10) & 0x00000400)
+#define INTR_LINE_10MASK_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*    Mask Register Fields intr_line_9Mask    */
+#define INTR_LINE_9MASK_WIDTH                                                 1
+#define INTR_LINE_9MASK_SHIFT                                                 9
+#define INTR_LINE_9MASK_MASK                                         0x00000200
+#define INTR_LINE_9MASK_RD(src)                       (((src) & 0x00000200)>>9)
+#define INTR_LINE_9MASK_WR(src)                  (((u32)(src)<<9) & 0x00000200)
+#define INTR_LINE_9MASK_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*    Mask Register Fields intr_line_8Mask    */
+#define INTR_LINE_8MASK_WIDTH                                                 1
+#define INTR_LINE_8MASK_SHIFT                                                 8
+#define INTR_LINE_8MASK_MASK                                         0x00000100
+#define INTR_LINE_8MASK_RD(src)                       (((src) & 0x00000100)>>8)
+#define INTR_LINE_8MASK_WR(src)                  (((u32)(src)<<8) & 0x00000100)
+#define INTR_LINE_8MASK_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*    Mask Register Fields intr_line_7Mask    */
+#define INTR_LINE_7MASK_WIDTH                                                 1
+#define INTR_LINE_7MASK_SHIFT                                                 7
+#define INTR_LINE_7MASK_MASK                                         0x00000080
+#define INTR_LINE_7MASK_RD(src)                       (((src) & 0x00000080)>>7)
+#define INTR_LINE_7MASK_WR(src)                  (((u32)(src)<<7) & 0x00000080)
+#define INTR_LINE_7MASK_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*    Mask Register Fields intr_line_6Mask    */
+#define INTR_LINE_6MASK_WIDTH                                                 1
+#define INTR_LINE_6MASK_SHIFT                                                 6
+#define INTR_LINE_6MASK_MASK                                         0x00000040
+#define INTR_LINE_6MASK_RD(src)                       (((src) & 0x00000040)>>6)
+#define INTR_LINE_6MASK_WR(src)                  (((u32)(src)<<6) & 0x00000040)
+#define INTR_LINE_6MASK_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*    Mask Register Fields intr_line_5Mask    */
+#define INTR_LINE_5MASK_WIDTH                                                 1
+#define INTR_LINE_5MASK_SHIFT                                                 5
+#define INTR_LINE_5MASK_MASK                                         0x00000020
+#define INTR_LINE_5MASK_RD(src)                       (((src) & 0x00000020)>>5)
+#define INTR_LINE_5MASK_WR(src)                  (((u32)(src)<<5) & 0x00000020)
+#define INTR_LINE_5MASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields intr_line_4Mask    */
+#define INTR_LINE_4MASK_WIDTH                                                 1
+#define INTR_LINE_4MASK_SHIFT                                                 4
+#define INTR_LINE_4MASK_MASK                                         0x00000010
+#define INTR_LINE_4MASK_RD(src)                       (((src) & 0x00000010)>>4)
+#define INTR_LINE_4MASK_WR(src)                  (((u32)(src)<<4) & 0x00000010)
+#define INTR_LINE_4MASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*    Mask Register Fields intr_line_3Mask    */
+#define INTR_LINE_3MASK_WIDTH                                                 1
+#define INTR_LINE_3MASK_SHIFT                                                 3
+#define INTR_LINE_3MASK_MASK                                         0x00000008
+#define INTR_LINE_3MASK_RD(src)                       (((src) & 0x00000008)>>3)
+#define INTR_LINE_3MASK_WR(src)                  (((u32)(src)<<3) & 0x00000008)
+#define INTR_LINE_3MASK_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*    Mask Register Fields intr_line_2Mask    */
+#define INTR_LINE_2MASK_WIDTH                                                 1
+#define INTR_LINE_2MASK_SHIFT                                                 2
+#define INTR_LINE_2MASK_MASK                                         0x00000004
+#define INTR_LINE_2MASK_RD(src)                       (((src) & 0x00000004)>>2)
+#define INTR_LINE_2MASK_WR(src)                  (((u32)(src)<<2) & 0x00000004)
+#define INTR_LINE_2MASK_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*    Mask Register Fields intr_line_1Mask    */
+#define INTR_LINE_1MASK_WIDTH                                                 1
+#define INTR_LINE_1MASK_SHIFT                                                 1
+#define INTR_LINE_1MASK_MASK                                         0x00000002
+#define INTR_LINE_1MASK_RD(src)                       (((src) & 0x00000002)>>1)
+#define INTR_LINE_1MASK_WR(src)                  (((u32)(src)<<1) & 0x00000002)
+#define INTR_LINE_1MASK_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*    Mask Register Fields intr_line_0Mask    */
+#define INTR_LINE_0MASK_WIDTH                                                 1
+#define INTR_LINE_0MASK_SHIFT                                                 0
+#define INTR_LINE_0MASK_MASK                                         0x00000001
+#define INTR_LINE_0MASK_RD(src)                          (((src) & 0x00000001))
+#define INTR_LINE_0MASK_WR(src)                     (((u32)(src)) & 0x00000001)
+#define INTR_LINE_0MASK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pervm_fifo_overflow_intr	*/ 
+/*	 Fields pervm_intr_overfl_intr_31	 */
+#define PERVM_INTR_OVERFL_INTR_31_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_31_SHIFT                                      31
+#define PERVM_INTR_OVERFL_INTR_31_MASK                               0x80000000
+#define PERVM_INTR_OVERFL_INTR_31_RD(src)            (((src) & 0x80000000)>>31)
+#define PERVM_INTR_OVERFL_INTR_31_WR(src)       (((u32)(src)<<31) & 0x80000000)
+#define PERVM_INTR_OVERFL_INTR_31_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields pervm_intr_overfl_intr_30	 */
+#define PERVM_INTR_OVERFL_INTR_30_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_30_SHIFT                                      30
+#define PERVM_INTR_OVERFL_INTR_30_MASK                               0x40000000
+#define PERVM_INTR_OVERFL_INTR_30_RD(src)            (((src) & 0x40000000)>>30)
+#define PERVM_INTR_OVERFL_INTR_30_WR(src)       (((u32)(src)<<30) & 0x40000000)
+#define PERVM_INTR_OVERFL_INTR_30_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields pervm_intr_overfl_intr_29	 */
+#define PERVM_INTR_OVERFL_INTR_29_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_29_SHIFT                                      29
+#define PERVM_INTR_OVERFL_INTR_29_MASK                               0x20000000
+#define PERVM_INTR_OVERFL_INTR_29_RD(src)            (((src) & 0x20000000)>>29)
+#define PERVM_INTR_OVERFL_INTR_29_WR(src)       (((u32)(src)<<29) & 0x20000000)
+#define PERVM_INTR_OVERFL_INTR_29_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*	 Fields pervm_intr_overfl_intr_28	 */
+#define PERVM_INTR_OVERFL_INTR_28_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_28_SHIFT                                      28
+#define PERVM_INTR_OVERFL_INTR_28_MASK                               0x10000000
+#define PERVM_INTR_OVERFL_INTR_28_RD(src)            (((src) & 0x10000000)>>28)
+#define PERVM_INTR_OVERFL_INTR_28_WR(src)       (((u32)(src)<<28) & 0x10000000)
+#define PERVM_INTR_OVERFL_INTR_28_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*	 Fields pervm_intr_overfl_intr_27	 */
+#define PERVM_INTR_OVERFL_INTR_27_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_27_SHIFT                                      27
+#define PERVM_INTR_OVERFL_INTR_27_MASK                               0x08000000
+#define PERVM_INTR_OVERFL_INTR_27_RD(src)            (((src) & 0x08000000)>>27)
+#define PERVM_INTR_OVERFL_INTR_27_WR(src)       (((u32)(src)<<27) & 0x08000000)
+#define PERVM_INTR_OVERFL_INTR_27_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*	 Fields pervm_intr_overfl_intr_26	 */
+#define PERVM_INTR_OVERFL_INTR_26_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_26_SHIFT                                      26
+#define PERVM_INTR_OVERFL_INTR_26_MASK                               0x04000000
+#define PERVM_INTR_OVERFL_INTR_26_RD(src)            (((src) & 0x04000000)>>26)
+#define PERVM_INTR_OVERFL_INTR_26_WR(src)       (((u32)(src)<<26) & 0x04000000)
+#define PERVM_INTR_OVERFL_INTR_26_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*	 Fields pervm_intr_overfl_intr_25	 */
+#define PERVM_INTR_OVERFL_INTR_25_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_25_SHIFT                                      25
+#define PERVM_INTR_OVERFL_INTR_25_MASK                               0x02000000
+#define PERVM_INTR_OVERFL_INTR_25_RD(src)            (((src) & 0x02000000)>>25)
+#define PERVM_INTR_OVERFL_INTR_25_WR(src)       (((u32)(src)<<25) & 0x02000000)
+#define PERVM_INTR_OVERFL_INTR_25_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*	 Fields pervm_intr_overfl_intr_24	 */
+#define PERVM_INTR_OVERFL_INTR_24_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_24_SHIFT                                      24
+#define PERVM_INTR_OVERFL_INTR_24_MASK                               0x01000000
+#define PERVM_INTR_OVERFL_INTR_24_RD(src)            (((src) & 0x01000000)>>24)
+#define PERVM_INTR_OVERFL_INTR_24_WR(src)       (((u32)(src)<<24) & 0x01000000)
+#define PERVM_INTR_OVERFL_INTR_24_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*	 Fields pervm_intr_overfl_intr_23	 */
+#define PERVM_INTR_OVERFL_INTR_23_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_23_SHIFT                                      23
+#define PERVM_INTR_OVERFL_INTR_23_MASK                               0x00800000
+#define PERVM_INTR_OVERFL_INTR_23_RD(src)            (((src) & 0x00800000)>>23)
+#define PERVM_INTR_OVERFL_INTR_23_WR(src)       (((u32)(src)<<23) & 0x00800000)
+#define PERVM_INTR_OVERFL_INTR_23_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*	 Fields pervm_intr_overfl_intr_22	 */
+#define PERVM_INTR_OVERFL_INTR_22_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_22_SHIFT                                      22
+#define PERVM_INTR_OVERFL_INTR_22_MASK                               0x00400000
+#define PERVM_INTR_OVERFL_INTR_22_RD(src)            (((src) & 0x00400000)>>22)
+#define PERVM_INTR_OVERFL_INTR_22_WR(src)       (((u32)(src)<<22) & 0x00400000)
+#define PERVM_INTR_OVERFL_INTR_22_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*	 Fields pervm_intr_overfl_intr_21	 */
+#define PERVM_INTR_OVERFL_INTR_21_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_21_SHIFT                                      21
+#define PERVM_INTR_OVERFL_INTR_21_MASK                               0x00200000
+#define PERVM_INTR_OVERFL_INTR_21_RD(src)            (((src) & 0x00200000)>>21)
+#define PERVM_INTR_OVERFL_INTR_21_WR(src)       (((u32)(src)<<21) & 0x00200000)
+#define PERVM_INTR_OVERFL_INTR_21_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*	 Fields pervm_intr_overfl_intr_20	 */
+#define PERVM_INTR_OVERFL_INTR_20_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_20_SHIFT                                      20
+#define PERVM_INTR_OVERFL_INTR_20_MASK                               0x00100000
+#define PERVM_INTR_OVERFL_INTR_20_RD(src)            (((src) & 0x00100000)>>20)
+#define PERVM_INTR_OVERFL_INTR_20_WR(src)       (((u32)(src)<<20) & 0x00100000)
+#define PERVM_INTR_OVERFL_INTR_20_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*	 Fields pervm_intr_overfl_intr_19	 */
+#define PERVM_INTR_OVERFL_INTR_19_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_19_SHIFT                                      19
+#define PERVM_INTR_OVERFL_INTR_19_MASK                               0x00080000
+#define PERVM_INTR_OVERFL_INTR_19_RD(src)            (((src) & 0x00080000)>>19)
+#define PERVM_INTR_OVERFL_INTR_19_WR(src)       (((u32)(src)<<19) & 0x00080000)
+#define PERVM_INTR_OVERFL_INTR_19_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*	 Fields pervm_intr_overfl_intr_18	 */
+#define PERVM_INTR_OVERFL_INTR_18_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_18_SHIFT                                      18
+#define PERVM_INTR_OVERFL_INTR_18_MASK                               0x00040000
+#define PERVM_INTR_OVERFL_INTR_18_RD(src)            (((src) & 0x00040000)>>18)
+#define PERVM_INTR_OVERFL_INTR_18_WR(src)       (((u32)(src)<<18) & 0x00040000)
+#define PERVM_INTR_OVERFL_INTR_18_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*	 Fields pervm_intr_overfl_intr_17	 */
+#define PERVM_INTR_OVERFL_INTR_17_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_17_SHIFT                                      17
+#define PERVM_INTR_OVERFL_INTR_17_MASK                               0x00020000
+#define PERVM_INTR_OVERFL_INTR_17_RD(src)            (((src) & 0x00020000)>>17)
+#define PERVM_INTR_OVERFL_INTR_17_WR(src)       (((u32)(src)<<17) & 0x00020000)
+#define PERVM_INTR_OVERFL_INTR_17_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*	 Fields pervm_intr_overfl_intr_16	 */
+#define PERVM_INTR_OVERFL_INTR_16_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_16_SHIFT                                      16
+#define PERVM_INTR_OVERFL_INTR_16_MASK                               0x00010000
+#define PERVM_INTR_OVERFL_INTR_16_RD(src)            (((src) & 0x00010000)>>16)
+#define PERVM_INTR_OVERFL_INTR_16_WR(src)       (((u32)(src)<<16) & 0x00010000)
+#define PERVM_INTR_OVERFL_INTR_16_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields pervm_intr_overfl_intr_15	 */
+#define PERVM_INTR_OVERFL_INTR_15_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_15_SHIFT                                      15
+#define PERVM_INTR_OVERFL_INTR_15_MASK                               0x00008000
+#define PERVM_INTR_OVERFL_INTR_15_RD(src)            (((src) & 0x00008000)>>15)
+#define PERVM_INTR_OVERFL_INTR_15_WR(src)       (((u32)(src)<<15) & 0x00008000)
+#define PERVM_INTR_OVERFL_INTR_15_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields pervm_intr_overfl_intr_14	 */
+#define PERVM_INTR_OVERFL_INTR_14_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_14_SHIFT                                      14
+#define PERVM_INTR_OVERFL_INTR_14_MASK                               0x00004000
+#define PERVM_INTR_OVERFL_INTR_14_RD(src)            (((src) & 0x00004000)>>14)
+#define PERVM_INTR_OVERFL_INTR_14_WR(src)       (((u32)(src)<<14) & 0x00004000)
+#define PERVM_INTR_OVERFL_INTR_14_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields pervm_intr_overfl_intr_13	 */
+#define PERVM_INTR_OVERFL_INTR_13_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_13_SHIFT                                      13
+#define PERVM_INTR_OVERFL_INTR_13_MASK                               0x00002000
+#define PERVM_INTR_OVERFL_INTR_13_RD(src)            (((src) & 0x00002000)>>13)
+#define PERVM_INTR_OVERFL_INTR_13_WR(src)       (((u32)(src)<<13) & 0x00002000)
+#define PERVM_INTR_OVERFL_INTR_13_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields pervm_intr_overfl_intr_12	 */
+#define PERVM_INTR_OVERFL_INTR_12_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_12_SHIFT                                      12
+#define PERVM_INTR_OVERFL_INTR_12_MASK                               0x00001000
+#define PERVM_INTR_OVERFL_INTR_12_RD(src)            (((src) & 0x00001000)>>12)
+#define PERVM_INTR_OVERFL_INTR_12_WR(src)       (((u32)(src)<<12) & 0x00001000)
+#define PERVM_INTR_OVERFL_INTR_12_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields pervm_intr_overfl_intr_11	 */
+#define PERVM_INTR_OVERFL_INTR_11_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_11_SHIFT                                      11
+#define PERVM_INTR_OVERFL_INTR_11_MASK                               0x00000800
+#define PERVM_INTR_OVERFL_INTR_11_RD(src)            (((src) & 0x00000800)>>11)
+#define PERVM_INTR_OVERFL_INTR_11_WR(src)       (((u32)(src)<<11) & 0x00000800)
+#define PERVM_INTR_OVERFL_INTR_11_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*	 Fields pervm_intr_overfl_intr_10	 */
+#define PERVM_INTR_OVERFL_INTR_10_WIDTH                                       1
+#define PERVM_INTR_OVERFL_INTR_10_SHIFT                                      10
+#define PERVM_INTR_OVERFL_INTR_10_MASK                               0x00000400
+#define PERVM_INTR_OVERFL_INTR_10_RD(src)            (((src) & 0x00000400)>>10)
+#define PERVM_INTR_OVERFL_INTR_10_WR(src)       (((u32)(src)<<10) & 0x00000400)
+#define PERVM_INTR_OVERFL_INTR_10_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*	 Fields pervm_intr_overfl_intr_9	 */
+#define PERVM_INTR_OVERFL_INTR_9_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_9_SHIFT                                        9
+#define PERVM_INTR_OVERFL_INTR_9_MASK                                0x00000200
+#define PERVM_INTR_OVERFL_INTR_9_RD(src)              (((src) & 0x00000200)>>9)
+#define PERVM_INTR_OVERFL_INTR_9_WR(src)         (((u32)(src)<<9) & 0x00000200)
+#define PERVM_INTR_OVERFL_INTR_9_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*	 Fields pervm_intr_overfl_intr_8	 */
+#define PERVM_INTR_OVERFL_INTR_8_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_8_SHIFT                                        8
+#define PERVM_INTR_OVERFL_INTR_8_MASK                                0x00000100
+#define PERVM_INTR_OVERFL_INTR_8_RD(src)              (((src) & 0x00000100)>>8)
+#define PERVM_INTR_OVERFL_INTR_8_WR(src)         (((u32)(src)<<8) & 0x00000100)
+#define PERVM_INTR_OVERFL_INTR_8_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields pervm_intr_overfl_intr_7	 */
+#define PERVM_INTR_OVERFL_INTR_7_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_7_SHIFT                                        7
+#define PERVM_INTR_OVERFL_INTR_7_MASK                                0x00000080
+#define PERVM_INTR_OVERFL_INTR_7_RD(src)              (((src) & 0x00000080)>>7)
+#define PERVM_INTR_OVERFL_INTR_7_WR(src)         (((u32)(src)<<7) & 0x00000080)
+#define PERVM_INTR_OVERFL_INTR_7_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields pervm_intr_overfl_intr_6	 */
+#define PERVM_INTR_OVERFL_INTR_6_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_6_SHIFT                                        6
+#define PERVM_INTR_OVERFL_INTR_6_MASK                                0x00000040
+#define PERVM_INTR_OVERFL_INTR_6_RD(src)              (((src) & 0x00000040)>>6)
+#define PERVM_INTR_OVERFL_INTR_6_WR(src)         (((u32)(src)<<6) & 0x00000040)
+#define PERVM_INTR_OVERFL_INTR_6_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields pervm_intr_overfl_intr_5	 */
+#define PERVM_INTR_OVERFL_INTR_5_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_5_SHIFT                                        5
+#define PERVM_INTR_OVERFL_INTR_5_MASK                                0x00000020
+#define PERVM_INTR_OVERFL_INTR_5_RD(src)              (((src) & 0x00000020)>>5)
+#define PERVM_INTR_OVERFL_INTR_5_WR(src)         (((u32)(src)<<5) & 0x00000020)
+#define PERVM_INTR_OVERFL_INTR_5_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields pervm_intr_overfl_intr_4	 */
+#define PERVM_INTR_OVERFL_INTR_4_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_4_SHIFT                                        4
+#define PERVM_INTR_OVERFL_INTR_4_MASK                                0x00000010
+#define PERVM_INTR_OVERFL_INTR_4_RD(src)              (((src) & 0x00000010)>>4)
+#define PERVM_INTR_OVERFL_INTR_4_WR(src)         (((u32)(src)<<4) & 0x00000010)
+#define PERVM_INTR_OVERFL_INTR_4_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields pervm_intr_overfl_intr_3	 */
+#define PERVM_INTR_OVERFL_INTR_3_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_3_SHIFT                                        3
+#define PERVM_INTR_OVERFL_INTR_3_MASK                                0x00000008
+#define PERVM_INTR_OVERFL_INTR_3_RD(src)              (((src) & 0x00000008)>>3)
+#define PERVM_INTR_OVERFL_INTR_3_WR(src)         (((u32)(src)<<3) & 0x00000008)
+#define PERVM_INTR_OVERFL_INTR_3_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields pervm_intr_overfl_intr_2	 */
+#define PERVM_INTR_OVERFL_INTR_2_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_2_SHIFT                                        2
+#define PERVM_INTR_OVERFL_INTR_2_MASK                                0x00000004
+#define PERVM_INTR_OVERFL_INTR_2_RD(src)              (((src) & 0x00000004)>>2)
+#define PERVM_INTR_OVERFL_INTR_2_WR(src)         (((u32)(src)<<2) & 0x00000004)
+#define PERVM_INTR_OVERFL_INTR_2_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields pervm_intr_overfl_intr_1	 */
+#define PERVM_INTR_OVERFL_INTR_1_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_1_SHIFT                                        1
+#define PERVM_INTR_OVERFL_INTR_1_MASK                                0x00000002
+#define PERVM_INTR_OVERFL_INTR_1_RD(src)              (((src) & 0x00000002)>>1)
+#define PERVM_INTR_OVERFL_INTR_1_WR(src)         (((u32)(src)<<1) & 0x00000002)
+#define PERVM_INTR_OVERFL_INTR_1_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields pervm_intr_overfl_intr_0	 */
+#define PERVM_INTR_OVERFL_INTR_0_WIDTH                                        1
+#define PERVM_INTR_OVERFL_INTR_0_SHIFT                                        0
+#define PERVM_INTR_OVERFL_INTR_0_MASK                                0x00000001
+#define PERVM_INTR_OVERFL_INTR_0_RD(src)                 (((src) & 0x00000001))
+#define PERVM_INTR_OVERFL_INTR_0_WR(src)            (((u32)(src)) & 0x00000001)
+#define PERVM_INTR_OVERFL_INTR_0_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pervm_fifo_overflow_intrMask	*/
+/*    Mask Register Fields pervm_intr_overfl_intr_31Mask    */
+#define PERVM_INTR_OVERFL_INTR_31MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_31MASK_SHIFT                                  31
+#define PERVM_INTR_OVERFL_INTR_31MASK_MASK                           0x80000000
+#define PERVM_INTR_OVERFL_INTR_31MASK_RD(src)        (((src) & 0x80000000)>>31)
+#define PERVM_INTR_OVERFL_INTR_31MASK_WR(src)   (((u32)(src)<<31) & 0x80000000)
+#define PERVM_INTR_OVERFL_INTR_31MASK_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_30Mask    */
+#define PERVM_INTR_OVERFL_INTR_30MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_30MASK_SHIFT                                  30
+#define PERVM_INTR_OVERFL_INTR_30MASK_MASK                           0x40000000
+#define PERVM_INTR_OVERFL_INTR_30MASK_RD(src)        (((src) & 0x40000000)>>30)
+#define PERVM_INTR_OVERFL_INTR_30MASK_WR(src)   (((u32)(src)<<30) & 0x40000000)
+#define PERVM_INTR_OVERFL_INTR_30MASK_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_29Mask    */
+#define PERVM_INTR_OVERFL_INTR_29MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_29MASK_SHIFT                                  29
+#define PERVM_INTR_OVERFL_INTR_29MASK_MASK                           0x20000000
+#define PERVM_INTR_OVERFL_INTR_29MASK_RD(src)        (((src) & 0x20000000)>>29)
+#define PERVM_INTR_OVERFL_INTR_29MASK_WR(src)   (((u32)(src)<<29) & 0x20000000)
+#define PERVM_INTR_OVERFL_INTR_29MASK_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_28Mask    */
+#define PERVM_INTR_OVERFL_INTR_28MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_28MASK_SHIFT                                  28
+#define PERVM_INTR_OVERFL_INTR_28MASK_MASK                           0x10000000
+#define PERVM_INTR_OVERFL_INTR_28MASK_RD(src)        (((src) & 0x10000000)>>28)
+#define PERVM_INTR_OVERFL_INTR_28MASK_WR(src)   (((u32)(src)<<28) & 0x10000000)
+#define PERVM_INTR_OVERFL_INTR_28MASK_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_27Mask    */
+#define PERVM_INTR_OVERFL_INTR_27MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_27MASK_SHIFT                                  27
+#define PERVM_INTR_OVERFL_INTR_27MASK_MASK                           0x08000000
+#define PERVM_INTR_OVERFL_INTR_27MASK_RD(src)        (((src) & 0x08000000)>>27)
+#define PERVM_INTR_OVERFL_INTR_27MASK_WR(src)   (((u32)(src)<<27) & 0x08000000)
+#define PERVM_INTR_OVERFL_INTR_27MASK_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_26Mask    */
+#define PERVM_INTR_OVERFL_INTR_26MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_26MASK_SHIFT                                  26
+#define PERVM_INTR_OVERFL_INTR_26MASK_MASK                           0x04000000
+#define PERVM_INTR_OVERFL_INTR_26MASK_RD(src)        (((src) & 0x04000000)>>26)
+#define PERVM_INTR_OVERFL_INTR_26MASK_WR(src)   (((u32)(src)<<26) & 0x04000000)
+#define PERVM_INTR_OVERFL_INTR_26MASK_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_25Mask    */
+#define PERVM_INTR_OVERFL_INTR_25MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_25MASK_SHIFT                                  25
+#define PERVM_INTR_OVERFL_INTR_25MASK_MASK                           0x02000000
+#define PERVM_INTR_OVERFL_INTR_25MASK_RD(src)        (((src) & 0x02000000)>>25)
+#define PERVM_INTR_OVERFL_INTR_25MASK_WR(src)   (((u32)(src)<<25) & 0x02000000)
+#define PERVM_INTR_OVERFL_INTR_25MASK_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_24Mask    */
+#define PERVM_INTR_OVERFL_INTR_24MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_24MASK_SHIFT                                  24
+#define PERVM_INTR_OVERFL_INTR_24MASK_MASK                           0x01000000
+#define PERVM_INTR_OVERFL_INTR_24MASK_RD(src)        (((src) & 0x01000000)>>24)
+#define PERVM_INTR_OVERFL_INTR_24MASK_WR(src)   (((u32)(src)<<24) & 0x01000000)
+#define PERVM_INTR_OVERFL_INTR_24MASK_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*    Mask Register Fields pervm_intr_overfl_intr_23Mask    */
+#define PERVM_INTR_OVERFL_INTR_23MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_23MASK_SHIFT                                  23
+#define PERVM_INTR_OVERFL_INTR_23MASK_MASK                           0x00800000
+#define PERVM_INTR_OVERFL_INTR_23MASK_RD(src)        (((src) & 0x00800000)>>23)
+#define PERVM_INTR_OVERFL_INTR_23MASK_WR(src)   (((u32)(src)<<23) & 0x00800000)
+#define PERVM_INTR_OVERFL_INTR_23MASK_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*    Mask Register Fields pervm_intr_overfl_intr_22Mask    */
+#define PERVM_INTR_OVERFL_INTR_22MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_22MASK_SHIFT                                  22
+#define PERVM_INTR_OVERFL_INTR_22MASK_MASK                           0x00400000
+#define PERVM_INTR_OVERFL_INTR_22MASK_RD(src)        (((src) & 0x00400000)>>22)
+#define PERVM_INTR_OVERFL_INTR_22MASK_WR(src)   (((u32)(src)<<22) & 0x00400000)
+#define PERVM_INTR_OVERFL_INTR_22MASK_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*    Mask Register Fields pervm_intr_overfl_intr_21Mask    */
+#define PERVM_INTR_OVERFL_INTR_21MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_21MASK_SHIFT                                  21
+#define PERVM_INTR_OVERFL_INTR_21MASK_MASK                           0x00200000
+#define PERVM_INTR_OVERFL_INTR_21MASK_RD(src)        (((src) & 0x00200000)>>21)
+#define PERVM_INTR_OVERFL_INTR_21MASK_WR(src)   (((u32)(src)<<21) & 0x00200000)
+#define PERVM_INTR_OVERFL_INTR_21MASK_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*    Mask Register Fields pervm_intr_overfl_intr_20Mask    */
+#define PERVM_INTR_OVERFL_INTR_20MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_20MASK_SHIFT                                  20
+#define PERVM_INTR_OVERFL_INTR_20MASK_MASK                           0x00100000
+#define PERVM_INTR_OVERFL_INTR_20MASK_RD(src)        (((src) & 0x00100000)>>20)
+#define PERVM_INTR_OVERFL_INTR_20MASK_WR(src)   (((u32)(src)<<20) & 0x00100000)
+#define PERVM_INTR_OVERFL_INTR_20MASK_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*    Mask Register Fields pervm_intr_overfl_intr_19Mask    */
+#define PERVM_INTR_OVERFL_INTR_19MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_19MASK_SHIFT                                  19
+#define PERVM_INTR_OVERFL_INTR_19MASK_MASK                           0x00080000
+#define PERVM_INTR_OVERFL_INTR_19MASK_RD(src)        (((src) & 0x00080000)>>19)
+#define PERVM_INTR_OVERFL_INTR_19MASK_WR(src)   (((u32)(src)<<19) & 0x00080000)
+#define PERVM_INTR_OVERFL_INTR_19MASK_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*    Mask Register Fields pervm_intr_overfl_intr_18Mask    */
+#define PERVM_INTR_OVERFL_INTR_18MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_18MASK_SHIFT                                  18
+#define PERVM_INTR_OVERFL_INTR_18MASK_MASK                           0x00040000
+#define PERVM_INTR_OVERFL_INTR_18MASK_RD(src)        (((src) & 0x00040000)>>18)
+#define PERVM_INTR_OVERFL_INTR_18MASK_WR(src)   (((u32)(src)<<18) & 0x00040000)
+#define PERVM_INTR_OVERFL_INTR_18MASK_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*    Mask Register Fields pervm_intr_overfl_intr_17Mask    */
+#define PERVM_INTR_OVERFL_INTR_17MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_17MASK_SHIFT                                  17
+#define PERVM_INTR_OVERFL_INTR_17MASK_MASK                           0x00020000
+#define PERVM_INTR_OVERFL_INTR_17MASK_RD(src)        (((src) & 0x00020000)>>17)
+#define PERVM_INTR_OVERFL_INTR_17MASK_WR(src)   (((u32)(src)<<17) & 0x00020000)
+#define PERVM_INTR_OVERFL_INTR_17MASK_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*    Mask Register Fields pervm_intr_overfl_intr_16Mask    */
+#define PERVM_INTR_OVERFL_INTR_16MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_16MASK_SHIFT                                  16
+#define PERVM_INTR_OVERFL_INTR_16MASK_MASK                           0x00010000
+#define PERVM_INTR_OVERFL_INTR_16MASK_RD(src)        (((src) & 0x00010000)>>16)
+#define PERVM_INTR_OVERFL_INTR_16MASK_WR(src)   (((u32)(src)<<16) & 0x00010000)
+#define PERVM_INTR_OVERFL_INTR_16MASK_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*    Mask Register Fields pervm_intr_overfl_intr_15Mask    */
+#define PERVM_INTR_OVERFL_INTR_15MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_15MASK_SHIFT                                  15
+#define PERVM_INTR_OVERFL_INTR_15MASK_MASK                           0x00008000
+#define PERVM_INTR_OVERFL_INTR_15MASK_RD(src)        (((src) & 0x00008000)>>15)
+#define PERVM_INTR_OVERFL_INTR_15MASK_WR(src)   (((u32)(src)<<15) & 0x00008000)
+#define PERVM_INTR_OVERFL_INTR_15MASK_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*    Mask Register Fields pervm_intr_overfl_intr_14Mask    */
+#define PERVM_INTR_OVERFL_INTR_14MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_14MASK_SHIFT                                  14
+#define PERVM_INTR_OVERFL_INTR_14MASK_MASK                           0x00004000
+#define PERVM_INTR_OVERFL_INTR_14MASK_RD(src)        (((src) & 0x00004000)>>14)
+#define PERVM_INTR_OVERFL_INTR_14MASK_WR(src)   (((u32)(src)<<14) & 0x00004000)
+#define PERVM_INTR_OVERFL_INTR_14MASK_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*    Mask Register Fields pervm_intr_overfl_intr_13Mask    */
+#define PERVM_INTR_OVERFL_INTR_13MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_13MASK_SHIFT                                  13
+#define PERVM_INTR_OVERFL_INTR_13MASK_MASK                           0x00002000
+#define PERVM_INTR_OVERFL_INTR_13MASK_RD(src)        (((src) & 0x00002000)>>13)
+#define PERVM_INTR_OVERFL_INTR_13MASK_WR(src)   (((u32)(src)<<13) & 0x00002000)
+#define PERVM_INTR_OVERFL_INTR_13MASK_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*    Mask Register Fields pervm_intr_overfl_intr_12Mask    */
+#define PERVM_INTR_OVERFL_INTR_12MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_12MASK_SHIFT                                  12
+#define PERVM_INTR_OVERFL_INTR_12MASK_MASK                           0x00001000
+#define PERVM_INTR_OVERFL_INTR_12MASK_RD(src)        (((src) & 0x00001000)>>12)
+#define PERVM_INTR_OVERFL_INTR_12MASK_WR(src)   (((u32)(src)<<12) & 0x00001000)
+#define PERVM_INTR_OVERFL_INTR_12MASK_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*    Mask Register Fields pervm_intr_overfl_intr_11Mask    */
+#define PERVM_INTR_OVERFL_INTR_11MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_11MASK_SHIFT                                  11
+#define PERVM_INTR_OVERFL_INTR_11MASK_MASK                           0x00000800
+#define PERVM_INTR_OVERFL_INTR_11MASK_RD(src)        (((src) & 0x00000800)>>11)
+#define PERVM_INTR_OVERFL_INTR_11MASK_WR(src)   (((u32)(src)<<11) & 0x00000800)
+#define PERVM_INTR_OVERFL_INTR_11MASK_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*    Mask Register Fields pervm_intr_overfl_intr_10Mask    */
+#define PERVM_INTR_OVERFL_INTR_10MASK_WIDTH                                   1
+#define PERVM_INTR_OVERFL_INTR_10MASK_SHIFT                                  10
+#define PERVM_INTR_OVERFL_INTR_10MASK_MASK                           0x00000400
+#define PERVM_INTR_OVERFL_INTR_10MASK_RD(src)        (((src) & 0x00000400)>>10)
+#define PERVM_INTR_OVERFL_INTR_10MASK_WR(src)   (((u32)(src)<<10) & 0x00000400)
+#define PERVM_INTR_OVERFL_INTR_10MASK_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*    Mask Register Fields pervm_intr_overfl_intr_9Mask    */
+#define PERVM_INTR_OVERFL_INTR_9MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_9MASK_SHIFT                                    9
+#define PERVM_INTR_OVERFL_INTR_9MASK_MASK                            0x00000200
+#define PERVM_INTR_OVERFL_INTR_9MASK_RD(src)          (((src) & 0x00000200)>>9)
+#define PERVM_INTR_OVERFL_INTR_9MASK_WR(src)     (((u32)(src)<<9) & 0x00000200)
+#define PERVM_INTR_OVERFL_INTR_9MASK_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*    Mask Register Fields pervm_intr_overfl_intr_8Mask    */
+#define PERVM_INTR_OVERFL_INTR_8MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_8MASK_SHIFT                                    8
+#define PERVM_INTR_OVERFL_INTR_8MASK_MASK                            0x00000100
+#define PERVM_INTR_OVERFL_INTR_8MASK_RD(src)          (((src) & 0x00000100)>>8)
+#define PERVM_INTR_OVERFL_INTR_8MASK_WR(src)     (((u32)(src)<<8) & 0x00000100)
+#define PERVM_INTR_OVERFL_INTR_8MASK_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*    Mask Register Fields pervm_intr_overfl_intr_7Mask    */
+#define PERVM_INTR_OVERFL_INTR_7MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_7MASK_SHIFT                                    7
+#define PERVM_INTR_OVERFL_INTR_7MASK_MASK                            0x00000080
+#define PERVM_INTR_OVERFL_INTR_7MASK_RD(src)          (((src) & 0x00000080)>>7)
+#define PERVM_INTR_OVERFL_INTR_7MASK_WR(src)     (((u32)(src)<<7) & 0x00000080)
+#define PERVM_INTR_OVERFL_INTR_7MASK_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*    Mask Register Fields pervm_intr_overfl_intr_6Mask    */
+#define PERVM_INTR_OVERFL_INTR_6MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_6MASK_SHIFT                                    6
+#define PERVM_INTR_OVERFL_INTR_6MASK_MASK                            0x00000040
+#define PERVM_INTR_OVERFL_INTR_6MASK_RD(src)          (((src) & 0x00000040)>>6)
+#define PERVM_INTR_OVERFL_INTR_6MASK_WR(src)     (((u32)(src)<<6) & 0x00000040)
+#define PERVM_INTR_OVERFL_INTR_6MASK_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*    Mask Register Fields pervm_intr_overfl_intr_5Mask    */
+#define PERVM_INTR_OVERFL_INTR_5MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_5MASK_SHIFT                                    5
+#define PERVM_INTR_OVERFL_INTR_5MASK_MASK                            0x00000020
+#define PERVM_INTR_OVERFL_INTR_5MASK_RD(src)          (((src) & 0x00000020)>>5)
+#define PERVM_INTR_OVERFL_INTR_5MASK_WR(src)     (((u32)(src)<<5) & 0x00000020)
+#define PERVM_INTR_OVERFL_INTR_5MASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields pervm_intr_overfl_intr_4Mask    */
+#define PERVM_INTR_OVERFL_INTR_4MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_4MASK_SHIFT                                    4
+#define PERVM_INTR_OVERFL_INTR_4MASK_MASK                            0x00000010
+#define PERVM_INTR_OVERFL_INTR_4MASK_RD(src)          (((src) & 0x00000010)>>4)
+#define PERVM_INTR_OVERFL_INTR_4MASK_WR(src)     (((u32)(src)<<4) & 0x00000010)
+#define PERVM_INTR_OVERFL_INTR_4MASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*    Mask Register Fields pervm_intr_overfl_intr_3Mask    */
+#define PERVM_INTR_OVERFL_INTR_3MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_3MASK_SHIFT                                    3
+#define PERVM_INTR_OVERFL_INTR_3MASK_MASK                            0x00000008
+#define PERVM_INTR_OVERFL_INTR_3MASK_RD(src)          (((src) & 0x00000008)>>3)
+#define PERVM_INTR_OVERFL_INTR_3MASK_WR(src)     (((u32)(src)<<3) & 0x00000008)
+#define PERVM_INTR_OVERFL_INTR_3MASK_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*    Mask Register Fields pervm_intr_overfl_intr_2Mask    */
+#define PERVM_INTR_OVERFL_INTR_2MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_2MASK_SHIFT                                    2
+#define PERVM_INTR_OVERFL_INTR_2MASK_MASK                            0x00000004
+#define PERVM_INTR_OVERFL_INTR_2MASK_RD(src)          (((src) & 0x00000004)>>2)
+#define PERVM_INTR_OVERFL_INTR_2MASK_WR(src)     (((u32)(src)<<2) & 0x00000004)
+#define PERVM_INTR_OVERFL_INTR_2MASK_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*    Mask Register Fields pervm_intr_overfl_intr_1Mask    */
+#define PERVM_INTR_OVERFL_INTR_1MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_1MASK_SHIFT                                    1
+#define PERVM_INTR_OVERFL_INTR_1MASK_MASK                            0x00000002
+#define PERVM_INTR_OVERFL_INTR_1MASK_RD(src)          (((src) & 0x00000002)>>1)
+#define PERVM_INTR_OVERFL_INTR_1MASK_WR(src)     (((u32)(src)<<1) & 0x00000002)
+#define PERVM_INTR_OVERFL_INTR_1MASK_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*    Mask Register Fields pervm_intr_overfl_intr_0Mask    */
+#define PERVM_INTR_OVERFL_INTR_0MASK_WIDTH                                    1
+#define PERVM_INTR_OVERFL_INTR_0MASK_SHIFT                                    0
+#define PERVM_INTR_OVERFL_INTR_0MASK_MASK                            0x00000001
+#define PERVM_INTR_OVERFL_INTR_0MASK_RD(src)             (((src) & 0x00000001))
+#define PERVM_INTR_OVERFL_INTR_0MASK_WR(src)        (((u32)(src)) & 0x00000001)
+#define PERVM_INTR_OVERFL_INTR_0MASK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pervm_fifo_underflow_intr	*/ 
+/*	 Fields pervm_intr_underfl_intr_31	 */
+#define PERVM_INTR_UNDERFL_INTR_31_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_31_SHIFT                                     31
+#define PERVM_INTR_UNDERFL_INTR_31_MASK                              0x80000000
+#define PERVM_INTR_UNDERFL_INTR_31_RD(src)           (((src) & 0x80000000)>>31)
+#define PERVM_INTR_UNDERFL_INTR_31_WR(src)      (((u32)(src)<<31) & 0x80000000)
+#define PERVM_INTR_UNDERFL_INTR_31_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*	 Fields pervm_intr_underfl_intr_30	 */
+#define PERVM_INTR_UNDERFL_INTR_30_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_30_SHIFT                                     30
+#define PERVM_INTR_UNDERFL_INTR_30_MASK                              0x40000000
+#define PERVM_INTR_UNDERFL_INTR_30_RD(src)           (((src) & 0x40000000)>>30)
+#define PERVM_INTR_UNDERFL_INTR_30_WR(src)      (((u32)(src)<<30) & 0x40000000)
+#define PERVM_INTR_UNDERFL_INTR_30_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*	 Fields pervm_intr_underfl_intr_29	 */
+#define PERVM_INTR_UNDERFL_INTR_29_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_29_SHIFT                                     29
+#define PERVM_INTR_UNDERFL_INTR_29_MASK                              0x20000000
+#define PERVM_INTR_UNDERFL_INTR_29_RD(src)           (((src) & 0x20000000)>>29)
+#define PERVM_INTR_UNDERFL_INTR_29_WR(src)      (((u32)(src)<<29) & 0x20000000)
+#define PERVM_INTR_UNDERFL_INTR_29_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*	 Fields pervm_intr_underfl_intr_28	 */
+#define PERVM_INTR_UNDERFL_INTR_28_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_28_SHIFT                                     28
+#define PERVM_INTR_UNDERFL_INTR_28_MASK                              0x10000000
+#define PERVM_INTR_UNDERFL_INTR_28_RD(src)           (((src) & 0x10000000)>>28)
+#define PERVM_INTR_UNDERFL_INTR_28_WR(src)      (((u32)(src)<<28) & 0x10000000)
+#define PERVM_INTR_UNDERFL_INTR_28_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*	 Fields pervm_intr_underfl_intr_27	 */
+#define PERVM_INTR_UNDERFL_INTR_27_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_27_SHIFT                                     27
+#define PERVM_INTR_UNDERFL_INTR_27_MASK                              0x08000000
+#define PERVM_INTR_UNDERFL_INTR_27_RD(src)           (((src) & 0x08000000)>>27)
+#define PERVM_INTR_UNDERFL_INTR_27_WR(src)      (((u32)(src)<<27) & 0x08000000)
+#define PERVM_INTR_UNDERFL_INTR_27_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*	 Fields pervm_intr_underfl_intr_26	 */
+#define PERVM_INTR_UNDERFL_INTR_26_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_26_SHIFT                                     26
+#define PERVM_INTR_UNDERFL_INTR_26_MASK                              0x04000000
+#define PERVM_INTR_UNDERFL_INTR_26_RD(src)           (((src) & 0x04000000)>>26)
+#define PERVM_INTR_UNDERFL_INTR_26_WR(src)      (((u32)(src)<<26) & 0x04000000)
+#define PERVM_INTR_UNDERFL_INTR_26_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*	 Fields pervm_intr_underfl_intr_25	 */
+#define PERVM_INTR_UNDERFL_INTR_25_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_25_SHIFT                                     25
+#define PERVM_INTR_UNDERFL_INTR_25_MASK                              0x02000000
+#define PERVM_INTR_UNDERFL_INTR_25_RD(src)           (((src) & 0x02000000)>>25)
+#define PERVM_INTR_UNDERFL_INTR_25_WR(src)      (((u32)(src)<<25) & 0x02000000)
+#define PERVM_INTR_UNDERFL_INTR_25_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*	 Fields pervm_intr_underfl_intr_24	 */
+#define PERVM_INTR_UNDERFL_INTR_24_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_24_SHIFT                                     24
+#define PERVM_INTR_UNDERFL_INTR_24_MASK                              0x01000000
+#define PERVM_INTR_UNDERFL_INTR_24_RD(src)           (((src) & 0x01000000)>>24)
+#define PERVM_INTR_UNDERFL_INTR_24_WR(src)      (((u32)(src)<<24) & 0x01000000)
+#define PERVM_INTR_UNDERFL_INTR_24_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*	 Fields pervm_intr_underfl_intr_23	 */
+#define PERVM_INTR_UNDERFL_INTR_23_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_23_SHIFT                                     23
+#define PERVM_INTR_UNDERFL_INTR_23_MASK                              0x00800000
+#define PERVM_INTR_UNDERFL_INTR_23_RD(src)           (((src) & 0x00800000)>>23)
+#define PERVM_INTR_UNDERFL_INTR_23_WR(src)      (((u32)(src)<<23) & 0x00800000)
+#define PERVM_INTR_UNDERFL_INTR_23_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*	 Fields pervm_intr_underfl_intr_22	 */
+#define PERVM_INTR_UNDERFL_INTR_22_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_22_SHIFT                                     22
+#define PERVM_INTR_UNDERFL_INTR_22_MASK                              0x00400000
+#define PERVM_INTR_UNDERFL_INTR_22_RD(src)           (((src) & 0x00400000)>>22)
+#define PERVM_INTR_UNDERFL_INTR_22_WR(src)      (((u32)(src)<<22) & 0x00400000)
+#define PERVM_INTR_UNDERFL_INTR_22_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*	 Fields pervm_intr_underfl_intr_21	 */
+#define PERVM_INTR_UNDERFL_INTR_21_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_21_SHIFT                                     21
+#define PERVM_INTR_UNDERFL_INTR_21_MASK                              0x00200000
+#define PERVM_INTR_UNDERFL_INTR_21_RD(src)           (((src) & 0x00200000)>>21)
+#define PERVM_INTR_UNDERFL_INTR_21_WR(src)      (((u32)(src)<<21) & 0x00200000)
+#define PERVM_INTR_UNDERFL_INTR_21_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*	 Fields pervm_intr_underfl_intr_20	 */
+#define PERVM_INTR_UNDERFL_INTR_20_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_20_SHIFT                                     20
+#define PERVM_INTR_UNDERFL_INTR_20_MASK                              0x00100000
+#define PERVM_INTR_UNDERFL_INTR_20_RD(src)           (((src) & 0x00100000)>>20)
+#define PERVM_INTR_UNDERFL_INTR_20_WR(src)      (((u32)(src)<<20) & 0x00100000)
+#define PERVM_INTR_UNDERFL_INTR_20_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*	 Fields pervm_intr_underfl_intr_19	 */
+#define PERVM_INTR_UNDERFL_INTR_19_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_19_SHIFT                                     19
+#define PERVM_INTR_UNDERFL_INTR_19_MASK                              0x00080000
+#define PERVM_INTR_UNDERFL_INTR_19_RD(src)           (((src) & 0x00080000)>>19)
+#define PERVM_INTR_UNDERFL_INTR_19_WR(src)      (((u32)(src)<<19) & 0x00080000)
+#define PERVM_INTR_UNDERFL_INTR_19_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*	 Fields pervm_intr_underfl_intr_18	 */
+#define PERVM_INTR_UNDERFL_INTR_18_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_18_SHIFT                                     18
+#define PERVM_INTR_UNDERFL_INTR_18_MASK                              0x00040000
+#define PERVM_INTR_UNDERFL_INTR_18_RD(src)           (((src) & 0x00040000)>>18)
+#define PERVM_INTR_UNDERFL_INTR_18_WR(src)      (((u32)(src)<<18) & 0x00040000)
+#define PERVM_INTR_UNDERFL_INTR_18_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*	 Fields pervm_intr_underfl_intr_17	 */
+#define PERVM_INTR_UNDERFL_INTR_17_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_17_SHIFT                                     17
+#define PERVM_INTR_UNDERFL_INTR_17_MASK                              0x00020000
+#define PERVM_INTR_UNDERFL_INTR_17_RD(src)           (((src) & 0x00020000)>>17)
+#define PERVM_INTR_UNDERFL_INTR_17_WR(src)      (((u32)(src)<<17) & 0x00020000)
+#define PERVM_INTR_UNDERFL_INTR_17_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*	 Fields pervm_intr_underfl_intr_16	 */
+#define PERVM_INTR_UNDERFL_INTR_16_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_16_SHIFT                                     16
+#define PERVM_INTR_UNDERFL_INTR_16_MASK                              0x00010000
+#define PERVM_INTR_UNDERFL_INTR_16_RD(src)           (((src) & 0x00010000)>>16)
+#define PERVM_INTR_UNDERFL_INTR_16_WR(src)      (((u32)(src)<<16) & 0x00010000)
+#define PERVM_INTR_UNDERFL_INTR_16_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*	 Fields pervm_intr_underfl_intr_15	 */
+#define PERVM_INTR_UNDERFL_INTR_15_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_15_SHIFT                                     15
+#define PERVM_INTR_UNDERFL_INTR_15_MASK                              0x00008000
+#define PERVM_INTR_UNDERFL_INTR_15_RD(src)           (((src) & 0x00008000)>>15)
+#define PERVM_INTR_UNDERFL_INTR_15_WR(src)      (((u32)(src)<<15) & 0x00008000)
+#define PERVM_INTR_UNDERFL_INTR_15_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*	 Fields pervm_intr_underfl_intr_14	 */
+#define PERVM_INTR_UNDERFL_INTR_14_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_14_SHIFT                                     14
+#define PERVM_INTR_UNDERFL_INTR_14_MASK                              0x00004000
+#define PERVM_INTR_UNDERFL_INTR_14_RD(src)           (((src) & 0x00004000)>>14)
+#define PERVM_INTR_UNDERFL_INTR_14_WR(src)      (((u32)(src)<<14) & 0x00004000)
+#define PERVM_INTR_UNDERFL_INTR_14_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*	 Fields pervm_intr_underfl_intr_13	 */
+#define PERVM_INTR_UNDERFL_INTR_13_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_13_SHIFT                                     13
+#define PERVM_INTR_UNDERFL_INTR_13_MASK                              0x00002000
+#define PERVM_INTR_UNDERFL_INTR_13_RD(src)           (((src) & 0x00002000)>>13)
+#define PERVM_INTR_UNDERFL_INTR_13_WR(src)      (((u32)(src)<<13) & 0x00002000)
+#define PERVM_INTR_UNDERFL_INTR_13_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*	 Fields pervm_intr_underfl_intr_12	 */
+#define PERVM_INTR_UNDERFL_INTR_12_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_12_SHIFT                                     12
+#define PERVM_INTR_UNDERFL_INTR_12_MASK                              0x00001000
+#define PERVM_INTR_UNDERFL_INTR_12_RD(src)           (((src) & 0x00001000)>>12)
+#define PERVM_INTR_UNDERFL_INTR_12_WR(src)      (((u32)(src)<<12) & 0x00001000)
+#define PERVM_INTR_UNDERFL_INTR_12_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*	 Fields pervm_intr_underfl_intr_11	 */
+#define PERVM_INTR_UNDERFL_INTR_11_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_11_SHIFT                                     11
+#define PERVM_INTR_UNDERFL_INTR_11_MASK                              0x00000800
+#define PERVM_INTR_UNDERFL_INTR_11_RD(src)           (((src) & 0x00000800)>>11)
+#define PERVM_INTR_UNDERFL_INTR_11_WR(src)      (((u32)(src)<<11) & 0x00000800)
+#define PERVM_INTR_UNDERFL_INTR_11_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*	 Fields pervm_intr_underfl_intr_10	 */
+#define PERVM_INTR_UNDERFL_INTR_10_WIDTH                                      1
+#define PERVM_INTR_UNDERFL_INTR_10_SHIFT                                     10
+#define PERVM_INTR_UNDERFL_INTR_10_MASK                              0x00000400
+#define PERVM_INTR_UNDERFL_INTR_10_RD(src)           (((src) & 0x00000400)>>10)
+#define PERVM_INTR_UNDERFL_INTR_10_WR(src)      (((u32)(src)<<10) & 0x00000400)
+#define PERVM_INTR_UNDERFL_INTR_10_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*	 Fields pervm_intr_underfl_intr_9	 */
+#define PERVM_INTR_UNDERFL_INTR_9_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_9_SHIFT                                       9
+#define PERVM_INTR_UNDERFL_INTR_9_MASK                               0x00000200
+#define PERVM_INTR_UNDERFL_INTR_9_RD(src)             (((src) & 0x00000200)>>9)
+#define PERVM_INTR_UNDERFL_INTR_9_WR(src)        (((u32)(src)<<9) & 0x00000200)
+#define PERVM_INTR_UNDERFL_INTR_9_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*	 Fields pervm_intr_underfl_intr_8	 */
+#define PERVM_INTR_UNDERFL_INTR_8_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_8_SHIFT                                       8
+#define PERVM_INTR_UNDERFL_INTR_8_MASK                               0x00000100
+#define PERVM_INTR_UNDERFL_INTR_8_RD(src)             (((src) & 0x00000100)>>8)
+#define PERVM_INTR_UNDERFL_INTR_8_WR(src)        (((u32)(src)<<8) & 0x00000100)
+#define PERVM_INTR_UNDERFL_INTR_8_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields pervm_intr_underfl_intr_7	 */
+#define PERVM_INTR_UNDERFL_INTR_7_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_7_SHIFT                                       7
+#define PERVM_INTR_UNDERFL_INTR_7_MASK                               0x00000080
+#define PERVM_INTR_UNDERFL_INTR_7_RD(src)             (((src) & 0x00000080)>>7)
+#define PERVM_INTR_UNDERFL_INTR_7_WR(src)        (((u32)(src)<<7) & 0x00000080)
+#define PERVM_INTR_UNDERFL_INTR_7_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields pervm_intr_underfl_intr_6	 */
+#define PERVM_INTR_UNDERFL_INTR_6_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_6_SHIFT                                       6
+#define PERVM_INTR_UNDERFL_INTR_6_MASK                               0x00000040
+#define PERVM_INTR_UNDERFL_INTR_6_RD(src)             (((src) & 0x00000040)>>6)
+#define PERVM_INTR_UNDERFL_INTR_6_WR(src)        (((u32)(src)<<6) & 0x00000040)
+#define PERVM_INTR_UNDERFL_INTR_6_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields pervm_intr_underfl_intr_5	 */
+#define PERVM_INTR_UNDERFL_INTR_5_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_5_SHIFT                                       5
+#define PERVM_INTR_UNDERFL_INTR_5_MASK                               0x00000020
+#define PERVM_INTR_UNDERFL_INTR_5_RD(src)             (((src) & 0x00000020)>>5)
+#define PERVM_INTR_UNDERFL_INTR_5_WR(src)        (((u32)(src)<<5) & 0x00000020)
+#define PERVM_INTR_UNDERFL_INTR_5_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields pervm_intr_underfl_intr_4	 */
+#define PERVM_INTR_UNDERFL_INTR_4_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_4_SHIFT                                       4
+#define PERVM_INTR_UNDERFL_INTR_4_MASK                               0x00000010
+#define PERVM_INTR_UNDERFL_INTR_4_RD(src)             (((src) & 0x00000010)>>4)
+#define PERVM_INTR_UNDERFL_INTR_4_WR(src)        (((u32)(src)<<4) & 0x00000010)
+#define PERVM_INTR_UNDERFL_INTR_4_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields pervm_intr_underfl_intr_3	 */
+#define PERVM_INTR_UNDERFL_INTR_3_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_3_SHIFT                                       3
+#define PERVM_INTR_UNDERFL_INTR_3_MASK                               0x00000008
+#define PERVM_INTR_UNDERFL_INTR_3_RD(src)             (((src) & 0x00000008)>>3)
+#define PERVM_INTR_UNDERFL_INTR_3_WR(src)        (((u32)(src)<<3) & 0x00000008)
+#define PERVM_INTR_UNDERFL_INTR_3_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields pervm_intr_underfl_intr_2	 */
+#define PERVM_INTR_UNDERFL_INTR_2_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_2_SHIFT                                       2
+#define PERVM_INTR_UNDERFL_INTR_2_MASK                               0x00000004
+#define PERVM_INTR_UNDERFL_INTR_2_RD(src)             (((src) & 0x00000004)>>2)
+#define PERVM_INTR_UNDERFL_INTR_2_WR(src)        (((u32)(src)<<2) & 0x00000004)
+#define PERVM_INTR_UNDERFL_INTR_2_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields pervm_intr_underfl_intr_1	 */
+#define PERVM_INTR_UNDERFL_INTR_1_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_1_SHIFT                                       1
+#define PERVM_INTR_UNDERFL_INTR_1_MASK                               0x00000002
+#define PERVM_INTR_UNDERFL_INTR_1_RD(src)             (((src) & 0x00000002)>>1)
+#define PERVM_INTR_UNDERFL_INTR_1_WR(src)        (((u32)(src)<<1) & 0x00000002)
+#define PERVM_INTR_UNDERFL_INTR_1_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields pervm_intr_underfl_intr_0	 */
+#define PERVM_INTR_UNDERFL_INTR_0_WIDTH                                       1
+#define PERVM_INTR_UNDERFL_INTR_0_SHIFT                                       0
+#define PERVM_INTR_UNDERFL_INTR_0_MASK                               0x00000001
+#define PERVM_INTR_UNDERFL_INTR_0_RD(src)                (((src) & 0x00000001))
+#define PERVM_INTR_UNDERFL_INTR_0_WR(src)           (((u32)(src)) & 0x00000001)
+#define PERVM_INTR_UNDERFL_INTR_0_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_pervm_fifo_underflow_intrMask	*/
+/*    Mask Register Fields pervm_intr_underfl_intr_31Mask    */
+#define PERVM_INTR_UNDERFL_INTR_31MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_31MASK_SHIFT                                 31
+#define PERVM_INTR_UNDERFL_INTR_31MASK_MASK                          0x80000000
+#define PERVM_INTR_UNDERFL_INTR_31MASK_RD(src)       (((src) & 0x80000000)>>31)
+#define PERVM_INTR_UNDERFL_INTR_31MASK_WR(src)  (((u32)(src)<<31) & 0x80000000)
+#define PERVM_INTR_UNDERFL_INTR_31MASK_SET(dst,src) \
+                      (((dst) & ~0x80000000) | (((u32)(src)<<31) & 0x80000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_30Mask    */
+#define PERVM_INTR_UNDERFL_INTR_30MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_30MASK_SHIFT                                 30
+#define PERVM_INTR_UNDERFL_INTR_30MASK_MASK                          0x40000000
+#define PERVM_INTR_UNDERFL_INTR_30MASK_RD(src)       (((src) & 0x40000000)>>30)
+#define PERVM_INTR_UNDERFL_INTR_30MASK_WR(src)  (((u32)(src)<<30) & 0x40000000)
+#define PERVM_INTR_UNDERFL_INTR_30MASK_SET(dst,src) \
+                      (((dst) & ~0x40000000) | (((u32)(src)<<30) & 0x40000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_29Mask    */
+#define PERVM_INTR_UNDERFL_INTR_29MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_29MASK_SHIFT                                 29
+#define PERVM_INTR_UNDERFL_INTR_29MASK_MASK                          0x20000000
+#define PERVM_INTR_UNDERFL_INTR_29MASK_RD(src)       (((src) & 0x20000000)>>29)
+#define PERVM_INTR_UNDERFL_INTR_29MASK_WR(src)  (((u32)(src)<<29) & 0x20000000)
+#define PERVM_INTR_UNDERFL_INTR_29MASK_SET(dst,src) \
+                      (((dst) & ~0x20000000) | (((u32)(src)<<29) & 0x20000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_28Mask    */
+#define PERVM_INTR_UNDERFL_INTR_28MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_28MASK_SHIFT                                 28
+#define PERVM_INTR_UNDERFL_INTR_28MASK_MASK                          0x10000000
+#define PERVM_INTR_UNDERFL_INTR_28MASK_RD(src)       (((src) & 0x10000000)>>28)
+#define PERVM_INTR_UNDERFL_INTR_28MASK_WR(src)  (((u32)(src)<<28) & 0x10000000)
+#define PERVM_INTR_UNDERFL_INTR_28MASK_SET(dst,src) \
+                      (((dst) & ~0x10000000) | (((u32)(src)<<28) & 0x10000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_27Mask    */
+#define PERVM_INTR_UNDERFL_INTR_27MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_27MASK_SHIFT                                 27
+#define PERVM_INTR_UNDERFL_INTR_27MASK_MASK                          0x08000000
+#define PERVM_INTR_UNDERFL_INTR_27MASK_RD(src)       (((src) & 0x08000000)>>27)
+#define PERVM_INTR_UNDERFL_INTR_27MASK_WR(src)  (((u32)(src)<<27) & 0x08000000)
+#define PERVM_INTR_UNDERFL_INTR_27MASK_SET(dst,src) \
+                      (((dst) & ~0x08000000) | (((u32)(src)<<27) & 0x08000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_26Mask    */
+#define PERVM_INTR_UNDERFL_INTR_26MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_26MASK_SHIFT                                 26
+#define PERVM_INTR_UNDERFL_INTR_26MASK_MASK                          0x04000000
+#define PERVM_INTR_UNDERFL_INTR_26MASK_RD(src)       (((src) & 0x04000000)>>26)
+#define PERVM_INTR_UNDERFL_INTR_26MASK_WR(src)  (((u32)(src)<<26) & 0x04000000)
+#define PERVM_INTR_UNDERFL_INTR_26MASK_SET(dst,src) \
+                      (((dst) & ~0x04000000) | (((u32)(src)<<26) & 0x04000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_25Mask    */
+#define PERVM_INTR_UNDERFL_INTR_25MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_25MASK_SHIFT                                 25
+#define PERVM_INTR_UNDERFL_INTR_25MASK_MASK                          0x02000000
+#define PERVM_INTR_UNDERFL_INTR_25MASK_RD(src)       (((src) & 0x02000000)>>25)
+#define PERVM_INTR_UNDERFL_INTR_25MASK_WR(src)  (((u32)(src)<<25) & 0x02000000)
+#define PERVM_INTR_UNDERFL_INTR_25MASK_SET(dst,src) \
+                      (((dst) & ~0x02000000) | (((u32)(src)<<25) & 0x02000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_24Mask    */
+#define PERVM_INTR_UNDERFL_INTR_24MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_24MASK_SHIFT                                 24
+#define PERVM_INTR_UNDERFL_INTR_24MASK_MASK                          0x01000000
+#define PERVM_INTR_UNDERFL_INTR_24MASK_RD(src)       (((src) & 0x01000000)>>24)
+#define PERVM_INTR_UNDERFL_INTR_24MASK_WR(src)  (((u32)(src)<<24) & 0x01000000)
+#define PERVM_INTR_UNDERFL_INTR_24MASK_SET(dst,src) \
+                      (((dst) & ~0x01000000) | (((u32)(src)<<24) & 0x01000000))
+/*    Mask Register Fields pervm_intr_underfl_intr_23Mask    */
+#define PERVM_INTR_UNDERFL_INTR_23MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_23MASK_SHIFT                                 23
+#define PERVM_INTR_UNDERFL_INTR_23MASK_MASK                          0x00800000
+#define PERVM_INTR_UNDERFL_INTR_23MASK_RD(src)       (((src) & 0x00800000)>>23)
+#define PERVM_INTR_UNDERFL_INTR_23MASK_WR(src)  (((u32)(src)<<23) & 0x00800000)
+#define PERVM_INTR_UNDERFL_INTR_23MASK_SET(dst,src) \
+                      (((dst) & ~0x00800000) | (((u32)(src)<<23) & 0x00800000))
+/*    Mask Register Fields pervm_intr_underfl_intr_22Mask    */
+#define PERVM_INTR_UNDERFL_INTR_22MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_22MASK_SHIFT                                 22
+#define PERVM_INTR_UNDERFL_INTR_22MASK_MASK                          0x00400000
+#define PERVM_INTR_UNDERFL_INTR_22MASK_RD(src)       (((src) & 0x00400000)>>22)
+#define PERVM_INTR_UNDERFL_INTR_22MASK_WR(src)  (((u32)(src)<<22) & 0x00400000)
+#define PERVM_INTR_UNDERFL_INTR_22MASK_SET(dst,src) \
+                      (((dst) & ~0x00400000) | (((u32)(src)<<22) & 0x00400000))
+/*    Mask Register Fields pervm_intr_underfl_intr_21Mask    */
+#define PERVM_INTR_UNDERFL_INTR_21MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_21MASK_SHIFT                                 21
+#define PERVM_INTR_UNDERFL_INTR_21MASK_MASK                          0x00200000
+#define PERVM_INTR_UNDERFL_INTR_21MASK_RD(src)       (((src) & 0x00200000)>>21)
+#define PERVM_INTR_UNDERFL_INTR_21MASK_WR(src)  (((u32)(src)<<21) & 0x00200000)
+#define PERVM_INTR_UNDERFL_INTR_21MASK_SET(dst,src) \
+                      (((dst) & ~0x00200000) | (((u32)(src)<<21) & 0x00200000))
+/*    Mask Register Fields pervm_intr_underfl_intr_20Mask    */
+#define PERVM_INTR_UNDERFL_INTR_20MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_20MASK_SHIFT                                 20
+#define PERVM_INTR_UNDERFL_INTR_20MASK_MASK                          0x00100000
+#define PERVM_INTR_UNDERFL_INTR_20MASK_RD(src)       (((src) & 0x00100000)>>20)
+#define PERVM_INTR_UNDERFL_INTR_20MASK_WR(src)  (((u32)(src)<<20) & 0x00100000)
+#define PERVM_INTR_UNDERFL_INTR_20MASK_SET(dst,src) \
+                      (((dst) & ~0x00100000) | (((u32)(src)<<20) & 0x00100000))
+/*    Mask Register Fields pervm_intr_underfl_intr_19Mask    */
+#define PERVM_INTR_UNDERFL_INTR_19MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_19MASK_SHIFT                                 19
+#define PERVM_INTR_UNDERFL_INTR_19MASK_MASK                          0x00080000
+#define PERVM_INTR_UNDERFL_INTR_19MASK_RD(src)       (((src) & 0x00080000)>>19)
+#define PERVM_INTR_UNDERFL_INTR_19MASK_WR(src)  (((u32)(src)<<19) & 0x00080000)
+#define PERVM_INTR_UNDERFL_INTR_19MASK_SET(dst,src) \
+                      (((dst) & ~0x00080000) | (((u32)(src)<<19) & 0x00080000))
+/*    Mask Register Fields pervm_intr_underfl_intr_18Mask    */
+#define PERVM_INTR_UNDERFL_INTR_18MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_18MASK_SHIFT                                 18
+#define PERVM_INTR_UNDERFL_INTR_18MASK_MASK                          0x00040000
+#define PERVM_INTR_UNDERFL_INTR_18MASK_RD(src)       (((src) & 0x00040000)>>18)
+#define PERVM_INTR_UNDERFL_INTR_18MASK_WR(src)  (((u32)(src)<<18) & 0x00040000)
+#define PERVM_INTR_UNDERFL_INTR_18MASK_SET(dst,src) \
+                      (((dst) & ~0x00040000) | (((u32)(src)<<18) & 0x00040000))
+/*    Mask Register Fields pervm_intr_underfl_intr_17Mask    */
+#define PERVM_INTR_UNDERFL_INTR_17MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_17MASK_SHIFT                                 17
+#define PERVM_INTR_UNDERFL_INTR_17MASK_MASK                          0x00020000
+#define PERVM_INTR_UNDERFL_INTR_17MASK_RD(src)       (((src) & 0x00020000)>>17)
+#define PERVM_INTR_UNDERFL_INTR_17MASK_WR(src)  (((u32)(src)<<17) & 0x00020000)
+#define PERVM_INTR_UNDERFL_INTR_17MASK_SET(dst,src) \
+                      (((dst) & ~0x00020000) | (((u32)(src)<<17) & 0x00020000))
+/*    Mask Register Fields pervm_intr_underfl_intr_16Mask    */
+#define PERVM_INTR_UNDERFL_INTR_16MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_16MASK_SHIFT                                 16
+#define PERVM_INTR_UNDERFL_INTR_16MASK_MASK                          0x00010000
+#define PERVM_INTR_UNDERFL_INTR_16MASK_RD(src)       (((src) & 0x00010000)>>16)
+#define PERVM_INTR_UNDERFL_INTR_16MASK_WR(src)  (((u32)(src)<<16) & 0x00010000)
+#define PERVM_INTR_UNDERFL_INTR_16MASK_SET(dst,src) \
+                      (((dst) & ~0x00010000) | (((u32)(src)<<16) & 0x00010000))
+/*    Mask Register Fields pervm_intr_underfl_intr_15Mask    */
+#define PERVM_INTR_UNDERFL_INTR_15MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_15MASK_SHIFT                                 15
+#define PERVM_INTR_UNDERFL_INTR_15MASK_MASK                          0x00008000
+#define PERVM_INTR_UNDERFL_INTR_15MASK_RD(src)       (((src) & 0x00008000)>>15)
+#define PERVM_INTR_UNDERFL_INTR_15MASK_WR(src)  (((u32)(src)<<15) & 0x00008000)
+#define PERVM_INTR_UNDERFL_INTR_15MASK_SET(dst,src) \
+                      (((dst) & ~0x00008000) | (((u32)(src)<<15) & 0x00008000))
+/*    Mask Register Fields pervm_intr_underfl_intr_14Mask    */
+#define PERVM_INTR_UNDERFL_INTR_14MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_14MASK_SHIFT                                 14
+#define PERVM_INTR_UNDERFL_INTR_14MASK_MASK                          0x00004000
+#define PERVM_INTR_UNDERFL_INTR_14MASK_RD(src)       (((src) & 0x00004000)>>14)
+#define PERVM_INTR_UNDERFL_INTR_14MASK_WR(src)  (((u32)(src)<<14) & 0x00004000)
+#define PERVM_INTR_UNDERFL_INTR_14MASK_SET(dst,src) \
+                      (((dst) & ~0x00004000) | (((u32)(src)<<14) & 0x00004000))
+/*    Mask Register Fields pervm_intr_underfl_intr_13Mask    */
+#define PERVM_INTR_UNDERFL_INTR_13MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_13MASK_SHIFT                                 13
+#define PERVM_INTR_UNDERFL_INTR_13MASK_MASK                          0x00002000
+#define PERVM_INTR_UNDERFL_INTR_13MASK_RD(src)       (((src) & 0x00002000)>>13)
+#define PERVM_INTR_UNDERFL_INTR_13MASK_WR(src)  (((u32)(src)<<13) & 0x00002000)
+#define PERVM_INTR_UNDERFL_INTR_13MASK_SET(dst,src) \
+                      (((dst) & ~0x00002000) | (((u32)(src)<<13) & 0x00002000))
+/*    Mask Register Fields pervm_intr_underfl_intr_12Mask    */
+#define PERVM_INTR_UNDERFL_INTR_12MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_12MASK_SHIFT                                 12
+#define PERVM_INTR_UNDERFL_INTR_12MASK_MASK                          0x00001000
+#define PERVM_INTR_UNDERFL_INTR_12MASK_RD(src)       (((src) & 0x00001000)>>12)
+#define PERVM_INTR_UNDERFL_INTR_12MASK_WR(src)  (((u32)(src)<<12) & 0x00001000)
+#define PERVM_INTR_UNDERFL_INTR_12MASK_SET(dst,src) \
+                      (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
+/*    Mask Register Fields pervm_intr_underfl_intr_11Mask    */
+#define PERVM_INTR_UNDERFL_INTR_11MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_11MASK_SHIFT                                 11
+#define PERVM_INTR_UNDERFL_INTR_11MASK_MASK                          0x00000800
+#define PERVM_INTR_UNDERFL_INTR_11MASK_RD(src)       (((src) & 0x00000800)>>11)
+#define PERVM_INTR_UNDERFL_INTR_11MASK_WR(src)  (((u32)(src)<<11) & 0x00000800)
+#define PERVM_INTR_UNDERFL_INTR_11MASK_SET(dst,src) \
+                      (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
+/*    Mask Register Fields pervm_intr_underfl_intr_10Mask    */
+#define PERVM_INTR_UNDERFL_INTR_10MASK_WIDTH                                  1
+#define PERVM_INTR_UNDERFL_INTR_10MASK_SHIFT                                 10
+#define PERVM_INTR_UNDERFL_INTR_10MASK_MASK                          0x00000400
+#define PERVM_INTR_UNDERFL_INTR_10MASK_RD(src)       (((src) & 0x00000400)>>10)
+#define PERVM_INTR_UNDERFL_INTR_10MASK_WR(src)  (((u32)(src)<<10) & 0x00000400)
+#define PERVM_INTR_UNDERFL_INTR_10MASK_SET(dst,src) \
+                      (((dst) & ~0x00000400) | (((u32)(src)<<10) & 0x00000400))
+/*    Mask Register Fields pervm_intr_underfl_intr_9Mask    */
+#define PERVM_INTR_UNDERFL_INTR_9MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_9MASK_SHIFT                                   9
+#define PERVM_INTR_UNDERFL_INTR_9MASK_MASK                           0x00000200
+#define PERVM_INTR_UNDERFL_INTR_9MASK_RD(src)         (((src) & 0x00000200)>>9)
+#define PERVM_INTR_UNDERFL_INTR_9MASK_WR(src)    (((u32)(src)<<9) & 0x00000200)
+#define PERVM_INTR_UNDERFL_INTR_9MASK_SET(dst,src) \
+                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
+/*    Mask Register Fields pervm_intr_underfl_intr_8Mask    */
+#define PERVM_INTR_UNDERFL_INTR_8MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_8MASK_SHIFT                                   8
+#define PERVM_INTR_UNDERFL_INTR_8MASK_MASK                           0x00000100
+#define PERVM_INTR_UNDERFL_INTR_8MASK_RD(src)         (((src) & 0x00000100)>>8)
+#define PERVM_INTR_UNDERFL_INTR_8MASK_WR(src)    (((u32)(src)<<8) & 0x00000100)
+#define PERVM_INTR_UNDERFL_INTR_8MASK_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*    Mask Register Fields pervm_intr_underfl_intr_7Mask    */
+#define PERVM_INTR_UNDERFL_INTR_7MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_7MASK_SHIFT                                   7
+#define PERVM_INTR_UNDERFL_INTR_7MASK_MASK                           0x00000080
+#define PERVM_INTR_UNDERFL_INTR_7MASK_RD(src)         (((src) & 0x00000080)>>7)
+#define PERVM_INTR_UNDERFL_INTR_7MASK_WR(src)    (((u32)(src)<<7) & 0x00000080)
+#define PERVM_INTR_UNDERFL_INTR_7MASK_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*    Mask Register Fields pervm_intr_underfl_intr_6Mask    */
+#define PERVM_INTR_UNDERFL_INTR_6MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_6MASK_SHIFT                                   6
+#define PERVM_INTR_UNDERFL_INTR_6MASK_MASK                           0x00000040
+#define PERVM_INTR_UNDERFL_INTR_6MASK_RD(src)         (((src) & 0x00000040)>>6)
+#define PERVM_INTR_UNDERFL_INTR_6MASK_WR(src)    (((u32)(src)<<6) & 0x00000040)
+#define PERVM_INTR_UNDERFL_INTR_6MASK_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*    Mask Register Fields pervm_intr_underfl_intr_5Mask    */
+#define PERVM_INTR_UNDERFL_INTR_5MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_5MASK_SHIFT                                   5
+#define PERVM_INTR_UNDERFL_INTR_5MASK_MASK                           0x00000020
+#define PERVM_INTR_UNDERFL_INTR_5MASK_RD(src)         (((src) & 0x00000020)>>5)
+#define PERVM_INTR_UNDERFL_INTR_5MASK_WR(src)    (((u32)(src)<<5) & 0x00000020)
+#define PERVM_INTR_UNDERFL_INTR_5MASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields pervm_intr_underfl_intr_4Mask    */
+#define PERVM_INTR_UNDERFL_INTR_4MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_4MASK_SHIFT                                   4
+#define PERVM_INTR_UNDERFL_INTR_4MASK_MASK                           0x00000010
+#define PERVM_INTR_UNDERFL_INTR_4MASK_RD(src)         (((src) & 0x00000010)>>4)
+#define PERVM_INTR_UNDERFL_INTR_4MASK_WR(src)    (((u32)(src)<<4) & 0x00000010)
+#define PERVM_INTR_UNDERFL_INTR_4MASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*    Mask Register Fields pervm_intr_underfl_intr_3Mask    */
+#define PERVM_INTR_UNDERFL_INTR_3MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_3MASK_SHIFT                                   3
+#define PERVM_INTR_UNDERFL_INTR_3MASK_MASK                           0x00000008
+#define PERVM_INTR_UNDERFL_INTR_3MASK_RD(src)         (((src) & 0x00000008)>>3)
+#define PERVM_INTR_UNDERFL_INTR_3MASK_WR(src)    (((u32)(src)<<3) & 0x00000008)
+#define PERVM_INTR_UNDERFL_INTR_3MASK_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*    Mask Register Fields pervm_intr_underfl_intr_2Mask    */
+#define PERVM_INTR_UNDERFL_INTR_2MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_2MASK_SHIFT                                   2
+#define PERVM_INTR_UNDERFL_INTR_2MASK_MASK                           0x00000004
+#define PERVM_INTR_UNDERFL_INTR_2MASK_RD(src)         (((src) & 0x00000004)>>2)
+#define PERVM_INTR_UNDERFL_INTR_2MASK_WR(src)    (((u32)(src)<<2) & 0x00000004)
+#define PERVM_INTR_UNDERFL_INTR_2MASK_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*    Mask Register Fields pervm_intr_underfl_intr_1Mask    */
+#define PERVM_INTR_UNDERFL_INTR_1MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_1MASK_SHIFT                                   1
+#define PERVM_INTR_UNDERFL_INTR_1MASK_MASK                           0x00000002
+#define PERVM_INTR_UNDERFL_INTR_1MASK_RD(src)         (((src) & 0x00000002)>>1)
+#define PERVM_INTR_UNDERFL_INTR_1MASK_WR(src)    (((u32)(src)<<1) & 0x00000002)
+#define PERVM_INTR_UNDERFL_INTR_1MASK_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*    Mask Register Fields pervm_intr_underfl_intr_0Mask    */
+#define PERVM_INTR_UNDERFL_INTR_0MASK_WIDTH                                   1
+#define PERVM_INTR_UNDERFL_INTR_0MASK_SHIFT                                   0
+#define PERVM_INTR_UNDERFL_INTR_0MASK_MASK                           0x00000001
+#define PERVM_INTR_UNDERFL_INTR_0MASK_RD(src)            (((src) & 0x00000001))
+#define PERVM_INTR_UNDERFL_INTR_0MASK_WR(src)       (((u32)(src)) & 0x00000001)
+#define PERVM_INTR_UNDERFL_INTR_0MASK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_mbox_intr_fifo_overflow_intr	*/ 
+/*	 Fields acrfifoctl_overfl_intr	 */
+#define ACRFIFOCTL_OVERFL_INTR_WIDTH                                          1
+#define ACRFIFOCTL_OVERFL_INTR_SHIFT                                          5
+#define ACRFIFOCTL_OVERFL_INTR_MASK                                  0x00000020
+#define ACRFIFOCTL_OVERFL_INTR_RD(src)                (((src) & 0x00000020)>>5)
+#define ACRFIFOCTL_OVERFL_INTR_WR(src)           (((u32)(src)<<5) & 0x00000020)
+#define ACRFIFOCTL_OVERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields sab_intr_overfl_intr	 */
+#define SAB_INTR_OVERFL_INTR_WIDTH                                            1
+#define SAB_INTR_OVERFL_INTR_SHIFT                                            4
+#define SAB_INTR_OVERFL_INTR_MASK                                    0x00000010
+#define SAB_INTR_OVERFL_INTR_RD(src)                  (((src) & 0x00000010)>>4)
+#define SAB_INTR_OVERFL_INTR_WR(src)             (((u32)(src)<<4) & 0x00000010)
+#define SAB_INTR_OVERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields mbox_rb_amareq_afifo_overfl_intr	 */
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_WIDTH                                1
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_SHIFT                                3
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_MASK                        0x00000008
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_RD(src)      (((src) & 0x00000008)>>3)
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_WR(src) \
+                                                 (((u32)(src)<<3) & 0x00000008)
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields intr_bresp_ctrl_overfl_intr_vc0	 */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_WIDTH                                 1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_SHIFT                                 2
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_MASK                         0x00000004
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_RD(src)       (((src) & 0x00000004)>>2)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_WR(src)  (((u32)(src)<<2) & 0x00000004)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields intr_bresp_ctrl_overfl_intr_vc1	 */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_WIDTH                                 1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_SHIFT                                 1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_MASK                         0x00000002
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_RD(src)       (((src) & 0x00000002)>>1)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_WR(src)  (((u32)(src)<<1) & 0x00000002)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields intr_bresp_ctrl_overfl_intr_vc2	 */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_WIDTH                                 1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_SHIFT                                 0
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_MASK                         0x00000001
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_RD(src)          (((src) & 0x00000001))
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_WR(src)     (((u32)(src)) & 0x00000001)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_mbox_intr_fifo_overflow_intrMask	*/
+/*    Mask Register Fields acrfifoctl_overfl_intrMask    */
+#define ACRFIFOCTL_OVERFL_INTRMASK_WIDTH                                      1
+#define ACRFIFOCTL_OVERFL_INTRMASK_SHIFT                                      5
+#define ACRFIFOCTL_OVERFL_INTRMASK_MASK                              0x00000020
+#define ACRFIFOCTL_OVERFL_INTRMASK_RD(src)            (((src) & 0x00000020)>>5)
+#define ACRFIFOCTL_OVERFL_INTRMASK_WR(src)       (((u32)(src)<<5) & 0x00000020)
+#define ACRFIFOCTL_OVERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields sab_intr_overfl_intrMask    */
+#define SAB_INTR_OVERFL_INTRMASK_WIDTH                                        1
+#define SAB_INTR_OVERFL_INTRMASK_SHIFT                                        4
+#define SAB_INTR_OVERFL_INTRMASK_MASK                                0x00000010
+#define SAB_INTR_OVERFL_INTRMASK_RD(src)              (((src) & 0x00000010)>>4)
+#define SAB_INTR_OVERFL_INTRMASK_WR(src)         (((u32)(src)<<4) & 0x00000010)
+#define SAB_INTR_OVERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*    Mask Register Fields mbox_rb_amareq_afifo_overfl_intrMask    */
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_WIDTH                            1
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_SHIFT                            3
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_MASK                    0x00000008
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_RD(src)  (((src) & 0x00000008)>>3)
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_WR(src) \
+                                                 (((u32)(src)<<3) & 0x00000008)
+#define MBOX_RB_AMAREQ_AFIFO_OVERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*    Mask Register Fields intr_bresp_ctrl_overfl_intr_vc0Mask    */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_WIDTH                             1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_SHIFT                             2
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_MASK                     0x00000004
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_RD(src)   (((src) & 0x00000004)>>2)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_WR(src) \
+                                                 (((u32)(src)<<2) & 0x00000004)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC0MASK_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*    Mask Register Fields intr_bresp_ctrl_overfl_intr_vc1Mask    */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_WIDTH                             1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_SHIFT                             1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_MASK                     0x00000002
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_RD(src)   (((src) & 0x00000002)>>1)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_WR(src) \
+                                                 (((u32)(src)<<1) & 0x00000002)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC1MASK_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*    Mask Register Fields intr_bresp_ctrl_overfl_intr_vc2Mask    */
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_WIDTH                             1
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_SHIFT                             0
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_MASK                     0x00000001
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_RD(src)      (((src) & 0x00000001))
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_WR(src) \
+                                                    (((u32)(src)) & 0x00000001)
+#define INTR_BRESP_CTRL_OVERFL_INTR_VC2MASK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_mbox_intr_fifo_underflow_intr	*/ 
+/*	 Fields acrfifoctl_underfl_intr	 */
+#define ACRFIFOCTL_UNDERFL_INTR_WIDTH                                         1
+#define ACRFIFOCTL_UNDERFL_INTR_SHIFT                                         5
+#define ACRFIFOCTL_UNDERFL_INTR_MASK                                 0x00000020
+#define ACRFIFOCTL_UNDERFL_INTR_RD(src)               (((src) & 0x00000020)>>5)
+#define ACRFIFOCTL_UNDERFL_INTR_WR(src)          (((u32)(src)<<5) & 0x00000020)
+#define ACRFIFOCTL_UNDERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*	 Fields sab_intr_underfl_intr	 */
+#define SAB_INTR_UNDERFL_INTR_WIDTH                                           1
+#define SAB_INTR_UNDERFL_INTR_SHIFT                                           4
+#define SAB_INTR_UNDERFL_INTR_MASK                                   0x00000010
+#define SAB_INTR_UNDERFL_INTR_RD(src)                 (((src) & 0x00000010)>>4)
+#define SAB_INTR_UNDERFL_INTR_WR(src)            (((u32)(src)<<4) & 0x00000010)
+#define SAB_INTR_UNDERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*	 Fields mbox_rb_amareq_afifo_underfl_intr	 */
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_WIDTH                               1
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_SHIFT                               3
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_MASK                       0x00000008
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_RD(src)     (((src) & 0x00000008)>>3)
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_WR(src) \
+                                                 (((u32)(src)<<3) & 0x00000008)
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTR_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields intr_bresp_ctrl_underfl_intr_vc0	 */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_WIDTH                                1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_SHIFT                                2
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_MASK                        0x00000004
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_RD(src)      (((src) & 0x00000004)>>2)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_WR(src) \
+                                                 (((u32)(src)<<2) & 0x00000004)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields intr_bresp_ctrl_underfl_intr_vc1	 */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_WIDTH                                1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_SHIFT                                1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_MASK                        0x00000002
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_RD(src)      (((src) & 0x00000002)>>1)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_WR(src) \
+                                                 (((u32)(src)<<1) & 0x00000002)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*	 Fields intr_bresp_ctrl_underfl_intr_vc2	 */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_WIDTH                                1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_SHIFT                                0
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_MASK                        0x00000001
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_RD(src)         (((src) & 0x00000001))
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_WR(src)    (((u32)(src)) & 0x00000001)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_mbox_intr_fifo_underflow_intrMask	*/
+/*    Mask Register Fields acrfifoctl_underfl_intrMask    */
+#define ACRFIFOCTL_UNDERFL_INTRMASK_WIDTH                                     1
+#define ACRFIFOCTL_UNDERFL_INTRMASK_SHIFT                                     5
+#define ACRFIFOCTL_UNDERFL_INTRMASK_MASK                             0x00000020
+#define ACRFIFOCTL_UNDERFL_INTRMASK_RD(src)           (((src) & 0x00000020)>>5)
+#define ACRFIFOCTL_UNDERFL_INTRMASK_WR(src)      (((u32)(src)<<5) & 0x00000020)
+#define ACRFIFOCTL_UNDERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
+/*    Mask Register Fields sab_intr_underfl_intrMask    */
+#define SAB_INTR_UNDERFL_INTRMASK_WIDTH                                       1
+#define SAB_INTR_UNDERFL_INTRMASK_SHIFT                                       4
+#define SAB_INTR_UNDERFL_INTRMASK_MASK                               0x00000010
+#define SAB_INTR_UNDERFL_INTRMASK_RD(src)             (((src) & 0x00000010)>>4)
+#define SAB_INTR_UNDERFL_INTRMASK_WR(src)        (((u32)(src)<<4) & 0x00000010)
+#define SAB_INTR_UNDERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
+/*    Mask Register Fields mbox_rb_amareq_afifo_underfl_intrMask    */
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_WIDTH                           1
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_SHIFT                           3
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_MASK                   0x00000008
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_RD(src) \
+                                                     (((src) & 0x00000008)>>3)
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_WR(src) \
+                                                 (((u32)(src)<<3) & 0x00000008)
+#define MBOX_RB_AMAREQ_AFIFO_UNDERFL_INTRMASK_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*    Mask Register Fields intr_bresp_ctrl_underfl_intr_vc0Mask    */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_WIDTH                            1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_SHIFT                            2
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_MASK                    0x00000004
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_RD(src)  (((src) & 0x00000004)>>2)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_WR(src) \
+                                                 (((u32)(src)<<2) & 0x00000004)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC0MASK_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*    Mask Register Fields intr_bresp_ctrl_underfl_intr_vc1Mask    */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_WIDTH                            1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_SHIFT                            1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_MASK                    0x00000002
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_RD(src)  (((src) & 0x00000002)>>1)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_WR(src) \
+                                                 (((u32)(src)<<1) & 0x00000002)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC1MASK_SET(dst,src) \
+                       (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
+/*    Mask Register Fields intr_bresp_ctrl_underfl_intr_vc2Mask    */
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_WIDTH                            1
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_SHIFT                            0
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_MASK                    0x00000001
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_RD(src)     (((src) & 0x00000001))
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_WR(src) \
+                                                    (((u32)(src)) & 0x00000001)
+#define INTR_BRESP_CTRL_UNDERFL_INTR_VC2MASK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register csr_qm_pervm_mbox_temp_buffer_full	*/ 
+/*	 Fields temp_buffer_full	 */
+#define TEMP_BUFFER_FULL_WIDTH                                               32
+#define TEMP_BUFFER_FULL_SHIFT                                                0
+#define TEMP_BUFFER_FULL_MASK                                        0xffffffff
+#define TEMP_BUFFER_FULL_RD(src)                         (((src) & 0xffffffff))
+#define TEMP_BUFFER_FULL_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_tbu_shim_ram_margin	*/ 
+/*	 Fields tbu_ram1_test1	 */
+#define TBU_RAM1_TEST1_WIDTH                                                  1
+#define TBU_RAM1_TEST1_SHIFT                                                  7
+#define TBU_RAM1_TEST1_MASK                                          0x00000080
+#define TBU_RAM1_TEST1_RD(src)                        (((src) & 0x00000080)>>7)
+#define TBU_RAM1_TEST1_WR(src)                   (((u32)(src)<<7) & 0x00000080)
+#define TBU_RAM1_TEST1_SET(dst,src) \
+                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
+/*	 Fields tbu_ram1_rme	 */
+#define TBU_RAM1_RME_WIDTH                                                    1
+#define TBU_RAM1_RME_SHIFT                                                    6
+#define TBU_RAM1_RME_MASK                                            0x00000040
+#define TBU_RAM1_RME_RD(src)                          (((src) & 0x00000040)>>6)
+#define TBU_RAM1_RME_WR(src)                     (((u32)(src)<<6) & 0x00000040)
+#define TBU_RAM1_RME_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields tbu_ram1_rm	 */
+#define TBU_RAM1_RM_WIDTH                                                     2
+#define TBU_RAM1_RM_SHIFT                                                     4
+#define TBU_RAM1_RM_MASK                                             0x00000030
+#define TBU_RAM1_RM_RD(src)                           (((src) & 0x00000030)>>4)
+#define TBU_RAM1_RM_WR(src)                      (((u32)(src)<<4) & 0x00000030)
+#define TBU_RAM1_RM_SET(dst,src) \
+                       (((dst) & ~0x00000030) | (((u32)(src)<<4) & 0x00000030))
+/*	 Fields tbu_ram0_test1	 */
+#define TBU_RAM0_TEST1_WIDTH                                                  1
+#define TBU_RAM0_TEST1_SHIFT                                                  3
+#define TBU_RAM0_TEST1_MASK                                          0x00000008
+#define TBU_RAM0_TEST1_RD(src)                        (((src) & 0x00000008)>>3)
+#define TBU_RAM0_TEST1_WR(src)                   (((u32)(src)<<3) & 0x00000008)
+#define TBU_RAM0_TEST1_SET(dst,src) \
+                       (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
+/*	 Fields tbu_ram0_rme	 */
+#define TBU_RAM0_RME_WIDTH                                                    1
+#define TBU_RAM0_RME_SHIFT                                                    2
+#define TBU_RAM0_RME_MASK                                            0x00000004
+#define TBU_RAM0_RME_RD(src)                          (((src) & 0x00000004)>>2)
+#define TBU_RAM0_RME_WR(src)                     (((u32)(src)<<2) & 0x00000004)
+#define TBU_RAM0_RME_SET(dst,src) \
+                       (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
+/*	 Fields tbu_ram0_rm	 */
+#define TBU_RAM0_RM_WIDTH                                                     2
+#define TBU_RAM0_RM_SHIFT                                                     0
+#define TBU_RAM0_RM_MASK                                             0x00000003
+#define TBU_RAM0_RM_RD(src)                              (((src) & 0x00000003))
+#define TBU_RAM0_RM_WR(src)                         (((u32)(src)) & 0x00000003)
+#define TBU_RAM0_RM_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register csr_mpic_intr_status	*/ 
+/*	 Fields mpic_intr	 */
+#define MPIC_INTR_WIDTH                                                      32
+#define MPIC_INTR_SHIFT                                                       0
+#define MPIC_INTR_MASK                                               0xffffffff
+#define MPIC_INTR_RD(src)                                (((src) & 0xffffffff))
+#define MPIC_INTR_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register csr_mpic_sab_intr_status	*/ 
+/*	 Fields mpic_sab_intr	 */
+#define MPIC_SAB_INTR_WIDTH                                                   1
+#define MPIC_SAB_INTR_SHIFT                                                   0
+#define MPIC_SAB_INTR_MASK                                           0x00000001
+#define MPIC_SAB_INTR_RD(src)                            (((src) & 0x00000001))
+#define MPIC_SAB_INTR_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
 /*	Global Base Address	*/
-#define QM_CLKRST_CSR_BASE_ADDR			0x01f20c000ULL
-#define QM_CLKRST_CSR_BASE_ADDR_OFFSET			0xc000
+#define QM_CLKRST_CSR_BASE_ADDR			0x01f60c000ULL
 
 /*    Address QM_CLKRST_CSR  Registers */
 #define QM_SRST_ADDR                                                 0x00000200
@@ -7118,618 +15694,580 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Global Base Address	*/
-#define QM_GLBL_DIAG_CSR_BASE_ADDR			0x01f20d000ULL
-#define QM_GLBL_DIAG_CSR_BASE_ADDR_OFFSET			0xd000
+#define REGSPEC_GLBL_DIAG_CSR_BASE_ADDR			0x01f60d000ULL
 
 /*    Address GLBL_DIAG_CSR  Registers */
-#define QM_CFG_DIAG_SEL_ADDR                                    0x00000000
-#define QM_CFG_DIAG_SEL_DEFAULT                                 0x00000000
-#define QM_CFG_READ_BW_LAT_ADDR_MASK_ADDR                       0x00000004
-#define QM_CFG_READ_BW_LAT_ADDR_MASK_DEFAULT                    0x00000000
-#define QM_CFG_READ_BW_LAT_ADDR_PAT_ADDR                        0x00000008
-#define QM_CFG_READ_BW_LAT_ADDR_PAT_DEFAULT                     0xffffffff
-#define QM_CFG_WRITE_BW_LAT_ADDR_MASK_ADDR                      0x0000000c
-#define QM_CFG_WRITE_BW_LAT_ADDR_MASK_DEFAULT                   0x00000000
-#define QM_CFG_WRITE_BW_LAT_ADDR_PAT_ADDR                       0x00000010
-#define QM_CFG_WRITE_BW_LAT_ADDR_PAT_DEFAULT                    0xffffffff
-#define QM_CFG_DIAG_START_STOP_ADDR                             0x00000014
-#define QM_CFG_DIAG_START_STOP_DEFAULT                          0x000003ff
-#define QM_CFG_BW_MSTR_STOP_CNT_ADDR                            0x00000018
-#define QM_CFG_BW_MSTR_STOP_CNT_DEFAULT                         0x00040004
-#define QM_CFG_BW_SLV_STOP_CNT_ADDR                             0x0000001c
-#define QM_CFG_BW_SLV_STOP_CNT_DEFAULT                          0x00040004
-#define QM_STS_READ_LATENCY_OUTPUT_ADDR                         0x00000020
-#define QM_STS_READ_LATENCY_OUTPUT_DEFAULT                      0x00000000
-#define QM_STS_AXI_MRD_BW_CLK_CNT_ADDR                          0x00000024
-#define QM_STS_AXI_MRD_BW_CLK_CNT_DEFAULT                       0x00000000
-#define QM_STS_AXI_MRD_BW_BYTE_CNT_ADDR                         0x00000028
-#define QM_STS_AXI_MRD_BW_BYTE_CNT_DEFAULT                      0x00000000
-#define QM_STS_AXI_MWR_BW_CLK_CNT_ADDR                          0x0000002c
-#define QM_STS_AXI_MWR_BW_CLK_CNT_DEFAULT                       0x00000000
-#define QM_STS_AXI_MWR_BW_BYTE_CNT_ADDR                         0x00000030
-#define QM_STS_AXI_MWR_BW_BYTE_CNT_DEFAULT                      0x00000000
-#define QM_STS_AXI_SRD_BW_CLK_CNT_ADDR                          0x00000034
-#define QM_STS_AXI_SRD_BW_CLK_CNT_DEFAULT                       0x00000000
-#define QM_STS_AXI_SRD_BW_BYTE_CNT_ADDR                         0x00000038
-#define QM_STS_AXI_SRD_BW_BYTE_CNT_DEFAULT                      0x00000000
-#define QM_STS_AXI_SWR_BW_CLK_CNT_ADDR                          0x0000003c
-#define QM_STS_AXI_SWR_BW_CLK_CNT_DEFAULT                       0x00000000
-#define QM_STS_AXI_SWR_BW_BYTE_CNT_ADDR                         0x00000040
-#define QM_STS_AXI_SWR_BW_BYTE_CNT_DEFAULT                      0x00000000
-#define QM_CFG_DBG_TRIG_CTRL_ADDR                               0x00000044
-#define QM_CFG_DBG_TRIG_CTRL_DEFAULT                            0x00000000
-#define QM_CFG_DBG_PAT_REG_0_ADDR                               0x00000048
-#define QM_CFG_DBG_PAT_REG_0_DEFAULT                            0x00000000
-#define QM_CFG_DBG_PAT_MASK_REG_0_ADDR                          0x0000004c
-#define QM_CFG_DBG_PAT_MASK_REG_0_DEFAULT                       0x00000000
-#define QM_CFG_DBG_PAT_REG_1_ADDR                               0x00000050
-#define QM_CFG_DBG_PAT_REG_1_DEFAULT                            0x00000000
-#define QM_CFG_DBG_PAT_MASK_REG_1_ADDR                          0x00000054
-#define QM_CFG_DBG_PAT_MASK_REG_1_DEFAULT                       0x00000000
-#define QM_DBG_TRIG_OUT_ADDR                                    0x00000058
-#define QM_DBG_TRIG_OUT_DEFAULT                                 0x00000000
-#define QM_DBG_TRIG_INT_ADDR                                    0x0000005c
-#define QM_DBG_TRIG_INT_DEFAULT                                 0x00000000
-#define QM_DBG_TRIG_INTMASK_ADDR                                0x00000060
-#define QM_INTR_STS_ADDR                                        0x00000064
-#define QM_INTR_STS_DEFAULT                                     0x00000000
-#define QM_CFG_MEM_ECC_BYPASS_ADDR                              0x00000068
-#define QM_CFG_MEM_ECC_BYPASS_DEFAULT                           0x00000000
-#define QM_CFG_MEM_PWRDN_DIS_ADDR                               0x0000006c
-#define QM_CFG_MEM_PWRDN_DIS_DEFAULT                            0x00000000
-#define QM_CFG_MEM_RAM_SHUTDOWN_ADDR                            0x00000070
-#define QM_CFG_MEM_RAM_SHUTDOWN_DEFAULT                         0xffffffff
-#define QM_BLOCK_MEM_RDY_ADDR                                   0x00000074
-#define QM_BLOCK_MEM_RDY_DEFAULT                                0xffffffff
-#define QM_STS_READ_LATENCY_TOT_READ_REQS_ADDR                  0x0000008c
-#define QM_STS_READ_LATENCY_TOT_READ_REQS_DEFAULT               0x00000000
-#define QM_CFG_LT_MSTR_STOP_CNT_ADDR                            0x00000090
-#define QM_CFG_LT_MSTR_STOP_CNT_DEFAULT                         0x00040000
-#define QM_CFG_BW_SRD_TRIG_CAP_ADDR                             0x000000a0
-#define QM_CFG_BW_SRD_TRIG_CAP_DEFAULT                          0x00000000
-#define QM_CFG_BW_SWR_TRIG_CAP_ADDR                             0x000000a4
-#define QM_CFG_BW_SWR_TRIG_CAP_DEFAULT                          0x00000000
-#define QM_CFG_BW_MRD_TRIG_CAP_ADDR                             0x000000a8
-#define QM_CFG_BW_MRD_TRIG_CAP_DEFAULT                          0x00000000
-#define QM_CFG_BW_MWR_TRIG_CAP_ADDR                             0x000000ac
-#define QM_CFG_BW_MWR_TRIG_CAP_DEFAULT                          0x00000000
-#define QM_CFG_LT_MRD_TRIG_CAP_ADDR                             0x000000b0
-#define QM_CFG_LT_MRD_TRIG_CAP_DEFAULT                          0x00000000
-#define QM_DBG_BLOCK_AXI_ADDR                                   0x000000b4
-#define QM_DBG_BLOCK_AXI_DEFAULT                                0x00000000
-#define QM_DBG_BLOCK_NON_AXI_ADDR                               0x000000b8
-#define QM_DBG_BLOCK_NON_AXI_DEFAULT                            0x00000000
-#define QM_DBG_AXI_SHIM_OUT_ADDR                                0x000000bc
-#define QM_DBG_AXI_SHIM_OUT_DEFAULT                             0x00000000
+#define REGSPEC_CFG_DIAG_SEL_ADDR                                    0x00000000
+#define REGSPEC_CFG_DIAG_SEL_DEFAULT                                 0x00000000
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_MASK_ADDR                       0x00000004
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_MASK_DEFAULT                    0x00000000
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_PAT_ADDR                        0x00000008
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_PAT_DEFAULT                     0xffffffff
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_MASK_ADDR                      0x0000000c
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_MASK_DEFAULT                   0x00000000
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_PAT_ADDR                       0x00000010
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_PAT_DEFAULT                    0xffffffff
+#define REGSPEC_CFG_DIAG_START_STOP_ADDR                             0x00000014
+#define REGSPEC_CFG_DIAG_START_STOP_DEFAULT                          0x0000001f
+#define REGSPEC_CFG_BW_MSTR_STOP_CNT_ADDR                            0x00000018
+#define REGSPEC_CFG_BW_MSTR_STOP_CNT_DEFAULT                         0x00040004
+#define REGSPEC_CFG_BW_SLV_STOP_CNT_ADDR                             0x0000001c
+#define REGSPEC_CFG_BW_SLV_STOP_CNT_DEFAULT                          0x00040004
+#define REGSPEC_STS_READ_LATENCY_OUTPUT_ADDR                         0x00000020
+#define REGSPEC_STS_READ_LATENCY_OUTPUT_DEFAULT                      0x00000000
+#define REGSPEC_STS_AXI_MRD_BW_CLK_CNT_ADDR                          0x00000024
+#define REGSPEC_STS_AXI_MRD_BW_CLK_CNT_DEFAULT                       0x00000000
+#define REGSPEC_STS_AXI_MRD_BW_BYTE_CNT_ADDR                         0x00000028
+#define REGSPEC_STS_AXI_MRD_BW_BYTE_CNT_DEFAULT                      0x00000000
+#define REGSPEC_STS_AXI_MWR_BW_CLK_CNT_ADDR                          0x0000002c
+#define REGSPEC_STS_AXI_MWR_BW_CLK_CNT_DEFAULT                       0x00000000
+#define REGSPEC_STS_AXI_MWR_BW_BYTE_CNT_ADDR                         0x00000030
+#define REGSPEC_STS_AXI_MWR_BW_BYTE_CNT_DEFAULT                      0x00000000
+#define REGSPEC_STS_AXI_SRD_BW_CLK_CNT_ADDR                          0x00000034
+#define REGSPEC_STS_AXI_SRD_BW_CLK_CNT_DEFAULT                       0x00000000
+#define REGSPEC_STS_AXI_SRD_BW_BYTE_CNT_ADDR                         0x00000038
+#define REGSPEC_STS_AXI_SRD_BW_BYTE_CNT_DEFAULT                      0x00000000
+#define REGSPEC_STS_AXI_SWR_BW_CLK_CNT_ADDR                          0x0000003c
+#define REGSPEC_STS_AXI_SWR_BW_CLK_CNT_DEFAULT                       0x00000000
+#define REGSPEC_STS_AXI_SWR_BW_BYTE_CNT_ADDR                         0x00000040
+#define REGSPEC_STS_AXI_SWR_BW_BYTE_CNT_DEFAULT                      0x00000000
+#define REGSPEC_CFG_DBG_TRIG_CTRL_ADDR                               0x00000044
+#define REGSPEC_CFG_DBG_TRIG_CTRL_DEFAULT                            0x00000000
+#define REGSPEC_CFG_DBG_PAT_REG_0_ADDR                               0x00000048
+#define REGSPEC_CFG_DBG_PAT_REG_0_DEFAULT                            0x00000000
+#define REGSPEC_CFG_DBG_PAT_MASK_REG_0_ADDR                          0x0000004c
+#define REGSPEC_CFG_DBG_PAT_MASK_REG_0_DEFAULT                       0x00000000
+#define REGSPEC_CFG_DBG_PAT_REG_1_ADDR                               0x00000050
+#define REGSPEC_CFG_DBG_PAT_REG_1_DEFAULT                            0x00000000
+#define REGSPEC_CFG_DBG_PAT_MASK_REG_1_ADDR                          0x00000054
+#define REGSPEC_CFG_DBG_PAT_MASK_REG_1_DEFAULT                       0x00000000
+#define REGSPEC_DBG_TRIG_OUT_ADDR                                    0x00000058
+#define REGSPEC_DBG_TRIG_OUT_DEFAULT                                 0x00000000
+#define REGSPEC_DBG_TRIG_INT_ADDR                                    0x0000005c
+#define REGSPEC_DBG_TRIG_INT_DEFAULT                                 0x00000000
+#define REGSPEC_DBG_TRIG_INTMASK_ADDR                                0x00000060
+#define REGSPEC_INTR_STS_ADDR                                        0x00000064
+#define REGSPEC_INTR_STS_DEFAULT                                     0x00000000
+#define REGSPEC_CFG_MEM_ECC_BYPASS_ADDR                              0x00000068
+#define REGSPEC_CFG_MEM_ECC_BYPASS_DEFAULT                           0x00000000
+#define REGSPEC_CFG_MEM_PWRDN_DIS_CFG_PWRDN_ADDR                     0x0000006c
+#define REGSPEC_CFG_MEM_PWRDN_DIS_CFG_PWRDN_DEFAULT                  0x00000000
+#define REGSPEC_CFG_MEM_RAM_SHUTDOWN_ADDR                            0x00000070
+#define REGSPEC_CFG_MEM_RAM_SHUTDOWN_DEFAULT                         0xffffffff
+#define REGSPEC_BLOCK_MEM_RDY_ADDR                                   0x00000074
+#define REGSPEC_BLOCK_MEM_RDY_DEFAULT                                0xffffffff
+#define REGSPEC_STS_READ_LATENCY_TOT_READ_REQS_ADDR                  0x0000008c
+#define REGSPEC_STS_READ_LATENCY_TOT_READ_REQS_DEFAULT               0x00000000
+#define REGSPEC_CFG_LT_MSTR_STOP_CNT_ADDR                            0x00000090
+#define REGSPEC_CFG_LT_MSTR_STOP_CNT_DEFAULT                         0x00040000
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_MASK_1_ADDR                     0x000000a0
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_MASK_1_DEFAULT                  0x00000000
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_PAT_1_ADDR                      0x000000a4
+#define REGSPEC_CFG_READ_BW_LAT_ADDR_PAT_1_DEFAULT                   0x000003ff
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_MASK_1_ADDR                    0x000000a8
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_MASK_1_DEFAULT                 0x00000000
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_PAT_1_ADDR                     0x000000ac
+#define REGSPEC_CFG_WRITE_BW_LAT_ADDR_PAT_1_DEFAULT                  0x000003ff
+#define REGSPEC_DBG_BLOCK_AXI_ADDR                                   0x000000b4
+#define REGSPEC_DBG_BLOCK_AXI_DEFAULT                                0x00000000
+#define REGSPEC_DBG_BLOCK_NON_AXI_ADDR                               0x000000b8
+#define REGSPEC_DBG_BLOCK_NON_AXI_DEFAULT                            0x00000000
+#define REGSPEC_DBG_AXI_SHIM_OUT_ADDR                                0x000000bc
+#define REGSPEC_DBG_AXI_SHIM_OUT_DEFAULT                             0x00000000
+#define REGSPEC_CFG_MEM_PWRDN_DIS_CFG_ECC_PWRDN_ADDR                 0x000000c0
+#define REGSPEC_CFG_MEM_PWRDN_DIS_CFG_ECC_PWRDN_DEFAULT              0x00000000
 
 /*	Register CFG_DIAG_SEL	*/ 
 /*	 Fields CFG_SHIM_BLK_DBUS_MUX_SELECT	 */
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_WIDTH                            1
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_SHIFT                           12
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_MASK                    0x00001000
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_RD(src) \
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_WIDTH                            1
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_SHIFT                           12
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_MASK                    0x00001000
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_RD(src) \
                                                     (((src) & 0x00001000)>>12)
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_WR(src) \
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_WR(src) \
                                                 (((u32)(src)<<12) & 0x00001000)
-#define QM_CFG_SHIM_BLK_DBUS_MUX_SELECT_SET(dst,src) \
+#define REGSPEC_CFG_SHIM_BLK_DBUS_MUX_SELECT_SET(dst,src) \
                       (((dst) & ~0x00001000) | (((u32)(src)<<12) & 0x00001000))
 /*	 Fields CFG_AXI_NON_AXI_MUX_SELECT	 */
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_WIDTH                              1
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_SHIFT                             11
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_MASK                      0x00000800
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_RD(src)   (((src) & 0x00000800)>>11)
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_WR(src) \
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_WIDTH                              1
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_SHIFT                             11
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_MASK                      0x00000800
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_RD(src)   (((src) & 0x00000800)>>11)
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_WR(src) \
                                                 (((u32)(src)<<11) & 0x00000800)
-#define QM_CFG_AXI_NON_AXI_MUX_SELECT_SET(dst,src) \
+#define REGSPEC_CFG_AXI_NON_AXI_MUX_SELECT_SET(dst,src) \
                       (((dst) & ~0x00000800) | (((u32)(src)<<11) & 0x00000800))
 /*	 Fields CFG_MUX_SELECTOR	 */
-#define QM_CFG_MUX_SELECTOR_WIDTH                                       11
-#define QM_CFG_MUX_SELECTOR_SHIFT                                        0
-#define QM_CFG_MUX_SELECTOR_MASK                                0x000007ff
-#define QM_CFG_MUX_SELECTOR_RD(src)                 (((src) & 0x000007ff))
-#define QM_CFG_MUX_SELECTOR_WR(src)            (((u32)(src)) & 0x000007ff)
-#define QM_CFG_MUX_SELECTOR_SET(dst,src) \
+#define REGSPEC_CFG_MUX_SELECTOR_WIDTH                                       11
+#define REGSPEC_CFG_MUX_SELECTOR_SHIFT                                        0
+#define REGSPEC_CFG_MUX_SELECTOR_MASK                                0x000007ff
+#define REGSPEC_CFG_MUX_SELECTOR_RD(src)                 (((src) & 0x000007ff))
+#define REGSPEC_CFG_MUX_SELECTOR_WR(src)            (((u32)(src)) & 0x000007ff)
+#define REGSPEC_CFG_MUX_SELECTOR_SET(dst,src) \
                           (((dst) & ~0x000007ff) | (((u32)(src)) & 0x000007ff))
 
 /*	Register CFG_READ_BW_LAT_ADDR_MASK	*/ 
 /*	 Fields READ_ADDR_MASK	 */
-#define QM_READ_ADDR_MASK_WIDTH                                         32
-#define QM_READ_ADDR_MASK_SHIFT                                          0
-#define QM_READ_ADDR_MASK_MASK                                  0xffffffff
-#define QM_READ_ADDR_MASK_RD(src)                   (((src) & 0xffffffff))
-#define QM_READ_ADDR_MASK_WR(src)              (((u32)(src)) & 0xffffffff)
-#define QM_READ_ADDR_MASK_SET(dst,src) \
+#define REGSPEC_READ_ADDR_MASK_WIDTH                                         32
+#define REGSPEC_READ_ADDR_MASK_SHIFT                                          0
+#define REGSPEC_READ_ADDR_MASK_MASK                                  0xffffffff
+#define REGSPEC_READ_ADDR_MASK_RD(src)                   (((src) & 0xffffffff))
+#define REGSPEC_READ_ADDR_MASK_WR(src)              (((u32)(src)) & 0xffffffff)
+#define REGSPEC_READ_ADDR_MASK_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_READ_BW_LAT_ADDR_PAT	*/ 
 /*	 Fields READ_ADDR_PAT	 */
-#define QM_READ_ADDR_PAT_WIDTH                                          32
-#define QM_READ_ADDR_PAT_SHIFT                                           0
-#define QM_READ_ADDR_PAT_MASK                                   0xffffffff
-#define QM_READ_ADDR_PAT_RD(src)                    (((src) & 0xffffffff))
-#define QM_READ_ADDR_PAT_WR(src)               (((u32)(src)) & 0xffffffff)
-#define QM_READ_ADDR_PAT_SET(dst,src) \
+#define REGSPEC_READ_ADDR_PAT_WIDTH                                          32
+#define REGSPEC_READ_ADDR_PAT_SHIFT                                           0
+#define REGSPEC_READ_ADDR_PAT_MASK                                   0xffffffff
+#define REGSPEC_READ_ADDR_PAT_RD(src)                    (((src) & 0xffffffff))
+#define REGSPEC_READ_ADDR_PAT_WR(src)               (((u32)(src)) & 0xffffffff)
+#define REGSPEC_READ_ADDR_PAT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_WRITE_BW_LAT_ADDR_MASK	*/ 
 /*	 Fields WRITE_ADDR_MASK	 */
-#define QM_WRITE_ADDR_MASK_WIDTH                                        32
-#define QM_WRITE_ADDR_MASK_SHIFT                                         0
-#define QM_WRITE_ADDR_MASK_MASK                                 0xffffffff
-#define QM_WRITE_ADDR_MASK_RD(src)                  (((src) & 0xffffffff))
-#define QM_WRITE_ADDR_MASK_WR(src)             (((u32)(src)) & 0xffffffff)
-#define QM_WRITE_ADDR_MASK_SET(dst,src) \
+#define REGSPEC_WRITE_ADDR_MASK_WIDTH                                        32
+#define REGSPEC_WRITE_ADDR_MASK_SHIFT                                         0
+#define REGSPEC_WRITE_ADDR_MASK_MASK                                 0xffffffff
+#define REGSPEC_WRITE_ADDR_MASK_RD(src)                  (((src) & 0xffffffff))
+#define REGSPEC_WRITE_ADDR_MASK_WR(src)             (((u32)(src)) & 0xffffffff)
+#define REGSPEC_WRITE_ADDR_MASK_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_WRITE_BW_LAT_ADDR_PAT	*/ 
 /*	 Fields WRITE_ADDR_PAT	 */
-#define QM_WRITE_ADDR_PAT_WIDTH                                         32
-#define QM_WRITE_ADDR_PAT_SHIFT                                          0
-#define QM_WRITE_ADDR_PAT_MASK                                  0xffffffff
-#define QM_WRITE_ADDR_PAT_RD(src)                   (((src) & 0xffffffff))
-#define QM_WRITE_ADDR_PAT_WR(src)              (((u32)(src)) & 0xffffffff)
-#define QM_WRITE_ADDR_PAT_SET(dst,src) \
+#define REGSPEC_WRITE_ADDR_PAT_WIDTH                                         32
+#define REGSPEC_WRITE_ADDR_PAT_SHIFT                                          0
+#define REGSPEC_WRITE_ADDR_PAT_MASK                                  0xffffffff
+#define REGSPEC_WRITE_ADDR_PAT_RD(src)                   (((src) & 0xffffffff))
+#define REGSPEC_WRITE_ADDR_PAT_WR(src)              (((u32)(src)) & 0xffffffff)
+#define REGSPEC_WRITE_ADDR_PAT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_DIAG_START_STOP	*/ 
-/*	 Fields CTRL_AddCap_MRD_LT	 */
-#define QM_CTRL_ADDCAP_MRD_LT_WIDTH                                      1
-#define QM_CTRL_ADDCAP_MRD_LT_SHIFT                                      9
-#define QM_CTRL_ADDCAP_MRD_LT_MASK                              0x00000200
-#define QM_CTRL_ADDCAP_MRD_LT_RD(src)            (((src) & 0x00000200)>>9)
-#define QM_CTRL_ADDCAP_MRD_LT_WR(src)       (((u32)(src)<<9) & 0x00000200)
-#define QM_CTRL_ADDCAP_MRD_LT_SET(dst,src) \
-                       (((dst) & ~0x00000200) | (((u32)(src)<<9) & 0x00000200))
-/*	 Fields CTRL_AddCap_SRD_BW	 */
-#define QM_CTRL_ADDCAP_SRD_BW_WIDTH                                      1
-#define QM_CTRL_ADDCAP_SRD_BW_SHIFT                                      8
-#define QM_CTRL_ADDCAP_SRD_BW_MASK                              0x00000100
-#define QM_CTRL_ADDCAP_SRD_BW_RD(src)            (((src) & 0x00000100)>>8)
-#define QM_CTRL_ADDCAP_SRD_BW_WR(src)       (((u32)(src)<<8) & 0x00000100)
-#define QM_CTRL_ADDCAP_SRD_BW_SET(dst,src) \
-                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
-/*	 Fields CTRL_AddCap_MRD_BW	 */
-#define QM_CTRL_ADDCAP_MRD_BW_WIDTH                                      1
-#define QM_CTRL_ADDCAP_MRD_BW_SHIFT                                      7
-#define QM_CTRL_ADDCAP_MRD_BW_MASK                              0x00000080
-#define QM_CTRL_ADDCAP_MRD_BW_RD(src)            (((src) & 0x00000080)>>7)
-#define QM_CTRL_ADDCAP_MRD_BW_WR(src)       (((u32)(src)<<7) & 0x00000080)
-#define QM_CTRL_ADDCAP_MRD_BW_SET(dst,src) \
-                       (((dst) & ~0x00000080) | (((u32)(src)<<7) & 0x00000080))
-/*	 Fields CTRL_AddCap_SWR_BW	 */
-#define QM_CTRL_ADDCAP_SWR_BW_WIDTH                                      1
-#define QM_CTRL_ADDCAP_SWR_BW_SHIFT                                      6
-#define QM_CTRL_ADDCAP_SWR_BW_MASK                              0x00000040
-#define QM_CTRL_ADDCAP_SWR_BW_RD(src)            (((src) & 0x00000040)>>6)
-#define QM_CTRL_ADDCAP_SWR_BW_WR(src)       (((u32)(src)<<6) & 0x00000040)
-#define QM_CTRL_ADDCAP_SWR_BW_SET(dst,src) \
-                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
-/*	 Fields CTRL_AddCap_MWR_BW	 */
-#define QM_CTRL_ADDCAP_MWR_BW_WIDTH                                      1
-#define QM_CTRL_ADDCAP_MWR_BW_SHIFT                                      5
-#define QM_CTRL_ADDCAP_MWR_BW_MASK                              0x00000020
-#define QM_CTRL_ADDCAP_MWR_BW_RD(src)            (((src) & 0x00000020)>>5)
-#define QM_CTRL_ADDCAP_MWR_BW_WR(src)       (((u32)(src)<<5) & 0x00000020)
-#define QM_CTRL_ADDCAP_MWR_BW_SET(dst,src) \
-                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
 /*	 Fields START_MRD_LT	 */
-#define QM_START_MRD_LT_WIDTH                                            1
-#define QM_START_MRD_LT_SHIFT                                            4
-#define QM_START_MRD_LT_MASK                                    0x00000010
-#define QM_START_MRD_LT_RD(src)                  (((src) & 0x00000010)>>4)
-#define QM_START_MRD_LT_WR(src)             (((u32)(src)<<4) & 0x00000010)
-#define QM_START_MRD_LT_SET(dst,src) \
+#define REGSPEC_START_MRD_LT_WIDTH                                            1
+#define REGSPEC_START_MRD_LT_SHIFT                                            4
+#define REGSPEC_START_MRD_LT_MASK                                    0x00000010
+#define REGSPEC_START_MRD_LT_RD(src)                  (((src) & 0x00000010)>>4)
+#define REGSPEC_START_MRD_LT_WR(src)             (((u32)(src)<<4) & 0x00000010)
+#define REGSPEC_START_MRD_LT_SET(dst,src) \
                        (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
 /*	 Fields START_SRD_BW	 */
-#define QM_START_SRD_BW_WIDTH                                            1
-#define QM_START_SRD_BW_SHIFT                                            3
-#define QM_START_SRD_BW_MASK                                    0x00000008
-#define QM_START_SRD_BW_RD(src)                  (((src) & 0x00000008)>>3)
-#define QM_START_SRD_BW_WR(src)             (((u32)(src)<<3) & 0x00000008)
-#define QM_START_SRD_BW_SET(dst,src) \
+#define REGSPEC_START_SRD_BW_WIDTH                                            1
+#define REGSPEC_START_SRD_BW_SHIFT                                            3
+#define REGSPEC_START_SRD_BW_MASK                                    0x00000008
+#define REGSPEC_START_SRD_BW_RD(src)                  (((src) & 0x00000008)>>3)
+#define REGSPEC_START_SRD_BW_WR(src)             (((u32)(src)<<3) & 0x00000008)
+#define REGSPEC_START_SRD_BW_SET(dst,src) \
                        (((dst) & ~0x00000008) | (((u32)(src)<<3) & 0x00000008))
 /*	 Fields START_MRD_BW	 */
-#define QM_START_MRD_BW_WIDTH                                            1
-#define QM_START_MRD_BW_SHIFT                                            2
-#define QM_START_MRD_BW_MASK                                    0x00000004
-#define QM_START_MRD_BW_RD(src)                  (((src) & 0x00000004)>>2)
-#define QM_START_MRD_BW_WR(src)             (((u32)(src)<<2) & 0x00000004)
-#define QM_START_MRD_BW_SET(dst,src) \
+#define REGSPEC_START_MRD_BW_WIDTH                                            1
+#define REGSPEC_START_MRD_BW_SHIFT                                            2
+#define REGSPEC_START_MRD_BW_MASK                                    0x00000004
+#define REGSPEC_START_MRD_BW_RD(src)                  (((src) & 0x00000004)>>2)
+#define REGSPEC_START_MRD_BW_WR(src)             (((u32)(src)<<2) & 0x00000004)
+#define REGSPEC_START_MRD_BW_SET(dst,src) \
                        (((dst) & ~0x00000004) | (((u32)(src)<<2) & 0x00000004))
 /*	 Fields START_SWR_BW	 */
-#define QM_START_SWR_BW_WIDTH                                            1
-#define QM_START_SWR_BW_SHIFT                                            1
-#define QM_START_SWR_BW_MASK                                    0x00000002
-#define QM_START_SWR_BW_RD(src)                  (((src) & 0x00000002)>>1)
-#define QM_START_SWR_BW_WR(src)             (((u32)(src)<<1) & 0x00000002)
-#define QM_START_SWR_BW_SET(dst,src) \
+#define REGSPEC_START_SWR_BW_WIDTH                                            1
+#define REGSPEC_START_SWR_BW_SHIFT                                            1
+#define REGSPEC_START_SWR_BW_MASK                                    0x00000002
+#define REGSPEC_START_SWR_BW_RD(src)                  (((src) & 0x00000002)>>1)
+#define REGSPEC_START_SWR_BW_WR(src)             (((u32)(src)<<1) & 0x00000002)
+#define REGSPEC_START_SWR_BW_SET(dst,src) \
                        (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
 /*	 Fields START_MWR_BW	 */
-#define QM_START_MWR_BW_WIDTH                                            1
-#define QM_START_MWR_BW_SHIFT                                            0
-#define QM_START_MWR_BW_MASK                                    0x00000001
-#define QM_START_MWR_BW_RD(src)                     (((src) & 0x00000001))
-#define QM_START_MWR_BW_WR(src)                (((u32)(src)) & 0x00000001)
-#define QM_START_MWR_BW_SET(dst,src) \
+#define REGSPEC_START_MWR_BW_WIDTH                                            1
+#define REGSPEC_START_MWR_BW_SHIFT                                            0
+#define REGSPEC_START_MWR_BW_MASK                                    0x00000001
+#define REGSPEC_START_MWR_BW_RD(src)                     (((src) & 0x00000001))
+#define REGSPEC_START_MWR_BW_WR(src)                (((u32)(src)) & 0x00000001)
+#define REGSPEC_START_MWR_BW_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register CFG_BW_MSTR_STOP_CNT	*/ 
 /*	 Fields MSTR_STOP_RD_CNT	 */
-#define QM_MSTR_STOP_RD_CNT_WIDTH                                       16
-#define QM_MSTR_STOP_RD_CNT_SHIFT                                       16
-#define QM_MSTR_STOP_RD_CNT_MASK                                0xffff0000
-#define QM_MSTR_STOP_RD_CNT_RD(src)             (((src) & 0xffff0000)>>16)
-#define QM_MSTR_STOP_RD_CNT_WR(src)        (((u32)(src)<<16) & 0xffff0000)
-#define QM_MSTR_STOP_RD_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_STOP_RD_CNT_WIDTH                                       16
+#define REGSPEC_MSTR_STOP_RD_CNT_SHIFT                                       16
+#define REGSPEC_MSTR_STOP_RD_CNT_MASK                                0xffff0000
+#define REGSPEC_MSTR_STOP_RD_CNT_RD(src)             (((src) & 0xffff0000)>>16)
+#define REGSPEC_MSTR_STOP_RD_CNT_WR(src)        (((u32)(src)<<16) & 0xffff0000)
+#define REGSPEC_MSTR_STOP_RD_CNT_SET(dst,src) \
                       (((dst) & ~0xffff0000) | (((u32)(src)<<16) & 0xffff0000))
 /*	 Fields MSTR_STOP_WR_CNT	 */
-#define QM_MSTR_STOP_WR_CNT_WIDTH                                       16
-#define QM_MSTR_STOP_WR_CNT_SHIFT                                        0
-#define QM_MSTR_STOP_WR_CNT_MASK                                0x0000ffff
-#define QM_MSTR_STOP_WR_CNT_RD(src)                 (((src) & 0x0000ffff))
-#define QM_MSTR_STOP_WR_CNT_WR(src)            (((u32)(src)) & 0x0000ffff)
-#define QM_MSTR_STOP_WR_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_STOP_WR_CNT_WIDTH                                       16
+#define REGSPEC_MSTR_STOP_WR_CNT_SHIFT                                        0
+#define REGSPEC_MSTR_STOP_WR_CNT_MASK                                0x0000ffff
+#define REGSPEC_MSTR_STOP_WR_CNT_RD(src)                 (((src) & 0x0000ffff))
+#define REGSPEC_MSTR_STOP_WR_CNT_WR(src)            (((u32)(src)) & 0x0000ffff)
+#define REGSPEC_MSTR_STOP_WR_CNT_SET(dst,src) \
                           (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
 
 /*	Register CFG_BW_SLV_STOP_CNT	*/ 
 /*	 Fields SLV_STOP_RD_CNT	 */
-#define QM_SLV_STOP_RD_CNT_WIDTH                                        16
-#define QM_SLV_STOP_RD_CNT_SHIFT                                        16
-#define QM_SLV_STOP_RD_CNT_MASK                                 0xffff0000
-#define QM_SLV_STOP_RD_CNT_RD(src)              (((src) & 0xffff0000)>>16)
-#define QM_SLV_STOP_RD_CNT_WR(src)         (((u32)(src)<<16) & 0xffff0000)
-#define QM_SLV_STOP_RD_CNT_SET(dst,src) \
+#define REGSPEC_SLV_STOP_RD_CNT_WIDTH                                        16
+#define REGSPEC_SLV_STOP_RD_CNT_SHIFT                                        16
+#define REGSPEC_SLV_STOP_RD_CNT_MASK                                 0xffff0000
+#define REGSPEC_SLV_STOP_RD_CNT_RD(src)              (((src) & 0xffff0000)>>16)
+#define REGSPEC_SLV_STOP_RD_CNT_WR(src)         (((u32)(src)<<16) & 0xffff0000)
+#define REGSPEC_SLV_STOP_RD_CNT_SET(dst,src) \
                       (((dst) & ~0xffff0000) | (((u32)(src)<<16) & 0xffff0000))
 /*	 Fields SLV_STOP_WR_CNT	 */
-#define QM_SLV_STOP_WR_CNT_WIDTH                                        16
-#define QM_SLV_STOP_WR_CNT_SHIFT                                         0
-#define QM_SLV_STOP_WR_CNT_MASK                                 0x0000ffff
-#define QM_SLV_STOP_WR_CNT_RD(src)                  (((src) & 0x0000ffff))
-#define QM_SLV_STOP_WR_CNT_WR(src)             (((u32)(src)) & 0x0000ffff)
-#define QM_SLV_STOP_WR_CNT_SET(dst,src) \
+#define REGSPEC_SLV_STOP_WR_CNT_WIDTH                                        16
+#define REGSPEC_SLV_STOP_WR_CNT_SHIFT                                         0
+#define REGSPEC_SLV_STOP_WR_CNT_MASK                                 0x0000ffff
+#define REGSPEC_SLV_STOP_WR_CNT_RD(src)                  (((src) & 0x0000ffff))
+#define REGSPEC_SLV_STOP_WR_CNT_WR(src)             (((u32)(src)) & 0x0000ffff)
+#define REGSPEC_SLV_STOP_WR_CNT_SET(dst,src) \
                           (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
 
 /*	Register STS_READ_LATENCY_OUTPUT	*/ 
 /*	 Fields READ_TOT	 */
-#define QM_READ_TOT_WIDTH                                               22
-#define QM_READ_TOT_SHIFT                                                0
-#define QM_READ_TOT_MASK                                        0x003fffff
-#define QM_READ_TOT_RD(src)                         (((src) & 0x003fffff))
-#define QM_READ_TOT_SET(dst,src) \
+#define REGSPEC_READ_TOT_WIDTH                                               22
+#define REGSPEC_READ_TOT_SHIFT                                                0
+#define REGSPEC_READ_TOT_MASK                                        0x003fffff
+#define REGSPEC_READ_TOT_RD(src)                         (((src) & 0x003fffff))
+#define REGSPEC_READ_TOT_SET(dst,src) \
                           (((dst) & ~0x003fffff) | (((u32)(src)) & 0x003fffff))
 
 /*	Register STS_AXI_MRD_BW_CLK_CNT	*/ 
 /*	 Fields MSTR_READ_BW_CLK_CNT	 */
-#define QM_MSTR_READ_BW_CLK_CNT_WIDTH                                   32
-#define QM_MSTR_READ_BW_CLK_CNT_SHIFT                                    0
-#define QM_MSTR_READ_BW_CLK_CNT_MASK                            0xffffffff
-#define QM_MSTR_READ_BW_CLK_CNT_RD(src)             (((src) & 0xffffffff))
-#define QM_MSTR_READ_BW_CLK_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_READ_BW_CLK_CNT_WIDTH                                   32
+#define REGSPEC_MSTR_READ_BW_CLK_CNT_SHIFT                                    0
+#define REGSPEC_MSTR_READ_BW_CLK_CNT_MASK                            0xffffffff
+#define REGSPEC_MSTR_READ_BW_CLK_CNT_RD(src)             (((src) & 0xffffffff))
+#define REGSPEC_MSTR_READ_BW_CLK_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_MRD_BW_BYTE_CNT	*/ 
 /*	 Fields MSTR_READ_BW_BYTE_CNT	 */
-#define QM_MSTR_READ_BW_BYTE_CNT_WIDTH                                  32
-#define QM_MSTR_READ_BW_BYTE_CNT_SHIFT                                   0
-#define QM_MSTR_READ_BW_BYTE_CNT_MASK                           0xffffffff
-#define QM_MSTR_READ_BW_BYTE_CNT_RD(src)            (((src) & 0xffffffff))
-#define QM_MSTR_READ_BW_BYTE_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_READ_BW_BYTE_CNT_WIDTH                                  32
+#define REGSPEC_MSTR_READ_BW_BYTE_CNT_SHIFT                                   0
+#define REGSPEC_MSTR_READ_BW_BYTE_CNT_MASK                           0xffffffff
+#define REGSPEC_MSTR_READ_BW_BYTE_CNT_RD(src)            (((src) & 0xffffffff))
+#define REGSPEC_MSTR_READ_BW_BYTE_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_MWR_BW_CLK_CNT	*/ 
 /*	 Fields MSTR_WRITE_BW_CLK_CNT	 */
-#define QM_MSTR_WRITE_BW_CLK_CNT_WIDTH                                  32
-#define QM_MSTR_WRITE_BW_CLK_CNT_SHIFT                                   0
-#define QM_MSTR_WRITE_BW_CLK_CNT_MASK                           0xffffffff
-#define QM_MSTR_WRITE_BW_CLK_CNT_RD(src)            (((src) & 0xffffffff))
-#define QM_MSTR_WRITE_BW_CLK_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_WRITE_BW_CLK_CNT_WIDTH                                  32
+#define REGSPEC_MSTR_WRITE_BW_CLK_CNT_SHIFT                                   0
+#define REGSPEC_MSTR_WRITE_BW_CLK_CNT_MASK                           0xffffffff
+#define REGSPEC_MSTR_WRITE_BW_CLK_CNT_RD(src)            (((src) & 0xffffffff))
+#define REGSPEC_MSTR_WRITE_BW_CLK_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_MWR_BW_BYTE_CNT	*/ 
 /*	 Fields MSTR_WRITE_BW_BYTE_CNT	 */
-#define QM_MSTR_WRITE_BW_BYTE_CNT_WIDTH                                 32
-#define QM_MSTR_WRITE_BW_BYTE_CNT_SHIFT                                  0
-#define QM_MSTR_WRITE_BW_BYTE_CNT_MASK                          0xffffffff
-#define QM_MSTR_WRITE_BW_BYTE_CNT_RD(src)           (((src) & 0xffffffff))
-#define QM_MSTR_WRITE_BW_BYTE_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_WRITE_BW_BYTE_CNT_WIDTH                                 32
+#define REGSPEC_MSTR_WRITE_BW_BYTE_CNT_SHIFT                                  0
+#define REGSPEC_MSTR_WRITE_BW_BYTE_CNT_MASK                          0xffffffff
+#define REGSPEC_MSTR_WRITE_BW_BYTE_CNT_RD(src)           (((src) & 0xffffffff))
+#define REGSPEC_MSTR_WRITE_BW_BYTE_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_SRD_BW_CLK_CNT	*/ 
 /*	 Fields SLV_READ_BW_CLK_CNT	 */
-#define QM_SLV_READ_BW_CLK_CNT_WIDTH                                    32
-#define QM_SLV_READ_BW_CLK_CNT_SHIFT                                     0
-#define QM_SLV_READ_BW_CLK_CNT_MASK                             0xffffffff
-#define QM_SLV_READ_BW_CLK_CNT_RD(src)              (((src) & 0xffffffff))
-#define QM_SLV_READ_BW_CLK_CNT_SET(dst,src) \
+#define REGSPEC_SLV_READ_BW_CLK_CNT_WIDTH                                    32
+#define REGSPEC_SLV_READ_BW_CLK_CNT_SHIFT                                     0
+#define REGSPEC_SLV_READ_BW_CLK_CNT_MASK                             0xffffffff
+#define REGSPEC_SLV_READ_BW_CLK_CNT_RD(src)              (((src) & 0xffffffff))
+#define REGSPEC_SLV_READ_BW_CLK_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_SRD_BW_BYTE_CNT	*/ 
 /*	 Fields SLV_READ_BW_BYTE_CNT	 */
-#define QM_SLV_READ_BW_BYTE_CNT_WIDTH                                   32
-#define QM_SLV_READ_BW_BYTE_CNT_SHIFT                                    0
-#define QM_SLV_READ_BW_BYTE_CNT_MASK                            0xffffffff
-#define QM_SLV_READ_BW_BYTE_CNT_RD(src)             (((src) & 0xffffffff))
-#define QM_SLV_READ_BW_BYTE_CNT_SET(dst,src) \
+#define REGSPEC_SLV_READ_BW_BYTE_CNT_WIDTH                                   32
+#define REGSPEC_SLV_READ_BW_BYTE_CNT_SHIFT                                    0
+#define REGSPEC_SLV_READ_BW_BYTE_CNT_MASK                            0xffffffff
+#define REGSPEC_SLV_READ_BW_BYTE_CNT_RD(src)             (((src) & 0xffffffff))
+#define REGSPEC_SLV_READ_BW_BYTE_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_SWR_BW_CLK_CNT	*/ 
 /*	 Fields SLV_WRITE_BW_CLK_CNT	 */
-#define QM_SLV_WRITE_BW_CLK_CNT_WIDTH                                   32
-#define QM_SLV_WRITE_BW_CLK_CNT_SHIFT                                    0
-#define QM_SLV_WRITE_BW_CLK_CNT_MASK                            0xffffffff
-#define QM_SLV_WRITE_BW_CLK_CNT_RD(src)             (((src) & 0xffffffff))
-#define QM_SLV_WRITE_BW_CLK_CNT_SET(dst,src) \
+#define REGSPEC_SLV_WRITE_BW_CLK_CNT_WIDTH                                   32
+#define REGSPEC_SLV_WRITE_BW_CLK_CNT_SHIFT                                    0
+#define REGSPEC_SLV_WRITE_BW_CLK_CNT_MASK                            0xffffffff
+#define REGSPEC_SLV_WRITE_BW_CLK_CNT_RD(src)             (((src) & 0xffffffff))
+#define REGSPEC_SLV_WRITE_BW_CLK_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_AXI_SWR_BW_BYTE_CNT	*/ 
 /*	 Fields SLV_WRITE_BW_BYTE_CNT	 */
-#define QM_SLV_WRITE_BW_BYTE_CNT_WIDTH                                  32
-#define QM_SLV_WRITE_BW_BYTE_CNT_SHIFT                                   0
-#define QM_SLV_WRITE_BW_BYTE_CNT_MASK                           0xffffffff
-#define QM_SLV_WRITE_BW_BYTE_CNT_RD(src)            (((src) & 0xffffffff))
-#define QM_SLV_WRITE_BW_BYTE_CNT_SET(dst,src) \
+#define REGSPEC_SLV_WRITE_BW_BYTE_CNT_WIDTH                                  32
+#define REGSPEC_SLV_WRITE_BW_BYTE_CNT_SHIFT                                   0
+#define REGSPEC_SLV_WRITE_BW_BYTE_CNT_MASK                           0xffffffff
+#define REGSPEC_SLV_WRITE_BW_BYTE_CNT_RD(src)            (((src) & 0xffffffff))
+#define REGSPEC_SLV_WRITE_BW_BYTE_CNT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_DBG_TRIG_CTRL	*/ 
 /*	 Fields TRIG_EN_OUT_CTRL	 */
-#define QM_TRIG_EN_OUT_CTRL_WIDTH                                        1
-#define QM_TRIG_EN_OUT_CTRL_SHIFT                                        5
-#define QM_TRIG_EN_OUT_CTRL_MASK                                0x00000020
-#define QM_TRIG_EN_OUT_CTRL_RD(src)              (((src) & 0x00000020)>>5)
-#define QM_TRIG_EN_OUT_CTRL_WR(src)         (((u32)(src)<<5) & 0x00000020)
-#define QM_TRIG_EN_OUT_CTRL_SET(dst,src) \
+#define REGSPEC_TRIG_EN_OUT_CTRL_WIDTH                                        1
+#define REGSPEC_TRIG_EN_OUT_CTRL_SHIFT                                        5
+#define REGSPEC_TRIG_EN_OUT_CTRL_MASK                                0x00000020
+#define REGSPEC_TRIG_EN_OUT_CTRL_RD(src)              (((src) & 0x00000020)>>5)
+#define REGSPEC_TRIG_EN_OUT_CTRL_WR(src)         (((u32)(src)<<5) & 0x00000020)
+#define REGSPEC_TRIG_EN_OUT_CTRL_SET(dst,src) \
                        (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
 /*	 Fields TRIG_EN	 */
-#define QM_TRIG_EN_WIDTH                                                 1
-#define QM_TRIG_EN_SHIFT                                                 4
-#define QM_TRIG_EN_MASK                                         0x00000010
-#define QM_TRIG_EN_RD(src)                       (((src) & 0x00000010)>>4)
-#define QM_TRIG_EN_WR(src)                  (((u32)(src)<<4) & 0x00000010)
-#define QM_TRIG_EN_SET(dst,src) \
+#define REGSPEC_TRIG_EN_WIDTH                                                 1
+#define REGSPEC_TRIG_EN_SHIFT                                                 4
+#define REGSPEC_TRIG_EN_MASK                                         0x00000010
+#define REGSPEC_TRIG_EN_RD(src)                       (((src) & 0x00000010)>>4)
+#define REGSPEC_TRIG_EN_WR(src)                  (((u32)(src)<<4) & 0x00000010)
+#define REGSPEC_TRIG_EN_SET(dst,src) \
                        (((dst) & ~0x00000010) | (((u32)(src)<<4) & 0x00000010))
 /*	 Fields AND_E	 */
-#define QM_AND_E_WIDTH                                                   2
-#define QM_AND_E_SHIFT                                                   2
-#define QM_AND_E_MASK                                           0x0000000c
-#define QM_AND_E_RD(src)                         (((src) & 0x0000000c)>>2)
-#define QM_AND_E_WR(src)                    (((u32)(src)<<2) & 0x0000000c)
-#define QM_AND_E_SET(dst,src) \
+#define REGSPEC_AND_E_WIDTH                                                   2
+#define REGSPEC_AND_E_SHIFT                                                   2
+#define REGSPEC_AND_E_MASK                                           0x0000000c
+#define REGSPEC_AND_E_RD(src)                         (((src) & 0x0000000c)>>2)
+#define REGSPEC_AND_E_WR(src)                    (((u32)(src)<<2) & 0x0000000c)
+#define REGSPEC_AND_E_SET(dst,src) \
                        (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
 /*	 Fields OR_E	 */
-#define QM_OR_E_WIDTH                                                    2
-#define QM_OR_E_SHIFT                                                    0
-#define QM_OR_E_MASK                                            0x00000003
-#define QM_OR_E_RD(src)                             (((src) & 0x00000003))
-#define QM_OR_E_WR(src)                        (((u32)(src)) & 0x00000003)
-#define QM_OR_E_SET(dst,src) \
+#define REGSPEC_OR_E_WIDTH                                                    2
+#define REGSPEC_OR_E_SHIFT                                                    0
+#define REGSPEC_OR_E_MASK                                            0x00000003
+#define REGSPEC_OR_E_RD(src)                             (((src) & 0x00000003))
+#define REGSPEC_OR_E_WR(src)                        (((u32)(src)) & 0x00000003)
+#define REGSPEC_OR_E_SET(dst,src) \
                           (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
 
 /*	Register CFG_DBG_PAT_REG_0	*/ 
 /*	 Fields PATTERN	 */
-#define QM_PATTERN0_WIDTH                                               32
-#define QM_PATTERN0_SHIFT                                                0
-#define QM_PATTERN0_MASK                                        0xffffffff
-#define QM_PATTERN0_RD(src)                         (((src) & 0xffffffff))
-#define QM_PATTERN0_WR(src)                    (((u32)(src)) & 0xffffffff)
-#define QM_PATTERN0_SET(dst,src) \
+#define REGSPEC_PATTERN0_WIDTH                                               32
+#define REGSPEC_PATTERN0_SHIFT                                                0
+#define REGSPEC_PATTERN0_MASK                                        0xffffffff
+#define REGSPEC_PATTERN0_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_PATTERN0_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_PATTERN0_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_DBG_PAT_MASK_REG_0	*/ 
 /*	 Fields PAT_MASK	 */
-#define QM_PAT_MASK0_WIDTH                                              32
-#define QM_PAT_MASK0_SHIFT                                               0
-#define QM_PAT_MASK0_MASK                                       0xffffffff
-#define QM_PAT_MASK0_RD(src)                        (((src) & 0xffffffff))
-#define QM_PAT_MASK0_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define QM_PAT_MASK0_SET(dst,src) \
+#define REGSPEC_PAT_MASK0_WIDTH                                              32
+#define REGSPEC_PAT_MASK0_SHIFT                                               0
+#define REGSPEC_PAT_MASK0_MASK                                       0xffffffff
+#define REGSPEC_PAT_MASK0_RD(src)                        (((src) & 0xffffffff))
+#define REGSPEC_PAT_MASK0_WR(src)                   (((u32)(src)) & 0xffffffff)
+#define REGSPEC_PAT_MASK0_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_DBG_PAT_REG_1	*/ 
 /*	 Fields PATTERN	 */
-#define QM_PATTERN1_WIDTH                                               32
-#define QM_PATTERN1_SHIFT                                                0
-#define QM_PATTERN1_MASK                                        0xffffffff
-#define QM_PATTERN1_RD(src)                         (((src) & 0xffffffff))
-#define QM_PATTERN1_WR(src)                    (((u32)(src)) & 0xffffffff)
-#define QM_PATTERN1_SET(dst,src) \
+#define REGSPEC_PATTERN1_WIDTH                                               32
+#define REGSPEC_PATTERN1_SHIFT                                                0
+#define REGSPEC_PATTERN1_MASK                                        0xffffffff
+#define REGSPEC_PATTERN1_RD(src)                         (((src) & 0xffffffff))
+#define REGSPEC_PATTERN1_WR(src)                    (((u32)(src)) & 0xffffffff)
+#define REGSPEC_PATTERN1_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_DBG_PAT_MASK_REG_1	*/ 
 /*	 Fields PAT_MASK	 */
-#define QM_PAT_MASK1_WIDTH                                              32
-#define QM_PAT_MASK1_SHIFT                                               0
-#define QM_PAT_MASK1_MASK                                       0xffffffff
-#define QM_PAT_MASK1_RD(src)                        (((src) & 0xffffffff))
-#define QM_PAT_MASK1_WR(src)                   (((u32)(src)) & 0xffffffff)
-#define QM_PAT_MASK1_SET(dst,src) \
+#define REGSPEC_PAT_MASK1_WIDTH                                              32
+#define REGSPEC_PAT_MASK1_SHIFT                                               0
+#define REGSPEC_PAT_MASK1_MASK                                       0xffffffff
+#define REGSPEC_PAT_MASK1_RD(src)                        (((src) & 0xffffffff))
+#define REGSPEC_PAT_MASK1_WR(src)                   (((u32)(src)) & 0xffffffff)
+#define REGSPEC_PAT_MASK1_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register DBG_TRIG_OUT	*/ 
 /*	 Fields DBG_OUT	 */
-#define QM_DBG_OUT_WIDTH                                                32
-#define QM_DBG_OUT_SHIFT                                                 0
-#define QM_DBG_OUT_MASK                                         0xffffffff
-#define QM_DBG_OUT_RD(src)                          (((src) & 0xffffffff))
-#define QM_DBG_OUT_SET(dst,src) \
+#define REGSPEC_DBG_OUT_WIDTH                                                32
+#define REGSPEC_DBG_OUT_SHIFT                                                 0
+#define REGSPEC_DBG_OUT_MASK                                         0xffffffff
+#define REGSPEC_DBG_OUT_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_DBG_OUT_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register DBG_TRIG_INT	*/ 
 /*	 Fields DBG_INT	 */
-#define QM_DBG_INT_WIDTH                                                 1
-#define QM_DBG_INT_SHIFT                                                 0
-#define QM_DBG_INT_MASK                                         0x00000001
-#define QM_DBG_INT_RD(src)                          (((src) & 0x00000001))
-#define QM_DBG_INT_WR(src)                     (((u32)(src)) & 0x00000001)
-#define QM_DBG_INT_SET(dst,src) \
+#define REGSPEC_DBG_INT_WIDTH                                                 1
+#define REGSPEC_DBG_INT_SHIFT                                                 0
+#define REGSPEC_DBG_INT_MASK                                         0x00000001
+#define REGSPEC_DBG_INT_RD(src)                          (((src) & 0x00000001))
+#define REGSPEC_DBG_INT_WR(src)                     (((u32)(src)) & 0x00000001)
+#define REGSPEC_DBG_INT_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register DBG_TRIG_INTMask	*/
 /*    Mask Register Fields DBG_INTMask    */
-#define QM_DBG_INTMASK_WIDTH                                             1
-#define QM_DBG_INTMASK_SHIFT                                             0
-#define QM_DBG_INTMASK_MASK                                     0x00000001
-#define QM_DBG_INTMASK_RD(src)                      (((src) & 0x00000001))
-#define QM_DBG_INTMASK_WR(src)                 (((u32)(src)) & 0x00000001)
-#define QM_DBG_INTMASK_SET(dst,src) \
+#define REGSPEC_DBG_INTMASK_WIDTH                                             1
+#define REGSPEC_DBG_INTMASK_SHIFT                                             0
+#define REGSPEC_DBG_INTMASK_MASK                                     0x00000001
+#define REGSPEC_DBG_INTMASK_RD(src)                      (((src) & 0x00000001))
+#define REGSPEC_DBG_INTMASK_WR(src)                 (((u32)(src)) & 0x00000001)
+#define REGSPEC_DBG_INTMASK_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register INTR_STS	*/ 
 /*	 Fields DIAGMOD_INT	 */
-#define QM_DIAGMOD_INT_WIDTH                                             1
-#define QM_DIAGMOD_INT_SHIFT                                             1
-#define QM_DIAGMOD_INT_MASK                                     0x00000002
-#define QM_DIAGMOD_INT_RD(src)                   (((src) & 0x00000002)>>1)
-#define QM_DIAGMOD_INT_SET(dst,src) \
+#define REGSPEC_DIAGMOD_INT_WIDTH                                             1
+#define REGSPEC_DIAGMOD_INT_SHIFT                                             1
+#define REGSPEC_DIAGMOD_INT_MASK                                     0x00000002
+#define REGSPEC_DIAGMOD_INT_RD(src)                   (((src) & 0x00000002)>>1)
+#define REGSPEC_DIAGMOD_INT_SET(dst,src) \
                        (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
 /*	 Fields ERRMOD_INT	 */
-#define QM_ERRMOD_INT_WIDTH                                              1
-#define QM_ERRMOD_INT_SHIFT                                              0
-#define QM_ERRMOD_INT_MASK                                      0x00000001
-#define QM_ERRMOD_INT_RD(src)                       (((src) & 0x00000001))
-#define QM_ERRMOD_INT_SET(dst,src) \
+#define REGSPEC_ERRMOD_INT_WIDTH                                              1
+#define REGSPEC_ERRMOD_INT_SHIFT                                              0
+#define REGSPEC_ERRMOD_INT_MASK                                      0x00000001
+#define REGSPEC_ERRMOD_INT_RD(src)                       (((src) & 0x00000001))
+#define REGSPEC_ERRMOD_INT_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register CFG_MEM_ECC_BYPASS	*/ 
 /*	 Fields CFG_ECC_BYPASS	 */
-#define QM_CFG_ECC_BYPASS_WIDTH                                         16
-#define QM_CFG_ECC_BYPASS_SHIFT                                          0
-#define QM_CFG_ECC_BYPASS_MASK                                  0x0000ffff
-#define QM_CFG_ECC_BYPASS_RD(src)                   (((src) & 0x0000ffff))
-#define QM_CFG_ECC_BYPASS_WR(src)              (((u32)(src)) & 0x0000ffff)
-#define QM_CFG_ECC_BYPASS_SET(dst,src) \
-                          (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
+#define REGSPEC_CFG_ECC_BYPASS_WIDTH                                         32
+#define REGSPEC_CFG_ECC_BYPASS_SHIFT                                          0
+#define REGSPEC_CFG_ECC_BYPASS_MASK                                  0xffffffff
+#define REGSPEC_CFG_ECC_BYPASS_RD(src)                   (((src) & 0xffffffff))
+#define REGSPEC_CFG_ECC_BYPASS_WR(src)              (((u32)(src)) & 0xffffffff)
+#define REGSPEC_CFG_ECC_BYPASS_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
-/*	Register CFG_MEM_PWRDN_DIS	*/ 
-/*	 Fields CFG_ECC_PWRDN_DIS	 */
-#define QM_CFG_ECC_PWRDN_DIS_WIDTH                                      16
-#define QM_CFG_ECC_PWRDN_DIS_SHIFT                                      16
-#define QM_CFG_ECC_PWRDN_DIS_MASK                               0xffff0000
-#define QM_CFG_ECC_PWRDN_DIS_RD(src)            (((src) & 0xffff0000)>>16)
-#define QM_CFG_ECC_PWRDN_DIS_WR(src)       (((u32)(src)<<16) & 0xffff0000)
-#define QM_CFG_ECC_PWRDN_DIS_SET(dst,src) \
-                      (((dst) & ~0xffff0000) | (((u32)(src)<<16) & 0xffff0000))
-/*	 Fields CFG_PWRDN_DIS	 */
-#define QM_CFG_PWRDN_DIS_WIDTH                                          16
-#define QM_CFG_PWRDN_DIS_SHIFT                                           0
-#define QM_CFG_PWRDN_DIS_MASK                                   0x0000ffff
-#define QM_CFG_PWRDN_DIS_RD(src)                    (((src) & 0x0000ffff))
-#define QM_CFG_PWRDN_DIS_WR(src)               (((u32)(src)) & 0x0000ffff)
-#define QM_CFG_PWRDN_DIS_SET(dst,src) \
-                          (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
+/*	Register CFG_MEM_PWRDN_DIS_CFG_PWRDN	*/ 
+/*	 Fields DIS	 */
+#define REGSPEC_DIS_WIDTH                                                    32
+#define REGSPEC_DIS_SHIFT                                                     0
+#define REGSPEC_DIS_MASK                                             0xffffffff
+#define REGSPEC_DIS_RD(src)                              (((src) & 0xffffffff))
+#define REGSPEC_DIS_WR(src)                         (((u32)(src)) & 0xffffffff)
+#define REGSPEC_DIS_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register CFG_MEM_RAM_SHUTDOWN	*/ 
 /*	 Fields CFG_RAM_SHUTDOWN_EN	 */
-#define QM_CFG_RAM_SHUTDOWN_EN_WIDTH                                    32
-#define QM_CFG_RAM_SHUTDOWN_EN_SHIFT                                     0
-#define QM_CFG_RAM_SHUTDOWN_EN_MASK                             0xffffffff
-#define QM_CFG_RAM_SHUTDOWN_EN_RD(src)              (((src) & 0xffffffff))
-#define QM_CFG_RAM_SHUTDOWN_EN_WR(src)         (((u32)(src)) & 0xffffffff)
-#define QM_CFG_RAM_SHUTDOWN_EN_SET(dst,src) \
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_WIDTH                                    32
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_SHIFT                                     0
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_MASK                             0xffffffff
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_RD(src)              (((src) & 0xffffffff))
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_WR(src)         (((u32)(src)) & 0xffffffff)
+#define REGSPEC_CFG_RAM_SHUTDOWN_EN_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register BLOCK_MEM_RDY	*/ 
 /*	 Fields MEM_RDY	 */
-#define QM_MEM_RDY_WIDTH                                                32
-#define QM_MEM_RDY_SHIFT                                                 0
-#define QM_MEM_RDY_MASK                                         0xffffffff
-#define QM_MEM_RDY_RD(src)                          (((src) & 0xffffffff))
-#define QM_MEM_RDY_SET(dst,src) \
+#define REGSPEC_MEM_RDY_WIDTH                                                32
+#define REGSPEC_MEM_RDY_SHIFT                                                 0
+#define REGSPEC_MEM_RDY_MASK                                         0xffffffff
+#define REGSPEC_MEM_RDY_RD(src)                          (((src) & 0xffffffff))
+#define REGSPEC_MEM_RDY_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register STS_READ_LATENCY_TOT_READ_REQS	*/ 
 /*	 Fields TOT_READS	 */
-#define QM_TOT_READS_WIDTH                                              16
-#define QM_TOT_READS_SHIFT                                              16
-#define QM_TOT_READS_MASK                                       0xffff0000
-#define QM_TOT_READS_RD(src)                    (((src) & 0xffff0000)>>16)
-#define QM_TOT_READS_SET(dst,src) \
+#define REGSPEC_TOT_READS_WIDTH                                              16
+#define REGSPEC_TOT_READS_SHIFT                                              16
+#define REGSPEC_TOT_READS_MASK                                       0xffff0000
+#define REGSPEC_TOT_READS_RD(src)                    (((src) & 0xffff0000)>>16)
+#define REGSPEC_TOT_READS_SET(dst,src) \
                       (((dst) & ~0xffff0000) | (((u32)(src)<<16) & 0xffff0000))
+/*	 Fields OUTSTANDING_REQ	 */
+#define REGSPEC_OUTSTANDING_REQ_WIDTH                                        16
+#define REGSPEC_OUTSTANDING_REQ_SHIFT                                         0
+#define REGSPEC_OUTSTANDING_REQ_MASK                                 0x0000ffff
+#define REGSPEC_OUTSTANDING_REQ_RD(src)                  (((src) & 0x0000ffff))
+#define REGSPEC_OUTSTANDING_REQ_SET(dst,src) \
+                          (((dst) & ~0x0000ffff) | (((u32)(src)) & 0x0000ffff))
 
 /*	Register CFG_LT_MSTR_STOP_CNT	*/ 
 /*	 Fields MSTR_LT_STOP_CNT	 */
-#define QM_MSTR_LT_STOP_CNT_WIDTH                                       16
-#define QM_MSTR_LT_STOP_CNT_SHIFT                                       16
-#define QM_MSTR_LT_STOP_CNT_MASK                                0xffff0000
-#define QM_MSTR_LT_STOP_CNT_RD(src)             (((src) & 0xffff0000)>>16)
-#define QM_MSTR_LT_STOP_CNT_WR(src)        (((u32)(src)<<16) & 0xffff0000)
-#define QM_MSTR_LT_STOP_CNT_SET(dst,src) \
+#define REGSPEC_MSTR_LT_STOP_CNT_WIDTH                                       16
+#define REGSPEC_MSTR_LT_STOP_CNT_SHIFT                                       16
+#define REGSPEC_MSTR_LT_STOP_CNT_MASK                                0xffff0000
+#define REGSPEC_MSTR_LT_STOP_CNT_RD(src)             (((src) & 0xffff0000)>>16)
+#define REGSPEC_MSTR_LT_STOP_CNT_WR(src)        (((u32)(src)<<16) & 0xffff0000)
+#define REGSPEC_MSTR_LT_STOP_CNT_SET(dst,src) \
                       (((dst) & ~0xffff0000) | (((u32)(src)<<16) & 0xffff0000))
 
-/*	Register CFG_BW_SRD_TRIG_CAP	*/ 
-/*	 Fields CAP_ADD_BWSRD	 */
-#define QM_CAP_ADD_BWSRD_WIDTH                                          32
-#define QM_CAP_ADD_BWSRD_SHIFT                                           0
-#define QM_CAP_ADD_BWSRD_MASK                                   0xffffffff
-#define QM_CAP_ADD_BWSRD_RD(src)                    (((src) & 0xffffffff))
-#define QM_CAP_ADD_BWSRD_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+/*	Register CFG_READ_BW_LAT_ADDR_MASK_1	*/ 
+/*	 Fields READ_ADDR_MASK	 */
+#define REGSPEC_READ_ADDR_MASK1_WIDTH                                        10
+#define REGSPEC_READ_ADDR_MASK1_SHIFT                                         0
+#define REGSPEC_READ_ADDR_MASK1_MASK                                 0x000003ff
+#define REGSPEC_READ_ADDR_MASK1_RD(src)                  (((src) & 0x000003ff))
+#define REGSPEC_READ_ADDR_MASK1_WR(src)             (((u32)(src)) & 0x000003ff)
+#define REGSPEC_READ_ADDR_MASK1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
-/*	Register CFG_BW_SWR_TRIG_CAP	*/ 
-/*	 Fields CAP_ADD_BWSWR	 */
-#define QM_CAP_ADD_BWSWR_WIDTH                                          32
-#define QM_CAP_ADD_BWSWR_SHIFT                                           0
-#define QM_CAP_ADD_BWSWR_MASK                                   0xffffffff
-#define QM_CAP_ADD_BWSWR_RD(src)                    (((src) & 0xffffffff))
-#define QM_CAP_ADD_BWSWR_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+/*	Register CFG_READ_BW_LAT_ADDR_PAT_1	*/ 
+/*	 Fields READ_ADDR_PAT	 */
+#define REGSPEC_READ_ADDR_PAT1_WIDTH                                         10
+#define REGSPEC_READ_ADDR_PAT1_SHIFT                                          0
+#define REGSPEC_READ_ADDR_PAT1_MASK                                  0x000003ff
+#define REGSPEC_READ_ADDR_PAT1_RD(src)                   (((src) & 0x000003ff))
+#define REGSPEC_READ_ADDR_PAT1_WR(src)              (((u32)(src)) & 0x000003ff)
+#define REGSPEC_READ_ADDR_PAT1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
-/*	Register CFG_BW_MRD_TRIG_CAP	*/ 
-/*	 Fields CAP_ADD_BWMRD	 */
-#define QM_CAP_ADD_BWMRD_WIDTH                                          32
-#define QM_CAP_ADD_BWMRD_SHIFT                                           0
-#define QM_CAP_ADD_BWMRD_MASK                                   0xffffffff
-#define QM_CAP_ADD_BWMRD_RD(src)                    (((src) & 0xffffffff))
-#define QM_CAP_ADD_BWMRD_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+/*	Register CFG_WRITE_BW_LAT_ADDR_MASK_1	*/ 
+/*	 Fields WRITE_ADDR_MASK	 */
+#define REGSPEC_WRITE_ADDR_MASK1_WIDTH                                       10
+#define REGSPEC_WRITE_ADDR_MASK1_SHIFT                                        0
+#define REGSPEC_WRITE_ADDR_MASK1_MASK                                0x000003ff
+#define REGSPEC_WRITE_ADDR_MASK1_RD(src)                 (((src) & 0x000003ff))
+#define REGSPEC_WRITE_ADDR_MASK1_WR(src)            (((u32)(src)) & 0x000003ff)
+#define REGSPEC_WRITE_ADDR_MASK1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
-/*	Register CFG_BW_MWR_TRIG_CAP	*/ 
-/*	 Fields CAP_ADD_BWMWR	 */
-#define QM_CAP_ADD_BWMWR_WIDTH                                          32
-#define QM_CAP_ADD_BWMWR_SHIFT                                           0
-#define QM_CAP_ADD_BWMWR_MASK                                   0xffffffff
-#define QM_CAP_ADD_BWMWR_RD(src)                    (((src) & 0xffffffff))
-#define QM_CAP_ADD_BWMWR_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
-
-/*	Register CFG_LT_MRD_TRIG_CAP	*/ 
-/*	 Fields CAP_ADD_LTMRD	 */
-#define QM_CAP_ADD_LTMRD_WIDTH                                          32
-#define QM_CAP_ADD_LTMRD_SHIFT                                           0
-#define QM_CAP_ADD_LTMRD_MASK                                   0xffffffff
-#define QM_CAP_ADD_LTMRD_RD(src)                    (((src) & 0xffffffff))
-#define QM_CAP_ADD_LTMRD_SET(dst,src) \
-                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+/*	Register CFG_WRITE_BW_LAT_ADDR_PAT_1	*/ 
+/*	 Fields WRITE_ADDR_PAT	 */
+#define REGSPEC_WRITE_ADDR_PAT1_WIDTH                                        10
+#define REGSPEC_WRITE_ADDR_PAT1_SHIFT                                         0
+#define REGSPEC_WRITE_ADDR_PAT1_MASK                                 0x000003ff
+#define REGSPEC_WRITE_ADDR_PAT1_RD(src)                  (((src) & 0x000003ff))
+#define REGSPEC_WRITE_ADDR_PAT1_WR(src)             (((u32)(src)) & 0x000003ff)
+#define REGSPEC_WRITE_ADDR_PAT1_SET(dst,src) \
+                          (((dst) & ~0x000003ff) | (((u32)(src)) & 0x000003ff))
 
 /*	Register DBG_BLOCK_AXI	*/ 
 /*	 Fields DBG_BUS_BLOCK_AXI	 */
-#define QM_DBG_BUS_BLOCK_AXI_WIDTH                                      32
-#define QM_DBG_BUS_BLOCK_AXI_SHIFT                                       0
-#define QM_DBG_BUS_BLOCK_AXI_MASK                               0xffffffff
-#define QM_DBG_BUS_BLOCK_AXI_RD(src)                (((src) & 0xffffffff))
-#define QM_DBG_BUS_BLOCK_AXI_SET(dst,src) \
+#define REGSPEC_DBG_BUS_BLOCK_AXI_WIDTH                                      32
+#define REGSPEC_DBG_BUS_BLOCK_AXI_SHIFT                                       0
+#define REGSPEC_DBG_BUS_BLOCK_AXI_MASK                               0xffffffff
+#define REGSPEC_DBG_BUS_BLOCK_AXI_RD(src)                (((src) & 0xffffffff))
+#define REGSPEC_DBG_BUS_BLOCK_AXI_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register DBG_BLOCK_NON_AXI	*/ 
 /*	 Fields DBG_BUS_BLOCK_NON_AXI	 */
-#define QM_DBG_BUS_BLOCK_NON_AXI_WIDTH                                  32
-#define QM_DBG_BUS_BLOCK_NON_AXI_SHIFT                                   0
-#define QM_DBG_BUS_BLOCK_NON_AXI_MASK                           0xffffffff
-#define QM_DBG_BUS_BLOCK_NON_AXI_RD(src)            (((src) & 0xffffffff))
-#define QM_DBG_BUS_BLOCK_NON_AXI_SET(dst,src) \
+#define REGSPEC_DBG_BUS_BLOCK_NON_AXI_WIDTH                                  32
+#define REGSPEC_DBG_BUS_BLOCK_NON_AXI_SHIFT                                   0
+#define REGSPEC_DBG_BUS_BLOCK_NON_AXI_MASK                           0xffffffff
+#define REGSPEC_DBG_BUS_BLOCK_NON_AXI_RD(src)            (((src) & 0xffffffff))
+#define REGSPEC_DBG_BUS_BLOCK_NON_AXI_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register DBG_AXI_SHIM_OUT	*/ 
 /*	 Fields DBG_BUS_SHIM	 */
-#define QM_DBG_BUS_SHIM_WIDTH                                           32
-#define QM_DBG_BUS_SHIM_SHIFT                                            0
-#define QM_DBG_BUS_SHIM_MASK                                    0xffffffff
-#define QM_DBG_BUS_SHIM_RD(src)                     (((src) & 0xffffffff))
-#define QM_DBG_BUS_SHIM_SET(dst,src) \
+#define REGSPEC_DBG_BUS_SHIM_WIDTH                                           32
+#define REGSPEC_DBG_BUS_SHIM_SHIFT                                            0
+#define REGSPEC_DBG_BUS_SHIM_MASK                                    0xffffffff
+#define REGSPEC_DBG_BUS_SHIM_RD(src)                     (((src) & 0xffffffff))
+#define REGSPEC_DBG_BUS_SHIM_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register CFG_MEM_PWRDN_DIS_CFG_ECC_PWRDN	*/ 
+/*	 Fields DIS	 */
+#define REGSPEC_DIS_F1_WIDTH                                                 32
+#define REGSPEC_DIS_F1_SHIFT                                                  0
+#define REGSPEC_DIS_F1_MASK                                          0xffffffff
+#define REGSPEC_DIS_F1_RD(src)                           (((src) & 0xffffffff))
+#define REGSPEC_DIS_F1_WR(src)                      (((u32)(src)) & 0xffffffff)
+#define REGSPEC_DIS_F1_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Global Base Address	*/
-#define GLBL_ERR_CSR_BASE_ADDR			0x01f20d800ULL
-#define GLBL_ERR_CSR_BASE_ADDR_OFFSET			0xd800
+#define GLBL_ERR_CSR_BASE_ADDR			0x01f60d800ULL
 
 /*    Address GLBL_ERR_CSR  Registers */
 #define GLBL_ERR_STS_ADDR                                            0x00000800
@@ -11991,6 +20529,14 @@
 #define AUXINFO_WR(src)                         (((u32)(src)<<10) & 0x0000fc00)
 #define AUXINFO_SET(dst,src) \
                       (((dst) & ~0x0000fc00) | (((u32)(src)<<10) & 0x0000fc00))
+/*	 Fields PTYPE	 */
+#define PTYPE_WIDTH                                                           3
+#define PTYPE_SHIFT                                                           7
+#define PTYPE_MASK                                                   0x00000380
+#define PTYPE_RD(src)                                 (((src) & 0x00000380)>>7)
+#define PTYPE_WR(src)                            (((u32)(src)<<7) & 0x00000380)
+#define PTYPE_SET(dst,src) \
+                       (((dst) & ~0x00000380) | (((u32)(src)<<7) & 0x00000380))
 /*	 Fields REQLEN	 */
 #define REQLEN_WIDTH                                                          2
 #define REQLEN_SHIFT                                                          4
@@ -12215,6 +20761,14 @@
 #define AUXINFO_F1_WR(src)                      (((u32)(src)<<10) & 0x0000fc00)
 #define AUXINFO_F1_SET(dst,src) \
                       (((dst) & ~0x0000fc00) | (((u32)(src)<<10) & 0x0000fc00))
+/*	 Fields PTYPE	 */
+#define PTYPE_F1_WIDTH                                                        3
+#define PTYPE_F1_SHIFT                                                        7
+#define PTYPE_F1_MASK                                                0x00000380
+#define PTYPE_F1_RD(src)                              (((src) & 0x00000380)>>7)
+#define PTYPE_F1_WR(src)                         (((u32)(src)<<7) & 0x00000380)
+#define PTYPE_F1_SET(dst,src) \
+                       (((dst) & ~0x00000380) | (((u32)(src)<<7) & 0x00000380))
 /*	 Fields REQLEN	 */
 #define REQLEN_F1_WIDTH                                                       2
 #define REQLEN_F1_SHIFT                                                       4
@@ -12267,6 +20821,14 @@
 #define AUXINFO_F2_WR(src)                      (((u32)(src)<<10) & 0x0000fc00)
 #define AUXINFO_F2_SET(dst,src) \
                       (((dst) & ~0x0000fc00) | (((u32)(src)<<10) & 0x0000fc00))
+/*	 Fields PTYPE	 */
+#define PTYPE_F2_WIDTH                                                        3
+#define PTYPE_F2_SHIFT                                                        7
+#define PTYPE_F2_MASK                                                0x00000380
+#define PTYPE_F2_RD(src)                              (((src) & 0x00000380)>>7)
+#define PTYPE_F2_WR(src)                         (((u32)(src)<<7) & 0x00000380)
+#define PTYPE_F2_SET(dst,src) \
+                       (((dst) & ~0x00000380) | (((u32)(src)<<7) & 0x00000380))
 /*	 Fields REQLEN	 */
 #define REQLEN_F2_WIDTH                                                       2
 #define REQLEN_F2_SHIFT                                                       4
@@ -12389,8 +20951,7 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Global Base Address	*/
-#define SLAVE_SHIM_CSR_BASE_ADDR			0x01f20e000ULL
-#define SLAVE_SHIM_CSR_BASE_ADDR_OFFSET			0xe000
+#define SLAVE_SHIM_CSR_BASE_ADDR			0x01f60e000ULL
 
 /*    Address SLAVE_SHIM_CSR  Registers */
 #define CFG_SLV_RESP_TMO_CNTR_ADDR                                   0x00000004
@@ -12406,6 +20967,68 @@
 #define CFG_SLV_CSR_TMO_CNTR_DEFAULT                                 0x0000ffff
 #define CFG_MASK_DEV_ERR_RESP_ADDR                                   0x0000001c
 #define CFG_MASK_DEV_ERR_RESP_DEFAULT                                0x00000000
+#define CFG_MASTER_ADDR                                              0x00000800
+#define CFG_MASTER_DEFAULT                                           0x00000000
+#define DMT0_BASE_ADDR_ADDR                                          0x00000810
+#define DMT0_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT0_ADDR_MASK_ADDR                                          0x00000814
+#define DMT0_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT0_ACC_CNTRL_ADDR                                          0x00000818
+#define DMT0_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT1_BASE_ADDR_ADDR                                          0x00000820
+#define DMT1_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT1_ADDR_MASK_ADDR                                          0x00000824
+#define DMT1_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT1_ACC_CNTRL_ADDR                                          0x00000828
+#define DMT1_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT2_BASE_ADDR_ADDR                                          0x00000830
+#define DMT2_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT2_ADDR_MASK_ADDR                                          0x00000834
+#define DMT2_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT2_ACC_CNTRL_ADDR                                          0x00000838
+#define DMT2_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT3_BASE_ADDR_ADDR                                          0x00000840
+#define DMT3_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT3_ADDR_MASK_ADDR                                          0x00000844
+#define DMT3_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT3_ACC_CNTRL_ADDR                                          0x00000848
+#define DMT3_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT4_BASE_ADDR_ADDR                                          0x00000850
+#define DMT4_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT4_ADDR_MASK_ADDR                                          0x00000854
+#define DMT4_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT4_ACC_CNTRL_ADDR                                          0x00000858
+#define DMT4_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT5_BASE_ADDR_ADDR                                          0x00000860
+#define DMT5_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT5_ADDR_MASK_ADDR                                          0x00000864
+#define DMT5_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT5_ACC_CNTRL_ADDR                                          0x00000868
+#define DMT5_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT6_BASE_ADDR_ADDR                                          0x00000870
+#define DMT6_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT6_ADDR_MASK_ADDR                                          0x00000874
+#define DMT6_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT6_ACC_CNTRL_ADDR                                          0x00000878
+#define DMT6_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define DMT7_BASE_ADDR_ADDR                                          0x00000880
+#define DMT7_BASE_ADDR_DEFAULT                                       0x00000000
+#define DMT7_ADDR_MASK_ADDR                                          0x00000884
+#define DMT7_ADDR_MASK_DEFAULT                                       0x00000000
+#define DMT7_ACC_CNTRL_ADDR                                          0x00000888
+#define DMT7_ACC_CNTRL_DEFAULT                                       0x000000cf
+#define CSR_ACC_CNTRL_ADDR                                           0x00000900
+#define CSR_ACC_CNTRL_DEFAULT                                        0x000000cf
+#define WR_DOM_INFO_0_VIOL_ADDR                                      0x0000090c
+#define WR_DOM_INFO_0_VIOL_DEFAULT                                   0x00000000
+#define WR_DOM_INFO_1_VIOL_ADDR                                      0x00000910
+#define WR_DOM_INFO_1_VIOL_DEFAULT                                   0x00000000
+#define RD_DOM_INFO_0_VIOL_ADDR                                      0x00000914
+#define RD_DOM_INFO_0_VIOL_DEFAULT                                   0x00000000
+#define RD_DOM_INFO_1_VIOL_ADDR                                      0x00000918
+#define RD_DOM_INFO_1_VIOL_DEFAULT                                   0x00000000
+#define CFG_MASTER_PTYPE_ADDR                                        0x0000091c
+#define CFG_MASTER_PTYPE_DEFAULT                                     0x00000000
 
 /*	Register CFG_SLV_RESP_TMO_CNTR	*/ 
 /*	 Fields CFG_CSR_POISON	 */
@@ -12444,6 +21067,22 @@
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 
 /*	Register INT_SLV_TMO	*/ 
+/*	 Fields WR_DOMAIN_VIOL	 */
+#define WR_DOMAIN_VIOL_WIDTH                                                  1
+#define WR_DOMAIN_VIOL_SHIFT                                                  6
+#define WR_DOMAIN_VIOL_MASK                                          0x00000040
+#define WR_DOMAIN_VIOL_RD(src)                        (((src) & 0x00000040)>>6)
+#define WR_DOMAIN_VIOL_WR(src)                   (((u32)(src)<<6) & 0x00000040)
+#define WR_DOMAIN_VIOL_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*	 Fields RD_DOMAIN_VIOL	 */
+#define RD_DOMAIN_VIOL_WIDTH                                                  1
+#define RD_DOMAIN_VIOL_SHIFT                                                  5
+#define RD_DOMAIN_VIOL_MASK                                          0x00000020
+#define RD_DOMAIN_VIOL_RD(src)                        (((src) & 0x00000020)>>5)
+#define RD_DOMAIN_VIOL_WR(src)                   (((u32)(src)<<5) & 0x00000020)
+#define RD_DOMAIN_VIOL_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
 /*	 Fields STS_CSR_TMO	 */
 #define STS_CSR_TMO_WIDTH                                                     1
 #define STS_CSR_TMO_SHIFT                                                     4
@@ -12486,6 +21125,22 @@
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register INT_SLV_TMOMask	*/
+/*    Mask Register Fields WR_DOMAIN_VIOLMask    */
+#define WR_DOMAIN_VIOLMASK_WIDTH                                              1
+#define WR_DOMAIN_VIOLMASK_SHIFT                                              6
+#define WR_DOMAIN_VIOLMASK_MASK                                      0x00000040
+#define WR_DOMAIN_VIOLMASK_RD(src)                    (((src) & 0x00000040)>>6)
+#define WR_DOMAIN_VIOLMASK_WR(src)               (((u32)(src)<<6) & 0x00000040)
+#define WR_DOMAIN_VIOLMASK_SET(dst,src) \
+                       (((dst) & ~0x00000040) | (((u32)(src)<<6) & 0x00000040))
+/*    Mask Register Fields RD_DOMAIN_VIOLMask    */
+#define RD_DOMAIN_VIOLMASK_WIDTH                                              1
+#define RD_DOMAIN_VIOLMASK_SHIFT                                              5
+#define RD_DOMAIN_VIOLMASK_MASK                                      0x00000020
+#define RD_DOMAIN_VIOLMASK_RD(src)                    (((src) & 0x00000020)>>5)
+#define RD_DOMAIN_VIOLMASK_WR(src)               (((u32)(src)<<5) & 0x00000020)
+#define RD_DOMAIN_VIOLMASK_SET(dst,src) \
+                       (((dst) & ~0x00000020) | (((u32)(src)<<5) & 0x00000020))
 /*    Mask Register Fields STS_CSR_TMOMask    */
 #define STS_CSR_TMOMASK_WIDTH                                                 1
 #define STS_CSR_TMOMASK_SHIFT                                                 4
@@ -12537,12 +21192,12 @@
 #define CFG_RD2WR_EN_SET(dst,src) \
                        (((dst) & ~0x00000002) | (((u32)(src)<<1) & 0x00000002))
 /*	 Fields CFG_AMA_MODE	 */
-#define QM_CFG_AMA_MODE_WIDTH                                            1
-#define QM_CFG_AMA_MODE_SHIFT                                            0
-#define QM_CFG_AMA_MODE_MASK                                    0x00000001
-#define QM_CFG_AMA_MODE_RD(src)                     (((src) & 0x00000001))
-#define QM_CFG_AMA_MODE_WR(src)                (((u32)(src)) & 0x00000001)
-#define QM_CFG_AMA_MODE_SET(dst,src) \
+#define REGSPEC_CFG_AMA_MODE_WIDTH                                            1
+#define REGSPEC_CFG_AMA_MODE_SHIFT                                            0
+#define REGSPEC_CFG_AMA_MODE_MASK                                    0x00000001
+#define REGSPEC_CFG_AMA_MODE_RD(src)                     (((src) & 0x00000001))
+#define REGSPEC_CFG_AMA_MODE_WR(src)                (((u32)(src)) & 0x00000001)
+#define REGSPEC_CFG_AMA_MODE_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
 /*	Register CFG_SLV_CSR_TMO_CNTR	*/ 
@@ -12565,9 +21220,592 @@
 #define MASK_DEV_ERR_RESP_SET(dst,src) \
                           (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
 
+/*	Register CFG_MASTER	*/ 
+/*	 Fields LOCK	 */
+#define REGSPEC_LOCK_WIDTH                                                    1
+#define REGSPEC_LOCK_SHIFT                                                    0
+#define REGSPEC_LOCK_MASK                                            0x00000001
+#define REGSPEC_LOCK_RD(src)                             (((src) & 0x00000001))
+#define REGSPEC_LOCK_WR(src)                        (((u32)(src)) & 0x00000001)
+#define REGSPEC_LOCK_SET(dst,src) \
+                          (((dst) & ~0x00000001) | (((u32)(src)) & 0x00000001))
+
+/*	Register DMT0_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_WIDTH                                                           30
+#define BASE_SHIFT                                                            0
+#define BASE_MASK                                                    0x3fffffff
+#define BASE_RD(src)                                     (((src) & 0x3fffffff))
+#define BASE_WR(src)                                (((u32)(src)) & 0x3fffffff)
+#define BASE_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT0_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_WIDTH                                                   30
+#define REGSPEC_MASK_SHIFT                                                    0
+#define REGSPEC_MASK_MASK                                            0x3fffffff
+#define REGSPEC_MASK_RD(src)                             (((src) & 0x3fffffff))
+#define REGSPEC_MASK_WR(src)                        (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT0_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_WIDTH                                                           1
+#define VALID_SHIFT                                                           8
+#define VALID_MASK                                                   0x00000100
+#define VALID_RD(src)                                 (((src) & 0x00000100)>>8)
+#define VALID_WR(src)                            (((u32)(src)<<8) & 0x00000100)
+#define VALID_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_WIDTH                                                     2
+#define SLIMPRO_ACC_SHIFT                                                     6
+#define SLIMPRO_ACC_MASK                                             0x000000c0
+#define SLIMPRO_ACC_RD(src)                           (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_WR(src)                      (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_WIDTH                                                       2
+#define PMPRO_ACC_SHIFT                                                       2
+#define PMPRO_ACC_MASK                                               0x0000000c
+#define PMPRO_ACC_RD(src)                             (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_WR(src)                        (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_WIDTH                                                         2
+#define PMD_ACC_SHIFT                                                         0
+#define PMD_ACC_MASK                                                 0x00000003
+#define PMD_ACC_RD(src)                                  (((src) & 0x00000003))
+#define PMD_ACC_WR(src)                             (((u32)(src)) & 0x00000003)
+#define PMD_ACC_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT1_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F1_WIDTH                                                        30
+#define BASE_F1_SHIFT                                                         0
+#define BASE_F1_MASK                                                 0x3fffffff
+#define BASE_F1_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F1_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT1_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F1_WIDTH                                                30
+#define REGSPEC_MASK_F1_SHIFT                                                 0
+#define REGSPEC_MASK_F1_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F1_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F1_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F1_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT1_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F1_WIDTH                                                        1
+#define VALID_F1_SHIFT                                                        8
+#define VALID_F1_MASK                                                0x00000100
+#define VALID_F1_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F1_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F1_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F1_WIDTH                                                  2
+#define SLIMPRO_ACC_F1_SHIFT                                                  6
+#define SLIMPRO_ACC_F1_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F1_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F1_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F1_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F1_WIDTH                                                    2
+#define PMPRO_ACC_F1_SHIFT                                                    2
+#define PMPRO_ACC_F1_MASK                                            0x0000000c
+#define PMPRO_ACC_F1_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F1_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F1_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F1_WIDTH                                                      2
+#define PMD_ACC_F1_SHIFT                                                      0
+#define PMD_ACC_F1_MASK                                              0x00000003
+#define PMD_ACC_F1_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F1_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F1_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT2_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F2_WIDTH                                                        30
+#define BASE_F2_SHIFT                                                         0
+#define BASE_F2_MASK                                                 0x3fffffff
+#define BASE_F2_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F2_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT2_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F2_WIDTH                                                30
+#define REGSPEC_MASK_F2_SHIFT                                                 0
+#define REGSPEC_MASK_F2_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F2_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F2_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F2_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT2_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F2_WIDTH                                                        1
+#define VALID_F2_SHIFT                                                        8
+#define VALID_F2_MASK                                                0x00000100
+#define VALID_F2_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F2_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F2_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F2_WIDTH                                                  2
+#define SLIMPRO_ACC_F2_SHIFT                                                  6
+#define SLIMPRO_ACC_F2_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F2_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F2_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F2_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F2_WIDTH                                                    2
+#define PMPRO_ACC_F2_SHIFT                                                    2
+#define PMPRO_ACC_F2_MASK                                            0x0000000c
+#define PMPRO_ACC_F2_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F2_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F2_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F2_WIDTH                                                      2
+#define PMD_ACC_F2_SHIFT                                                      0
+#define PMD_ACC_F2_MASK                                              0x00000003
+#define PMD_ACC_F2_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F2_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F2_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT3_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F3_WIDTH                                                        30
+#define BASE_F3_SHIFT                                                         0
+#define BASE_F3_MASK                                                 0x3fffffff
+#define BASE_F3_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F3_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F3_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT3_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F3_WIDTH                                                30
+#define REGSPEC_MASK_F3_SHIFT                                                 0
+#define REGSPEC_MASK_F3_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F3_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F3_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F3_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT3_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F3_WIDTH                                                        1
+#define VALID_F3_SHIFT                                                        8
+#define VALID_F3_MASK                                                0x00000100
+#define VALID_F3_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F3_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F3_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F3_WIDTH                                                  2
+#define SLIMPRO_ACC_F3_SHIFT                                                  6
+#define SLIMPRO_ACC_F3_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F3_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F3_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F3_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F3_WIDTH                                                    2
+#define PMPRO_ACC_F3_SHIFT                                                    2
+#define PMPRO_ACC_F3_MASK                                            0x0000000c
+#define PMPRO_ACC_F3_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F3_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F3_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F3_WIDTH                                                      2
+#define PMD_ACC_F3_SHIFT                                                      0
+#define PMD_ACC_F3_MASK                                              0x00000003
+#define PMD_ACC_F3_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F3_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F3_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT4_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F4_WIDTH                                                        30
+#define BASE_F4_SHIFT                                                         0
+#define BASE_F4_MASK                                                 0x3fffffff
+#define BASE_F4_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F4_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F4_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT4_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F4_WIDTH                                                30
+#define REGSPEC_MASK_F4_SHIFT                                                 0
+#define REGSPEC_MASK_F4_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F4_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F4_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F4_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT4_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F4_WIDTH                                                        1
+#define VALID_F4_SHIFT                                                        8
+#define VALID_F4_MASK                                                0x00000100
+#define VALID_F4_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F4_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F4_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F4_WIDTH                                                  2
+#define SLIMPRO_ACC_F4_SHIFT                                                  6
+#define SLIMPRO_ACC_F4_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F4_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F4_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F4_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F4_WIDTH                                                    2
+#define PMPRO_ACC_F4_SHIFT                                                    2
+#define PMPRO_ACC_F4_MASK                                            0x0000000c
+#define PMPRO_ACC_F4_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F4_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F4_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F4_WIDTH                                                      2
+#define PMD_ACC_F4_SHIFT                                                      0
+#define PMD_ACC_F4_MASK                                              0x00000003
+#define PMD_ACC_F4_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F4_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F4_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT5_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F5_WIDTH                                                        30
+#define BASE_F5_SHIFT                                                         0
+#define BASE_F5_MASK                                                 0x3fffffff
+#define BASE_F5_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F5_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F5_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT5_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F5_WIDTH                                                30
+#define REGSPEC_MASK_F5_SHIFT                                                 0
+#define REGSPEC_MASK_F5_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F5_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F5_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F5_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT5_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F5_WIDTH                                                        1
+#define VALID_F5_SHIFT                                                        8
+#define VALID_F5_MASK                                                0x00000100
+#define VALID_F5_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F5_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F5_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F5_WIDTH                                                  2
+#define SLIMPRO_ACC_F5_SHIFT                                                  6
+#define SLIMPRO_ACC_F5_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F5_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F5_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F5_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F5_WIDTH                                                    2
+#define PMPRO_ACC_F5_SHIFT                                                    2
+#define PMPRO_ACC_F5_MASK                                            0x0000000c
+#define PMPRO_ACC_F5_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F5_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F5_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F5_WIDTH                                                      2
+#define PMD_ACC_F5_SHIFT                                                      0
+#define PMD_ACC_F5_MASK                                              0x00000003
+#define PMD_ACC_F5_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F5_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F5_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT6_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F6_WIDTH                                                        30
+#define BASE_F6_SHIFT                                                         0
+#define BASE_F6_MASK                                                 0x3fffffff
+#define BASE_F6_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F6_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F6_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT6_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F6_WIDTH                                                30
+#define REGSPEC_MASK_F6_SHIFT                                                 0
+#define REGSPEC_MASK_F6_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F6_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F6_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F6_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT6_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F6_WIDTH                                                        1
+#define VALID_F6_SHIFT                                                        8
+#define VALID_F6_MASK                                                0x00000100
+#define VALID_F6_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F6_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F6_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F6_WIDTH                                                  2
+#define SLIMPRO_ACC_F6_SHIFT                                                  6
+#define SLIMPRO_ACC_F6_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F6_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F6_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F6_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F6_WIDTH                                                    2
+#define PMPRO_ACC_F6_SHIFT                                                    2
+#define PMPRO_ACC_F6_MASK                                            0x0000000c
+#define PMPRO_ACC_F6_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F6_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F6_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F6_WIDTH                                                      2
+#define PMD_ACC_F6_SHIFT                                                      0
+#define PMD_ACC_F6_MASK                                              0x00000003
+#define PMD_ACC_F6_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F6_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F6_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register DMT7_BASE_ADDR	*/ 
+/*	 Fields BASE	 */
+#define BASE_F7_WIDTH                                                        30
+#define BASE_F7_SHIFT                                                         0
+#define BASE_F7_MASK                                                 0x3fffffff
+#define BASE_F7_RD(src)                                  (((src) & 0x3fffffff))
+#define BASE_F7_WR(src)                             (((u32)(src)) & 0x3fffffff)
+#define BASE_F7_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT7_ADDR_MASK	*/ 
+/*	 Fields MASK	 */
+#define REGSPEC_MASK_F7_WIDTH                                                30
+#define REGSPEC_MASK_F7_SHIFT                                                 0
+#define REGSPEC_MASK_F7_MASK                                         0x3fffffff
+#define REGSPEC_MASK_F7_RD(src)                          (((src) & 0x3fffffff))
+#define REGSPEC_MASK_F7_WR(src)                     (((u32)(src)) & 0x3fffffff)
+#define REGSPEC_MASK_F7_SET(dst,src) \
+                          (((dst) & ~0x3fffffff) | (((u32)(src)) & 0x3fffffff))
+
+/*	Register DMT7_ACC_CNTRL	*/ 
+/*	 Fields VALID	 */
+#define VALID_F7_WIDTH                                                        1
+#define VALID_F7_SHIFT                                                        8
+#define VALID_F7_MASK                                                0x00000100
+#define VALID_F7_RD(src)                              (((src) & 0x00000100)>>8)
+#define VALID_F7_WR(src)                         (((u32)(src)<<8) & 0x00000100)
+#define VALID_F7_SET(dst,src) \
+                       (((dst) & ~0x00000100) | (((u32)(src)<<8) & 0x00000100))
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F7_WIDTH                                                  2
+#define SLIMPRO_ACC_F7_SHIFT                                                  6
+#define SLIMPRO_ACC_F7_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F7_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F7_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F7_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F7_WIDTH                                                    2
+#define PMPRO_ACC_F7_SHIFT                                                    2
+#define PMPRO_ACC_F7_MASK                                            0x0000000c
+#define PMPRO_ACC_F7_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F7_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F7_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F7_WIDTH                                                      2
+#define PMD_ACC_F7_SHIFT                                                      0
+#define PMD_ACC_F7_MASK                                              0x00000003
+#define PMD_ACC_F7_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F7_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F7_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register CSR_ACC_CNTRL	*/ 
+/*	 Fields SLIMPRO_ACC	 */
+#define SLIMPRO_ACC_F8_WIDTH                                                  2
+#define SLIMPRO_ACC_F8_SHIFT                                                  6
+#define SLIMPRO_ACC_F8_MASK                                          0x000000c0
+#define SLIMPRO_ACC_F8_RD(src)                        (((src) & 0x000000c0)>>6)
+#define SLIMPRO_ACC_F8_WR(src)                   (((u32)(src)<<6) & 0x000000c0)
+#define SLIMPRO_ACC_F8_SET(dst,src) \
+                       (((dst) & ~0x000000c0) | (((u32)(src)<<6) & 0x000000c0))
+/*	 Fields PMPRO_ACC	 */
+#define PMPRO_ACC_F8_WIDTH                                                    2
+#define PMPRO_ACC_F8_SHIFT                                                    2
+#define PMPRO_ACC_F8_MASK                                            0x0000000c
+#define PMPRO_ACC_F8_RD(src)                          (((src) & 0x0000000c)>>2)
+#define PMPRO_ACC_F8_WR(src)                     (((u32)(src)<<2) & 0x0000000c)
+#define PMPRO_ACC_F8_SET(dst,src) \
+                       (((dst) & ~0x0000000c) | (((u32)(src)<<2) & 0x0000000c))
+/*	 Fields PMD_ACC	 */
+#define PMD_ACC_F8_WIDTH                                                      2
+#define PMD_ACC_F8_SHIFT                                                      0
+#define PMD_ACC_F8_MASK                                              0x00000003
+#define PMD_ACC_F8_RD(src)                               (((src) & 0x00000003))
+#define PMD_ACC_F8_WR(src)                          (((u32)(src)) & 0x00000003)
+#define PMD_ACC_F8_SET(dst,src) \
+                          (((dst) & ~0x00000003) | (((u32)(src)) & 0x00000003))
+
+/*	Register WR_DOM_INFO_0_VIOL	*/ 
+/*	 Fields ADDR	 */
+#define REGSPEC_ADDR_F130_WIDTH                                              32
+#define REGSPEC_ADDR_F130_SHIFT                                               0
+#define REGSPEC_ADDR_F130_MASK                                       0xffffffff
+#define REGSPEC_ADDR_F130_RD(src)                        (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F130_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register WR_DOM_INFO_1_VIOL	*/ 
+/*	 Fields MASTER_ID	 */
+#define MASTER_ID_WIDTH                                                       7
+#define MASTER_ID_SHIFT                                                       3
+#define MASTER_ID_MASK                                               0x000003f8
+#define MASTER_ID_RD(src)                             (((src) & 0x000003f8)>>3)
+#define MASTER_ID_SET(dst,src) \
+                       (((dst) & ~0x000003f8) | (((u32)(src)<<3) & 0x000003f8))
+/*	 Fields PTYPE	 */
+#define PTYPE_F6_WIDTH                                                        3
+#define PTYPE_F6_SHIFT                                                        0
+#define PTYPE_F6_MASK                                                0x00000007
+#define PTYPE_F6_RD(src)                                 (((src) & 0x00000007))
+#define PTYPE_F6_SET(dst,src) \
+                          (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
+
+/*	Register RD_DOM_INFO_0_VIOL	*/ 
+/*	 Fields ADDR	 */
+#define REGSPEC_ADDR_F131_WIDTH                                              32
+#define REGSPEC_ADDR_F131_SHIFT                                               0
+#define REGSPEC_ADDR_F131_MASK                                       0xffffffff
+#define REGSPEC_ADDR_F131_RD(src)                        (((src) & 0xffffffff))
+#define REGSPEC_ADDR_F131_SET(dst,src) \
+                          (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
+
+/*	Register RD_DOM_INFO_1_VIOL	*/ 
+/*	 Fields MASTER_ID	 */
+#define MASTER_ID_F1_WIDTH                                                    7
+#define MASTER_ID_F1_SHIFT                                                    3
+#define MASTER_ID_F1_MASK                                            0x000003f8
+#define MASTER_ID_F1_RD(src)                          (((src) & 0x000003f8)>>3)
+#define MASTER_ID_F1_SET(dst,src) \
+                       (((dst) & ~0x000003f8) | (((u32)(src)<<3) & 0x000003f8))
+/*	 Fields PTYPE	 */
+#define PTYPE_F7_WIDTH                                                        3
+#define PTYPE_F7_SHIFT                                                        0
+#define PTYPE_F7_MASK                                                0x00000007
+#define PTYPE_F7_RD(src)                                 (((src) & 0x00000007))
+#define PTYPE_F7_SET(dst,src) \
+                          (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
+
+/*	Register CFG_MASTER_PTYPE	*/ 
+/*	 Fields MST_PTYPE_7	 */
+#define MST_PTYPE_7_WIDTH                                                     3
+#define MST_PTYPE_7_SHIFT                                                    28
+#define MST_PTYPE_7_MASK                                             0x70000000
+#define MST_PTYPE_7_RD(src)                          (((src) & 0x70000000)>>28)
+#define MST_PTYPE_7_WR(src)                     (((u32)(src)<<28) & 0x70000000)
+#define MST_PTYPE_7_SET(dst,src) \
+                      (((dst) & ~0x70000000) | (((u32)(src)<<28) & 0x70000000))
+/*	 Fields MST_PTYPE_6	 */
+#define MST_PTYPE_6_WIDTH                                                     3
+#define MST_PTYPE_6_SHIFT                                                    24
+#define MST_PTYPE_6_MASK                                             0x07000000
+#define MST_PTYPE_6_RD(src)                          (((src) & 0x07000000)>>24)
+#define MST_PTYPE_6_WR(src)                     (((u32)(src)<<24) & 0x07000000)
+#define MST_PTYPE_6_SET(dst,src) \
+                      (((dst) & ~0x07000000) | (((u32)(src)<<24) & 0x07000000))
+/*	 Fields MST_PTYPE_5	 */
+#define MST_PTYPE_5_WIDTH                                                     3
+#define MST_PTYPE_5_SHIFT                                                    20
+#define MST_PTYPE_5_MASK                                             0x00700000
+#define MST_PTYPE_5_RD(src)                          (((src) & 0x00700000)>>20)
+#define MST_PTYPE_5_WR(src)                     (((u32)(src)<<20) & 0x00700000)
+#define MST_PTYPE_5_SET(dst,src) \
+                      (((dst) & ~0x00700000) | (((u32)(src)<<20) & 0x00700000))
+/*	 Fields MST_PTYPE_4	 */
+#define MST_PTYPE_4_WIDTH                                                     3
+#define MST_PTYPE_4_SHIFT                                                    16
+#define MST_PTYPE_4_MASK                                             0x00070000
+#define MST_PTYPE_4_RD(src)                          (((src) & 0x00070000)>>16)
+#define MST_PTYPE_4_WR(src)                     (((u32)(src)<<16) & 0x00070000)
+#define MST_PTYPE_4_SET(dst,src) \
+                      (((dst) & ~0x00070000) | (((u32)(src)<<16) & 0x00070000))
+/*	 Fields MST_PTYPE_3	 */
+#define MST_PTYPE_3_WIDTH                                                     3
+#define MST_PTYPE_3_SHIFT                                                    12
+#define MST_PTYPE_3_MASK                                             0x00007000
+#define MST_PTYPE_3_RD(src)                          (((src) & 0x00007000)>>12)
+#define MST_PTYPE_3_WR(src)                     (((u32)(src)<<12) & 0x00007000)
+#define MST_PTYPE_3_SET(dst,src) \
+                      (((dst) & ~0x00007000) | (((u32)(src)<<12) & 0x00007000))
+/*	 Fields MST_PTYPE_2	 */
+#define MST_PTYPE_2_WIDTH                                                     3
+#define MST_PTYPE_2_SHIFT                                                     8
+#define MST_PTYPE_2_MASK                                             0x00000700
+#define MST_PTYPE_2_RD(src)                           (((src) & 0x00000700)>>8)
+#define MST_PTYPE_2_WR(src)                      (((u32)(src)<<8) & 0x00000700)
+#define MST_PTYPE_2_SET(dst,src) \
+                       (((dst) & ~0x00000700) | (((u32)(src)<<8) & 0x00000700))
+/*	 Fields MST_PTYPE_1	 */
+#define MST_PTYPE_1_WIDTH                                                     3
+#define MST_PTYPE_1_SHIFT                                                     4
+#define MST_PTYPE_1_MASK                                             0x00000070
+#define MST_PTYPE_1_RD(src)                           (((src) & 0x00000070)>>4)
+#define MST_PTYPE_1_WR(src)                      (((u32)(src)<<4) & 0x00000070)
+#define MST_PTYPE_1_SET(dst,src) \
+                       (((dst) & ~0x00000070) | (((u32)(src)<<4) & 0x00000070))
+/*	 Fields MST_PTYPE_0	 */
+#define MST_PTYPE_0_WIDTH                                                     3
+#define MST_PTYPE_0_SHIFT                                                     0
+#define MST_PTYPE_0_MASK                                             0x00000007
+#define MST_PTYPE_0_RD(src)                              (((src) & 0x00000007))
+#define MST_PTYPE_0_WR(src)                         (((u32)(src)) & 0x00000007)
+#define MST_PTYPE_0_SET(dst,src) \
+                          (((dst) & ~0x00000007) | (((u32)(src)) & 0x00000007))
+
 /*	Global Base Address	*/
-#define QM_MASTER_SHIM_CSR_BASE_ADDR			0x01f20f000ULL
-#define QM_MASTER_SHIM_CSR_BASE_ADDR_OFFSET			0xf000
+#define MASTER_SHIM_CSR_BASE_ADDR			0x01f60f000ULL
 
 /*    Address MASTER_SHIM_CSR  Registers */
 #define CFG_MST_IOB_SEL_ADDR                                         0x00000004
@@ -12693,6 +21931,12 @@
 #define VC2_TOKEN_REQ_SET(dst,src) \
                           (((dst) & ~0xffffffff) | (((u32)(src)) & 0xffffffff))
 	
-#endif /* CONFIG_STORM */
 
-#endif /* _APM_QM_CSR_H__ */
+#define QM_CLKRST_CSR_BASE_ADDR_OFFSET (QM_CLKRST_CSR_BASE_ADDR - QM_CSR_BASE_ADDR)
+#define QM_GLBL_DIAG_CSR_BASE_ADDR_OFFSET (REGSPEC_GLBL_DIAG_CSR_BASE_ADDR - QM_CSR_BASE_ADDR)
+#define QM_CFG_MEM_RAM_SHUTDOWN_ADDR REGSPEC_CFG_MEM_RAM_SHUTDOWN_ADDR
+#define QM_CFG_MEM_RAM_SHUTDOWN_DEFAULT REGSPEC_CFG_MEM_RAM_SHUTDOWN_DEFAULT
+#define QM_ENABLE_SET(dst, src) REGSPEC_ENABLE_SET(dst,src)
+#define CSR_PBM_CTICK0_ADDR CSR_CTICK0_ADDR
+
+#endif

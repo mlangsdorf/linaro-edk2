@@ -1,15 +1,29 @@
-/**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+/*
+ * AppliedMicro APM88xxxx CLE Configuration Header
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * Ravi Patel <rapatel@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
+ *
+ * @file apm_cle_mgr.h
+ *
+ * This header declares Management APIs and macros for
+ * AppliedMicro APM88xxxx SoC Classifier module.
+ */
 
 #ifndef _APM_CLE_MGR_H_
 #define _APM_CLE_MGR_H_
@@ -20,10 +34,6 @@
 #include <misc/xgene/cle/apm_avl_api.h>
 #endif /* AVL_MANAGER */
 #else
-
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <string.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseLib.h>
@@ -36,8 +46,6 @@ typedef UINT16 u16;
 typedef UINT32 u32;
 typedef UINT64 u64;
 #include "apm_preclass_data.h"
-#endif
-
 #define memcpy(dest,source,count)         CopyMem(dest,source,(UINTN)(count))
 #define memset(dest,ch,count)             SetMem(dest,(UINTN)(count),(UINT8)(ch))
 #define memcmp(buf1,buf2,count)           (int)(CompareMem(buf1,buf2,(UINTN)(count)))
@@ -46,6 +54,7 @@ typedef UINT64 u64;
 #define strncpy(strDest,strSource,count)  AsciiStrnCpy(strDest,strSource,(UINTN)count)
 #define strlen(str)                       (size_t)(AsciiStrLen(str))
 
+#endif
 
 /* Result/DB entry Related */
 #define DBPTR_INDEX(p)		((0x0000 << 16) | ((p) & 0x03ff))

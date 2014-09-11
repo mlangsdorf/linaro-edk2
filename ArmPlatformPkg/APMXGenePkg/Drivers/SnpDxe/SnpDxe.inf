@@ -28,14 +28,19 @@
   SnpDxe.h
   SnpDxe.c
   ComponentName.c
-  dummy.c
+  xgene_enet.c
   mustang.h
-  qm/apm_qm_core.h
-  qm/apm_qm_core.c
-  qm/apm_qm_utils.h
-  qm/apm_qm_utils.c
-  qm/apm_qm_access.h
-  qm/apm_qm_access.c
+  qm/xgene_qmtm_core.h
+  qm/xgene_qmtm_csr.h
+  qm/xgene_qmtm.h
+  qm/xgene_qmtm.c
+  qm/xgene_qmtm_msg.c
+  qm/xgene_qmtm_shadowcat_csr.h
+  qm/xgene_qmtm_storm.c
+  qm/xgene_qmtm_util.h
+  qm/xgene_qmtm_util.c
+  qm/xgene_qmtm_main.h
+  qm/xgene_qmtm_main.c
 
   classifier/apm_preclass_base.h
   classifier/apm_preclass_data.h
@@ -79,6 +84,7 @@
   NetLib
   DevicePathLib
   TimerLib
+  XGenePHYLib
 
 [Guids]
   gShellVariableGuid

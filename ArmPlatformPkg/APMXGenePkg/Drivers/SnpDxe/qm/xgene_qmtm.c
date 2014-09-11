@@ -21,7 +21,11 @@
 
 #include "xgene_qmtm.h"
 #include "xgene_qmtm_core.h"
+#ifdef CONFIG_SHADOWCAT
+#include "xgene_qmtm_shadowcat_csr.h"
+#else
 #include "xgene_qmtm_csr.h"
+#endif
 
 #include <Library/PrintLib.h>
 #include <Library/SerialPortLib.h>

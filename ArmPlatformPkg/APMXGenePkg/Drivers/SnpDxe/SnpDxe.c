@@ -37,7 +37,6 @@ APMXGeneNet_Set_Receive_Filter (
 extern EFI_STATUS
 APMXGeneNet_Receive (
   IN      UINT32                      Index,
-//TODO  IN OUT  UINT32                      *BufferSize,
   IN OUT  UINTN                      *BufferSize,
   OUT     VOID                        *Buffer
   );
@@ -93,7 +92,6 @@ SNP_GLOBAL_DATA         gSnpDxeGlobalData = {
   SnpDxeCloseInstance                    //  CloseInstance
 };
 
-#if 1	//TODO
 int putshex(unsigned char *buf, int len)
 {
         int i;
@@ -110,10 +108,9 @@ int putshex(unsigned char *buf, int len)
                                 DBG("%02X", buf[i]);
                 }
         }
-        printf("\n");
+        DBG("\n");
         return 0;
 }
-#endif
 
 int TxQueNext (
     IN int n
@@ -700,9 +697,6 @@ SnpDxeReceive (
   UINTN                 BufSize;
 
   BufSize     = *BufferSize;
-
-  //DBG("Enter SnpDxeReceive\n");	//TODO comment this out?
-
   Instance    = SNP_INSTANCE_DATA_FROM_SNP_THIS (This);
 
   GlobalData  = Instance->GlobalData;
@@ -718,11 +712,6 @@ SnpDxeReceive (
                                                 BufferSize,
                                                 Buffer
                                                 );
-#if 0
-  if (eth_initialized)	//TODO
-  	DBG("Enter SnpDxeReceive 200 BufSize=0x%x BufferSize=0x%x ReturnValue=0x%x\n",
-		BufSize, *BufferSize, ReturnValue);
-#endif
   EfiReleaseLock (&GlobalData->Lock);
 
   if (EFI_ERROR(ReturnValue)) {
@@ -737,43 +726,21 @@ SnpDxeReceive (
 
   if (HeaderSize != NULL) {
     *HeaderSize = 14;
-#if 0
-	  if (eth_initialized)	//TODO
-  		DBG("Enter SnpDxeReceive HeaderSize\n");
-#endif
   }
 
   if (SrcAddr != NULL) {
-	if (eth_initialized)	{//TODO
-  		DBG("Enter SnpDxeReceive SrcAddr\n");
-		putshex((unsigned char*)SrcAddr, 6);	//TODO
-	}
     ZeroMem (SrcAddr, sizeof (EFI_MAC_ADDRESS));
     CopyMem (SrcAddr, ((UINT8 *) Buffer) + 6, 6);
   }
 
   if (DestAddr != NULL) {
-	if (eth_initialized) {	//TODO
-  		DBG("Enter SnpDxeReceive DestAddr\n");
-		putshex((unsigned char*)DestAddr, 6);	//TODO
-	}
     ZeroMem (DestAddr, sizeof (EFI_MAC_ADDRESS));
     CopyMem (DestAddr, ((UINT8 *) Buffer), 6);
   }
 
   if (Protocol != NULL) {
-	if (eth_initialized)	{//TODO
-  		DBG("Enter SnpDxeReceive Protocol\n");
-	}
     *Protocol = NTOHS (*((UINT16 *) (((UINT8 *) Buffer) + 12)));
   }
-#if 0	//TODO
-  if (eth_initialized)	 { //TODO
-  	DBG("Enter SnpDxeReceive 300\n");
-	putshex((unsigned char*) Buffer, *BufferSize);
-  }
-#endif
-
   return EFI_SUCCESS;
 }
 
@@ -814,13 +781,12 @@ SnpDxeBindingSupported (
   NET_LIST_FOR_EACH (Entry, &GlobalData->InstanceList) {
 
     Instance = NET_LIST_USER_STRUCT_S (Entry, SNP_INSTANCE_DATA, Entry, SNP_INSTANCE_SIGNATURE);
-DBG(" SnpDxeBindingSupported index=%d MAC=",  Instance->InterfaceInfo.InterfaceIndex);
-putshex((unsigned char *)  &Instance->InterfaceInfo.MacAddr, 6);
+    DBG(" SnpDxeBindingSupported index=%d MAC=",  Instance->InterfaceInfo.InterfaceIndex);
+    putshex((unsigned char *)  &Instance->InterfaceInfo.MacAddr, 6);
     if (Instance->DeviceHandle == ControllerHandle) {
-	  DBG("Exit SnpDxeBindingSupported successfully\n");
-      return EFI_SUCCESS;
+        DBG("Exit SnpDxeBindingSupported successfully\n");
+        return EFI_SUCCESS;
     }
-
   }
   DBG(" Exit SnpDxeBindingSupported Err\n");
   return EFI_UNSUPPORTED;
@@ -955,6 +921,7 @@ ExitBootServicesEvent (
   IN VOID       *Context
   )
 {
+
   SNP_INSTANCE_DATA *Instance = Context;
 
   APMXGeneNet_Halt (Instance->InterfaceInfo.InterfaceIndex);
@@ -1041,10 +1008,6 @@ SnpDxeInitializeGlobalData (
     goto ErrorReturn;
   }
 
-#if 1	//TODO
-DBG(" SnpDxeInitializeGlobalData Addr[5]=0x%x\n", NetInterfaceInfoBuffer[0].MacAddr.Addr[5]);
-#endif
-
   NetUtilityLibInitDone = TRUE;
 
   if (InterfaceCount == 0) {
@@ -1055,7 +1018,6 @@ DBG(" SnpDxeInitializeGlobalData Addr[5]=0x%x\n", NetInterfaceInfoBuffer[0].MacA
   //  Create fake SNP instances
   //
   for (Index = 0; Index < InterfaceCount; Index++) {
-
     Instance = AllocatePool (sizeof (SNP_INSTANCE_DATA));
 
     if (NULL == Instance) {
@@ -1087,24 +1049,44 @@ DBG(" SnpDxeInitializeGlobalData Addr[5]=0x%x\n", NetInterfaceInfoBuffer[0].MacA
     //  Insert this instance into the instance list
     //
     InsertTailList (&This->InstanceList, &Instance->Entry);
-#if 1  //TODO
        //Print( L"Enter SnpDxeInitialize\n" );
-	apm_eth_initialize((UINT8 *)&(Instance->InterfaceInfo.MacAddr));
-	if (!eth_initialized) { //TODO move here
-		(&emac_dev[0])->init(&emac_dev[0]);
-		eth_initialized = 1;
-	}
 
-#endif
-	// Register for an ExitBootServicesEvent
+    #ifdef CONFIG_STORM
+      if (Index == 0)
+        emac_dev[Index]->index = MENET;
+      else if (Index == 1)
+        emac_dev[Index]->index = ENET_0;
+      else if (Index == 2)
+        emac_dev[Index]->index = ENET_1;
+      else if (Index == 3)
+        emac_dev[Index]->index = XGENET_0;
+      else
+        return EFI_NOT_FOUND;
+    #else
+      if (Index == 0)
+        emac_dev[Index]->index = XGENET_0;
+      else if (Index == 1)
+        emac_dev[Index]->index = XGENET_1;
+      else
+        return EFI_NOT_FOUND;
+    #endif
 
-	EfiExitBootServicesEvents[Index] = (EFI_EVENT)NULL;
-	Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY,
-				   ExitBootServicesEvent, Instance,
-				   &EfiExitBootServicesEvents[Index]);
-	ASSERT_EFI_ERROR (Status);
+    apm_eth_initialize(Index, (UINT8 *)&(Instance->InterfaceInfo.MacAddr));
+    if ((emac_dev[Index])->state == 0) {
+      (emac_dev[Index])->init(emac_dev[Index]);
+       (emac_dev[Index])->state = 1;
+    }
+    eth_initialized = 1;
+
+    // Register for an ExitBootServicesEvent
+    EfiExitBootServicesEvents[Index] = (EFI_EVENT)NULL;
+    Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY,
+             ExitBootServicesEvent, Instance,
+             &EfiExitBootServicesEvents[Index]);
+    ASSERT_EFI_ERROR (Status);
   }
-  DBG("Exit SnpDxeInitializeGlobalData Index=%d\n", Index);
+
+  DBG("Exit SnpDxeInitializeGlobalData InterfaceCount=%d\n", InterfaceCount);
   return EFI_SUCCESS;
 
 ErrorReturn:

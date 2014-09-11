@@ -1,16 +1,16 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (C) 2011 AppliedMicro Confidential Information
+ * All Rights Reserved.
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * THIS WORK CONTAINS PROPRIETARY INFORMATION WHICH IS THE PROPERTY OF
+ * AppliedMicro AND IS SUBJECT TO THE TERMS OF NON-DISCLOSURE AGREEMENT
+ * BETWEEN AppliedMicro AND THE COMPANY USING THIS FILE.
  *
- **/
-
+ * WARNING !!!
+ * This is an auto-generated C header file for register definitions 
+ * PLEASE DON'T MANUALLY MODIFY IN THIS FILE AS CHANGES WILL BE LOST
+ */
 #ifndef _APM_CLE_CSR_H__
 #define _APM_CLE_CSR_H__
 

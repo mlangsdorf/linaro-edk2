@@ -1,69 +1,39 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro APM88xxxx Ethernet Driver
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Iyappan Subramanian <isubramanian@apm.com>
+ *                      Ravi Patel <rapatel@apm.com>
+ *                      Fushen Chen <fchen@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_xgenet_mac.c
+ *
+ * This file implements driver for XGMII and statistics blocks of
+ * APM88xxxx Ethernet subsystem
+ *
+ */
 
-/* apm_xg_init() pseudo code:
-void apm_xg_init()
-{
-    apm_xg_cfg_mgnt_enet();
-    apm_xg_clk_rst_cfg();
-    apm_xg_serdes_init();
-    apm_xg_mac_init();
-    apm_xg_bypass_resume_cfg();
-    apm_xg_loopback_cfg();
-    apm_qm_cle_bypass_mode_cfg();
-}
-*/
-
-
-// FIXME: replace register writes with the following
-// 1. register_read( &data )
-// 2. data = field_set( data, value )
-// 3. repeat (2) for more fields
-// 4. register_write(data)
-
+#include "../mustang.h"
 #include "apm_enet_access.h"
 #include "apm_xgenet_mac.h"
 #include "apm_xgenet_csr.h"
 
-/* TODO */
-#define PHY_READ_COUNT 5
-
-/* Compatity layer, define another function? */
-/*    Address XGENET_SDS_CSR_REGS  Registers */
-#define ENET_CFG_MEM_RAM_SHUTDOWN_ADDR REGSPEC_CFG_MEM_RAM_SHUTDOWN_ADDR
-#define ENET_BLOCK_MEM_RDY_ADDR REGSPEC_BLOCK_MEM_RDY_ADDR
-#define SATA_ENET_SDS_RST_CTL_ADDR XGENET_SDS_RST_CTL_ADDR
-#define SATA_ENET_SDS_PCS_CTL2_ADDR XGENET_SDS_PCS_CTL2_ADDR
-#define SATA_ENET_SDS_CTL0_ADDR XGENET_SDS_CTL0_ADDR
-#define SATA_ENET_SDS_PCS_CTL0_ADDR XGENET_SDS_PCS_CTL0_ADDR
-#define SATA_ENET_SDS_PCS_CTL1_ADDR XGENET_SDS_PCS_CTL1_ADDR
-#define SATA_ENET_SDS_CTL1_ADDR XGENET_SDS_CTL1_ADDR
-#define SATA_ENET_SDS_CMU_CTL0_ADDR XGENET_SDS_CMU_CTL0_ADDR
-#define SATA_ENET_SDS_CMU_CTL1_ADDR XGENET_SDS_CMU_CTL1_ADDR
-#define SATA_ENET_SDS_RX_CTL_ADDR XGENET_SDS_RX_CTL_ADDR
-#define ENET_CFG_I_RX_WORDMODE0_WR REGSPEC_CFG_I_RX_WORDMODE0_WR
-#define ENET_CFG_I_TX_WORDMODE0_WR REGSPEC_CFG_I_TX_WORDMODE0_WR
-
-#define ENET_INTERFACE_MODE2_SET REGSPEC_INTERFACE_MODE2_SET /* same */
-#define ENET_INTERFACE_MODE2_RD REGSPEC_INTERFACE_MODE2_RD /* same */
-#define ENET_LHD_MODE_WR REGSPEC_LHD_MODE_WR /* same */
+#define ENET_INTERFACE_MODE2_SET REGSPEC_INTERFACE_MODE2_SET
+#define ENET_INTERFACE_MODE2_RD REGSPEC_INTERFACE_MODE2_RD
+#define ENET_LHD_MODE_WR REGSPEC_LHD_MODE_WR
 #define ENET_SRST_ADDR XGENET_SRST_ADDR
-#define ENET_SRST_DEFAULT XGENET_SRST_DEFAULT	/* different */
-#define ENET_CLKEN_ADDR XGENET_SRST_ADDR
-
+#define ENET_SRST_DEFAULT XGENET_SRST_DEFAULT
 #define ENET_GHD_MODE_WR REGSPEC_GHD_MODE_WR
-#define ENET_CFG_I_CUSTOMER_PIN_MODE0_WR REGSPEC_CFG_I_CUSTOMER_PIN_MODE0_WR
-#define ENET_CFG_CMU_I_PCIE_MODE1_WR REGSPEC_CFG_CMU_I_PCIE_MODE1_WR
 #define ENET_INTERFACE_MODE2_WR REGSPEC_INTERFACE_MODE2_WR
 
 #ifdef CONFIG_STORM_VHP
@@ -72,236 +42,147 @@ void apm_xg_init()
 #define COUNT_FOR_TIMEOUT 10000
 #endif
 
-/* 10G only */
-void apm_xgenet_set_phyid(struct apm_data_priv *priv)
-{
-	u32 val;
+#ifdef CONFIG_STORM
+static u32 pll_manualcal = 0;
+#endif
 
-	apm_enet_read(priv, BLOCK_XGENET_MDIO_CSR, CFG_PHYID_ADDR, &val);
-	val &= ~(0xFF << ((priv->port - AXGMAC) * 8));
-	val |= (priv->phy_addr & 0xFF) << ((priv->port - 4) * 8);
-	apm_enet_write(priv, BLOCK_XGENET_MDIO_CSR, CFG_PHYID_ADDR, val);
+#ifdef CONFIG_SHADOWCAT
+#define CONFIG_SHADOWCAT_SERDES
+#define AN_CONTROL                                0x0
+#define AN_CONFIGURATION_REGISTER                 0x58
+#define  AN_CONFIGURATION_REGISTER_AUTO_CONFIGURATION_SET(dst, src)\
+	(((dst) & ~0x00000001) | (((u32) (src) << 0) & 0x00000001))
+
+#define  AN_CONTROL_AUTO_NEGOTIATION_ENABLE_SET(dst, src) \
+	(((dst) & ~0x00001000) | (((u32) (src) << 12) & 0x00001000))
+
+#define  XGENET_CLKEN_CFG_AN_CLK_EN_SET(dst, src)\
+    (((dst) & ~0x00000020) | (((u32) (src) << 5) & 0x00000020))
+
+#define  XGENET_CLKEN_CFG_AD_CLK_EN_SET(dst, src)\
+    (((dst) & ~0x00000040) | (((u32) (src) << 6) & 0x00000040))
+
+#define  XGENET_CLKEN_CFG_AN_REF_CLK_EN_SET(dst, src)\
+    (((dst) & ~0x00000010) | (((u32) (src) << 4) & 0x00000010))
+
+#define  XGENET_CLKEN_CSR_CLKEN_SET(dst, src)\
+    (((dst) & ~0x00000001) | (((u32) (src) << 0) & 0x00000001))
+
+#define  XGENET_SRST_CSR_RESET_SET(dst, src)\
+    (((dst) & ~0x00000001) | (((u32) (src) << 0) & 0x00000001))
+
+#define  XGENET_CLKEN_CFG_PCS_CLK_EN_SET(dst, src)\
+    (((dst) & ~0x00000008) | (((u32) (src) << 3) & 0x00000008))
+
+#define  XGENET_CLKEN_XGENET_CLKEN_SET(dst, src)\
+    (((dst) & ~0x00000002) | (((u32) (src) << 1) & 0x00000002))
+
+#define  XGENET_SRST_XGENET_PCS_RESET_SET(dst, src)\
+    (((dst) & ~0x00000008) | (((u32) (src) << 3) & 0x00000008))
+
+#define  XGENET_SRST_XGENET_RESET_SET(dst, src)\
+    (((dst) & ~0x00000002) | (((u32) (src) << 1) & 0x00000002))
+
+#define XGENET_SDS_CMU_HSPLL_CTL1		0x44
+#define XGENET_SDS_CMU_HSPLL_STATS		0x48
+#define XGENET_SDS_CMU_CTL1			0x24
+#define  XGENET_SDS_CMU_CTL1_CFG_CMU_I_USRCLK_DIV_SET(dst, src)\
+    (((dst) & ~0x1c000000) | (((u32) (src) << 26) & 0x1c000000))
+#define  XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_POST_DIV_RESETB_SET(dst, src)\
+    (((dst) & ~0x00000080) | (((u32) (src) << 7) & 0x00000080))
+#define  XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_REFCLK_DIV_RESETB_SET(dst, src)\
+    (((dst) & ~0x00000040) | (((u32) (src) << 6) & 0x00000040))
+#define  XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_PLLRESETB_SET(dst, src)\
+    (((dst) & ~0x00000020) | (((u32) (src) << 5) & 0x00000020))
+#define AN_OFFSET 0x20000
+
+static void xfi_an_wr(struct xgene_phy_ctx *ctx, u32 reg, u32 data)
+{
+	serdes_wr(ctx, 0, reg + AN_OFFSET, data);
 }
 
-u32 apm_xgenet_get_mode(struct apm_data_priv *priv)
+static void xfi_an_rd(struct xgene_phy_ctx *ctx, u32 reg, u32 *data)
 {
-	u32 xgenet_csr_config_reg;
-
-	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR,
-		&xgenet_csr_config_reg);
-
-	if (CFG_SGMII_EN_RD(xgenet_csr_config_reg) == 0x2) /* xgmii mode */
-		return PHY_MODE_XGMII;
-	else
-		return PHY_MODE_SGMII;
+	serdes_rd(ctx, 0, reg + AN_OFFSET, data);
 }
+#endif
 
-#if 1
-/* MCXMAC */
-void apm_xgmac_change_mtu(struct apm_data_priv *priv, u32 new_mtu)
-{
-	u32 data;
-
-	if (priv->phy_mode == PHY_MODE_XGMII)
-		return;
-	/* Read current value of the Maximum Frame Length register */
-	apm_enet_read(priv, BLOCK_MCX_MAC, MAX_FRAME_LEN_ADDR, &data);
-
-	/* Write value back to Maximum Frame Length register */
-	apm_enet_write(priv, BLOCK_MCX_MAC, MAX_FRAME_LEN_ADDR,
-			MAX_FRAME_LEN_SET(data, new_mtu));
-}
-
-/* MCXMAC */
-int apm_xgmac_is_rx_enable(struct apm_data_priv *priv)
-{
-	u32 data;
-
-	if (priv->phy_mode == PHY_MODE_XGMII) {
-		apm_enet_read(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, &data);
-		data = HSTTCTLEN1_RD(data) ? 1 : 0;
-	} else {
-		/* Read current value of the config 1 register */
-		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, &data);
-		data = RX_EN1_RD(data) ? 1 : 0;
-	}
-
-	return data;
-}
-
-/* MCXMAC  */
-void apm_xgmac_rx_enable(struct apm_data_priv *priv)
+static void apm_xgmac_rx_enable(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_XGMII) {
 		apm_enet_read(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, &data);
 		apm_enet_write(priv, BLOCK_AXG_MAC,
-			AXGMAC_CONFIG_1_ADDR, HSTRFEN1_SET(data, 1));
+				AXGMAC_CONFIG_1_ADDR, HSTRFEN1_SET(data, 1));
 
 		apm_enet_read(priv, BLOCK_AXG_MAC_CSR,
-			XGENET_RX_DV_GATE_REG_0_ADDR, &data);
+				XGENET_RX_DV_GATE_REG_0_ADDR, &data);
 		data = TX_DV_GATE_EN0_SET(data, 0);
 		data = RX_DV_GATE_EN0_SET(data, 0);
 		apm_enet_write(priv, BLOCK_AXG_MAC_CSR,
-			XGENET_RX_DV_GATE_REG_0_ADDR, data);
+				XGENET_RX_DV_GATE_REG_0_ADDR, data);
 	} else {
-		/* Read current value of the config 1 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC,
-			MAC_CONFIG_1_ADDR, &data);
-
-		/* Write value back to config 1 register */
+				MAC_CONFIG_1_ADDR, &data);
 		apm_enet_write(priv, BLOCK_MCX_MAC,
-			MAC_CONFIG_1_ADDR, RX_EN1_SET(data, 1));
-/*
-		apm_enet_read(priv, BLOCK_MCX_MAC_CSR,
-			RX_DV_GATE_REG_0_ADDR, &data);
-		data = TX_DV_GATE_EN0_F2_SET(data, 0);
-		data = RX_DV_GATE_EN0_F2_SET(data, 0);
-		apm_enet_write(priv, BLOCK_MCX_MAC_CSR,
-			RX_DV_GATE_REG_0_ADDR, data);
-*/
+				MAC_CONFIG_1_ADDR, RX_EN1_SET(data, 1));
 	}
 }
 
-/* MCXMAC */
-void apm_xgmac_rx_disable(struct apm_data_priv *priv)
+static void apm_xgmac_rx_disable(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_XGMII) {
 		apm_enet_read(priv, BLOCK_AXG_MAC_CSR,
-			XGENET_RX_DV_GATE_REG_0_ADDR, &data);
+				XGENET_RX_DV_GATE_REG_0_ADDR, &data);
 		data = TX_DV_GATE_EN0_SET(data, 1);
 		data = RX_DV_GATE_EN0_SET(data, 1);
 		apm_enet_write(priv, BLOCK_AXG_MAC_CSR,
-			XGENET_RX_DV_GATE_REG_0_ADDR, data);
+				XGENET_RX_DV_GATE_REG_0_ADDR, data);
 
 		apm_enet_read(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, &data);
 		apm_enet_write(priv, BLOCK_AXG_MAC,
-			AXGMAC_CONFIG_1_ADDR, HSTRFEN1_SET(data, 0));
+				AXGMAC_CONFIG_1_ADDR, HSTRFEN1_SET(data, 0));
 	} else {
-/*
-		apm_enet_read(priv, BLOCK_MCX_MAC_CSR,
-			RX_DV_GATE_REG_0_ADDR, &data);
-		data = TX_DV_GATE_EN0_F2_SET(data, 1);
-		data = RX_DV_GATE_EN0_F2_SET(data, 1);
-		apm_enet_write(priv, BLOCK_MCX_MAC_CSR,
-			RX_DV_GATE_REG_0_ADDR, data);
-*/
-		/* Read current value of the config 1 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, &data);
-
-		/* Write value back to config 1 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC,
-			MAC_CONFIG_1_ADDR, RX_EN1_SET(data, 0));
+				MAC_CONFIG_1_ADDR, RX_EN1_SET(data, 0));
 	}
 }
 
-/* MCXMAC */
-void apm_xgmac_tx_enable(struct apm_data_priv *priv)
+static void apm_xgmac_tx_enable(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_XGMII) {
 		apm_enet_read(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, &data);
 		apm_enet_write(priv, BLOCK_AXG_MAC,
-			AXGMAC_CONFIG_1_ADDR, HSTTFEN1_SET(data, 1));
+				AXGMAC_CONFIG_1_ADDR, HSTTFEN1_SET(data, 1));
 	} else {
-		/* Read current value of the config 1 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, &data);
-
-		/* Write value back to config 1 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC,
-			MAC_CONFIG_1_ADDR, TX_EN1_SET(data, 1));
+				MAC_CONFIG_1_ADDR, TX_EN1_SET(data, 1));
 	}
 }
 
-/* MCXMAC */
-void apm_xgmac_tx_disable(struct apm_data_priv *priv)
+static void apm_xgmac_tx_disable(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_XGMII) {
 		apm_enet_read(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, &data);
 		apm_enet_write(priv, BLOCK_AXG_MAC,
-			AXGMAC_CONFIG_1_ADDR, HSTTFEN1_SET(data, 1));
+				AXGMAC_CONFIG_1_ADDR, HSTTFEN1_SET(data, 1));
 	} else {
-		/* Read current value of the config 1 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, &data);
-
-		/* Write value back to config 1 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC,
-			MAC_CONFIG_1_ADDR, TX_EN1_SET(data, 0));
+				MAC_CONFIG_1_ADDR, TX_EN1_SET(data, 0));
 	}
 }
 
-/* sgmii  */
-int apm_xgmac_phy_autoneg_done(struct apm_data_priv *priv)
-{
-	u32 sts, sts1;
-
-	if (priv->phy_mode == PHY_MODE_XGMII) {
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &sts);
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, &sts1);
-		if ((sts != 0) && (sts1 != 0))
-			return 1;
-		else
-			return 0;
-	}
-read_sts_again:
-	apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-		SGMII_STATUS_ADDR >> 2, &sts);
-	apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-		SGMII_STATUS_ADDR >> 2, &sts1);
-	if (sts != sts1)
-		goto read_sts_again;
-	return (sts & AUTO_NEGOTIATION_COMPLETE_MASK) ? 1 : 0;
-}
-
-/*sgmii */
-int apm_xgenet_get_link_speed(struct apm_data_priv *priv)
-{
-	u32 data;
-	u32 speed = priv->speed;
-
-	if (priv->phy_mode == PHY_MODE_XGMII)
-		return speed;
-
-	if (speed == SPEED_10 || speed == SPEED_100)
-		return speed;
-
-	if (!priv->mac_to_mac) {
-		apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-				SGMII_STATUS_ADDR >> 2, &data);
-		if (LINK_STATUS_RD(data) == 0) {/* No link wih sgmii */
-			apm_genericmiiphy_read(priv, priv->phy_addr,
-					RTL_PHYSR_ADR, &data);
-			PHY_PRINT("RTL_BMSR_ADR data: 0x%x\n", data);
-			speed = RTL_PHYSR_SPEED_RD(data);
-		} else {
-			/* Get the final speed information from sgmii */
-			apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-					SGMII_AN_SGMII_PARTNER_BASE_PAGE_ABILITY_ADDR >> 2, &data);
-			PHY_PRINT("SGMII_AN_SGMII_PARTNER_BASE_PAGE_ABILITY_ADDR data: 0x%x\n", data);
-			speed = LINK_SPEED_F1_RD(data);
-		}
-	} else {
-		speed = priv->desired_speed;
-	}
-	PHY_PRINT("Phy Speed is :%d \n", speed);
-	switch(speed) {
-	case PHY_SPEED_10:
-		return SPEED_10;
-
-	case PHY_SPEED_100:
-		return SPEED_100;
-	default:
-	return SPEED_1000;
-	}
-}
-
-static int apm_xgmac_link_status(struct apm_data_priv *priv)
+static int apm_xgmac_link_status(struct apm_enet_priv *priv)
 {
 	u32 data, speed;
 
@@ -309,34 +190,35 @@ static int apm_xgmac_link_status(struct apm_data_priv *priv)
 		if (!priv->phyless) {
 			apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &data);
 			priv->link_status = PORT_RD(data);
-		} else
+		} else {
 			priv->link_status = 1;
+		}
 		if (!priv->link_status) {
-			priv->speed = SPEED_10;
+			priv->speed = APM_ENET_SPEED_0;
 			PHY_PRINT("Port%d is down\n", priv->port);
 			return 0;
-
 		}
-		/* Get the final speed information from SGMII */
-		apm_genericmiiphy_read(priv, INT_PHY_ADDR,
+		if (priv->phy_mode == PHY_MODE_XGMII) {
+			priv->speed = APM_ENET_SPEED_10000;
+		} else {
+			/* Get the final speed information from SGMII */
+			apm_genericmiiphy_read(priv, INT_PHY_ADDR,
 				SGMII_AN_SGMII_PARTNER_BASE_PAGE_ABILITY_ADDR >> 2, &data);
-		speed = LINK_SPEED_F1_RD(data);
-		switch(speed) {
-		case PHY_SPEED_10:
-			speed = SPEED_10;
-			break;
-		case PHY_SPEED_100:
-			speed = SPEED_100;
-			break;
-		default:
-			speed = SPEED_1000;
-			break;
-		}
-		if (priv->link_status)
+			speed = LINK_SPEED_F1_RD(data);
+			switch(speed) {
+			case PHY_SPEED_10:
+				speed = APM_ENET_SPEED_10;
+				break;
+			case PHY_SPEED_100:
+				speed = APM_ENET_SPEED_100;
+				break;
+			default:
+				speed = APM_ENET_SPEED_1000;
+				break;
+			}
 			PHY_PRINT("Phy Speed is :%d \n", speed);
-		else 
-			PHY_PRINT("Port%d is down\n", priv->port);
-		priv->speed = speed;
+			priv->speed = speed;
+		}
 	} else {
 		priv->link_status = 1;
 		priv->speed = priv->desired_speed;
@@ -344,224 +226,28 @@ static int apm_xgmac_link_status(struct apm_data_priv *priv)
 	return 1;
 }
 
-/* sgmii */
-void apm_xgmac_phy_link_mode(struct apm_data_priv *priv, u32 *speed, u32 *state)
-{
-#ifndef CONFIG_STORM_VHP
-	u32 sts, sts_intr, ctl, anar, lpar, anlpar;
-	u32 ganar = 0, glpar = 0;
 
-	if (priv->phy_mode == PHY_MODE_XGMII) {
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &sts);
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, &sts_intr);
-		if ((sts != 0) && (sts_intr != 0)) {
-			*state = 1;
-			*speed = SPEED_10000;
-		} else
-			*speed = SPEED_0;
-		return;
-	}
-	/* TODO change to INT_PHY_ADDR and SGMII reg */
-	/* Link status is latched in PHY so read it twice */
-	sts = 0x0;
-	apm_genericmiiphy_read(priv, priv->phy_addr, MII_STAT_REG, &sts);
-	apm_genericmiiphy_read(priv, priv->phy_addr, MII_STAT_REG, &sts);
-	PHY_PRINT("MII_STAT_REG: 0x%x 0x%x\n", sts, (sts & MII_SR_LINK_STATUS));
-	*state = (sts & MII_SR_LINK_STATUS) ? 1 : 0;
-
-	/* If no link then return SPEED_0 */
-	if (!(sts & MII_SR_LINK_STATUS)) {
-		*speed = SPEED_0;
-		return;
-	}
-
-	apm_genericmiiphy_read(priv, priv->phy_addr, MII_CTRL_REG, &ctl);
-	PHY_PRINT("MII_CTRL_REG: 0x%x \n", ctl);
-	apm_genericmiiphy_read(priv, priv->phy_addr, MII_AN_ADS_REG, &anar);
-	PHY_PRINT("MII_AN_ADS_REG: 0x%x \n", anar);
-	apm_genericmiiphy_read(priv, priv->phy_addr, MII_AN_PRTN_REG, &lpar);
-	PHY_PRINT("MII_AN_PRTN_REG: 0x%x \n", lpar);
-	if (sts & MII_SR_EXT_STS) {
-		apm_genericmiiphy_read(priv, priv->phy_addr, MII_MASSLA_CTRL_REG, &ganar);
-		PHY_PRINT("MII_MASSLA_CTRL_REG: 0x%x \n", ganar);
-		apm_genericmiiphy_read(priv, priv->phy_addr, MII_MASSLA_STAT_REG, &glpar);
-		PHY_PRINT("MII_MASSLA_STAT_REG: 0x%x \n", glpar);
-	}
-
-	/*
-	 * If autoneg is on, figure out the link speed from the
-	 * advertisement and partner ability registers. If autoneg is
-	 * off, use the settings in the control register.
-	 */
-	*speed = SPEED_0;
-	if (ctl & MII_CR_AUTO_EN) {
-		anlpar = anar & lpar;
-		if ((ganar & MII_MASSLA_CTRL_1000T_FD) &&
-		    (glpar & MII_MASSLA_STAT_LP1000T_FD)) {
-			*speed = SPEED_1000;
-		} else if ((ganar & MII_MASSLA_CTRL_1000T_HD) &&
-			   (glpar & MII_MASSLA_STAT_LP1000T_HD)) {
-			*speed = SPEED_1000;
-		} else if (anlpar & MII_ANAR_100TX_FD) {
-			*speed = SPEED_100;
-		} else if (anlpar & MII_ANAR_100TX_HD) {
-			*speed = SPEED_100;
-		} else if (anlpar & MII_ANAR_10TX_FD) {
-			*speed = SPEED_10;
-		} else if (anlpar & MII_ANAR_10TX_HD) {
-			*speed = SPEED_10;
-		}
-	} else {
-		if ((ctl & (MII_CR_100 | MII_CR_1000)) ==
-					(MII_CR_100 | MII_CR_1000)) {
-			*speed = SPEED_1000;
-		} else if (ctl & MII_CR_100) {
-			*speed = SPEED_100;
-		} else {
-			*speed = SPEED_10;
-		}
-	}
-#else
-	ENET_PRINT("VHP skip %s\n", __func__);
-	*state = 1;
-	*speed = SPEED_10000;
-#endif
-}
-
-
-void sm_xgenet_mdio_auto_polling(struct apm_data_priv *priv)
-{
-	u32 xgenet_csr_config_reg, wrdata;
-
-	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR,
-			&xgenet_csr_config_reg);
-	if (xgenet_csr_config_reg == 0x2) {/* xgmii */
-		if (priv->port == XGENET_0)
-			wrdata = 0x20860000;
-		else if (priv->port == XGENET_1)
-			wrdata = 0x21060000;
-		else if (priv->port == XGENET_2)
-			wrdata = 0x21860000;
-		else
-			wrdata = 0x22060000;
-		apm_enet_write(priv, BLOCK_XGENET_MDIO_CSR, MIIM_FIELD_ADDR, wrdata);
-		apm_enet_write(priv, BLOCK_XGENET_MDIO_CSR, MIIM_COMMAND_ADDR, 12);
-
-	} else {  /* This is going MENET TODO 0x17020000*/
-
-	}
-}
-
-/* polling if the link came up */
-int sm_xgenet_enet_linkup_polling(struct apm_data_priv *priv)
-{
-	u32 data, wrdata;
-	u32 link_sts_intr_val, link_sts_val;
-	u32 count_for_timeout;
-	u32 xgenet_csr_config_reg;
-	u32 autoneg_done = 0;
-
-	PHY_PRINT("%s\n", __func__);
-  	/* In the case of Force Link Status */
-	apm_enet_read(priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, &data);
-
-	if ((data & 0x00000010) == 0x00000010) {
-		PHY_PRINT("LINK_UP Force Link Status\n");
-		wrdata = data | 0x00000100;
-		apm_enet_write(priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, wrdata);
-	} else {
-		apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR,
-			&xgenet_csr_config_reg);
-		if ((xgenet_csr_config_reg & CFG_SGMII_EN_MASK)
-			== 0x00000002) {	/* xgmii */
-		      /* For XGMII Mode utilize MDIO Clause 45 polling */
-		      PHY_PRINT("LINK_UP XGMII --> Polling MDIO Clause 45\n");
-		      sm_xgenet_mdio_auto_polling(priv);
-		}
-		else {	/* sgmii */
-		      /* For sgmii In the case of Non AutoNeg --> Need to polling MDIO */
-			apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-				SGMII_CONTROL_ADDR >> 2, &data);
-		      if ((data & 0x00001000) == 0) {
-			         PHY_PRINT("LINK_UP sgmii AutoNeg is disable --> Polling MDIO Clause 22\n");
-			         sm_xgenet_mdio_auto_polling(priv);
-		      }
-		}
-	}
-	/* Polling the final link status until it is up */
-	PHY_PRINT("LINK_UP Polling Link Status ...\n");
-	apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &link_sts_val);
-	apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, &link_sts_intr_val);
-	 /* poll for SGMII RX port is up or not, only if it is not up already */
-	count_for_timeout = 0;
-	while (((link_sts_val == 0x0) || (link_sts_intr_val == 0x0)) &&
-		(count_for_timeout < COUNT_FOR_TIMEOUT)) {
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &link_sts_val);
-		apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, &link_sts_intr_val);
-    		count_for_timeout++;
-		udelay(1);
-	}
-	if (count_for_timeout >= COUNT_FOR_TIMEOUT) {
-		autoneg_done = 0;
-		PHY_PRINT("LINK_UP process failed: timeout_count: 10000\n");
-	}
-	else {
-		PHY_PRINT("LINK_UP is up: at count: %d \n", count_for_timeout);
-		autoneg_done = 1;
-		/* Stop MDIO polling */
-		if((xgenet_csr_config_reg & CFG_SGMII_EN_MASK) == 0x00000002) { /* xgmii */
-			apm_enet_read(priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, &data);
-        		if ((data & 0x00000010) != 0x00000010) { /* !force_en */
-				apm_enet_write(priv, BLOCK_XGENET_MDIO_CSR, MIIM_COMMAND_ADDR, 0);
-		        }
-		} else { /* sgmii */
-			apm_enet_read(priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, &data);
-	        	if ((data & 0x00000010) != 0x00000010) { /* !force_en */
-				apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-					SGMII_CONTROL_ADDR >> 2, &data);
-        		    	if ((data & 0x00001000) == 0) {	/* !enable_en */
-					/* TODO MENET 0x17020000 */
-	               			//sm_xgenet_menet_macip_ind_csr_reg_wr_port0(0x00000024, 0x00000000);
-	        		}
-        		}
-     		}
-
-		apm_enet_read(priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, &data);
-		if((data & 0x1) == 0x0) { /* link status from PCS state machine, NOT from MDIO auto scan */
-        		/* write cfg_link_aggr_resume = 1 */
-	        	PHY_PRINT("LINK_UP set cfg_link_aggr_resume = 1\n");
-			apm_enet_write(priv, BLOCK_ETH_CSR, CFG_LINK_AGGR_RESUME_0_ADDR, 1);
-		}
-	}
-	/* Clear link status change interrupt */
-	apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, &link_sts_intr_val);
-	if (link_sts_intr_val != 0)
-		apm_enet_write(priv, BLOCK_ETH_CSR, LINK_STS_INTR_ADDR, link_sts_intr_val);
-
-	return autoneg_done;
-}
-
-u32 enet_xgbaser_pcs_ind_csr_reg_rd(struct apm_data_priv *priv, u32 offset)
+u32 enet_xgbaser_pcs_ind_csr_reg_rd(struct apm_enet_priv *priv, u32 offset)
 {
 	u32 PCS_Ind_Command_Done, data;
 
 	apm_enet_write(priv, BLOCK_XGENET_PCS, IND_ADDR_0_ADDR, offset);
- 	apm_enet_write(priv, BLOCK_XGENET_PCS, IND_COMMAND_0_ADDR,
+	apm_enet_write(priv, BLOCK_XGENET_PCS, IND_COMMAND_0_ADDR,
 			REGSPEC_READ0_F8_WR(1));
 
 	PCS_Ind_Command_Done = 0;
 	while (PCS_Ind_Command_Done == 0) {
 		apm_enet_read(priv, BLOCK_XGENET_PCS, IND_COMMAND_DONE_0_ADDR,
-			&PCS_Ind_Command_Done);
+				&PCS_Ind_Command_Done);
 
 	}
 	apm_enet_read(priv, BLOCK_XGENET_PCS, IND_RDATA_0_ADDR, &data);
 	apm_enet_write(priv, BLOCK_XGENET_PCS, IND_COMMAND_0_ADDR, 0x0);
-	PHY_PRINT("%s read %x <- %x\n", __func__, data, offset);
+	PHY_PRINT("%a read %x <- %x\n", __func__, data, offset);
 	return data;
 }
 
-void enet_xgbaser_pcs_ind_csr_reg_wr(struct apm_data_priv *priv, u32 offset, u32 data)
+void enet_xgbaser_pcs_ind_csr_reg_wr(struct apm_enet_priv *priv, u32 offset, u32 data)
 {
 	u32 PCS_Ind_Command_Done;
 
@@ -573,23 +259,23 @@ void enet_xgbaser_pcs_ind_csr_reg_wr(struct apm_data_priv *priv, u32 offset, u32
 	PCS_Ind_Command_Done = 0;
 	while (PCS_Ind_Command_Done == 0) {
 		apm_enet_read(priv, BLOCK_XGENET_PCS, IND_COMMAND_DONE_0_ADDR,
-			&PCS_Ind_Command_Done);
-  	}
-	PHY_PRINT("%s write %x -> %x\n", __func__, data, offset);
+				&PCS_Ind_Command_Done);
+	}
+	PHY_PRINT("%a write %x -> %x\n", __func__, data, offset);
 	apm_enet_write(priv, BLOCK_XGENET_PCS, IND_COMMAND_0_ADDR, 0);
 }
 
-void sm_xgenet_module_level_eee_init(struct apm_data_priv *priv)
+void sm_xgenet_module_level_eee_init(struct apm_enet_priv *priv)
 {
 	u32 xgenet_csr_config_reg;
 
 	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR,
-		&xgenet_csr_config_reg);
+			&xgenet_csr_config_reg);
 
 	if (CFG_SGMII_EN_RD(xgenet_csr_config_reg) == 0x2) {/* xgmii mode */
 		PHY_PRINT("Enable EEE capability...\n");
 		enet_xgbaser_pcs_ind_csr_reg_wr(priv, PCS_EEE_CAPABILITY_ADDR,
-			0x0000007f);
+				0x0000007f);
 	} else {	/* SGMII mode */
 		PHY_PRINT("Enable detect LPI...\n");
 		apm_enet_write(priv, BLOCK_MCX_MAC_CSR, EEE_RX_LPI_DETECT_0_ADDR, 0x00000201);
@@ -602,119 +288,113 @@ void sm_xgenet_module_level_eee_init(struct apm_data_priv *priv)
 	}
 }
 
-void xgenet_config_qmi_assoc(struct apm_data_priv *priv)
+static void xgenet_config_qmi_assoc(struct apm_enet_priv *priv)
 {
-        /* Configure Ethernet QMI: WQ and FPQ association, QM_SOC for now */
-	switch(priv->port) {
-		case XGENET_0:
-		case XGENET_1:
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIWQASSOC_ADDR, 0x0);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIFPQASSOC_ADDR, 0x0);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEFPQASSOC_ADDR, 0x0);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEWQASSOC_ADDR, 0x0);
-			break;
-		case XGENET_2:
-		case XGENET_3:
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIWQASSOC_ADDR, 0x0);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIFPQASSOC_ADDR, 0x0);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEFPQASSOC_ADDR,
+	/* Configure Ethernet QMI: WQ and FPQ association, QM_SOC for now */
+	switch (priv->port) {
+	case XGENET_0:
+	case XGENET_1:
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIWQASSOC_ADDR, 0x0);
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIFPQASSOC_ADDR, 0x0);
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEFPQASSOC_ADDR, 0x0);
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEWQASSOC_ADDR, 0x0);
+		break;
+	case XGENET_2:
+	case XGENET_3:
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIWQASSOC_ADDR, 0x0);
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIFPQASSOC_ADDR, 0x0);
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEFPQASSOC_ADDR,
 					0xffffffff);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEWQASSOC_ADDR,
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMLITEWQASSOC_ADDR,
 					0xffffffff);
-			apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMHOLD_ADDR,
+		apm_enet_write(priv, BLOCK_ETH_QMI, REGSPEC_CFGSSQMIQMHOLD_ADDR,
 					REGSPEC_QMLITE_HOLD_EN_WR(1));
-			break;
-		default:
-			break;
+		break;
+	default:
+		break;
 	}
 }
 
-void xgenet_sds_ind_csr_reg_wr(struct apm_data_priv *priv, u32 offset, u32 data)
+static void xgenet_sds_ind_csr_reg_wr(struct apm_enet_priv *priv,
+	u32 offset, u32 data)
 {
-	u32 value, timeout;
-        u32 SDS_Ind_Command_Addr;
+	u32 value;
+	u32 SDS_Ind_Command_Addr;
 	u32 SDS_Ind_Command_Done;
 
 	/* write 1 to clear indirect error detected/ind cmd done */
-        value = (CFG_IND_ADDR_WR(0)
-                   | CFG_IND_ERR_WR(1)
-                   | CFG_IND_CMD_DONE_WR(1)
-                   | CFG_IND_RD_CMD_WR(0)
-                   | CFG_IND_WR_CMD_WR(0));
+	value = (CFG_IND_ADDR_WR(0)
+			| CFG_IND_ERR_WR(1)
+			| CFG_IND_CMD_DONE_WR(1)
+			| CFG_IND_RD_CMD_WR(0)
+			| CFG_IND_WR_CMD_WR(0));
 	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
-	//PHY_PRINT("%s cmd value=0x%x -> 0x%llx\n", __func__, value,
-	//	XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
+	PHY_PRINT("%a cmd value=0x%x -> 0x%llx\n", __func__, value,
+			XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
 
 	value = data;
 	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_WDATA_REG_ADDR, value);
-	//PHY_PRINT("%s data value=0x%x -> 0x%llx\n", __func__, value,
-	//	XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_WDATA_REG_ADDR);
-
-	SDS_Ind_Command_Addr = offset; /* offset[15:0] */
-        value = (CFG_IND_ADDR_WR(SDS_Ind_Command_Addr)
-                   | CFG_IND_ERR_WR(0)
-                   | CFG_IND_CMD_DONE_WR(0)
-                   | CFG_IND_RD_CMD_WR(0)
-                   | CFG_IND_WR_CMD_WR(1));
-	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
-	SDS_Ind_Command_Done = 0;
-	while (SDS_Ind_Command_Done == 0) {
-		apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, &value);
-		//PHY_PRINT("%s cmd_done=0x%x <- 0x%llx\n", __func__, value,
-		//	XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
-		SDS_Ind_Command_Done = CFG_IND_CMD_DONE_RD(value);
-	}
-
-	for(timeout=0;timeout<1000;timeout++);
-}
-
-u32 xgenet_sds_ind_csr_reg_rd(struct apm_data_priv *priv, u32 offset)
-{
-	u32 value, timeout;
-        u32 SDS_Ind_Command_Addr;
-	u32 SDS_Ind_Command_Done;
-
-	// FIXME:  CFG_IND_ADDR, CFG_IND_ERR and CFG_IND_CMD_DONE can be
-	// set during write to CFG_IND_RD_CMD or CFG_IND_WR_CMD
-	// CFG_IND_RD_CMD and CFG_IND_WR_CMD are self clear bits
-
-	//PHY_PRINT("%s offset=0x%x\n", __func__, offset);
-	/* write 1 to clear indirect error detected/ind cmd done */
-        value = (CFG_IND_ADDR_WR(0)
-                   | CFG_IND_ERR_WR(1)
-                   | CFG_IND_CMD_DONE_WR(1)
-                   | CFG_IND_RD_CMD_WR(0)
-                   | CFG_IND_WR_CMD_WR(0));
-	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
-	//PHY_PRINT("%s value=0x%x -> 0x%llx\n", __func__, value,
-	//	  XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
+	PHY_PRINT("%a data value=0x%x -> 0x%llx\n", __func__, value,
+			XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_WDATA_REG_ADDR);
 
 	SDS_Ind_Command_Addr = offset; /* offset[15:0] */
 	value = (CFG_IND_ADDR_WR(SDS_Ind_Command_Addr)
-                   | CFG_IND_ERR_WR(0)
-                   | CFG_IND_CMD_DONE_WR(0)
-                   | CFG_IND_RD_CMD_WR(1)
-                   | CFG_IND_WR_CMD_WR(0));
+			| CFG_IND_ERR_WR(0)
+			| CFG_IND_CMD_DONE_WR(0)
+			| CFG_IND_RD_CMD_WR(0)
+			| CFG_IND_WR_CMD_WR(1));
 	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
-	//PHY_PRINT("%s cmd value=0x%x\n", __func__, value);
+	SDS_Ind_Command_Done = 0;
+	while (SDS_Ind_Command_Done == 0) {
+		apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, &value);
+		PHY_PRINT("%a cmd_done=0x%x <- 0x%llx\n", __func__, value,
+				XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
+		SDS_Ind_Command_Done = CFG_IND_CMD_DONE_RD(value);
+	}
+	mdelay(1);
+}
+
+static u32 xgenet_sds_ind_csr_reg_rd(struct apm_enet_priv *priv, u32 offset)
+{
+	u32 value;
+	u32 SDS_Ind_Command_Addr;
+	u32 SDS_Ind_Command_Done;
+
+	PHY_PRINT("%a offset=0x%x\n", __func__, offset);
+	/* write 1 to clear indirect error detected/ind cmd done */
+	value = (CFG_IND_ADDR_WR(0)
+			| CFG_IND_ERR_WR(1)
+			| CFG_IND_CMD_DONE_WR(1)
+			| CFG_IND_RD_CMD_WR(0)
+			| CFG_IND_WR_CMD_WR(0));
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
+	PHY_PRINT("%a value=0x%x -> 0x%llx\n", __func__, value,
+			XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
+
+	SDS_Ind_Command_Addr = offset; /* offset[15:0] */
+	value = (CFG_IND_ADDR_WR(SDS_Ind_Command_Addr)
+			| CFG_IND_ERR_WR(0)
+			| CFG_IND_CMD_DONE_WR(0)
+			| CFG_IND_RD_CMD_WR(1)
+			| CFG_IND_WR_CMD_WR(0));
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, value);
+	PHY_PRINT("%a cmd value=0x%x\n", __func__, value);
 
 	SDS_Ind_Command_Done = 0;
 	while (SDS_Ind_Command_Done == 0) {
 		apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_CMD_REG_ADDR, &value);
-		//PHY_PRINT("%s read cmd_done=0x%x <- 0x%llx\n", __func__, value,
-		//	XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
+		PHY_PRINT("%a read cmd_done=0x%x <- 0x%llx\n", __func__, value,
+				XGENET_SDS_CSR_REGS_BASE_ADDR + XGENET_SDS_IND_CMD_REG_ADDR);
 		SDS_Ind_Command_Done = CFG_IND_CMD_DONE_RD(value);
 	}
 
 	apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_IND_RDATA_REG_ADDR, &value);
-	//PHY_PRINT("%s value=0x%x\n", __func__, value);
-	for(timeout=0;timeout<1000;timeout++);
+	PHY_PRINT("%a value=0x%x\n", __func__, value);
+	mdelay(1);
 
 	return value;
 }
 
-/* Storm, Port0 for now, TODO */
-#define CMU 0
 static u32 sm_xgenet_set(u32 ori_val, u32 set_val, u32 end, u32 start)
 {
 	u32 mask = 0, new_val;
@@ -730,72 +410,88 @@ static u32 sm_xgenet_set(u32 ori_val, u32 set_val, u32 end, u32 start)
 	return new_val;
 }
 
-static void serdes_reset_rxd_rxa(struct apm_data_priv *priv, int port)
+static void serdes_reset_rxd_rxa(struct apm_enet_priv *priv, int port)
 {
 	u32 value;
-	int timeout;
 	int inst_base;
 
 	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Reset Digital ...\n\r");
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 0, 8, 8); // digital reset == 1'b0
+	value = sm_xgenet_set(value, 0, 8, 8); /* digital reset == 1'b0 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
 
-	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Reset Analog ...\n\r");
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 0, 7, 7); // analog reset == 1'b0
+	value = sm_xgenet_set(value, 0, 7, 7); /* analog reset == 1'b0 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
 
-	for (timeout=0; timeout<0x8000; ++timeout);
-
-	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Remove Reset Analog ...\n\r");
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 1, 7, 7); // analog reset == 1'b1
+	value = sm_xgenet_set(value, 1, 7, 7); /* analog reset == 1'b1 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
 
-	for (timeout=0; timeout<0x8000; ++timeout);
-
-	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Remove Reset Digital ...\n\r");
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 1, 8, 8); // digital reset == 1'b1
+	value = sm_xgenet_set(value, 1, 8, 8); /* digital reset == 1'b1 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
 }
-
-void serdes_reset_rxa(struct apm_data_priv *priv) {
+#ifdef CONFIG_STORM
+static void serdes_reset_rxd(struct apm_enet_priv *priv)
+{
 	u32 value;
-	int timeout;
+	int inst_base;
+
+	inst_base = 0x0400;
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
+	value = sm_xgenet_set(value, 0, 8, 8); /* digital reset == 1'b0 */
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
+
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
+	value = sm_xgenet_set(value, 1, 8, 8); /* digital reset == 1'b1 */
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
+}
+
+void serdes_reset_rxa(struct apm_enet_priv *priv)
+{
+	u32 value;
 	int inst_base;
 
 	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Reset Analog ...\n\r");
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 0, 7, 7); // analog reset == 1'b0
+	value = sm_xgenet_set(value, 0, 7, 7); /* analog reset == 1'b0 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
 
-	for(timeout=0; timeout<0x8000; ++timeout);
-
-	inst_base = 0x0400;
 	PHY_PRINT(" CH0 RX Remove Reset Analog ...\n\r");
 	value =  xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0x7*2);
-	value = sm_xgenet_set(value, 1, 7, 7); // analog reset == 1'b1
+	value = sm_xgenet_set(value, 1, 7, 7); /* analog reset == 1'b1 */
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0x7*2, value);
+	mdelay(8);
 }
-#define CMU 0
-static void serdes_calib(struct apm_data_priv *priv)
+
+static void serdes_calib(struct apm_enet_priv *priv, u32 rev)
 {
 	u32 value; 
 	u32 inst_base;
 	u32 infmode = 1;
+	int man_pvt_cal = 0;
+
+	inst_base = 0x0400;
+	if (rev <= 2)
+		man_pvt_cal = 1;
  
 	if (priv->phy_mode == PHY_MODE_SGMII) {
 		infmode = 0;
 		/* CMU_reg6  : Enable Manual PVT calibration - Anil */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*6);
-		value = sm_xgenet_set(value,infmode ? 1 : 1, 2, 2);
+		value = sm_xgenet_set(value,infmode ?
+			man_pvt_cal : man_pvt_cal, 2, 2);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*6, value);
 
 		/* TERM CALIBRATION KC_SERDES_CMU_REGS_CMU_REG17__ADDR */
@@ -810,7 +506,7 @@ static void serdes_calib(struct apm_data_priv *priv)
 		value |= (1 << 15);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*17, value);
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
- 
+
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
 		value &= ~(1 << 15);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*17, value);
@@ -833,7 +529,7 @@ static void serdes_calib(struct apm_data_priv *priv)
 		value &= ~1;
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*16, value);
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*16);
- 
+
 		/* UP CALIBRATION */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
 		value &= ~(0x7F << 8);
@@ -852,26 +548,26 @@ static void serdes_calib(struct apm_data_priv *priv)
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*16, value);
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*16);
 
-		/*//////////////////////////////////////////////////////////// */
 		/* Anil adding 5-2-2013 */
-		/*// STARTED///// */
-		/*  printf ("ANIL ADDING THIS CODE .....\n\r"); */
-		inst_base = 0x0400;
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 14*2);
 		value &= ~0x7F;  /* mask */
 		value |= 0x0E; /*Anil 02/08/13 */
 		xgenet_sds_ind_csr_reg_wr(priv,inst_base + 14*2, value);
-		udelay(10);
 	} else { /* XGMII */
 		/* CMU_reg6  : Enable Manual PVT calibration - Anil */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*6);
-		value = sm_xgenet_set(value,infmode ? 1: 1, 2, 2);
+		value = sm_xgenet_set(value,
+			infmode ? man_pvt_cal: man_pvt_cal, 2, 2);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*6, value);
 
 		/* TERM CALIBRATION KC_SERDES_CMU_REGS_CMU_REG17__ADDR */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
 		value &= ~(0x7F << 8);
-		value |= 0x0D << 8;
+		if (rev < 2)
+			value |= 0x0D << 8;
+		else
+			value |= 0x12 << 8;
+
 		value &= ~(7 << 5);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*17, value);
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
@@ -889,7 +585,6 @@ static void serdes_calib(struct apm_data_priv *priv)
 		/* DOWN CALIBRATION */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
 		value &= ~(0x7F << 8);
-		/*    value |= 0x26 << 8; */
 		value |= 0x2A << 8; /* 07/31/2013 */
 		value &= ~(7 << 5);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*17, value);
@@ -908,7 +603,6 @@ static void serdes_calib(struct apm_data_priv *priv)
 		/* UP CALIBRATION */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*17);
 		value &= ~(0x7F << 8);
-		/*    value |= 0x28 << 8; */
 		value |= 0x2B << 8; /* 07/31/2013 */
 		value &= ~(7 << 5);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*17, value);
@@ -925,37 +619,25 @@ static void serdes_calib(struct apm_data_priv *priv)
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*16);
 
 		/* Anil adding 5-2-2013 */
-		/*// STARTED///// */
-		/*  printf ("ANIL ADDING THIS CODE .....\n\r"); */
-		inst_base = 0x0400;
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 14*2);
 		value &= ~0x7F;  /* mask */
 		value |= 0x0E; /*Anil 02/08/13 */
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 14*2, value);
-		udelay(1);
 	}
+	udelay(10);
 }
 
-/* SERDES config
-   the xgenet (that include enet module) will have both xfi (10G) and 1G mode running at LSPLL ONLY.
-	infmode: 0: SGMII(1G), 1: XGMII(10G)
-	NOTE: Storm_CLock_and_Reset_EAS.pdf
-	Section 3.2.4 ETH_PLL clocks: ETH_CLK sources the Serdes reference clock for both Ethernet ports.
- 	Configurations where one port is SGMII and the other is XFI are not supported.
-*/
-void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
+static void xgenet_sds_CMU_cfg(struct apm_enet_priv *priv, u32 rev)
 {
-	u32 value, inst, inst_base;
+	u32 value;
 	u32 infmode = 1; /* xgmii */
+	u32 tmp;
 
-	/* xgenet_sds_CMU_cfg */
 	if (priv->phy_mode == PHY_MODE_SGMII) {
 		infmode = 0;
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*12);
-		/* data32 = FIELD_CMU_REG12_STATE_DELAY9_SET(data32, 0x1);  // Anil 0718 */
 		value = sm_xgenet_set(value, 1, 7, 4);
 		xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*12);
-		/*/////////// */
 		/* CMU_reg13 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*13);
 		/* Delay time between state transition. */
@@ -972,7 +654,6 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		value = sm_xgenet_set(value,infmode ? 15 : 2, 3, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*13, value);
 
-		/*/////////// */
 		/* CMU_reg14 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*14);
 		/* Delay time between state transition. */
@@ -988,14 +669,14 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		/* value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0); */
 		value = sm_xgenet_set(value,infmode ? 15 : 4, 3, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*14, value);
-		ENET_DEBUG("%s PHY_MODE_SGMII\n", __func__);
+		ENET_DEBUG("%a PHY_MODE_SGMII\n", __func__);
 	}
+	/* CMU_reg1 */
 	value =  xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*1);
 	value = sm_xgenet_set(value, 0, 0, 0);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*1, value);
-
 	/* CMU_reg2 */
-  	value =  xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*2);
+	value =  xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*2);
 	/* Ref clk divider setting */
 	value = sm_xgenet_set(value,infmode ? 0 : 0, 15, 14);
 	/* Feedback divider setting */
@@ -1015,17 +696,17 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 	/* PLL BW setting */
 	value = sm_xgenet_set(value,infmode ? 11 : 10, 13, 10);
 	/*  PLL BW setting */
-	value = sm_xgenet_set(value,infmode ? 2 : 1, 9, 5);
+	value = sm_xgenet_set(value,infmode ? 5 : 1, 9, 5);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*1, value);
 
 	/* CMU_reg3 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*3);
-	value = sm_xgenet_set(value,infmode ? 0 : 0, 3, 0);
+	value = sm_xgenet_set(value,infmode ? 15 : 0, 3, 0);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*3, value);
 
 	/* CMU_reg2 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*2);
-	value = sm_xgenet_set(value,infmode ? 7 : 15, 4, 1);
+	value = sm_xgenet_set(value,infmode ? 5 : 15, 4, 1);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*2, value);
 
 	/* CMU_reg5 */
@@ -1038,53 +719,51 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 
 	/*  CMU_reg4 */
 	/*
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*4);
-	value = sm_xgenet_set(value,infmode ? 0 : 0, 3, 0);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*4, value);
-	*/
+	   value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*4);
+	   value = sm_xgenet_set(value,infmode ? 0 : 0, 3, 0);
+	   xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*4, value);
+	 */
 
-/*/////////// */
-  // CMU_reg8
-        value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*8);
-        value = sm_xgenet_set(value,infmode ? 7 : 7, 7, 5); // ucdiv. added by satish for correct usr clock - 01 Feb
-	value = sm_xgenet_set(value, infmode ? 0: 0xAA, 15, 8); // tx_data_rate_ch3,2,1,0 = 2'h2
-        xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*8, value);
+	/* CMU_reg8 */
+	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*8);
+	/* ucdiv. added by satish for correct usr clock - 01 Feb */
+	value = sm_xgenet_set(value,infmode ? 7 : 7, 7, 5);
+	/* tx_data_rate_ch3,2,1,0 = 2'h2 */
+	value = sm_xgenet_set(value, infmode ? 0: 0xAA, 15, 8);
+	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*8, value);
 
 	/* CMU_reg6 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*6);
-	value = sm_xgenet_set(value,infmode ? 0 : 0, 10, 9);
+	tmp = (rev == 4) ? 0 : 0;
+	value = sm_xgenet_set(value,infmode ? tmp : 0, 10, 9);
 	value = sm_xgenet_set(value,infmode ? 1 : 0, 3, 3);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*6, value);
 
 	/* CMU_reg32 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*32);
 	/* Bias Current adj */
-	value = sm_xgenet_set(value,infmode ? 3 : 3, 8, 7);
+	tmp = (rev == 4) ? 3 : 3;
+	value = sm_xgenet_set(value,infmode ? tmp : 3, 8, 7);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*32, value);
 
 	/*  CMU_reg1 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*1);
 	/* Manual cal enable */
-	value = sm_xgenet_set(value,infmode ? 0 : 0, 3, 3);
+	value = sm_xgenet_set(value,infmode ?
+			pll_manualcal : pll_manualcal, 3, 3);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*1, value);
 
 	/* CMU_reg3 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*3);
-	value = sm_xgenet_set(value,infmode ? 5 : 13, 15, 10);
+	value = sm_xgenet_set(value,infmode ? 5 : 0xd, 15, 10);
 	/* Init Momsel */
-	value = sm_xgenet_set(value,infmode ? 16 : 13, 9, 4);
+	value = sm_xgenet_set(value,infmode ? 16 : 0xd, 9, 4);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*3, value);
-#if 0
-	/* CMU_reg4 */
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*4);
-	/*  Manual cal value for PCIE - don't care, Init Momsel For 8G */
-	value = sm_xgenet_set(value,infmode ? 16 : 16, 9, 4);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*4, value);
-#endif
+
 	/* CMU_reg34 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*34);
 	value = sm_xgenet_set(value,infmode ? 2 : 2, 15, 12);
-	 value = sm_xgenet_set(value,infmode ? 10 : 10, 11, 8);
+	value = sm_xgenet_set(value,infmode ? 10 : 10, 11, 8);
 	value = sm_xgenet_set(value,infmode ? 2 : 2, 7, 4);
 	value = sm_xgenet_set(value,infmode ? 10 : 10, 3, 0);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*34, value);
@@ -1102,33 +781,35 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 	/* CMU_reg30 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*30);
 	/* Lock count Wait time */
-	 value = sm_xgenet_set(value,infmode ? 3 : 3, 2, 1);
+	value = sm_xgenet_set(value,infmode ? 3 : 3, 2, 1);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*30, value);
+	if (infmode) {
+		/* CMU_reg13 */
+		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*13);
+		/* Delay time between state transition */
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 15, 12);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 11, 8);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 7, 4);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0);
+		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*13, value);
 
-	/* CMU_reg13 */
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*13);
-	/* Delay time between state transition */
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 15, 12);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 11, 8);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 7, 4);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*13, value);
-
-	/*  CMU_reg14 */
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*14);
-	/* Delay time between state transition. */
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 15, 12);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 11, 8);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 7, 4);
-	value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*14, value);
+		/*  CMU_reg14 */
+		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*14);
+		/* Delay time between state transition. */
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 15, 12);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 11, 8);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 7, 4);
+		value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0);
+		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*14, value);
+	}
 
 	/* CMU_reg30 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*30);
-	/*  Ref Divider for PCI Gen3 mode - dont care,
-		 FB divider for Gen3 mode - dont care
-		Post Divider for Gen3 mode - dont care
-	*/
+	/*
+	 * Ref Divider for PCI Gen3 mode - dont care,
+	 * FB divider for Gen3 mode - dont care
+	 * Post Divider for Gen3 mode - dont care
+	 */
 	value = sm_xgenet_set(value,infmode ? 0 : 0, 3, 3);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*30, value);
 
@@ -1153,8 +834,16 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 	value = sm_xgenet_set(value,infmode ? 15 : 15, 15, 12);
 	value = sm_xgenet_set(value,infmode ? 15 : 15, 3, 0);
 	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*37, value);
+}
 
-	/* xgenet_sds_rxtx_cfg */
+static void xgenet_sds_rxtx_cfg(struct apm_enet_priv *priv, u32 rev)
+{
+	u32 infmode = 1; /* xgmii */
+	u32 value, inst, inst_base;
+	u32 pq_reg = 0xa, tmp;
+
+	if (priv->phy_mode == PHY_MODE_SGMII)
+		infmode = 0;
 	for(inst = 0;inst < 1;inst++) {
 		inst_base = 0x0400 + inst*0x0200;
 		/**  Tx CONTROL **/
@@ -1223,20 +912,20 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		/* rxtx_reg6 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 6*2);
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 6, 6);
-		value = sm_xgenet_set(value,infmode ? 8 : 8, 10, 7);
-		 xgenet_sds_ind_csr_reg_wr(priv, inst_base + 6*2, value);
+		value = sm_xgenet_set(value,infmode ? 15 : 8, 10, 7);
+		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 6*2, value);
 
 		/* rxtx_reg5 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 5*2);
-		value = sm_xgenet_set(value,infmode ? 6 : 0, 15, 11);
-		value = sm_xgenet_set(value,infmode ? 6 : 0, 10, 5);
-		value = sm_xgenet_set(value,infmode ? 0 : 0, 4, 0);
+		value = sm_xgenet_set(value,infmode ? 2 : 0, 15, 11);
+		value = sm_xgenet_set(value,infmode ? 15 : 0, 10, 5);
+		value = sm_xgenet_set(value,infmode ? 2 : 0, 4, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 5*2, value);
 
 		/* rxtx_reg61 - Don't care */
 
 		/* rxtx_reg2 */
-		 value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
+		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 12, 12);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*2, value);
 
@@ -1276,12 +965,20 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 
 		/* rxtx_reg1 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 1*2);
-		value = sm_xgenet_set(value,infmode ? 7 : 7, 15, 12);
+		if (infmode) {
+			value = sm_xgenet_set(value,infmode ? 7 : 7, 15, 12);
+			/* RXIREF_ADJ  */
+			value = sm_xgenet_set(value,infmode ? 3 : 7, 4, 1);
+		}
+		else {
+			/* RX AC common model select */
+			value = sm_xgenet_set(value,infmode ? 7 : 7, 15, 12);
+		}
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 1*2, value);
 
 		/* rxtx_reg12 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
-		 value = sm_xgenet_set(value,infmode ? 0 : 0, 1, 1);
+		value = sm_xgenet_set(value,infmode ? 0 : 0, 1, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
 
 		/* rxtx_reg61 - Don't care */
@@ -1294,7 +991,7 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 7*2, value);
 
 		/* CMU_reg16 */
-		// RX rate change enable: Toggle 0-1-0
+		/* RX rate change enable: Toggle 0-1-0 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*16);
 		value = sm_xgenet_set(value, 0, 14, 14);
 		xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*16, value);
@@ -1355,13 +1052,13 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 
 		/* rxtx_reg150 */
 		value =  xgenet_sds_ind_csr_reg_rd(priv, inst_base + 150*2);
-		 value = sm_xgenet_set(value,infmode ? 0xFFFF : 0xFFFF, 15, 0);
+		value = sm_xgenet_set(value,infmode ? 0xFFFF : 0xFFFF, 15, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 150*2, value);
 
 		/* rxtx_reg151 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 151*2);
 		value = sm_xgenet_set(value,infmode ? 0xFFFF : 0xFFFF, 15, 0);
-		 xgenet_sds_ind_csr_reg_wr(priv, inst_base + 151*2, value);
+		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 151*2, value);
 
 		/* rxtx_reg147 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 147*2);
@@ -1370,26 +1067,43 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 
 		/* rxtx_reg1 */
 		value =  xgenet_sds_ind_csr_reg_rd(priv, inst_base + 1*2);
-		value = sm_xgenet_set(value,infmode ? 28 : 28, 11, 7);
+		tmp = 16;
+		if (rev == 4) {
+			switch (priv->port) {
+			case XGENET_0:
+				tmp = 24;
+				break;
+			case XGENET_1:
+				tmp = 28;
+				break;
+			case XGENET_2:
+				tmp = 16;
+				break;
+			case XGENET_3:
+				tmp = 28;
+				break;
+			}
+		}
+		value = sm_xgenet_set(value,infmode ? tmp : 28, 11, 7);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 1*2, value);
 
 		/* rxtx_reg0 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 0*2);
-		value = sm_xgenet_set(value,infmode ? 16 : 1, 15, 11);
-		 value = sm_xgenet_set(value,infmode ? 16 : 13, 10, 6);
-		value = sm_xgenet_set(value,infmode ? 16 : 1, 5, 1);
+		value = sm_xgenet_set(value,infmode ? 16 : 13, 15, 11);
+		value = sm_xgenet_set(value,infmode ? 16 : 13, 10, 6);
+		value = sm_xgenet_set(value,infmode ? 16 : 13, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 0*2, value);
 
 		/* rxtx_reg14 */
 		value =  xgenet_sds_ind_csr_reg_rd(priv, inst_base + 14*2);
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 6, 6);
-		 xgenet_sds_ind_csr_reg_wr(priv, inst_base + 14*2, value);
+		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 14*2, value);
 
 		/* rxtx_reg12 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
 		/* SUM Offset enable */
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 2, 2);
-		 xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
+		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
 
 		/* rxtx_reg12 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
@@ -1398,7 +1112,7 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
 
 		/* rxtx_reg128 */
-		 value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 128*2);
+		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 128*2);
 		value = sm_xgenet_set(value,infmode ? 3 : 3, 3, 2);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 128*2, value);
 
@@ -1415,12 +1129,25 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 
 		/* rxtx_reg61 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 61*2);
-		value = sm_xgenet_set(value,infmode ? 7 : 0, 13, 10);
-		 xgenet_sds_ind_csr_reg_wr(priv, inst_base + 61*2, value);
+		value = sm_xgenet_set(value,infmode ? 7 : 1, 13, 10);
+		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 61*2, value);
 
 		/* rxtx_reg125 */
-		 value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 125*2);
-		 value = sm_xgenet_set(value,infmode ? 20 : 0, 15, 9);
+		/* NOTE: Need to implement per port contrl */
+		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 125*2);
+		/* IQ phase different */
+		/* A2 xgmii port0-2=0xa port3=0x10 
+		      sgmii 0
+		   A1 xgmii 0xa
+		      sgmii 0
+		*/
+		if (infmode) {
+			if ((rev >= 2) && (priv->port == XGENET_3))
+				pq_reg = 0x10;
+		} else
+			pq_reg = 0;
+		value = sm_xgenet_set(value,infmode ? pq_reg: 0, 15, 9);
+		/* Phase loop adaptation manual enable */
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 1, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 125*2, value);
 
@@ -1447,7 +1174,7 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		/* rxtx_reg96 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 96*2);
 		value = sm_xgenet_set(value,infmode ? 16 : 16, 15, 11);
-		 value = sm_xgenet_set(value,infmode ? 16 : 16, 10, 6);
+		value = sm_xgenet_set(value,infmode ? 16 : 16, 10, 6);
 		value = sm_xgenet_set(value,infmode ? 16 : 16, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 96*2, value);
 
@@ -1472,43 +1199,39 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 99*2, value);
 
-		// rxtx_reg100
+		/* rxtx_reg100 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 100*2);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 15, 11);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 10, 6);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 100*2, value);
 
-		/////////////
-		// rxtx_reg101
+		/* rxtx_reg101 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 101*2);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 15, 11);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 10, 6);
-		// CDR Phase Loop BW
+		/* CDR Phase Loop BW */
 		value = sm_xgenet_set(value,infmode ? 5 : 8, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 101*2, value);
 
-		/////////////
-		// rxtx_reg8
+		/* rxtx_reg8 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 8*2);
-		// RX los disable
+		/* RX los disable */
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 8, 8);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 8*2, value);
 
-		/////////////
-		// rxtx_reg26
+		/* rxtx_reg26 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 26*2);
-		// BLWC Enable
+		/* BLWC Enable */
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 3, 3);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 26*2, value);
 
-		/////////////
-		// rxtx_reg31
+		/* rxtx_reg31 */
 		if (infmode == 0) {
 			value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 31*2);
 			/* H0 prese */
@@ -1516,266 +1239,143 @@ void sm_xgenet_module_program_all_regs(struct apm_data_priv *priv)
 			xgenet_sds_ind_csr_reg_wr(priv, inst_base + 31*2, value);
 		}
 
-		/////////////
-		// rxtx_reg81
+		/* rxtx_reg81 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 81*2);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 81*2, value);
 
-		/////////////
-		// rxtx_reg82
+		/* rxtx_reg82 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 82*2);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 82*2, value);
 
-		/////////////
-		// rxtx_reg83
+		/* rxtx_reg83 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 83*2);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE BW select
+		/* DFE BW select */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 83*2, value);
 
-		/////////////
-		// rxtx_reg84
+		/* rxtx_reg84 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 84*2);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 84*2, value);
-		/////////////
-		// rxtx_reg85
-	 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 85*2);
-		// CDR phase Adaptation Loop BW
+
+		/* rxtx_reg85 */
+		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 85*2);
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 85*2, value);
 
-		/////////////
-		// rxtx_reg86
+		/* rxtx_reg86 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 86*2);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// CDR phase Adaptation Loop BW
+		/* CDR phase Adaptation Loop BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 86*2, value);
 
-		/////////////
-		// rxtx_reg87
+		/* rxtx_reg87 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 87*2);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 87*2, value);
 
-		/////////////
-		// rxtx_reg88
+		/* rxtx_reg88 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 88*2);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 88*2, value);
 
-		/////////////
-		// rxtx_reg89
+		/* rxtx_reg89 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 89*2);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 15, 11);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 10, 6);
-		// DFE Main Tap (Threshold) BW
+		/* DFE Main Tap (Threshold) BW */
 		value = sm_xgenet_set(value,infmode ? 14 : 14, 5, 1);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 89*2, value);
 
-		/////////////
-		// rxtx_reg145
+		/* rxtx_reg145 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 145*2);
-		// DFE Configuration Selection
+		/* DFE Configuration Selection */
 		value = sm_xgenet_set(value,infmode ? 3 : 3, 15, 14);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 145*2, value);
 
-		/////////////
-		// rxtx_reg28
+		/* rxtx_reg28 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 28*2);
-		// DFE tap enables
-		value = sm_xgenet_set(value,infmode ? 0xFFFF : 0x0, 15, 0);
+		/* DFE tap enables */
+		value = sm_xgenet_set(value,infmode ? 0x7 : 0x0, 15, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 28*2, value);
 
-		/////////////
-		// rxtx_reg7
+		/* rxtx_reg7 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 7*2);
-		// RX Resetn
+		/* RX Resetn */
 		value = sm_xgenet_set(value,infmode ? 1 : 1, 8, 8);
-		// RX Forward Loopback enable
+		/* RX Forward Loopback enable */
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 14, 14);
-		// RX Bist enable for PRBS transfer
+		/* RX Bist enable for PRBS transfer */
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 6, 6);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 7*2, value);
 
-   		/////////////
-		// rxtx_reg61
-		// Bert Reset Active Low: Toggle0-1-0
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg61", inst_base + 61*2);
-		//value = sm_xgenet_set(value,infmode ? 0 : 0, 5, 5);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg61", inst_base + 61*2, value);
-
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg61", inst_base + 61*2);
-		//value = sm_xgenet_set(value,infmode ? 1 : 1, 5, 5);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg61", inst_base + 61*2, value);
-
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg61", inst_base + 61*2);
-		//value = sm_xgenet_set(value,infmode ? 0 : 0, 5, 5);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg61", inst_base + 61*2, value);
-
-		/////////////
-		// rxtx_reg6
-		// Bert PRBS resync: Toggle0-1-0
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg6", inst_base + 6*2);
-		//value = sm_xgenet_set(value,infmode ? 0 : 0, 1, 1);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg6", inst_base + 6*2, value);
-
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg6", inst_base + 6*2);
-		//value = sm_xgenet_set(value,infmode ? 1 : 1, 1, 1);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg6", inst_base + 6*2, value);
-
-		//value = xgenet_sds_ind_csr_reg_rd("rxtx_reg6", inst_base + 6*2);
-		//value = sm_xgenet_set(value,infmode ? 0 : 0, 1, 1);
-		//xgenet_sds_ind_csr_reg_wr("rxtx_reg6", inst_base + 6*2, value);
-
-		/////////////
-		// rxtx_reg6
+		/* rxtx_reg6 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 6*2);
-		// Bert Error count capture
+		/* Bert Error count capture */
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 0, 0);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 6*2, value);
 
-		/////////////
-		// rxtx_reg12
+		/* rxtx_reg12 */
 		value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
-		// RX Serial Data swap(P and N polarity)
+		/* RX Serial Data swap(P and N polarity) */
 		value = sm_xgenet_set(value,infmode ? 0 : 0, 11, 11);
 		xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
 	}
 }
 
-static void  serdes_pdown_force_vco(struct apm_data_priv *priv)
+void sm_xgenet_module_program_all_regs(struct apm_enet_priv *priv, u32 rev)
 {
-#if 0
-	u32 value;
-	u32 inst_base = 0x0400;
-	/*-------------------- */
-	/* POWER DOWN */
-	/*-------------------- */
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*0);
-	/* FIELD_CMU_REG0_PDOWN_SET */
-	value = sm_xgenet_set(value, 1, 14, 14);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*0, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*0);
-	/* FIELD_CMU_REG5_PLL_RESETB_SET */
-	value = sm_xgenet_set(value, 0, 15, 15);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*0, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
-	/* TX power down */
-	value = sm_xgenet_set(value, 1, 4, 4); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*2, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*11);
-	/* Power down RX current gen Block */
-	value = sm_xgenet_set(value, 1, 0, 0); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*11, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*12);
-	/* RX powerdown */
-	value = sm_xgenet_set(value, 1, 12, 12); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*12, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
-	/* Soft main reset */
-	value = sm_xgenet_set(value, 0, 15, 15); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*2, value);
-	udelay(100);
-
-	/*-------------------- */
-	/* POWER UP */
-	/*-------------------- */
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*0);
-	/* FIELD_CMU_REG0_PDOWN_SET */
-	value = sm_xgenet_set(value, 0, 14, 14);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*0, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*0);
-	/* FIELD_CMU_REG5_PLL_RESETB_SET */
-	value = sm_xgenet_set(value, 1, 15, 15);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*0, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
-	/* TX power down */
-	value = sm_xgenet_set(value, 0, 4, 4); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*2, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*11);
-	/* Power down RX current gen Block */
-	value = sm_xgenet_set(value, 0, 0, 0); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*11, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*12);
-	/* RX powerdown */
-	value = sm_xgenet_set(value, 0, 12, 12); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*12, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 2*2);
-	/* Soft main reset */
-	value = sm_xgenet_set(value, 1, 15, 15); 
-	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 2*2, value);
-
-	udelay(100);
-	/*-------------------- */
-	/*  */
-	/*-------------------- */
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*32);
-	// FIELD_CMU_REG32_FORCE_VCOCAL_START_SET
-	value = sm_xgenet_set(value, 1, 14, 14);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*32, value);
-
-	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*32);
-	/* FIELD_CMU_REG32_FORCE_VCOCAL_START_SET */
-	value = sm_xgenet_set(value, 0, 14, 14);
-	xgenet_sds_ind_csr_reg_wr(priv, CMU + 2*32, value);
-	udelay(100);
-#endif
+	xgenet_sds_CMU_cfg(priv, rev);
+	xgenet_sds_rxtx_cfg(priv, rev);
 }
 
-static void force_lat_summer_cal(struct apm_data_priv *priv)
+static void  serdes_pdown_force_vco(struct apm_enet_priv *priv)
+{
+}
+
+static void force_lat_summer_cal(struct apm_enet_priv *priv)
 {
 	u32 inst_base = 0x400;
 	u32 value;
@@ -1784,52 +1384,53 @@ static void force_lat_summer_cal(struct apm_data_priv *priv)
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 127*2);
 	value = sm_xgenet_set(value, 1, 1, 1);
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 127*2, value);
-	udelay(4);
+	mdelay(4);
 	/* SUMMer calib 0 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 127*2);
 	value = sm_xgenet_set(value, 0, 1, 1);
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 127*2, value);
-	udelay(4);
+	mdelay(4);
 	/* Latch calib 1 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 127*2);
 	value = sm_xgenet_set(value, 1, 2, 2);
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 127*2, value);
-	udelay(4);
+	mdelay(4);
 	/* Latch calib 0 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 127*2);
 	value = sm_xgenet_set(value, 0, 2, 2);
 	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 127*2, value);
-	udelay(4);
+	mdelay(4);
 }
 
-void apm_xgenet_serdes_init(struct apm_data_priv *priv)
+static u32 apm_xgenet_serdes_init(struct apm_enet_priv *priv, u32 rev)
 {
 	u32 value, loop;
-	u32 refclksel, refclk_cmos_sel; /*, customer_pin_mode; */
+	u32 refclksel, refclk_cmos_sel;
 	u32 rx_clk_inv = 0;
 	u32 pll_ready;
 	u32 port_addr, i, infmode;
 	u32 pll_lock, vco_calibration;
+	u32 tx_ready, rx_ready;
 #ifdef PHY_DEBUG
 	u32 rndrefclk;
-	u32 tx_ready, rx_ready;
 #endif
-#if 0	//TODO
-	char *chip_revision = apm88xxx_chip_revision();
+	int man_pvt_cal = 0;
 
-	if (!strncmp(chip_revision, "A1", 2))
-		rx_clk_inv = 1;
-#endif
+	if (rev <= 2) {
+		man_pvt_cal = 1;
+		if (rev < 2)
+			rx_clk_inv = 1;
+	}
 
 	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR, &value);
 	/* xgmii, infmode = 1 */
-	infmode = CFG_SGMII_EN_RD(value) == 2 ? 1: 0; 
-	PHY_PRINT("%s infmode = 0x%x\n", __func__, infmode); 
+	infmode = CFG_SGMII_EN_RD(value) == 2 ? 1: 0;
+	PHY_PRINT("%a infmode = 0x%x\n", __func__, infmode);
 	/* module_init_enet_serdes */
 	refclksel = 0;
 	refclk_cmos_sel = 0;
 #ifdef PHY_DEBUG
-        rndrefclk = (refclksel << 1) | refclk_cmos_sel;
+	rndrefclk = (refclksel << 1) | refclk_cmos_sel;
 #endif
 	PHY_PRINT("INIT_SERDES : Config Ref Clock\n");
 	/* CMU_reg0 */
@@ -1847,58 +1448,53 @@ void apm_xgenet_serdes_init(struct apm_data_priv *priv)
 	/* CMU_reg16 */
 	value = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*16);
 
+	if (infmode) /* xgmii */
+		value = 0x306430;
+	else		/* SGMII */
+		value = 0x305030;
 
-	 if (infmode) /* xgmii */
-		 value = 0x306430;
-	 else		/* SGMII */
-		 value = 0x305030;
-
-	 apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_CFG_ADDR, value);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_CFG_ADDR, value);
 	if (refclk_cmos_sel) {
-		 i = 0;
-		 do {
-			 apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_STAT_ADDR, &value);
-			 PHY_PRINT("INIT_SERDES : waiting for XGENET PLL to lock\n");
-			 if (i++ > 10)
-				 break;
-			 udelay(100);
-		 } while (value == 0);
+		i = 0;
+		do {
+			apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_STAT_ADDR, &value);
+			PHY_PRINT("INIT_SERDES : waiting for XGENET PLL to lock\n");
+			if (i++ > 10)
+				break;
+			udelay(100);
+		} while (value == 0);
 	}
-	 /* program PLL output clock divider value after PLL has locked */
-	 if (infmode) /* xgmii */
-		 value = 0x4;
-	 else /* SGMII */
-		 value = 0x5;
-	 apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_DIV_CFG_ADDR, value);
+	/* program PLL output clock divider value after PLL has locked */
+	if (infmode) /* xgmii */
+		value = 0x4;
+	else /* SGMII */
+		value = 0x5;
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_PLL_DIV_CFG_ADDR, value);
 
 	/* XGENET_SDS_RST_CTL, Assert all reset */
-        apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0xDE);
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0xDE);
 	udelay(2);
-#if 0
-	apm_enet_wr32((void *)0x17001398, 0x001e1e1e); /* MDIO enable config */
-	apm_enet_rd32((void *)0x17001398, &value);
-	ENET_DEBUG("READ MPA_MDIO_IOCTL : 0x%08x\n", value);
-#endif
 
-	PHY_PRINT("INIT_SERDES : REFCLK using -- %s\n",(rndrefclk == 0) ? "External differential clk" : "Internal single ended (cmos) clk");
-	PHY_PRINT("INIT_SERDES : %s/ENET using -- LSPLL\n",infmode ? "XGMII" : "SGMII");
+	PHY_PRINT("INIT_SERDES : REFCLK using -- %a\n",
+		(rndrefclk == 0) ? "External differential clk" : "Internal single ended (cmos) clk");
+	PHY_PRINT("INIT_SERDES : %a/ENET using -- LSPLL\n",infmode ? "XGMII" : "SGMII");
 
 	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_CTL0_ADDR, 0);
-	sm_xgenet_module_program_all_regs(priv);
+	sm_xgenet_module_program_all_regs(priv, rev);
 
-        if (rx_clk_inv) {
-                PHY_PRINT("INIT_SERDES : Enable RXCLK Inversion.");
-                for (i = 0; i < 1;  i++) {
-                        PHY_PRINT("INIT_SERDES : RXTX Inst %x\n", i);
+	if (rx_clk_inv) {
+		PHY_PRINT("INIT_SERDES : Enable RXCLK Inversion.");
+		for (i = 0; i < 1;  i++) {
+			PHY_PRINT("INIT_SERDES : RXTX Inst %x\n", i);
 			port_addr = 0x0400 + i*0x0200;
-                        value = xgenet_sds_ind_csr_reg_rd(priv, port_addr + 0xD*2);
+			value = xgenet_sds_ind_csr_reg_rd(priv, port_addr + 0xD*2);
 			value = sm_xgenet_set(value, 1, 13, 13);
-                        xgenet_sds_ind_csr_reg_wr(priv, port_addr + 0xD*2, value);
-                }
-        }
+			xgenet_sds_ind_csr_reg_wr(priv, port_addr + 0xD*2, value);
+		}
+	}
 #ifdef APM_XGENET_XGMII_TX2RX_LOOPBACK	/* one port only */
 	/* rxtx.reg4.tx_loopback_buf_en = 1 */
-       	PHY_PRINT("INIT_SERDES : SERDES XGMII Tx2Rx Loopback\n");
+	PHY_PRINT("INIT_SERDES : SERDES XGMII Tx2Rx Loopback\n");
 	value = xgenet_sds_ind_csr_reg_rd(priv, 0x0400 + 0x4*2);
 	value = sm_xgenet_set(value, 1, 6, 6);
 	xgenet_sds_ind_csr_reg_wr(priv, 0x0400 + 0x4*2, value);
@@ -1908,100 +1504,233 @@ void apm_xgenet_serdes_init(struct apm_data_priv *priv)
 	xgenet_sds_ind_csr_reg_wr(priv, 0x0400 + 0x7*2, value);
 #endif
 	/* De-assert all reset */
-        apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0xDF);
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0xDF);
 	udelay(2);
 
-	if (infmode)
+	if (infmode && !rx_clk_inv )
 		serdes_pdown_force_vco(priv);
-	serdes_calib(priv);
-	serdes_reset_rxd_rxa(priv, 0);
+	if (man_pvt_cal) {
+		serdes_calib(priv, rev);
+		serdes_reset_rxd_rxa(priv, 0);
+	}
 
 	/* INIT_SERDES : Check PLL Ready/LOCK and VCO Calibration status */
- 	PHY_PRINT("INIT_SERDES : Check PLL Ready/LOCK and VCO Calibration status\n");
+	PHY_PRINT("INIT_SERDES : Check PLL Ready/LOCK and VCO Calibration status\n");
 	loop = 1000;
-	pll_ready = 0;
-	while (pll_ready == 0) {
-		udelay(10);
+	do {
+		mdelay(1);
 		apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_CMU_STATUS0_ADDR, &value);
-		PHY_PRINT("%s value=0x%x\n", __func__, value);	
 		pll_ready = CFG_CMU_O_PLL_READY0_RD(value);
 		vco_calibration = CFG_CMU_O_VCO_CALDONE0_RD(value) ;
 		pll_lock = CFG_CMU_O_PLL_LOCK0_RD(value);
-		if (((pll_ready && pll_lock && vco_calibration)) ||
-			(loop -- == 0))
+		apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RXTX_STATUS_ADDR, &value);
+		tx_ready = CFG_TX_O_TX_READY_RD(value);
+		rx_ready = CFG_RX_O_RX_READY_RD(value);
+		if (((pll_ready && pll_lock && vco_calibration)) &&
+			(tx_ready && rx_ready))
 			break;
+		loop--;
+
+	} while (loop != 0);
+
+	if (!loop) {
+		ENET_PRINT("INIT_SERDES : PLL is %aREADY\n", pll_ready ? "" : "not ");
+		ENET_PRINT("INIT_SERDES : PLL %aLOCKed\n",
+			pll_lock ? "" : "not ");
+		ENET_PRINT("INIT_SERDES : PLL VCO Calibration %a\n",
+			vco_calibration ? "Successful" : "not Successful");
+		PHY_PRINT("INIT_SERDES : Check TX/RX Ready\n");
+		ENET_PRINT("INIT_SERDES : TX is %aready\n", tx_ready ? "" : "not ");
+		ENET_PRINT("INIT_SERDES : RX is %aready\n", rx_ready ? "" : "not ");
+		ENET_PRINT("INIT_SERDES : loop %d\n", loop);
 	}
-
-#ifdef PHY_DEBUG
-        PHY_PRINT("INIT_SERDES : PLL is %sREADY\n", pll_ready ? "" : "not ");
-        PHY_PRINT("INIT_SERDES : PLL %sLOCKed\n",
-		CFG_CMU_O_PLL_LOCK0_RD(value) ? "" : "not ");
-        PHY_PRINT("INIT_SERDES : PLL VCO Calibration %s\n",
-		CFG_CMU_O_VCO_CALDONE0_RD(value) ? "Successful" : "not Successful");
-
-        PHY_PRINT("INIT_SERDES : Check TX/RX Ready\n");
-	apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RXTX_STATUS_ADDR, &value);
-
-	tx_ready = CFG_TX_O_TX_READY_RD(value);
-	rx_ready = CFG_RX_O_RX_READY_RD(value);
-        PHY_PRINT("INIT_SERDES : TX is %sready\n", tx_ready ? "" : "not ");
-        PHY_PRINT("INIT_SERDES : RX is %sready\n", rx_ready ? "" : "not ");
-#endif
-	if (!infmode)
-		force_lat_summer_cal(priv);
-		
+	return pll_ready;
 }
 
-void xgenet_serdes_deassert(struct apm_data_priv *priv)
+static int get_avg(int accum,int samples){
+  return ((accum + (samples/2))/samples);
+}
+
+static void gen_avg_val(struct apm_enet_priv *priv)
+{
+	int avg_loop = 10;
+	int MAX_LOOP = 10;
+	int lat_do = 0, lat_xo = 0, lat_eo = 0, lat_so = 0;
+	int lat_de = 0, lat_xe = 0, lat_ee = 0, lat_se = 0;
+	int sum_cal = 0;
+	int lat_do_itr,lat_xo_itr,lat_eo_itr,lat_so_itr;
+	int lat_de_itr,lat_xe_itr,lat_ee_itr,lat_se_itr;
+	int sum_cal_itr = 0;
+	int fail_even = 0;
+	int fail_odd = 0;
+	u32 inst_base = 0x400;
+	u32 value;
+
+	ENET_DEBUG("\n Generating Average calibration Value for Port %d \n",priv->port);
+	/* Enable RX Hi-Z termination enable */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
+	value = sm_xgenet_set(value,1, 1, 1);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
+	/* Turn off DFE  */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 28*2);
+	value = sm_xgenet_set(value, 0x0, 15, 0);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 28*2, value);
+	/* DFE Presets to zero  */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 31*2);
+	value = sm_xgenet_set(value, 0x0, 15, 0);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 31*2, value);
+
+	while (avg_loop > 0) {
+		force_lat_summer_cal(priv);
+		mdelay(40);
+		value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG21__ADDR);
+		lat_do_itr = FIELD_RXTX_REG21_DO_LATCH_CALOUT_RD(value);
+		lat_xo_itr = FIELD_RXTX_REG21_XO_LATCH_CALOUT_RD(value);
+		fail_odd   = FIELD_RXTX_REG21_LATCH_CAL_FAIL_ODD_RD(value);
+
+		value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG22__ADDR);
+		lat_eo_itr = FIELD_RXTX_REG22_EO_LATCH_CALOUT_RD(value);
+		lat_so_itr = FIELD_RXTX_REG22_SO_LATCH_CALOUT_RD(value);
+		fail_even  = FIELD_RXTX_REG22_LATCH_CAL_FAIL_EVEN_RD(value);
+
+		value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG23__ADDR);
+		lat_de_itr = FIELD_RXTX_REG23_DE_LATCH_CALOUT_RD(value);
+		lat_xe_itr = FIELD_RXTX_REG23_XE_LATCH_CALOUT_RD(value);
+
+		value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG24__ADDR);
+		lat_ee_itr = FIELD_RXTX_REG24_EE_LATCH_CALOUT_RD(value);
+		lat_se_itr = FIELD_RXTX_REG24_SE_LATCH_CALOUT_RD(value);
+
+		value  = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG121__ADDR);
+		sum_cal_itr = FIELD_RXTX_REG121_SUMOS_CAL_CODE_RD(value);
+
+		if ((fail_even == 0 || fail_even == 1) &&
+				(fail_odd == 0 || fail_odd == 1)) {
+			lat_do += lat_do_itr;
+			lat_xo += lat_xo_itr;
+			lat_eo += lat_eo_itr;
+			lat_so += lat_so_itr;
+			lat_de += lat_de_itr;
+			lat_xe += lat_xe_itr;
+			lat_ee += lat_ee_itr;
+			lat_se += lat_se_itr;
+			sum_cal += sum_cal_itr;
+			avg_loop--;
+		}
+		serdes_reset_rxd(priv);
+	}
+
+	/* Update with Average Value */
+	/* Latch Calibration Value */
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG127__ADDR);
+	value = FIELD_RXTX_REG127_DO_LATCH_MANCAL_SET(value,get_avg(lat_do,MAX_LOOP));
+	value = FIELD_RXTX_REG127_XO_LATCH_MANCAL_SET(value,get_avg(lat_xo,MAX_LOOP));
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG127__ADDR, value);
+
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG128__ADDR);
+	value = FIELD_RXTX_REG128_EO_LATCH_MANCAL_SET(value,get_avg(lat_eo,MAX_LOOP));
+	value = FIELD_RXTX_REG128_SO_LATCH_MANCAL_SET(value,get_avg(lat_so,MAX_LOOP));
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG128__ADDR, value);
+
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG129__ADDR);
+	value = FIELD_RXTX_REG129_DE_LATCH_MANCAL_SET(value,get_avg(lat_de,MAX_LOOP));
+	value = FIELD_RXTX_REG129_XE_LATCH_MANCAL_SET(value,get_avg(lat_xe,MAX_LOOP));
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG129__ADDR, value);
+
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG130__ADDR);
+	value = FIELD_RXTX_REG130_EE_LATCH_MANCAL_SET(value,get_avg(lat_ee,MAX_LOOP));
+	value = FIELD_RXTX_REG130_SE_LATCH_MANCAL_SET(value,get_avg(lat_se,MAX_LOOP));
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG130__ADDR, value);
+
+	/* Summer Calibration Value */
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG14__ADDR);
+	value = FIELD_RXTX_REG14_CLTE_LATCAL_MAN_PROG_SET(value,get_avg(sum_cal,MAX_LOOP));
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG14__ADDR, value);
+	if (priv->phy_mode == PHY_MODE_SGMII)
+		mdelay(40);
+	ENET_DEBUG("\n Average Value : \n");
+	ENET_DEBUG("DO=0x%x  XO=0x%x  EO=0x%x  SO=0x%x\n",
+		get_avg(lat_do,MAX_LOOP),get_avg(lat_xo,MAX_LOOP),
+		get_avg(lat_eo,MAX_LOOP),get_avg(lat_so,MAX_LOOP));
+	ENET_DEBUG("DE=0x%x  XE=0x%x  EE=0x%x  SE=0x%x\n",
+		get_avg(lat_de,MAX_LOOP),get_avg(lat_xe,MAX_LOOP),
+		get_avg(lat_ee,MAX_LOOP),get_avg(lat_se,MAX_LOOP));
+	ENET_DEBUG("sum_cal = 0x%x\n",get_avg(sum_cal,MAX_LOOP));
+
+	/* Manual Summer Calibration */
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG14__ADDR);
+	value = FIELD_RXTX_REG14_CTLE_LATCAL_MAN_ENA_SET(value,0x1);
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG14__ADDR, value);
+	ENET_DEBUG("Manual Summer Calibration Enabled\n");
+	mdelay(40);
+
+	/* Manual Latch Calibration */
+	value = xgenet_sds_ind_csr_reg_rd(priv, KC_SERDES_RXTX_REGS_RXTX_REG127__ADDR);
+	value = FIELD_RXTX_REG127_LATCH_MAN_CAL_ENA_SET(value,0x1);
+	xgenet_sds_ind_csr_reg_wr(priv, KC_SERDES_RXTX_REGS_RXTX_REG127__ADDR, value);
+	ENET_DEBUG("Manual Latch Calibration Enabled\n");
+	mdelay(40);
+
+	/* Turn on DFE  */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 28*2);
+	value = sm_xgenet_set(value,0x7, 15, 0);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 28*2, value);
+	/* DFE Presets to 0x2a00(default) */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 31*2);
+	value = sm_xgenet_set(value, 0x2a00, 15, 0);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 31*2, value);
+	/* Disable RX Hi-Z termination enable */
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 12*2);
+	value = sm_xgenet_set(value,0, 1, 1);
+	xgenet_sds_ind_csr_reg_wr(priv, inst_base + 12*2, value);
+	mdelay(10);
+	value = xgenet_sds_ind_csr_reg_rd(priv, inst_base + 121*2);
+}
+#endif
+
+void xgenet_serdes_deassert(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	/* Clear Software Reset for Serdes */
 	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, ENET_SRST_ADDR, &data);
-	PHY_PRINT("%s read 0x%x <- 0x%llx\n", __func__,
-		data, XGENET_CLKRST_CSR_BASE_ADDR + ENET_SRST_ADDR);
+	PHY_PRINT("%a read 0x%x <- 0x%llx\n", __func__,
+			data, XGENET_CLKRST_CSR_BASE_ADDR + ENET_SRST_ADDR);
 
 	data = ENET_SRST_DEFAULT;
-	PHY_PRINT("%s write 0x%x -> 0x%llx\n", __func__,
-		data, XGENET_CLKRST_CSR_BASE_ADDR+ ENET_SRST_ADDR);
+	PHY_PRINT("%a write 0x%x -> 0x%llx\n", __func__,
+			data, XGENET_CLKRST_CSR_BASE_ADDR+ ENET_SRST_ADDR);
 	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, ENET_SRST_ADDR, data);
 	udelay(2);
 }
 
-void apm_xgmac_set_preamble_length(struct apm_data_priv *priv, u8 length)
+void apm_xgmac_set_preamble_length(struct apm_enet_priv *priv, u8 length)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_SGMII) {
-		/* Read current value of the config 2 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, &data);
-
-		/* Write value back to config 2 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR,
-			PREAMBLE_LENGTH2_SET(data, length));
+				PREAMBLE_LENGTH2_SET(data, length));
 	}
 }
 
-void apm_xgmac_set_intf_mode(struct apm_data_priv *priv, u8 intf_mode)
+void apm_xgmac_set_intf_mode(struct apm_enet_priv *priv, u8 intf_mode)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_SGMII) {
-		/* Read current value of the config 2 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, &data);
-
-		/* Write value back to config 2 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR,
-			ENET_INTERFACE_MODE2_SET(data, intf_mode));
+				ENET_INTERFACE_MODE2_SET(data, intf_mode));
 	}
 }
 
-int apm_xgmac_get_intf_mode(struct apm_data_priv *priv)
+int apm_xgmac_get_intf_mode(struct apm_enet_priv *priv)
 {
 	u32 data = 0;
 
 	if (priv->phy_mode == PHY_MODE_SGMII) {
-		/* Read current value of the config 2 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, &data);
 		data = ENET_INTERFACE_MODE2_RD(data);
 	}
@@ -2009,69 +1738,61 @@ int apm_xgmac_get_intf_mode(struct apm_data_priv *priv)
 	return data;
 }
 
-void apm_xgmac_huge_frame_enable(struct apm_data_priv *priv, u8 enable)
+void apm_xgmac_huge_frame_enable(struct apm_enet_priv *priv, u8 enable)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_SGMII) {
-		/* Read current value of the config 2 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, &data);
 
-		/* Modify value to set or reset huge frame enable bit */
 		if (enable)
 			data |= HUGE_FRAME_EN2_MASK;
 		else
 			data &= ~HUGE_FRAME_EN2_MASK;
 
-		/* Write value back to config 2 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, data);
 	}
 }
 
-void apm_xgmac_len_field_check_enable(struct apm_data_priv *priv, u8 enable)
+void apm_xgmac_len_field_check_enable(struct apm_enet_priv *priv, u8 enable)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_SGMII) {
-		/* Read current value of the config 2 register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, &data);
 
-		/* Modify value to set or reset length field check enable bit */
 		if (enable)
 			data |= LENGTH_CHECK2_MASK;
 		else
 			data &= ~LENGTH_CHECK2_MASK;
 
-		/* Write value back to config 2 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, data);
 	}
 }
 
-static void module_xgenet_config_sgmii_autoneg(struct apm_data_priv *priv, int autoneg)
+static void module_xgenet_config_sgmii_autoneg(struct apm_enet_priv *priv, int autoneg)
 {
 	u32 data, speed, times = 0;
 
-	/*
-	 * All internal PHY addresses are shifted by 2 bits
-	 */
+	/* All internal PHY addresses are shifted by 2 bits */
 reset_phy:
-	ENET_DEBUG("%s autoneg=%d\n", __func__, autoneg);
-        apm_genericmiiphy_write(priv, INT_PHY_ADDR,
-		SGMII_TBI_CONTROL_ADDR >> 2, 0x0);
+	ENET_DEBUG("%a autoneg=%d\n", __func__, autoneg);
+	apm_genericmiiphy_write(priv, INT_PHY_ADDR,
+			SGMII_TBI_CONTROL_ADDR >> 2, 0x0);
 	apm_genericmiiphy_read(priv, INT_PHY_ADDR,
-        	SGMII_TBI_CONTROL_ADDR >> 2, &data);
+			SGMII_TBI_CONTROL_ADDR >> 2, &data);
 	if (!priv->mac_to_mac) {
 		if (autoneg) {
 			/* Bring PHY out of reset; Enable An, autonegotiation */
 			PHY_PRINT(" Bring PHY out of reset; Enable An\n");
 			apm_genericmiiphy_write(priv, INT_PHY_ADDR,
-						SGMII_CONTROL_ADDR >> 2, 0x9140);
+					SGMII_CONTROL_ADDR >> 2, 0x9140);
 		}
 		else {
 			/* Bring PHY out of reset; No autonegotiation */
 			PHY_PRINT(" Bring PHY out of reset; NO An\n");
 			apm_genericmiiphy_write(priv, INT_PHY_ADDR,
-						SGMII_CONTROL_ADDR >> 2, 0x8000);
+					SGMII_CONTROL_ADDR >> 2, 0x8000);
 		}
 		udelay(1000);
 		if (autoneg) {
@@ -2082,26 +1803,26 @@ reset_phy:
 					SGMII_STATUS_ADDR >> 2, &data);
 			PHY_PRINT(" autonegotiation status=0x%x\n", data);
 			while  (AUTO_NEGOTIATION_COMPLETE_RD(data) == 0 ||
-				LINK_STATUS_RD(data) == 0) {
+					LINK_STATUS_RD(data) == 0) {
 				PHY_PRINT(" Autonegotiation status=0x%x\n", data);
 				apm_genericmiiphy_read(priv, INT_PHY_ADDR,
 						SGMII_STATUS_ADDR >> 2, &data);
 				if (loop-- == 0)
 					break;
 				udelay(100);
-				PHY_PRINT(" Autonegotiation status=0x%x %s\n", data, __func__);
+				PHY_PRINT(" Autonegotiation status=0x%x %a\n", data, __func__);
 			}
 			if (LINK_STATUS_RD(data) == 0) {/*  no link wih SGMII */
 				if (times ++ < 5) {
 					PHY_PRINT(".");
 					apm_genericmiiphy_write(priv, INT_PHY_ADDR,
-								SGMII_TBI_CONTROL_ADDR >> 2, 0x8000);
+							SGMII_TBI_CONTROL_ADDR >> 2, 0x8000);
 					serdes_reset_rxd_rxa(priv, 0);
 					goto reset_phy;
 				}
 			}
 		} else {
-			PHY_PRINT(" %s non-autoneg NOT supported\n", __func__);
+			PHY_PRINT(" %a non-autoneg NOT supported\n", __func__);
 		}
 		if (!priv->phyless) {
 			apm_enet_read(priv, BLOCK_ETH_CSR, LINK_STATUS_ADDR, &data);
@@ -2116,27 +1837,29 @@ reset_phy:
 		speed = priv->desired_speed;
 		priv->link_status = 1;
 	}
+
 	switch(speed) {
 	case PHY_SPEED_10:
-		speed = SPEED_10;
+		speed = APM_ENET_SPEED_10;
 		break;
 	case PHY_SPEED_100:
-		speed = SPEED_100;
+		speed = APM_ENET_SPEED_100;
 		break;
 	default:
-		speed = SPEED_1000;
+		speed = APM_ENET_SPEED_1000;
 		break;
 	}
+
 	if (priv->link_status)
 		PHY_PRINT("Phy Speed is :%d \n", speed);
-	else 
+	else
 		PHY_PRINT("Port%d is down\n", priv->port);
 
 	priv->speed = speed;
 }
 
-int apm_mcxmac_init(struct apm_data_priv *priv,
-		unsigned char *dev_addr, int speed, int mtu, int crc)
+static int apm_mcxmac_init(struct apm_enet_priv *priv,
+		unsigned char *dev_addr, int speed, int crc)
 {
 	u32 value;
 	u32 temp;
@@ -2146,30 +1869,12 @@ int apm_mcxmac_init(struct apm_data_priv *priv,
 	u32 interface_control;
 	u32 mac_config_2;
 	u32 icm_config0 = 0x0008503f;
-#if !defined(CONFIG_APM862xx)
 	u32 ecm_config0 = 0x00000032;
-#endif
 	u32 enet_spare_cfg = 0x00006040;
-	/*u8 port = priv->port; */
 
-	ENET_DEBUG("%s priv->phy_mode=0x%x\n", __func__, priv->phy_mode);
-
+	ENET_DEBUG("%a priv->phy_mode=0x%x\n", __func__, priv->phy_mode);
 
 	/*sm_xgenet_module_level_eee_init(priv); */
-#if 0
-	if (priv->phy_mode == PHY_MODE_XGMII) {
-		/* Program the station MAC address */
-		addr_hi = *(u32 *) &dev_addr[0];
-		addr_lo = *(u16 *) &dev_addr[4];
-		addr_lo <<= 16;
-                addr_lo |= (priv->phy_addr & 0xFFFF);
-		ENET_DEBUG("MAC addr hi: %x\n", addr_hi);
-		apm_enet_write(priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_MSW_ADDR, addr_hi);
-		ENET_DEBUG("MAC addr lo: %x\n", addr_lo);
-		apm_enet_write(priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_LSW_ADDR, addr_lo);
-		return 0;
-	}
-#endif
 	value = RESET_TX_FUN1_WR(1) |
 		RESET_RX_FUN1_WR(1) |
 		RESET_TX_MC1_WR(1)  |
@@ -2184,110 +1889,76 @@ int apm_mcxmac_init(struct apm_data_priv *priv,
 	/* Initialize the MAC configuration #1 register */
 	value = TX_EN1_WR(1)	  |
 		TX_FLOW_EN1_WR(0) |
-#ifdef APM_ENET_MAC_LOOPBACK
-		LOOP_BACK1_WR(1)  |
-#else
 		LOOP_BACK1_WR(0)  |
-#endif
 		RX_FLOW_EN1_WR(0);
 
 	/* Need this? rd_phy_reg_per_port(port_id,0x1e,M_SGMII_SGMII_TBI_CONTROL__ADDR,&data); */
 
 	apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, value);
 
-#ifndef APM_ENET_MAC_LOOPBACK
 #ifdef APM_ENET_SERDES_LOOPBACK
 	module_xgenet_config_sgmii_autoneg(priv, 0);
 #else
 	if (!priv->mac_to_mac) {
-		if (!priv->autoneg_set) {
-			module_xgenet_config_sgmii_autoneg(priv, 1);
-			priv->autoneg_set = 1;
+		if (priv->autoneg_set) {
+			if (!priv->link_status || priv->phyless)
+				module_xgenet_config_sgmii_autoneg(priv, 1);
 		}
-		speed = priv->speed;
 	} else {
 		module_xgenet_config_sgmii_autoneg(priv, 0);
 	}
-#endif
 #endif
 	/* SGMII follows */
 	apm_enet_read(priv, BLOCK_ETH_CSR,
 			ENET_SPARE_CFG_REG_ADDR, &enet_spare_cfg);
 
-	if (speed == SPEED_10) {
+	if (speed == APM_ENET_SPEED_10) {
 		interface_control = ENET_LHD_MODE_WR(0) |
 			ENET_GHD_MODE_WR(0);
 		mac_config_2 = FULL_DUPLEX2_WR(1)  |
 			LENGTH_CHECK2_WR(0)        |
 			HUGE_FRAME_EN2_WR(0)       |
-			ENET_INTERFACE_MODE2_WR(1)      | /* 10Mbps */
+			ENET_INTERFACE_MODE2_WR(1) | /* 10Mbps */
 			PAD_CRC2_WR(crc)           |
 			CRC_EN2_WR(crc)            |
 			PREAMBLE_LENGTH2_WR(7);
 		icm_config0 = 0x0000503f;
-#if !defined(CONFIG_APM862xx)
 		ecm_config0 = 0x600032;
-#endif
-#if defined(CONFIG_APM862xx)
-		if (port == 0)
-			enet_spare_cfg = enet_spare_cfg | (0x0000c040);
-		else
-			enet_spare_cfg = enet_spare_cfg | (0x00030040);
-#endif
-	} else if (speed == SPEED_100) {
+	} else if (speed == APM_ENET_SPEED_100) {
 		interface_control = ENET_LHD_MODE_WR(1);
 		mac_config_2 = FULL_DUPLEX2_WR(1)  |
 			LENGTH_CHECK2_WR(0)        |
 			HUGE_FRAME_EN2_WR(0)       |
-			ENET_INTERFACE_MODE2_WR(1)      | /* 100Mbps */
+			ENET_INTERFACE_MODE2_WR(1) | /* 100Mbps */
 			PAD_CRC2_WR(crc)           |
 			CRC_EN2_WR(crc)            |
 			PREAMBLE_LENGTH2_WR(7);
 		icm_config0 = 0x0004503f;
-#if !defined(CONFIG_APM862xx)
 		ecm_config0 = 0x600032;
-#endif
-#if defined(CONFIG_APM862xx)
-		if (port == 0)
-			enet_spare_cfg = enet_spare_cfg | (0x0000c040);
-		else
-			enet_spare_cfg = enet_spare_cfg | (0x00030040);
-#endif
 	} else {
 		interface_control = ENET_GHD_MODE_WR(1);
 		mac_config_2 = FULL_DUPLEX2_WR(1)  |
 			LENGTH_CHECK2_WR(0)        |
 			HUGE_FRAME_EN2_WR(0)       |
-			ENET_INTERFACE_MODE2_WR(2)      | /* 1Gbps */
+			ENET_INTERFACE_MODE2_WR(2) | /* 1Gbps */
 			PAD_CRC2_WR(crc)           |
 			CRC_EN2_WR(crc)            |
 			PREAMBLE_LENGTH2_WR(7);
 
 		icm_config0 = 0x0008503f;
-#if !defined(CONFIG_APM862xx)
 		ecm_config0 = 0x32;
-#endif
-#if defined(CONFIG_APM862xx)
-		if (port == 0)
-			enet_spare_cfg = (enet_spare_cfg & ~0x0000c000) | (0x00000040);
-		else
-			enet_spare_cfg = (enet_spare_cfg & ~0x00030000) | (0x00000040);
-#endif
 	}
-#if !defined(CONFIG_APM862xx)
 	enet_spare_cfg |= 0x00006040;
-#endif
+
 	/* Initialize the MAC configuration #2 register */
 	apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_2_ADDR, mac_config_2);
 
 	/* Initialize the Interface Control Register */
-	//interface_control = 0x74521808;
 	apm_enet_write(priv, BLOCK_MCX_MAC, INTERFACE_CONTROL_ADDR,
 			interface_control);
 
 	/* Initialize the Maximum Frame Length register */
-	//value = 0x56c92580; //MAX_FRAME_LEN_WR(mtu);
-	value = MAX_FRAME_LEN_WR(0x0600);
+	value = MAX_FRAME_LEN_WR(APM_ENET_FRAME_LEN);
 	apm_enet_write(priv, BLOCK_MCX_MAC, MAX_FRAME_LEN_ADDR, value);
 
 	/* Program the station MAC address */
@@ -2295,10 +1966,10 @@ int apm_mcxmac_init(struct apm_data_priv *priv,
 	addr_lo = *(u16 *) &dev_addr[4];
 	addr_lo <<= 16;
 
-        if (priv->phy_mode == PHY_MODE_SGMII)
-                addr_lo = (addr_lo & 0xFFFF0100) | 0x1e;
-        else
-                addr_lo |= (priv->phy_addr & 0xFFFF);
+	if (priv->phy_mode == PHY_MODE_SGMII)
+		addr_lo = (addr_lo & 0xFFFF0100) | 0x1e;
+	else
+		addr_lo |= (priv->phy_addr & 0xFFFF);
 
 	ENET_DEBUG("MAC addr hi: %x\n", addr_hi);
 	apm_enet_write(priv, BLOCK_MCX_MAC, STATION_ADDR0_ADDR, addr_hi);
@@ -2313,14 +1984,8 @@ int apm_mcxmac_init(struct apm_data_priv *priv,
 	apm_enet_write(priv, BLOCK_MCX_MAC_CSR,
 			ICM_CONFIG0_REG_0_ADDR, icm_config0);
 
-#if !defined(CONFIG_APM862xx)
 	apm_enet_write(priv, BLOCK_MCX_MAC_CSR,
 			ECM_CONFIG0_REG_0_ADDR, ecm_config0);
-#endif
-#if 0	/* Storm apm_xg_bypass_resume_cfg */
-	apm_enet_write(priv, BLOCK_ETH_CSR,
-			ENET_SPARE_CFG_REG_ADDR, enet_spare_cfg);
-#endif
 
 	/* TCP MSS  */
 	apm_enet_read(priv, BLOCK_ETH_CSR,
@@ -2332,119 +1997,300 @@ int apm_mcxmac_init(struct apm_data_priv *priv,
 	apm_enet_read(priv, BLOCK_ETH_CSR,
 			TSIF_MSS_REG0_0_ADDR, &value);
 
-	/* Rx-Tx traffic resume, apm_xg_bypass_resume_cfg*/
-	//apm_enet_write(priv, BLOCK_ETH_CSR,
-	//		CFG_LINK_AGGR_RESUME_0_ADDR, TX_PORT0_WR(0x1));
-
-	if (speed != SPEED_10 && speed != SPEED_100) {
+	if (speed != APM_ENET_SPEED_10 && speed != APM_ENET_SPEED_100) {
 		apm_enet_read(priv, BLOCK_ETH_CSR, DEBUG_REG_ADDR, &value);
 		value |= CFG_BYPASS_UNISEC_TX_WR(1) |
-				CFG_BYPASS_UNISEC_RX_WR(1);
+			CFG_BYPASS_UNISEC_RX_WR(1);
 		apm_enet_write(priv, BLOCK_ETH_CSR, DEBUG_REG_ADDR, value);
 	}
 	apm_enet_read(priv, BLOCK_MCX_STATS, TBYT_ADDR, &value);
 	ENET_DEBUG("XG MCX TBYT register: %x\n", value);
 	apm_enet_read(priv, BLOCK_MCX_STATS, RBYT_ADDR, &value);
 	ENET_DEBUG("XG MCX RBYT register: %x\n", value);
-#if 0
-	udelay(1000);
-	apm_enet_read(priv, BLOCK_MCX_STATS, RFCS_ADDR, &value);
-	if (value) {
-		module_xgenet_config_sgmii_autoneg(priv, 1);
-		ENET_PRINT("RFCS serdes reset\n");
-
-	}
-#endif
 	return 0;
 }
+
+#ifdef CONFIG_STORM
+static int vco_status(struct apm_enet_priv *priv)
+{
+	int rd_val, pll_lock,vco_calibration;
+	int pll_det;
+	int vco_cal_fail;
+
+	rd_val = xgenet_sds_ind_csr_reg_rd(priv, CMU + 2*7);
+
+	pll_lock = (rd_val >> 15) & 0x1;
+	vco_calibration = (rd_val >> 14) & 0x1;
+	pll_det = (rd_val >> 12) & 0x3;
+	vco_cal_fail = (rd_val >> 10) & 0x3;
+
+	if (!vco_calibration) {
+		ENET_PRINT("VCO_CALIB: PLL %aLOCKed\n", pll_lock ? "" : "not ");
+		ENET_PRINT("VCO_CALIB: PLL VCO Calibration %a\n",
+			vco_calibration ? "DONE" : "not done");
+		ENET_PRINT("VCO_CALIB: PLL VCO Calibration %a : 0x%x\n",
+			vco_cal_fail == 0 ? "NO FAILURE" : "FAILED",vco_cal_fail);
+		ENET_PRINT("VCO_CALIB: PLL DET : %d\n", pll_det);
+	}
+	return (((vco_cal_fail<<3) | (pll_det<<1) | (pll_lock == 0)));
+}
 #endif
 
-// Serdes initialization
-void
-apm_xg_serdes_init( struct apm_data_priv *priv )
+static void apm_xg_serdes_init(struct apm_enet_priv *priv)
 {
-    apm_xgenet_serdes_init(priv);
+#ifdef CONFIG_SHADOWCAT_SERDES 
+	struct xgene_phy_ctx phy_ctx;
+
+	phy_ctx.mode = (priv->phy_mode == PHY_MODE_XGMII) ?
+		MODE_XFI : MODE_SGMII;
+	phy_ctx.lane = 1;
+	phy_ctx.sds_base =(u64 *)priv->eth_sds_csr_addr_v;
+	phy_ctx.clk_type = CLK_EXT_DIFF;
+	xgene_phy_hw_init(&phy_ctx);
+#endif
+#ifdef CONFIG_STORM
+	u32 rev = 4;
+
+	if (priv->phy_mode == PHY_MODE_XGMII) {
+		apm_xgenet_serdes_init(priv, rev);
+	} else {
+		int vco_fail = 0, loop = 30;
+		u32 pll_ready;
+
+		do {
+			udelay(100);
+			pll_ready = apm_xgenet_serdes_init(priv, rev);
+
+			udelay(10);
+			if (pll_manualcal == 0)
+				vco_fail = vco_status(priv);
+			loop--;
+
+		} while (((vco_fail & 0x1e) || (pll_ready == 0)) && (loop != 0));
+		force_lat_summer_cal(priv);
+	}
+	gen_avg_val(priv);
+#endif
 }
 
-// Configure Management Ethernet (ETH4)
-// clock enable and deassert reset
-// FIXME: this might be called by ENET as well
-void
-apm_xg_cfg_mgnt_enet( struct apm_data_priv *priv )
+static void apm_xg_select_mode(struct apm_enet_priv *priv)
 {
-    // TODO:
-    // these addresses belong to ENET4, find a better way to do this
-
-    // write ENET4->CLKEN = 0x3
-    // udelay(1);
-    // write ENET4->SRST = 0x0
-    // udelay(1);
+	if (priv->phy_mode == PHY_MODE_SGMII)
+		apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR,
+			XGENET_CONFIG_REG_ADDR, 0x1);
+	else /* XGMII mode, CLE clock same as AXI clock, 250 MHz */
+		apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR,
+			XGENET_CONFIG_REG_ADDR, 0x02);
 }
 
-
-//------------------------------
-// Clock, reset configuration
-// - select 10/100/1G/10G mode
-// - enable csr and xgenet clock
-// - deassert csr, xgenet reset
-// - wake up ram
-void
-apm_xg_clk_rst_cfg( struct apm_data_priv *priv )
+static void apm_xg_init_ecc(struct apm_enet_priv *priv)
 {
-    u32 wrdata;
-    ENET_DEBUG ("XG CLK_RST configuration\n");
+	u32 wrdata, rddata;
+	int i;
 
-    apm_xg_select_mode( priv );
-	
-	// assert resets to clear SDS power down
+	ENET_DEBUG ("XG Waking up RAM\n");
+
+	wrdata = 0;
+	apm_enet_write( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_CFG_MEM_RAM_SHUTDOWN_ADDR, wrdata);
+
+	apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
+	while (REGSPEC_MEM_RDY_RD(rddata) != REGSPEC_BLOCK_MEM_RDY_DEFAULT) {
+		apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
+	}
+
+	for (i = 0 ; i < 5 ; i++)
+		apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
+}
+
+#define PLL_POLLING_LOOP 100
+static void apm_xg_clk_rst_cfg(struct apm_enet_priv *priv)
+{
+#ifdef CONFIG_STORM
+	u32 wrdata;
+	ENET_DEBUG ("XG CLK_RST configuration\n");
+
 	wrdata = XGENET_RESET_WR(1) | CSR_RESET_WR(1) | XGENET_SDS_RESET_WR(1);
 	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
-    	udelay(10);
+	mdelay(10);
 
-	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, 0x1f );
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, 0);
+	mdelay(10);
+
+	apm_xg_select_mode(priv);
+	wrdata = CSR_CLKEN_WR(1)
+		| XGENET_CLKEN_WR(1);
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, wrdata );
 	udelay(1000);
-	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, 0 );
-	udelay(100);
 
-    // enable all clocks
-    wrdata = CSR_CLKEN_WR(1)
-	| XGENET_CLKEN_WR(1);
-    apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, wrdata );
-    udelay(10);
+	wrdata = XGENET_RESET_WR(1) | CSR_RESET_WR(1) | XGENET_SDS_RESET_WR(0);
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
+	udelay(10);
 
-    // release sds reset
-    wrdata = XGENET_RESET_WR(1) | CSR_RESET_WR(1) | XGENET_SDS_RESET_WR(0);
-    apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
-    udelay(10);
+	wrdata = XGENET_RESET_WR(1) | CSR_RESET_WR(0) | XGENET_SDS_RESET_WR(0);
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
+	udelay(10);
 
-    // release csr and sds reset
-    wrdata = XGENET_RESET_WR(1) | CSR_RESET_WR(0) | XGENET_SDS_RESET_WR(0);
-    apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
-    udelay(10);
+	apm_enet_write( priv, BLOCK_XGENET_PCS , XGBASER_CONFIG_REG1_ADDR, 0 );
+	apm_xg_serdes_init(priv);
 
-    apm_xg_loopback_cfg( priv );
+	wrdata = XGENET_RESET_WR(0) | CSR_RESET_WR(0) | XGENET_SDS_RESET_WR(0);
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
+	udelay(400);
 
-    // TODO: move this outside this function
-    // serdes init
-    //apm_xg_serdes_init( priv );
+	apm_xg_init_ecc( priv );
+#elif defined(CONFIG_SHADOWCAT)
+	struct xgene_phy_ctx phy_ctx, *ctx = &phy_ctx;
+	u32 rd_data;
+	int loop = 0;
 
-    // release core, csr and sds reset
-    wrdata = XGENET_RESET_WR(0) | CSR_RESET_WR(0) | XGENET_SDS_RESET_WR(0);
-    apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, wrdata );
-    udelay(10);
+	ENET_DEBUG ("Shadowcat XG CLK_RST configuration\n");
+	phy_ctx.mode = (priv->phy_mode == PHY_MODE_XGMII) ?
+			MODE_XFI : MODE_SGMII;
+	phy_ctx.lane = 1;
+	phy_ctx.clk_type = CLK_EXT_DIFF;
+	phy_ctx.sds_base =(u64 *)priv->eth_sds_csr_addr_v;
+	apm_xg_select_mode(priv);
 
-    apm_xg_init_ecc( priv );
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, 0x11);
+	apm_enet_write( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, 0x7b);
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0x0);
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_CTL0_ADDR, 0);
+	udelay(10);
+	apm_xg_serdes_init(priv);
+	udelay(10);
+#ifdef CONFIG_SHADOWCAT_SERDES
+	rd_data = apm_enet_read(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_CMU_CTL1, &rd_data);
+	rd_data = XGENET_SDS_CMU_CTL1_CFG_CMU_I_USRCLK_DIV_SET (rd_data, 0x4);
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_CMU_CTL1, rd_data);
+	/*deassert Serdes Reset of HS and LSPLL*/
+	/*Order is important*/
+	apm_enet_read( priv, BLOCK_ETH_SDS_CSR , XGENET_SDS_CMU_HSPLL_CTL1, &rd_data );
+	rd_data = XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_POST_DIV_RESETB_SET(rd_data, 0x1);
+	rd_data = XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_REFCLK_DIV_RESETB_SET(rd_data, 0x1);
+	rd_data = XGENET_SDS_CMU_HSPLL_CTL1_CFG_I_HS_PLLRESETB_SET(rd_data, 0x1);
+ 	/*eth_wr (XGENET_SDS_CMU_HSPLL_CTL1, rd_data, eth_intf); */
+	apm_enet_write( priv, BLOCK_ETH_SDS_CSR , XGENET_SDS_CMU_HSPLL_CTL1, rd_data );
+	apm_enet_write(priv, BLOCK_ETH_SDS_CSR, XGENET_SDS_RST_CTL_ADDR, 0xDF);
+
+	/*Check PLLReady/LOCK and VCO Calibration Status of HSPLL*/
+	if (priv->phy_mode == PHY_MODE_XGMII) {
+		enum cmu_type_t cmu_type;
+		for (cmu_type = ETH_HSPLL; cmu_type >= ETH_LSPLL; cmu_type--) {
+			/* Start HSPLL calibration and try for 10 times */
+			do { 
+				/* force calib */
+				if (!xgene_phy2_cal_rdy_chk(ctx, cmu_type, 0))
+					break;
+				/* If failed, toggle the VCO power */
+				xgene_phy2_pdwn_force_vco(ctx, cmu_type,
+					CLK_EXT_DIFF);
+			} while (++loop > 10);
+			if (loop >= 10) {
+				ENET_DEBUG("(cmu = %d) calibration failed\n",
+					cmu_type);
+				return;
+			}
+		}
+		xgene_phy_cmu_ready(ctx, PHY_CMU);
+		xgene_phy_rxtx_ready(ctx, 0);
+
+	} else {	
+		/*Check PLLReady/LOCK and VCO Calibration Status*/
+		do {
+			apm_enet_read(priv, BLOCK_ETH_SDS_CSR,
+				XGENET_SDS_CMU_STATUS0_ADDR, &rd_data);
+			++loop;
+			mdelay(10);
+		} while ((rd_data != 0x7) && (loop <= PLL_POLLING_LOOP));
+		if (loop >= PLL_POLLING_LOOP) {
+			ENET_DEBUG("VCO lock Failed: %x\n", rd_data);
+			return;
+		}
+	}
+	/*Program AN_CONTROL.Auto_Negotiation_enable <- 0
+	  Indirect write AN_CONFIGURATION_REGISTER.auto_configuration <- 0 */
+	xfi_an_rd(ctx, AN_CONTROL, &rd_data);
+	rd_data = AN_CONTROL_AUTO_NEGOTIATION_ENABLE_SET(rd_data, 0x0);
+	xfi_an_wr(ctx, AN_CONTROL, rd_data);
+  
+	xfi_an_rd(ctx, AN_CONFIGURATION_REGISTER, &rd_data);
+	rd_data = AN_CONFIGURATION_REGISTER_AUTO_CONFIGURATION_SET(rd_data, 0x0);
+	xfi_an_wr(ctx, AN_CONFIGURATION_REGISTER, rd_data);
+#endif 
+	/*Software work around for a bug fix*/
+	/*Enable 10GBaseKR AN and AD block clocks*/
+	/*rd_data = eth_rd(SM_XGENET_CLKEN__ADDR, eth_intf); */
+	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, &rd_data);
+	rd_data = XGENET_CLKEN_CFG_AN_CLK_EN_SET (rd_data, 0x1);
+	rd_data = XGENET_CLKEN_CFG_AD_CLK_EN_SET (rd_data, 0x1);
+	/*eth_wr (SM_XGENET_CLKRST_CLKEN__ADDR, rd_data, eth_intf); */
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, rd_data);
+
+	/*Disable 10GBaseKR AN and AD block clocks*/
+	/*rd_data = eth_rd(XGENET_CLKEN, eth_intf); */
+	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, &rd_data);
+	rd_data = XGENET_CLKEN_CFG_AN_CLK_EN_SET (rd_data, 0x0);
+	rd_data = XGENET_CLKEN_CFG_AD_CLK_EN_SET (rd_data, 0x0);
+	rd_data = XGENET_CLKEN_CFG_AN_REF_CLK_EN_SET (rd_data, 0x0);
+	/*eth_wr (SM_XGENET_CLKRST_CLKEN__ADDR, rd_data, eth_intf); */
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, rd_data);
+
+	/*Assert CSR clock enable and Deassert CSR reset*/
+	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, &rd_data);
+	rd_data = XGENET_CLKEN_CSR_CLKEN_SET (rd_data, 0x1);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, rd_data);
+
+	apm_enet_read( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, &rd_data);
+	rd_data =  XGENET_SRST_CSR_RESET_SET (rd_data, 0x0);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, rd_data);
+
+	/*Enable XGMII block clock, followed by removal of block reset*/
+	apm_enet_read(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, &rd_data);
+	rd_data = XGENET_CLKEN_CFG_PCS_CLK_EN_SET (rd_data, 0x1);
+	rd_data = XGENET_CLKEN_XGENET_CLKEN_SET (rd_data, 0x1);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, rd_data);
+
+	apm_enet_read( priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, &rd_data);
+	if (priv->phy_mode == PHY_MODE_XGMII)
+		rd_data = XGENET_SRST_XGENET_PCS_RESET_SET (rd_data, 0x0);
+	rd_data = XGENET_SRST_XGENET_RESET_SET (rd_data, 0x0);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, rd_data);
+
+	apm_xg_init_ecc(priv);
+#endif
 }
 
-void apm_xgmac_reset(struct apm_data_priv *priv)
+/* 10GBaseR TX to RX loopback */
+static void apm_xg_loopback_cfg( struct apm_enet_priv *priv )
+{
+#ifdef APM_XG_AXGMAC_TX2RX_LOOPBACK
+	u32 wrdata;
+	ENET_DEBUG ("XG loopback (TX to RX) configuration\n");
+
+	wrdata = CFG_XGBASER_TX2RX_LOOPBACK1_WR(1);
+	apm_enet_write( priv, BLOCK_XGENET_PCS , XGBASER_CONFIG_REG1_ADDR, wrdata );
+
+#endif
+#ifdef IXIA_RXTX_LOOPBACK
+	apm_enet_write(priv, BLOCK_ETH_CSR, DEBUG_REG_ADDR, 0x003e03fe);
+#endif
+
+#ifdef APM_XGENET_XGMII_TX2RX_LOOPBACK
+	u32 wrdata;
+	ENET_DEBUG ("XG XGMII loopback (TX to RX) configuration\n");
+
+	wrdata = CFG_I_TX_SER_LPBK0_WR(1);
+	apm_enet_write( priv, BLOCK_ETH_SDS_CSR , XGENET_SDS_CTL0_ADDR, wrdata );
+#endif
+}
+
+void apm_xgmac_reset(struct apm_enet_priv *priv)
 {
 	u32 data;
 
 	if (priv->phy_mode == PHY_MODE_XGMII) {
 		ENET_DEBUG ("XG reset AXGMAC\n");
 
-		//apm_enet_read( priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_0_ADDR, &data );
-		//data |= HSTMACRST0_WR(1);  // This bit will reset the entire AXGMAC
 		data = 0xe601;
 		apm_enet_write(priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_0_ADDR, data);
 		udelay(1);
@@ -2455,244 +2301,131 @@ void apm_xgmac_reset(struct apm_data_priv *priv)
 		udelay(5);
 	} else {
 		data = (RESET_RX_MC1_MASK   |
-			RESET_RX_FUN1_MASK  |
-			RESET_TX_MC1_MASK   |
-			RESET_TX_FUN1_MASK  |
-			SIM_RESET1_MASK     |
-			SOFT_RESET1_MASK);
+				RESET_RX_FUN1_MASK  |
+				RESET_TX_MC1_MASK   |
+				RESET_TX_FUN1_MASK  |
+				SIM_RESET1_MASK     |
+				SOFT_RESET1_MASK);
 
-		/* Write value back to config 1 register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, MAC_CONFIG_1_ADDR, data);
 	}
+	apm_xg_loopback_cfg( priv );
 }
 
-//------------------------------
-// AXGMAC (10G only mode) initialization
-// TODO: add support for 1G mode
-// - deassert reset
-// - configure AXGMAC
-// - set MAXFRAME length
-int apm_axgmac_init (struct apm_data_priv *priv,
-		unsigned char *dev_addr, int speed, int mtu, int crc)
+static int apm_axgmac_init (struct apm_enet_priv *priv,
+		unsigned char *dev_addr, int speed, int crc)
 {
-    u32 wrdata, data;
-    u32 addr_hi, addr_lo;
+	u32 wrdata, data;
+	u32 addr_hi, addr_lo;
 
-    ENET_DEBUG("XG Initialize XG MAC\n");
+	ENET_DEBUG("XG Initialize XG MAC\n");
 
-    apm_xgmac_reset(priv);
+	apm_xgmac_reset(priv);
 
-    ENET_DEBUG ("XG configure AXGMAC\n");
-    //data |= 0xf000008d;
-    data = (HSTTCTLEN1_WR(1)
-	    | HSTTFEN1_WR(1)
-	    | HSTRCTLEN1_WR(1)
-	    | HSTRFEN1_WR(1)
+	ENET_DEBUG ("XG configure AXGMAC\n");
+	data = (HSTTCTLEN1_WR(1)
+			| HSTTFEN1_WR(1)
+			| HSTRCTLEN1_WR(1)
+			| HSTRFEN1_WR(1)
 #if !defined(BOOTLOADER)
-	    | HSTPPEN1_WR(1)
+			| HSTPPEN1_WR(1)
 #endif
-	    | HSTLENCHK1_WR(1));
-   if (crc)
-	data |= (HSTGENFCS1_WR(1)
-	    | REGSPEC_HSTPADMODE1_WR(1));
-    data = HSTDRPLT641_SET(data, 0);
-    ENET_DEBUG ("XG AXGMAC config_1: %x\n", data);
+			| HSTLENCHK1_WR(1));
+	if (crc)
+		data |= (HSTGENFCS1_WR(1) | REGSPEC_HSTPADMODE1_WR(1));
+	data = HSTDRPLT641_SET(data, 0);
+	ENET_DEBUG ("XG AXGMAC config_1: %x\n", data);
 
-    apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, data );
-    udelay(1);
+	apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_CONFIG_1_ADDR, data );
+	udelay(1);
 
-    /*
-    data = 0x25800600;
-    apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_MAXFRAME_LENGTH_ADDR, data );
-    */
+	wrdata = HSTMXFRMWCTX_WR(APM_ENET_FRAME_LEN)
+		| HSTMXFRMBCRX_WR(APM_ENET_FRAME_LEN);
+	apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_MAXFRAME_LENGTH_ADDR, wrdata );
+	apm_enet_read( priv, BLOCK_AXG_MAC, AXGMAC_MAXFRAME_LENGTH_ADDR, &data );
+	ENET_DEBUG ("XG AXGMAC maxframe length: %x\n", data);
 
-    wrdata = HSTMXFRMWCTX_WR(0x2580)
-	| HSTMXFRMBCRX_WR(0x0600);
-    apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_MAXFRAME_LENGTH_ADDR, wrdata );
-    apm_enet_read( priv, BLOCK_AXG_MAC, AXGMAC_MAXFRAME_LENGTH_ADDR, &data );
-    ENET_DEBUG ("XG AXGMAC maxframe length: %x\n", data);
+	addr_hi = *(u32 *) &dev_addr[0];
+	addr_lo = *(u16 *) &dev_addr[4];
+	ENET_DEBUG ("XG devaddr: %a\n", dev_addr);
+	addr_lo <<= 16;
+	apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_LSW_ADDR, addr_hi );
+	apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_MSW_ADDR, addr_lo );
 
-    addr_hi = *(u32 *) &dev_addr[0];
-    addr_lo = *(u16 *) &dev_addr[4];
-    ENET_DEBUG ("XG devaddr: %s\n", dev_addr);
-    addr_lo <<= 16;
-    apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_LSW_ADDR, addr_hi );
-    apm_enet_write( priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_MSW_ADDR, addr_lo );
+	apm_enet_read( priv, BLOCK_AXG_STATS, TBYT_ADDR, &data );
+	ENET_DEBUG("XG TBYT register: %x\n", data);
+	apm_enet_read( priv, BLOCK_AXG_STATS, RBYT_ADDR, &data );
+	ENET_DEBUG("XG RBYT register: %x\n", data);
 
-    apm_enet_read( priv, BLOCK_AXG_STATS, TBYT_ADDR, &data );
-    ENET_DEBUG("XG TBYT register: %x\n", data);
-    apm_enet_read( priv, BLOCK_AXG_STATS, RBYT_ADDR, &data );
-    ENET_DEBUG("XG RBYT register: %x\n", data);
-
-    return 0;
+	return 0;
 }
 
 
-void
-apm_xg_bypass_resume_cfg( struct apm_data_priv *priv )
+static void apm_xg_bypass_resume_cfg(struct apm_enet_priv *priv)
 {
-    u32 wrdata;
-    ENET_DEBUG ("XG bypass resume configuration\n");
+	u32 wrdata;
+	ENET_DEBUG ("XG bypass resume configuration\n");
 
-    wrdata = RESUME_TX_WR(1);
-    apm_enet_write( priv, BLOCK_ETH_CSR, CFG_BYPASS_ADDR, wrdata);
+	wrdata = RESUME_TX_WR(1);
+	apm_enet_write( priv, BLOCK_ETH_CSR, CFG_BYPASS_ADDR, wrdata);
 
- 	if (priv->phy_mode == PHY_MODE_SGMII)
+	if (priv->phy_mode == PHY_MODE_SGMII)
 		wrdata = 0x1;
 	else
 		wrdata = 0x0;
-    apm_enet_write( priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, wrdata);
+	apm_enet_write( priv, BLOCK_ETH_CSR, CFG_LINK_STS_ADDR, wrdata);
 
-    wrdata = TX_PORT0_WR(1);
-    apm_enet_write( priv, BLOCK_ETH_CSR, CFG_LINK_AGGR_RESUME_0_ADDR, wrdata);
+	wrdata = TX_PORT0_WR(1);
+	apm_enet_write( priv, BLOCK_ETH_CSR, CFG_LINK_AGGR_RESUME_0_ADDR, wrdata);
 
-    //wrdata = ENET_MPA_IDLE_WITH_QMI_EMPTY_WR(1);
-    wrdata = 0x22407040;
-    apm_enet_write( priv, BLOCK_ETH_CSR, ENET_SPARE_CFG_REG_ADDR, wrdata);
+	wrdata = 0x22407040;
+	apm_enet_write( priv, BLOCK_ETH_CSR, ENET_SPARE_CFG_REG_ADDR, wrdata);
 
- 	if (priv->phy_mode == PHY_MODE_SGMII) {
+#ifdef CONFIG_SHADOWCAT
+	wrdata = 0x44;
+	apm_enet_write( priv, BLOCK_ETH_CSR, ENET_SPARE_CFG_REG_1_ADDR, wrdata);
+#endif
+
+	if (priv->phy_mode == PHY_MODE_SGMII) {
 		apm_enet_read(priv, BLOCK_MCX_MAC_CSR, RX_DV_GATE_REG_0_ADDR, &wrdata);
 		wrdata = TX_DV_GATE_EN0_F2_SET(wrdata, 0);
 		wrdata = RX_DV_GATE_EN0_F2_SET(wrdata, 0);
 		wrdata = RESUME_RX0_F2_SET(wrdata, 1);
-		ENET_DEBUG ("%s XGENET_RX_DV_GATE_REG_0_ADDR=0x%x\n", __func__,wrdata);
+		ENET_DEBUG ("%a XGENET_RX_DV_GATE_REG_0_ADDR=0x%x\n", __func__, wrdata);
 		apm_enet_write(priv, BLOCK_MCX_MAC_CSR,
-			RX_DV_GATE_REG_0_ADDR, wrdata);
+				RX_DV_GATE_REG_0_ADDR, wrdata);
 
 	} else
 		apm_enet_write(priv, BLOCK_AXG_MAC_CSR,
-			XGENET_RX_DV_GATE_REG_0_ADDR, 0);
+				XGENET_RX_DV_GATE_REG_0_ADDR, 0);
 }
 
 
-// 10GBaseR TX to RX loopback
-void
-apm_xg_loopback_cfg( struct apm_data_priv *priv )
+static void apm_xg_cle_bypass_mode_cfg(struct apm_enet_priv *priv,
+	u32 cle_dstqid, u32 cle_fpsel, u32 cle_nxtfpsel, int bypass_en)
 {
-#ifdef APM_XG_AXGMAC_TX2RX_LOOPBACK
-    u32 wrdata;
-    ENET_DEBUG ("XG loopback (TX to RX) configuration\n");
+	u32 reg;
+	int enable = bypass_en ? 1 : 0;
 
-    wrdata = CFG_XGBASER_TX2RX_LOOPBACK1_WR(1);
-    apm_enet_write( priv, BLOCK_XGENET_PCS , XGBASER_CONFIG_REG1_ADDR, wrdata );
+	ENET_DEBUG("XG Bypass CLE\n");
 
-#endif
+	apm_enet_read(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG0_ADDR, &reg);
+	reg = CFG_CLE_BYPASS_EN0_SET(reg, enable);
+	reg = CFG_CLE_IP_PROTOCOL0_SET(reg, 3);
+	apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG0_ADDR, reg);
 
-#ifdef APM_XGENET_XGMII_TX2RX_LOOPBACK
-    u32 wrdata;
-    ENET_DEBUG ("XG XGMII loopback (TX to RX) configuration\n");
-
-    wrdata = CFG_I_TX_SER_LPBK0_WR(1);
-    apm_enet_write( priv, BLOCK_ETH_SDS_CSR , XGENET_SDS_CTL0_ADDR, wrdata );
-#endif
+	apm_enet_read(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG1_ADDR, &reg);
+	reg = CFG_CLE_DSTQID1_SET(reg, cle_dstqid);
+	reg = CFG_CLE_FPSEL1_SET(reg, cle_fpsel);
+	reg = CFG_CLE_NXTFPSEL1_SET(reg, cle_nxtfpsel);
+	apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG1_ADDR, reg);
 }
 
-void
-apm_xg_cle_bypass_mode_cfg(struct apm_data_priv *priv, u32 cle_dstqid, u32 cle_fpsel)
-{
-    u32 data;
-
-    // TODO: code from validation team
-    // verify these values
-
-    ENET_DEBUG("XG Bypass CLE\n");
-#if 0
-    data = (CFG_CLE_BYPASS_EN0_WR(1) | CFG_CLE_RESULT_DLYCNTR0_WR(0x08));
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG0_ADDR, data);
-
-    //data = CFG_CLE_DSTQID1_WR(0x3 | 0x1 << 10);
-    data = CFG_CLE_DSTQID1_WR(cle_dstqid);
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG1_ADDR, data);
-#endif
-
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG0_ADDR, 0x88000000);
-    data = CFG_CLE_DSTQID1_WR(cle_dstqid);
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG1_ADDR, data);
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG6_ADDR, 0x00101000);
-    apm_enet_write(priv, BLOCK_ETH_CSR, CLE_BYPASS_REG8_ADDR, 0x0c000000);
-  
-  // cfg to enable capture of Rx cntrl wd's
-    apm_enet_write(priv, BLOCK_ETH_CSR, PCKWD_REG0_ADDR, 0x0003870c);
-    udelay(1);
-    apm_enet_write(priv, BLOCK_ETH_CSR, PCKWD_REG0_ADDR, 0x21010000);
-}
-
-//--------------------------------------------------
-// Helper functions that are called within this file
-//--------------------------------------------------
-
-//------------------------------------
-// mode select XGMII(default) or SGMII
-void
-apm_xg_select_mode( struct apm_data_priv *priv )
-{
-	if (priv->phy_mode == PHY_MODE_SGMII) {
-		apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR, 0x1);
-	} else {
-		// XGMII mode, CLE clock same as AXI clock, 250 MHz
-		apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR, 0x02);
-		apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CONFIG_REG_ADDR, 0x12);
-	}
-}
-
-
-//------------------------------
-// Wake up ram
-void
-apm_xg_init_ecc( struct apm_data_priv *priv )
-{
-    u32 wrdata, rddata;
-    int i;
-
-    ENET_DEBUG ("XG Waking up RAM\n");
-
-    //wrdata = REGSPEC_CFG_RAM_SHUTDOWN_EN_WR(0);
-    wrdata = 0;
-    apm_enet_write( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_CFG_MEM_RAM_SHUTDOWN_ADDR, wrdata);
-
-    apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
-    while (REGSPEC_MEM_RDY_RD(rddata) != REGSPEC_BLOCK_MEM_RDY_DEFAULT)
-    //while (REGSPEC_MEM_RDY_RD(rddata) == REGSPEC_BLOCK_MEM_RDY_DEFAULT)
-    {
-       	apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
-    }
-
-    for (i=0 ; i < 5 ; i++)
-    {
-       	apm_enet_read( priv, BLOCK_ETH_DIAG_CSR, REGSPEC_BLOCK_MEM_RDY_ADDR, &rddata);
-    }
-}
-
-/* Start Statistics related functions */
-void apm_xgmac_get_brief_stats(struct apm_data_priv *priv,
-				struct eth_brief_stats *brief_stats)
-{
-	struct eth_detailed_stats detailed_stats;
-
-	apm_xgmac_get_detailed_stats(priv, &detailed_stats);
-
-	brief_stats->rx_byte_count = detailed_stats.rx_stats.rx_byte_count;
-	brief_stats->rx_packet_count = detailed_stats.rx_stats.rx_packet_count;
-	brief_stats->rx_drop_pkt_count =
-		detailed_stats.rx_stats.rx_drop_pkt_count;
-	brief_stats->tx_byte_count = detailed_stats.tx_stats.tx_byte_count;
-	brief_stats->tx_pkt_count = detailed_stats.tx_stats.tx_pkt_count;
-	brief_stats->tx_drop_frm_count =
-		detailed_stats.tx_stats.tx_drop_frm_count;
-}
-
-void apm_xgmac_get_detailed_stats(struct apm_data_priv *priv,
-					struct eth_detailed_stats *stats)
-{
-	apm_xgmac_get_tx_rx_stats(priv, &(stats->eth_combined_stats));
-	apm_xgmac_get_rx_stats(priv, &(stats->rx_stats));
-	apm_xgmac_get_tx_stats(priv, &(stats->tx_stats));
-}
-
-void apm_xgmac_get_tx_rx_stats(struct apm_data_priv *priv,
-					struct eth_frame_stats *tx_rx_stats)
+static void apm_xgmac_get_tx_rx_stats(struct apm_enet_priv *priv,
+		struct eth_frame_stats *tx_rx_stats)
 {
 	u32 block_mac_stats;
+	u32 counter;
 
 	if (priv->phy_mode == PHY_MODE_XGMII)
 		block_mac_stats = BLOCK_AXG_STATS;
@@ -2701,19 +2434,32 @@ void apm_xgmac_get_tx_rx_stats(struct apm_data_priv *priv,
 
 	/* Read Stats */
 	apm_enet_read(priv, block_mac_stats, TR64_ADDR,
-				 &tx_rx_stats->c_64B_frames);
+			&counter);
+	tx_rx_stats->c_64B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TR127_ADDR,
-				 &tx_rx_stats->c_65_127B_frames);
+			&counter);
+	tx_rx_stats->c_65_127B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TR255_ADDR,
-				 &tx_rx_stats->c_128_255B_frames);
+			&counter);
+	tx_rx_stats->c_128_255B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TR511_ADDR,
-				 &tx_rx_stats->c_256_511B_frames);
+			&counter);
+	tx_rx_stats->c_256_511B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TR1K_ADDR,
-				 &tx_rx_stats->c_512_1023B_frames);
+			&counter);
+	tx_rx_stats->c_512_1023B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TRMAX_ADDR,
-				 &tx_rx_stats->c_1024_1518B_frames);
+			&counter);
+	tx_rx_stats->c_1024_1518B_frames += counter;
+
 	apm_enet_read(priv, block_mac_stats, TRMGV_ADDR,
-				 &tx_rx_stats->c_1519_1522B_frames);
+			&counter);
+	tx_rx_stats->c_1519_1522B_frames += counter;
 
 	/* Mask out unnecessary bits in all the fields */
 	tx_rx_stats->c_64B_frames &= TX_RX_64B_FRAME_CNTR4_MASK;
@@ -2725,54 +2471,78 @@ void apm_xgmac_get_tx_rx_stats(struct apm_data_priv *priv,
 	tx_rx_stats->c_1519_1522B_frames &= TRMGV_MASK;
 }
 
-void apm_xgmac_get_rx_stats(struct apm_data_priv *priv, struct eth_rx_stat *rx_stat)
+static void apm_xgmac_get_rx_stats(struct apm_enet_priv *priv,
+	struct eth_rx_stat *rx_stat)
 {
 	u32 block_mac_stats;
+	u32 counter;
 
 	if (priv->phy_mode == PHY_MODE_XGMII)
 		block_mac_stats = BLOCK_AXG_STATS;
 	else
 		block_mac_stats = BLOCK_MCX_STATS;
 
-	/* Read Stats */
-	apm_enet_read(priv, block_mac_stats, RBYT_ADDR,
-				 &rx_stat->rx_byte_count);
-	apm_enet_read(priv, block_mac_stats, RPKT_ADDR,
-				 &rx_stat->rx_packet_count);
 	apm_enet_read(priv, block_mac_stats, RFCS_ADDR,
-				 &rx_stat->rx_fcs_err_count);
+			&counter);
+	rx_stat->rx_fcs_err_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RMCA_ADDR,
-				 &rx_stat->rx_multicast_pkt_count);
+			&counter);
+	rx_stat->rx_multicast_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RBCA_ADDR,
-				 &rx_stat->rx_broadcast_pkt_count);
+			&counter);
+	rx_stat->rx_broadcast_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RXCF_ADDR,
-				 &rx_stat->rx_cntrl_frame_pkt_count);
+			&counter);
+	rx_stat->rx_cntrl_frame_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RXPF_ADDR,
-				 &rx_stat->rx_pause_frame_pkt_count);
+			&counter);
+	rx_stat->rx_pause_frame_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RXUO_ADDR,
-				 &rx_stat->rx_unknown_op_pkt_count);
+			&counter);
+	rx_stat->rx_unknown_op_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RALN_ADDR,
-				 &rx_stat->rx_alignment_err_pkt_count);
+			&counter);
+	rx_stat->rx_alignment_err_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RFLR_ADDR,
-				 &rx_stat->rx_frm_len_err_pkt_count);
+			&counter);
+	rx_stat->rx_frm_len_err_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RCDE_ADDR,
-				 &rx_stat->rx_code_err_pkt_count);
+			&counter);
+	rx_stat->rx_code_err_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RCSE_ADDR,
-				 &rx_stat->rx_carrier_sense_err_pkt_count);
+			&counter);
+	rx_stat->rx_carrier_sense_err_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RUND_ADDR,
-				 &rx_stat->rx_undersize_pkt_count);
+			&counter);
+	rx_stat->rx_undersize_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, ROVR_ADDR,
-				 &rx_stat->rx_oversize_pkt_count);
+			&counter);
+	rx_stat->rx_oversize_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RFRG_ADDR,
-				 &rx_stat->rx_fragment_count);
+			&counter);
+	rx_stat->rx_fragment_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RJBR_ADDR,
-				 &rx_stat->rx_jabber_count);
+			&counter);
+	rx_stat->rx_jabber_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, RDRP_ADDR,
-				 &rx_stat->rx_drop_pkt_count);
+			&counter);
+	rx_stat->rx_drop_pkt_count += counter;
 
 	/* Mask out unnecessary bits in all the fields */
-	rx_stat->rx_byte_count &= RX_BYTE_CNTR_MASK;
-	rx_stat->rx_packet_count &= RX_PKT_CNTR_MASK;
 	rx_stat->rx_fcs_err_count &= RX_FCS_ERROR_CNTR_MASK;
 	rx_stat->rx_multicast_pkt_count &= RX_MC_PKT_CNTR_MASK;
 	rx_stat->rx_broadcast_pkt_count &= RX_BC_PKT_CNTR_MASK;
@@ -2790,10 +2560,11 @@ void apm_xgmac_get_rx_stats(struct apm_data_priv *priv, struct eth_rx_stat *rx_s
 	rx_stat->rx_drop_pkt_count &= RX_DROPPED_PKT_CNTR_MASK;
 }
 
-void apm_xgmac_get_tx_stats(struct apm_data_priv *priv,
-			struct eth_tx_stats *tx_stats)
+static void apm_xgmac_get_tx_stats(struct apm_enet_priv *priv,
+		struct eth_tx_stats *tx_stats)
 {
 	u32 block_mac_stats;
+	u32 counter;
 
 	if (priv->phy_mode == PHY_MODE_XGMII)
 		block_mac_stats = BLOCK_AXG_STATS;
@@ -2801,50 +2572,79 @@ void apm_xgmac_get_tx_stats(struct apm_data_priv *priv,
 		block_mac_stats = BLOCK_MCX_STATS;
 
 	/* Read Stats */
-	apm_enet_read(priv, block_mac_stats, TBYT_ADDR,
-				 &tx_stats->tx_byte_count);
-	apm_enet_read(priv, block_mac_stats, TPKT_ADDR,
-				 &tx_stats->tx_pkt_count);
 	apm_enet_read(priv, block_mac_stats, TMCA_ADDR,
-				 &tx_stats->tx_multicast_pkt_count);
+			&counter);
+	tx_stats->tx_multicast_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TBCA_ADDR,
-				 &tx_stats->tx_broadcast_pkt_count);
+			&counter);
+	tx_stats->tx_broadcast_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TXPF_ADDR,
-				 &tx_stats->tx_pause_frame_count);
+			&counter);
+	tx_stats->tx_pause_frame_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TDFR_ADDR,
-				 &tx_stats->tx_deferral_pkt_count);
+			&counter);
+	tx_stats->tx_deferral_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TEDF_ADDR,
-				 &tx_stats->tx_exesiv_def_pkt_count);
+			&counter);
+	tx_stats->tx_exesiv_def_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TSCL_ADDR,
-				 &tx_stats->tx_single_coll_pkt_count);
+			&counter);
+	tx_stats->tx_single_coll_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TMCL_ADDR,
-				 &tx_stats->tx_multi_coll_pkt_count);
+			&counter);
+	tx_stats->tx_multi_coll_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TLCL_ADDR,
-				 &tx_stats->tx_late_coll_pkt_count);
+			&counter);
+	tx_stats->tx_late_coll_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TXCL_ADDR,
-				 &tx_stats->tx_exesiv_coll_pkt_count);
+			&counter);
+	tx_stats->tx_exesiv_coll_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TNCL_ADDR,
-				 &tx_stats->tx_toll_coll_pkt_count);
+			&counter);
+	tx_stats->tx_toll_coll_pkt_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TPFH_ADDR,
-				 &tx_stats->tx_pause_frm_hon_count);
+			&counter);
+	tx_stats->tx_pause_frm_hon_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TDRP_ADDR,
-				 &tx_stats->tx_drop_frm_count);
+			&counter);
+	tx_stats->tx_drop_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TJBR_ADDR,
-				 &tx_stats->tx_jabber_frm_count);
+			&counter);
+	tx_stats->tx_jabber_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TFCS_ADDR,
-				 &tx_stats->tx_fcs_err_frm_count);
+			&counter);
+	tx_stats->tx_fcs_err_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TXCF_ADDR,
-				 &tx_stats->tx_control_frm_count);
+			&counter);
+	tx_stats->tx_control_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TOVR_ADDR,
-				 &tx_stats->tx_oversize_frm_count);
+			&counter);
+	tx_stats->tx_oversize_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TUND_ADDR,
-				 &tx_stats->tx_undersize_frm_count);
+			&counter);
+	tx_stats->tx_undersize_frm_count += counter;
+
 	apm_enet_read(priv, block_mac_stats, TFRG_ADDR,
-				 &tx_stats->tx_fragments_frm_count);
+			&counter);
+	tx_stats->tx_fragments_frm_count += counter;
 
 	/* Mask values with appropriate width of the fields */
-	tx_stats->tx_byte_count &= TX_BYTE_CNTR_MASK;
-	tx_stats->tx_pkt_count &= TX_PKT_CNTR_MASK;
 	tx_stats->tx_multicast_pkt_count &= TX_MC_PKT_CNTR_MASK;
 	tx_stats->tx_broadcast_pkt_count &= TX_BC_PKT_CNTR_MASK;
 	tx_stats->tx_pause_frame_count &= TX_PAUSE_PKT_CNTR_MASK;
@@ -2865,26 +2665,51 @@ void apm_xgmac_get_tx_stats(struct apm_data_priv *priv,
 	tx_stats->tx_fragments_frm_count &= TX_FRAG_CNTR_MASK;
 }
 
-int apm_xgmac_init(struct apm_data_priv *priv,
-		unsigned char *dev_addr, int speed, int mtu, int crc)
+static void apm_xgmac_get_detailed_stats(struct apm_enet_priv *priv,
+		struct eth_detailed_stats *stats)
+{
+	apm_xgmac_get_tx_rx_stats(priv, &(stats->eth_combined_stats));
+	apm_xgmac_get_rx_stats(priv, &(stats->rx_stats));
+	apm_xgmac_get_tx_stats(priv, &(stats->tx_stats));
+}
+
+static int apm_xgmac_init(struct apm_enet_priv *priv,
+		unsigned char *dev_addr, int speed, int crc)
 {
 	u32 ret;
 	u32 value;
 
 	if (priv->phy_mode == PHY_MODE_XGMII)
-		ret = apm_axgmac_init(priv, dev_addr, speed, mtu, crc);
+		ret = apm_axgmac_init(priv, dev_addr, APM_ENET_SPEED_10000, crc);
 	else
-		ret = apm_mcxmac_init(priv, dev_addr, 1000, mtu, crc);
+		ret = apm_mcxmac_init(priv, dev_addr, speed, crc);
 
 	/* Enable drop if FP not available */
 	apm_enet_read(priv, BLOCK_ETH_CSR, RSIF_CONFIG_REG_ADDR, &value);
 	value |= CFG_RSIF_FPBUFF_TIMEOUT_EN_WR(1);
 	apm_enet_write(priv, BLOCK_ETH_CSR, RSIF_CONFIG_REG_ADDR, value);
 
+	apm_enet_read(priv, BLOCK_ETH_CSR, AVB_PER_Q_CONFIG1_0_ADDR, &value);
+	value = CFG_ETH_Q_ARB_TYPE0_SET(value, 0x5555);
+	apm_enet_write(priv, BLOCK_ETH_CSR, AVB_PER_Q_CONFIG1_0_ADDR, value);
+
+	apm_enet_write(priv, BLOCK_ETH_CSR, AVB_PER_Q_HI_CREDIT_0_ADDR, 0x44444444);
+
+	apm_enet_read(priv, BLOCK_ETH_CSR, AVB_COMMON_CONFIG1_0_ADDR, &value);
+	value = MAC_SPEED0_SET(value, 2);
+	value = CFG_AVB_ADD_OVERHEAD0_SET(value, 1);
+	value = CFG_AVB_OVERHEAD0_SET(value, 20);
+	apm_enet_write(priv, BLOCK_ETH_CSR, AVB_COMMON_CONFIG1_0_ADDR, value);
+
+	apm_enet_read(priv, BLOCK_ETH_CSR, AVB_COMMON_CONFIG2_0_ADDR, &value);
+	value = CFG_WRR_CREDIT_RESET_EN0_SET(value, 1);
+	value = CFG_AVB_CALC_INT_HUNDREDNSEC_CNT0_SET(value, 0x0004);
+	apm_enet_write(priv, BLOCK_ETH_CSR, AVB_COMMON_CONFIG2_0_ADDR, value);
+
 	return ret;
 }
 
-void apm_xgmac_rx_state(struct apm_data_priv *priv, u32 enable)
+void apm_xgmac_rx_state(struct apm_enet_priv *priv, u32 enable)
 {
 	if (enable)
 		apm_xgmac_rx_enable(priv);
@@ -2892,7 +2717,7 @@ void apm_xgmac_rx_state(struct apm_data_priv *priv, u32 enable)
 		apm_xgmac_rx_disable(priv);
 }
 
-void apm_xgmac_tx_state(struct apm_data_priv *priv, u32 enable)
+void apm_xgmac_tx_state(struct apm_enet_priv *priv, u32 enable)
 {
 	if (enable)
 		apm_xgmac_tx_enable(priv);
@@ -2900,24 +2725,21 @@ void apm_xgmac_tx_state(struct apm_data_priv *priv, u32 enable)
 		apm_xgmac_tx_disable(priv);
 }
 
-void apm_xgmac_set_ipg(struct apm_data_priv *priv, u16 ipg)
+void apm_xgmac_set_ipg(struct apm_enet_priv *priv, u16 ipg)
 {
 	u32 data;
 
 	if (priv->phy_mode != PHY_MODE_XGMII) {
-		/* Read current value of the IPG IFG register */
 		apm_enet_read(priv, BLOCK_MCX_MAC, IPG_IFG_ADDR, &data);
-
-		/* Write value back to IPG IFG register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, IPG_IFG_ADDR,
-			B2B_IPG_SET(data, ipg));
+				B2B_IPG_SET(data, ipg));
 	}
 
 	ENET_DEBUG("Setting IPG to %d bits", ipg);
 }
 
-void apm_xgmac_set_mac_addr(struct apm_data_priv *priv,
-			unsigned char *dev_addr)
+static void apm_xgmac_set_mac_addr(struct apm_enet_priv *priv,
+		unsigned char *dev_addr)
 {
 	u32 a_hi;
 	u32 a_lo;
@@ -2930,18 +2752,15 @@ void apm_xgmac_set_mac_addr(struct apm_data_priv *priv,
 		apm_enet_write(priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_LSW_ADDR, a_hi);
 		apm_enet_write(priv, BLOCK_AXG_MAC, AXGMAC_HSTMACADR_MSW_ADDR, a_lo);
 	} else {
-
 		/* Write higher 4 octects to station register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, STATION_ADDR0_ADDR, a_hi);
-
 		a_lo |= (priv->phy_addr & 0xFFFF);
-
 		/* Write lower 2 octects to station register */
 		apm_enet_write(priv, BLOCK_MCX_MAC, STATION_ADDR1_ADDR, a_lo);
 	}
 }
 
-void apm_xgmac_tx_offload(struct apm_data_priv *priv, u32 command, u32 value)
+void apm_xgmac_tx_offload(struct apm_enet_priv *priv, u32 command, u32 value)
 {
 	u32 data;
 
@@ -2949,72 +2768,75 @@ void apm_xgmac_tx_offload(struct apm_data_priv *priv, u32 command, u32 value)
 	/* TCP MSS 0 */
 	case APM_ENET_MSS0:
 		apm_enet_read(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG0_0_ADDR, &data);
+				TSIF_MSS_REG0_0_ADDR, &data);
 		apm_enet_write(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG0_0_ADDR,
-			CFG_TSIF_MSS_SZ00_SET(data, value));
+				TSIF_MSS_REG0_0_ADDR,
+				CFG_TSIF_MSS_SZ00_SET(data, value));
 		break;
-	/* TCP MSS 1 */
+		/* TCP MSS 1 */
 	case APM_ENET_MSS1:
 		apm_enet_read(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG0_0_ADDR, &data);
+				TSIF_MSS_REG0_0_ADDR, &data);
 		apm_enet_write(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG0_0_ADDR,
-			CFG_TSIF_MSS_SZ10_SET(data, value));
+				TSIF_MSS_REG0_0_ADDR,
+				CFG_TSIF_MSS_SZ10_SET(data, value));
 		break;
-	/* TCP MSS 2 */
+		/* TCP MSS 2 */
 	case APM_ENET_MSS2:
 		apm_enet_read(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG1_0_ADDR, &data);
+				TSIF_MSS_REG1_0_ADDR, &data);
 		apm_enet_write(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG1_0_ADDR,
-			CFG_TSIF_MSS_SZ20_SET(data, value));
+				TSIF_MSS_REG1_0_ADDR,
+				CFG_TSIF_MSS_SZ20_SET(data, value));
 		break;
-	/* TCP MSS 3 */
+		/* TCP MSS 3 */
 	case APM_ENET_MSS3:
 		apm_enet_read(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG1_0_ADDR, &data);
+				TSIF_MSS_REG1_0_ADDR, &data);
 		apm_enet_write(priv, BLOCK_ETH_CSR,
-			TSIF_MSS_REG1_0_ADDR,
-			CFG_TSIF_MSS_SZ30_SET(data, value));
+				TSIF_MSS_REG1_0_ADDR,
+				CFG_TSIF_MSS_SZ30_SET(data, value));
 		break;
-	/* Program TSO config */
+		/* Program TSO config */
 	case APM_ENET_TSO_CFG:
 		apm_enet_write(priv, BLOCK_ETH_CSR, TSO_CFG_0_ADDR, value);
 		break;
-	/* Insert Inser tVLAN TAG */
+		/* Insert Inser tVLAN TAG */
 	case APM_ENET_INSERT_VLAN:
 		apm_enet_write(priv, BLOCK_ETH_CSR,
-			TSO_CFG_INSERT_VLAN_0_ADDR, value);
+				TSO_CFG_INSERT_VLAN_0_ADDR, value);
 		break;
 	}
 }
 
-void apm_xgport_reset(struct apm_data_priv *priv, u32 mii_mode)
+static void apm_xgport_reset(struct apm_enet_priv *priv, u32 mii_mode)
 {
-	// Clock reset configuration
 	priv->phy_mode = mii_mode;
 	apm_xg_clk_rst_cfg(priv);
-	apm_xg_serdes_init(priv);
 	xgenet_config_qmi_assoc(priv);
-	//apm_xgenet_set_phyid(priv);
 	apm_xg_bypass_resume_cfg(priv);
 }
 
-void apm_xgport_shutdown(struct apm_data_priv *priv)
+static void apm_xgport_shutdown(struct apm_enet_priv *priv)
 {
-       	u32 val;
+#ifdef CONFIG_STORM
+	u32 val;
 
 	/* reset serdes, csr and xgenet core */
 	val = XGENET_RESET_WR(1) | CSR_RESET_WR(1) | XGENET_SDS_RESET_WR(1);
-       	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, val);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, val);
 
 	/* disable csr and xgenet clock */
 	val = CSR_CLKEN_WR(0) | XGENET_CLKEN_WR(0);
-       	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, val);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, val);
+#else
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_SRST_ADDR, 0x0);
+	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, XGENET_CLKEN_ADDR, 0x7f);
+#endif
 }
 
-void apm_xgenet_init_priv(struct apm_data_priv *priv, void *port_vaddr, void *gbl_vaddr, void *mii_vaddr)
+void apm_xgenet_init_priv(struct apm_enet_priv *priv, void *port_vaddr,
+		void *gbl_vaddr, void *mii_vaddr)
 {
 	/* Setup the ethernet base address and mac address */
 	priv->vaddr_base = gbl_vaddr;
@@ -3062,6 +2884,7 @@ void apm_xgenet_init_priv(struct apm_data_priv *priv, void *port_vaddr, void *gb
 	ENET_DEBUG("XGENET MDIO CSR VADDR: 0x%p\n", priv->xgenet_mdio_csr_addr_v);
 
 	/* Initialize priv handlers */
+	priv->autoneg_set = 1;
 	priv->port_reset = apm_xgport_reset;
 	priv->mac_reset = apm_xgmac_reset;
 	priv->get_link_status = apm_xgmac_link_status;
@@ -3070,7 +2893,6 @@ void apm_xgenet_init_priv(struct apm_data_priv *priv, void *port_vaddr, void *gb
 	priv->mac_init = apm_xgmac_init;
 	priv->mac_rx_state = apm_xgmac_rx_state;
 	priv->mac_tx_state = apm_xgmac_tx_state;
-	priv->mac_change_mtu = apm_xgmac_change_mtu;
 	priv->mac_set_ipg = apm_xgmac_set_ipg;
 	priv->get_stats = apm_xgmac_get_detailed_stats;
 	priv->set_mac_addr = apm_xgmac_set_mac_addr;
@@ -3078,4 +2900,3 @@ void apm_xgenet_init_priv(struct apm_data_priv *priv, void *port_vaddr, void *gb
 	priv->tx_offload = apm_xgmac_tx_offload;
 	priv->port_shutdown = apm_xgport_shutdown;
 }
-

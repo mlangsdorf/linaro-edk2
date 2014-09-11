@@ -1,15 +1,22 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro X-Gene SOC Ethernet U-Boot Header file
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * Author: Keyur Chudgar <kchudgar@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_enet_access.h
+ *
+ */
 
 #ifndef __APM_ENET_ACCESS_H__
 #define __APM_ENET_ACCESS_H__
@@ -19,9 +26,7 @@
 #include <common.h>
 #include <net.h>
 #else
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <string.h>
+#include "../mustang.h"
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/TimerLib.h>
@@ -31,7 +36,6 @@ typedef UINT16 u16;
 typedef UINT32 u32;
 typedef UINT64 u64;
 
-#if 1
 struct eth_device {
 	char name[16];
 	unsigned char enetaddr[6];
@@ -50,28 +54,26 @@ struct eth_device {
 	int index;
 	void *priv;
 };
-#endif
-
-
 
 #ifndef ARRAY_SIZE
-#define ARRAY_SIZE(x)   (sizeof(x) / sizeof((x)[0]))
+#define ARRAY_SIZE(x)   sizeof(x)/sizeof(x[0])
 #endif
 
-#define readl           MmioRead32
-#define writel(v, a)    MmioWrite32((a), (v))
-#define udelay          MicroSecondDelay
-//#define memset(p, v, s) SetMem((p), (s), (v))
+//#define readl           MmioRead32
+//#define writel(v, a)    MmioWrite32((a), (v))
+#define udelay(x)          MicroSecondDelay((x))
+#define mdelay(x)   MicroSecondDelay((x*1000))
 #define memset(dest,ch,count)             SetMem(dest,(UINTN)(count),(UINT8)(ch))
 #define memcpy(dest,source,count)         CopyMem(dest,source,(UINTN)(count))
 #define printf          info
 #define strcmp                            AsciiStrCmp
 #define strcpy(strDest,strSource)         AsciiStrCpy(strDest,strSource)
 #define strncpy(strDest,strSource,count)  AsciiStrnCpy(strDest,strSource,(UINTN)count)
+#define strncmp(string1,string2,count)    (int)(AsciiStrnCmp(string1,string2,(UINTN)(count)))
+
 
 #define DDR_INFO
 #undef DDR_DBG
-
 #ifdef DDR_DBG
 #define debug(arg...) DEBUG ((EFI_D_ERROR,## arg))
 #else
@@ -84,36 +86,26 @@ struct eth_device {
 #define info(arg...)
 #endif
 
-#endif
 #include "apm_enet_common.h"
+#endif
 
 #define BOOTLOADER
-
 #undef BYPASS_CLE
 
 #define ENET_DBG_ERR
 #define ENET_PRINT_ENABLE
-#undef PHY_DEBUG	//TODO
+#undef PHY_DEBUG
 #undef FAM_UBOOT
-#undef DEBUG_HEXDUMP	//TODO
-#undef  ENET_DBG	//TODO
+#undef DEBUG_HEXDUMP
+#define ENET_DBG	//fscz
 #undef DEBUG_RD   
 #undef DEBUG_WR   
 #undef DEBUG_RX 
-#undef DEBUG_TX	//TODO
+#define DEBUG_TX	//fscz
 #undef ENET_REGISTER_READ
 #undef ENET_REGISTER_WRITE
 
 #define STORM_FPGA_CLS_BYPASS
-
-// Buffer Length encoded as per QM message format
-enum apm_enet_buf_len {
-	BUF_LEN_256B = 0x7000,
-	BUF_LEN_1K   = 0x6000,
-	BUF_LEN_2K   = 0x5000,
-	BUF_LEN_4K   = 0x4000,
-	BUF_LEN_16K  = 0x0
-};
 
 #ifdef ENET_PRINT_ENABLE
 #define ENET_PRINT(x, ...)		printf((x), ##__VA_ARGS__)
@@ -171,7 +163,6 @@ enum apm_enet_buf_len {
 #define ENET_TXHEXDUMP(b, l)
 #endif
 
-#undef DEBUG_RX //TODO
 #ifdef DEBUG_RX
 #define ENET_DEBUG_RX(x, ...)		printf((x), ##__VA_ARGS__)
 #else
@@ -193,7 +184,7 @@ enum apm_enet_buf_len {
 #define EMAC_NUM_DEV		1
 
 #define TX_DATA_LEN_MASK	0XFFF
-#define ENET_MAX_MTU_ALIGNED	1536 //TODO PKTSIZE_ALIGN
+#define APM_ENET_FRAME_LEN	1536 //PKTSIZE_ALIGN
 
 #ifndef CONFIG_STORM_VHP
 #define PBN_CLEAR_SUPPORT
@@ -202,7 +193,6 @@ enum apm_enet_buf_len {
 #undef APM_ENET_SERDES_LOOPBACK
 
 #ifdef APM_ENET_SERDES_LOOPBACK
-#undef APM_ENET_MAC_LOOPBACK
 #define NON_AUTO_NEGOTIATION	1
 #endif
 
@@ -235,24 +225,23 @@ struct enet_frame {
 
 /* private information regarding device */
 struct apm_enet_dev {
-	struct apm_data_priv priv;
+	struct apm_enet_priv priv;
 	struct eth_device *ndev;
 	u32 port_id;
-	u32 qm_ip;
 	struct apm_emac_error_stats estats;
-	struct apm_emac_stats stats;
 	struct eth_queue_ids queues;
+	struct xgene_qmtm_sdev *sdev;
 };
 
 #ifdef inline
 #undef inline
 #endif
 /* Ethernet raw register write routine */
-inline int apm_enet_wr32(void *addr, u32 data);
+inline void apm_enet_wr32(void *addr, u32 data);
 
 
 /* Ethernet raw register read routine */
-inline int apm_enet_rd32(void *addr, u32 *data);
+inline void apm_enet_rd32(void *addr, u32 *data);
 
 /**
  * @brief   This function performs preclassifier engine Initialization
@@ -270,10 +259,5 @@ int apm_preclass_init(u8 port_id, struct eth_queue_ids *eth_q);
  * @param   macaddr - Ethenet MAC Address
  */
 void apm_preclass_update_mac(u8 port_id, u8 *macaddr);
-
-int apm_eth_tx(struct eth_device *dev, volatile void *ptr, int len);
-int apm_eth_rx(struct eth_device *dev, VOID *Buffer, UINTN *BufferSize);
-int apm_eth_qm_init(struct apm_enet_dev *priv_dev);
-int apm_eth_fp_init(struct apm_enet_dev *priv_dev);
 
 #endif	/* __APM_ENET_ACCESS_H__ */

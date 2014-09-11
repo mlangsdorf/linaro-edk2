@@ -1,24 +1,30 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro X-Gene SOC Ethernet Classifier U-Boot Source file
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * Author: Ravi Patel <rapatel@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_cle_cfg.c
+ *
+ */
 
 #include "apm_enet_access.h"
 #ifndef APM_XGENE
-#include <misc/xgene/qm/apm_qm_core.h>
+#include <misc/xgene/qmtm/xgene_qmtm.h>
 #include <misc/xgene/cle/apm_preclass_data.h>
 #include <misc/xgene/cle/apm_cle_mgr.h>
 #else
-#include <netinet/in.h>
-#include "../qm/apm_qm_core.h"
+#include "../qm/xgene_qmtm.h"
 #include "../classifier/apm_preclass_data.h"
 #include "../classifier/apm_cle_mgr.h"
 #endif
@@ -78,6 +84,7 @@ int apm_preclass_init(u8 port_id, struct eth_queue_ids *eth_q)
 {
 	int rc;
 	struct apm_ptree_config *ptree_config = &ptree[port_id];
+	u16 dstqid;
 
 	memset(&enet_macaddr[port_id][0], 0, 8);
 	memset(ptree_config, 0, sizeof(*ptree_config));
@@ -89,26 +96,32 @@ int apm_preclass_init(u8 port_id, struct eth_queue_ids *eth_q)
 	memset(&kn, 0, sizeof(kn));
 
 	PCLS_DBG("Create Preclassifier DB entries for Ping Tree port %d\n",
-			port_id);
+		port_id);
 
+	dstqid = QMTM_QUEUE_ID(eth_q->qm_ip, eth_q->rx_qid);
+	dbptr.dstqidL = dstqid & 0x7f;
+	dbptr.dstqidH = (dstqid >> 7) & 0x1f;
 	dbptr.index = DBPTR_ALLOC(CLE_DB_INDEX);
-	dbptr.dstqid = eth_q->rx_qid | DST_QM_IP(eth_q->qm_ip);
 	dbptr.fpsel  = eth_q->rx_fp_pbn - 0x20;
 
 	kn.result_pointer = DBPTR_ALLOC(CLE_DB_INDEX);
 
-	PCLS_DBG("Create Patricia Tree Nodes for Ping Tree. dstqid=0x%x, fpsel=0x%x\n",
-			dbptr.dstqid, dbptr.fpsel);
-	if ((rc = apm_ptree_alloc(port_id, ARRAY_SIZE(node), 1, node, &dbptr,
-					ptree_config)) != APM_RC_OK) {
+	PCLS_DBG("Create Patricia Tree Nodes for Ping Tree with "
+		"dstqid=0x%x, fpsel=0x%x\n", dbptr.dstqid, dbptr.fpsel);
+
+	if ((rc = apm_ptree_alloc(port_id, ARRAY_SIZE(node),
+			1, node, &dbptr, ptree_config)) !=
+			APM_RC_OK) {
 		PCLS_ERR("Preclass init error %d \n", rc);
 		return rc;
 	}
 
 	PCLS_DBG("Switch Tree for port %d with default ptree\n", port_id);
-	if ((rc = apm_set_sys_ptree_config(port_id, ptree_config) != APM_RC_OK)) {
+
+	if ((rc = apm_set_sys_ptree_config(port_id, ptree_config)
+			!= APM_RC_OK)) {
 		PCLS_ERR("Preclass Switch port %d Tree error %d \n",
-				port_id, rc);
+			port_id, rc);
 		return rc;
 	}
 
@@ -118,7 +131,6 @@ int apm_preclass_init(u8 port_id, struct eth_queue_ids *eth_q)
 void apm_preclass_update_mac(u8 port_id, u8 *macaddr)
 {
 	int i;
-	struct ptree_branch pbranch;
 
 	if (memcmp(&enet_macaddr[port_id][0], macaddr, 6) == 0)
 		return;
@@ -126,11 +138,13 @@ void apm_preclass_update_mac(u8 port_id, u8 *macaddr)
 	memcpy(&enet_macaddr[port_id][0], macaddr, 6);
 
 	for (i = 0; i < 3; i++) {
-		pbranch.mask = 0;
-		pbranch.data = ntohs(*(u16 *)&macaddr[i * 2]);
+		struct ptree_branch pbranch;
+
+		memset(&pbranch, 0, sizeof(pbranch));
+		pbranch.data = (macaddr[2 * i] << 8) | macaddr[(2 * i) + 1];
 		pbranch.operation = EQT;
 		apm_set_ptree_node_branch(port_id,
-				ptree[port_id].start_node_ptr + 1,
-				0, (i * 2), &pbranch, SET_BRANCH_MDO);
+			ptree[port_id].start_node_ptr + 1,
+			0, (i * 2), &pbranch, SET_BRANCH_MDO);
 	}
 }

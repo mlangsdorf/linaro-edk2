@@ -1,23 +1,29 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro APM88xxxx SoC Classifier Driver
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Mahesh Pujara <mpujara@apm.com>
+ *                      Ravi Patel <rapatel@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
-
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_preclass_api.c
+ *
+ * This file iplements APIs for APM88xxxx SoC Classifier Parser module.
+ *
+ */
 #ifndef APM_XGENE
 #include <misc/xgene/cle/apm_preclass_data.h>
 #include <misc/xgene/cle/apm_preclass_base.h>
 #else
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <string.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -25,27 +31,11 @@
 #include <netinet/in.h>
 #define readl           MmioRead32
 #define writel(v, a)    MmioWrite32((a), (v))
+#define swab16(x) \
+	(u16)((((u16)(x) & 0x00ff) << 8) | \
+	(((u16)(x) & 0xff00) >> 8))
 #include "apm_preclass_data.h"
 #include "apm_preclass_base.h"
-#endif
-
-#ifndef bswap16
-UINT16
-bswap16(UINT16 x)
-{
-  return ((x << 8) & 0xff00) | ((x >> 8) & 0x00ff);
-}
-#endif
-
-#ifndef bswap32
-UINT32
-bswap32(UINT32 x)
-{
-  return  ((x << 24) & 0xff000000 ) |
-    ((x <<  8) & 0x00ff0000 ) |
-    ((x >>  8) & 0x0000ff00 ) |
-    ((x >> 24) & 0x000000ff );
-}
 #endif
 
 #define APM_RET_IVP APM_RC_INVALID_PARM
@@ -420,9 +410,8 @@ int apm_set_ptree_node(u8 port, u8 node_index, struct apm_ptree_node *node)
 				struct apm_ptree_branch branch;
 
 				memcpy(&branch, sbranch, sizeof(struct apm_ptree_branch));
-				sbranch->mask = htons(branch.mask & DN_MASK_SIZE);
-				sbranch->data = htons(branch.data & DN_MASK_SIZE);
-
+				sbranch->mask = swab16(branch.mask & DN_MASK_SIZE);
+				sbranch->data = swab16(branch.data & DN_MASK_SIZE);
 				if (branch.jump_rel == JMP_ABS)
 					sbranch->next_packet_pointer =
 						((branch.next_packet_pointer + jump_bytes) & DN_NBP_SIZE);
@@ -466,9 +455,8 @@ int apm_get_ptree_node(u8 port, u8 node_index, struct apm_ptree_node *node)
 				struct apm_ptree_branch branch;
 
 				memcpy(&branch, gbranch, sizeof(struct apm_ptree_branch));
-				gbranch->mask = ntohs(branch.mask & DN_MASK_SIZE);
-				gbranch->data = ntohs(branch.data & DN_MASK_SIZE);
-
+				gbranch->mask = swab16(branch.mask & DN_MASK_SIZE);
+				gbranch->data = swab16(branch.data & DN_MASK_SIZE);
 				if (branch.jump_rel == JMP_ABS)
 					gbranch->next_packet_pointer =
 						((branch.next_packet_pointer - jump_bytes) & DN_NBP_SIZE);
@@ -551,7 +539,7 @@ void apm_ptree_dump(const char *func, int line, struct apm_ptree_node *node)
 	struct apm_ptree_branch empty_branch;
 	struct apm_ptree_kn *kn;
 
-	CLE_NODE_DBG("%s: %d:\n", func, line);
+	CLE_NODE_DBG("%a: %d:\n", func, line);
 	switch(node->this.node_type) {
 	case EIGHT_WAY_NODE:
 		memset(&empty_branch, 0, sizeof(empty_branch));
@@ -569,7 +557,7 @@ void apm_ptree_dump(const char *func, int line, struct apm_ptree_node *node)
 
 				memcpy(&dbranch, branch, sizeof(struct apm_ptree_branch));
 				CLE_NODE_DBG("  %d: VBit %d Mask %04x Data %04x OTyp %d "
-					"%s %3d,%d JRel %d JBkw %d NPOf %d\n",
+					"%a %3d,%d JRel %d JBkw %d NPOf %d\n",
 					i, dbranch.valid, dbranch.mask, dbranch.data,
 					dbranch.operation,
 					(ewdn->last_node ? "KNIn" : "NNBr"),
@@ -667,7 +655,7 @@ void apm_ptree_set_data(u32 port, void *data,
 			branch->next_packet_pointer =
 				pbranch->next_packet_pointer & DN_NBP_SIZE;
 			CLE_NODE_DBG("  %d: VBit %d Mask %04x Data %04x OTyp %d "
-					"%s %3d%s,%d JRel %d JBkw %d NPOf %d\n",
+					"%a %3d%a,%d JRel %d JBkw %d NPOf %d\n",
 					i, branch->valid, branch->mask, branch->data,
 					branch->operation,
 					(ewdn->last_node ? "KNIn" : "NNBr"),
@@ -1087,7 +1075,7 @@ int apm_preclass_start_stop(u8 port, u32 state)
 		}
 	}
 
-	PCLS_DBG("%s preclassification parser for port %d \n",
+	PCLS_DBG("%a preclassification parser for port %d \n",
 		(state ? "Starting" : "Stopping"), port);
 
 	return rc;

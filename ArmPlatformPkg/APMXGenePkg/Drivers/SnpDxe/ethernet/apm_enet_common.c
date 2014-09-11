@@ -1,15 +1,26 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro APM88xxxx Ethernet Common Driver
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Fushen Chen <fchen@apm.com>
+ *                      Ravi Patel <rapatel@apm.com>
+ *                      Iyappan Subramanian <isubramanian@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_enet_common.c
+ *
+ * This file implements APM88xxxx Ethernet Common Driver
+ *
+ */
 
 #include "apm_enet_access.h"
 #include "apm_enet_common.h"
@@ -45,11 +56,12 @@
 #ifdef BOOTLOADER
 #define PHY_CSR_POLL_DELAY
 #else
-#define PHY_CSR_POLL_DELAY	msleep(1);
+#define PHY_CSR_POLL_DELAY      msleep(1);
 #endif
 #endif
 
-int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
+
+int apm_enet_write(struct apm_enet_priv *priv, u8 block_id,
 		u32 reg_offset, u32 value)
 {
 	u32 command_done;
@@ -77,7 +89,7 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 
 	case BLOCK_ETH_QMI:
 		addr_reg_offst = priv->eth_qmi_addr_v + reg_offset;
-		ENET_DEBUG("ETH QMI write to 0x%p\n", addr_reg_offst);
+		ENET_DEBUG_WR("ETH QMI write\n");
 		break;
 
 	case BLOCK_ETH_SDS_CSR:
@@ -97,28 +109,31 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 
 	case BLOCK_MCX_MAC:
 	case BLOCK_ETH_INTPHY:
-		addr_reg_offst     = priv->mcx_mac_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mcx_mac_addr_v + MAC_COMMAND_REG_OFFSET;
-		wr_reg_offst       = priv->mcx_mac_addr_v + MAC_WRITE_REG_OFFSET;
-		cmd_done_reg_offst = priv->mcx_mac_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mcx_mac_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mcx_mac_addr_v + MAC_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->mcx_mac_addr_v + MAC_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->mcx_mac_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_WR("MCX MAC/Internal PHY write\n");
 		break;
 
 	case BLOCK_ETH_EXTPHY:
-		addr_reg_offst     = priv->mac_mii_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mac_mii_addr_v + MAC_COMMAND_REG_OFFSET;
-		wr_reg_offst       = priv->mac_mii_addr_v + MAC_WRITE_REG_OFFSET;
-		cmd_done_reg_offst = priv->mac_mii_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mac_mii_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mac_mii_addr_v + MAC_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->mac_mii_addr_v + MAC_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->mac_mii_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_WR("MCX MAC/External PHY write\n");
 		break;
 
 	case BLOCK_MCX_STATS:
-		addr_reg_offst     = priv->mcx_stats_addr_v + STAT_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mcx_stats_addr_v + STAT_COMMAND_REG_OFFSET;
-		wr_reg_offst       = priv->mcx_stats_addr_v + STAT_WRITE_REG_OFFSET;
-		cmd_done_reg_offst = priv->mcx_stats_addr_v + STAT_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mcx_stats_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mcx_stats_addr_v + STAT_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->mcx_stats_addr_v + STAT_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->mcx_stats_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_WR("MCX STATS write\n");
 		break;
@@ -134,19 +149,21 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 		break;
 
 	case BLOCK_AXG_MAC:
-		addr_reg_offst     = priv->axg_mac_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->axg_mac_addr_v + MAC_COMMAND_REG_OFFSET;
-		wr_reg_offst       = priv->axg_mac_addr_v + MAC_WRITE_REG_OFFSET;
-		cmd_done_reg_offst = priv->axg_mac_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->axg_mac_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->axg_mac_addr_v + MAC_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->axg_mac_addr_v + MAC_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->axg_mac_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_WR("AXG MAC write\n");
 		break;
 
 	case BLOCK_AXG_STATS:
-		addr_reg_offst     = priv->axg_stats_addr_v + STAT_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->axg_stats_addr_v + STAT_COMMAND_REG_OFFSET;
-		wr_reg_offst       = priv->axg_stats_addr_v + STAT_WRITE_REG_OFFSET;
-		cmd_done_reg_offst = priv->axg_stats_addr_v + STAT_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->axg_stats_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->axg_stats_addr_v + STAT_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->axg_stats_addr_v + STAT_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->axg_stats_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_WR("AXG STATS write\n");
 		break;
@@ -158,6 +175,16 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 
 	case BLOCK_XGENET_PCS:
 		addr_reg_offst = priv->xgenet_pcs_addr_v + reg_offset;
+		ENET_DEBUG_WR("XGENET PCS write\n");
+		break;
+
+	case BLOCK_XGENET_PCS_IND:
+		addr_reg_offst = priv->xgenet_pcs_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->xgenet_pcs_addr_v + STAT_COMMAND_REG_OFFSET;
+		wr_reg_offst = priv->xgenet_pcs_addr_v + STAT_WRITE_REG_OFFSET;
+		cmd_done_reg_offst = priv->xgenet_pcs_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
+		indirect = 1;
 		ENET_DEBUG_WR("XGENET PCS write\n");
 		break;
 
@@ -199,10 +226,11 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 			if (command_done)
 				break;
 
-			udelay(ACCESS_DELAY_TIMEMS);
+			udelay(ACCESS_DELAY_TIMES);
 
 			if (count++ > MAX_LOOP_POLL_CNT) {
-				ENET_DEBUG_ERR("Write failed for blk: %d\n", block_id);
+				ENET_DEBUG_ERR("Write failed for blk: %d\n",
+					       	block_id);
 				return -1;
 			}
 		}
@@ -219,7 +247,7 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
 	return 0;
 }
 
-int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
+int apm_enet_read(struct apm_enet_priv *priv, u8 block_id,
 		u32 reg_offset, u32 *value)
 {
 	u32 command_done;
@@ -267,28 +295,31 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
 
 	case BLOCK_MCX_MAC:
 	case BLOCK_ETH_INTPHY:
-		addr_reg_offst     = priv->mcx_mac_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mcx_mac_addr_v + MAC_COMMAND_REG_OFFSET;
-		rd_reg_offst       = priv->mcx_mac_addr_v + MAC_READ_REG_OFFSET;
-		cmd_done_reg_offst = priv->mcx_mac_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mcx_mac_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mcx_mac_addr_v + MAC_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->mcx_mac_addr_v + MAC_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->mcx_mac_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_RD("MCX MAC/Internal PHY read\n");
 		break;
 
 	case BLOCK_ETH_EXTPHY:
-		addr_reg_offst     = priv->mac_mii_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mac_mii_addr_v + MAC_COMMAND_REG_OFFSET;
-		rd_reg_offst       = priv->mac_mii_addr_v + MAC_READ_REG_OFFSET;
-		cmd_done_reg_offst = priv->mac_mii_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mac_mii_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mac_mii_addr_v + MAC_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->mac_mii_addr_v + MAC_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->mac_mii_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_RD("MCX MAC/External PHY read\n");
 		break;
 
 	case BLOCK_MCX_STATS:
-		addr_reg_offst     = priv->mcx_stats_addr_v + STAT_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->mcx_stats_addr_v + STAT_COMMAND_REG_OFFSET;
-		rd_reg_offst       = priv->mcx_stats_addr_v + STAT_READ_REG_OFFSET;
-		cmd_done_reg_offst = priv->mcx_stats_addr_v + STAT_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->mcx_stats_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->mcx_stats_addr_v + STAT_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->mcx_stats_addr_v + STAT_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->mcx_stats_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_RD("MCX STATS read\n");
 		break;
@@ -304,19 +335,21 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
 		break;
 
 	case BLOCK_AXG_MAC:
-		addr_reg_offst     = priv->axg_mac_addr_v + MAC_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->axg_mac_addr_v + MAC_COMMAND_REG_OFFSET;
-		rd_reg_offst       = priv->axg_mac_addr_v + MAC_READ_REG_OFFSET;
-		cmd_done_reg_offst = priv->axg_mac_addr_v + MAC_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->axg_mac_addr_v + MAC_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->axg_mac_addr_v + MAC_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->axg_mac_addr_v + MAC_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->axg_mac_addr_v
+		       	+ MAC_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_RD("AXG MAC read\n");
 		break;
 
 	case BLOCK_AXG_STATS:
-		addr_reg_offst     = priv->axg_stats_addr_v + STAT_ADDR_REG_OFFSET;
-		cmd_reg_offst      = priv->axg_stats_addr_v + STAT_COMMAND_REG_OFFSET;
-		rd_reg_offst       = priv->axg_stats_addr_v + STAT_READ_REG_OFFSET;
-		cmd_done_reg_offst = priv->axg_stats_addr_v + STAT_COMMAND_DONE_REG_OFFSET;
+		addr_reg_offst = priv->axg_stats_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->axg_stats_addr_v + STAT_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->axg_stats_addr_v + STAT_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->axg_stats_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
 		indirect = 1;
 		ENET_DEBUG_RD("AXG STATS read\n");
 		break;
@@ -328,6 +361,16 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
 
 	case BLOCK_XGENET_PCS:
 		addr_reg_offst = priv->xgenet_pcs_addr_v + reg_offset;
+		ENET_DEBUG_RD("XGENET PCS read\n");
+		break;
+
+	case BLOCK_XGENET_PCS_IND:
+		addr_reg_offst = priv->xgenet_pcs_addr_v + STAT_ADDR_REG_OFFSET;
+		cmd_reg_offst = priv->xgenet_pcs_addr_v + STAT_COMMAND_REG_OFFSET;
+		rd_reg_offst = priv->xgenet_pcs_addr_v + STAT_READ_REG_OFFSET;
+		cmd_done_reg_offst = priv->xgenet_pcs_addr_v
+		       	+ STAT_COMMAND_DONE_REG_OFFSET;
+		indirect = 1;
 		ENET_DEBUG_RD("XGENET PCS read\n");
 		break;
 
@@ -364,10 +407,11 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
 			if (command_done)
 				break;
 
-			udelay(ACCESS_DELAY_TIMEMS);
+			udelay(ACCESS_DELAY_TIMES);
 
 			if (count++ > MAX_LOOP_POLL_CNT) {
-				ENET_DEBUG_ERR("Read failed for blk: %d\n",block_id);
+				ENET_DEBUG_ERR("Read failed for blk: %d\n",
+						block_id);
 				return -1;
 			}
 		}
@@ -388,7 +432,7 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
 	return 0;
 }
 
-int apm_genericmiiphy_write(struct apm_data_priv *priv, u8 phy_id,
+int apm_genericmiiphy_write(struct apm_enet_priv *priv, u8 phy_id,
 			   unsigned char reg, u32 data)
 {
 	u32 value;
@@ -415,15 +459,15 @@ int apm_genericmiiphy_write(struct apm_data_priv *priv, u8 phy_id,
 
 	/* Write PHY number and address in MII Mgmt Address */
 	value = PHY_ADDR_WR(phy_id) | REG_ADDR_WR(reg);
-	PHY_PRINT("miiphy_write MII_MGMT_ADDRESS_ADDR phy_id=0x%x, reg=0x%x, value=0x%x\n",
-		/*__func__,*/ phy_id, reg << 2, value);
+	PHY_PRINT("%a write MII_MGMT_ADDRESS_ADDR phy_id=0x%x, reg=0x%x, \
+			value=0x%x\n", __func__, phy_id, reg << 2, value);
 	apm_enet_write(priv, blockid,
 			MII_MGMT_ADDRESS_ADDR,value);
 
 	/* Write 16 bit data to MII MGMT CONTROL */
 	value = PHY_CONTROL_WR(data);
-	PHY_PRINT("miiphy_write MII_MGMT_CONTROL_ADDR  phy_id=0x%x, reg=0x%x, value=0x%x\n",
-		phy_id, reg << 2, value);
+	PHY_PRINT(" Write MII_MGMT_CONTROL_ADDR  phy_id=0x%x, reg=0x%x, \
+			value=0x%x %a\n", phy_id, reg << 2, value, __func__);
 	apm_enet_write(priv, blockid,
 			MII_MGMT_CONTROL_ADDR, value);
 
@@ -443,7 +487,7 @@ int apm_genericmiiphy_write(struct apm_data_priv *priv, u8 phy_id,
 	return 0;
 }
 
-int apm_genericmiiphy_read(struct apm_data_priv *priv, u8 phy_id,
+int apm_genericmiiphy_read(struct apm_enet_priv *priv, u8 phy_id,
 			  unsigned char reg, u32 *data)
 {
 	u32 value;
@@ -479,8 +523,8 @@ int apm_genericmiiphy_read(struct apm_data_priv *priv, u8 phy_id,
 read_again:
 	/* Write PHY number and address in MII Mgmt Address */
 	value = PHY_ADDR_WR(phy_id) | REG_ADDR_WR(reg);
-	PHY_PRINT("miiphy_read MII_MGMT_ADDRESS_ADDR phy_id=0x%x, reg=0x%x, value=0x%x\n",
-		/*__func__,*/ phy_id, reg << 2, value);
+	PHY_PRINT("%a MII_MGMT_ADDRESS_ADDR phy_id=0x%x, reg=0x%x, \
+			value=0x%x\n", __func__, phy_id, reg << 2, value);
 	apm_enet_write(priv, blockid, MII_MGMT_ADDRESS_ADDR, value);
 
 	/* Write read command */
@@ -497,7 +541,8 @@ read_again:
 	}
 
 	apm_enet_read(priv, blockid, MII_MGMT_STATUS_ADDR, data);
-	PHY_PRINT("miiphy_read data=0X%x from MII_MGMT_STATUS_ADDR\n", *data);
+	PHY_PRINT("Read data=0X%x from MII_MGMT_STATUS_ADDR %a\n",
+		       	*data, __func__);
 
 	/* reset mii_mgmt_command register */
 	apm_enet_write(priv, blockid, MII_MGMT_COMMAND_ADDR, 0);
@@ -509,25 +554,25 @@ read_again:
 	return 0;
 }
 
-void apm_enet_port_reset(struct apm_data_priv *priv, u32 mii_mode)
+void apm_enet_port_reset(struct apm_enet_priv *priv, u32 mii_mode)
 {
 	if (priv->port_reset)
 		priv->port_reset(priv, mii_mode);
 }
 
-void apm_enet_mac_reset(struct apm_data_priv *priv)
+void apm_enet_mac_reset(struct apm_enet_priv *priv)
 {
 	if (priv->mac_reset)
 		priv->mac_reset(priv);
 }
 
-void apm_enet_serdes_reset(struct apm_data_priv *priv)
+void apm_enet_serdes_reset(struct apm_enet_priv *priv)
 {
 	if (priv->serdes_reset)
 		priv->serdes_reset(priv, priv->port);
 }
 
-int apm_enet_get_link_status(struct apm_data_priv *priv)
+int apm_enet_get_link_status(struct apm_enet_priv *priv)
 {
 	int ret = 0;
 	if (priv->get_link_status)
@@ -535,73 +580,79 @@ int apm_enet_get_link_status(struct apm_data_priv *priv)
 	return ret;
 }
 
-void apm_enet_autoneg(struct apm_data_priv *priv, int autoneg)
+void apm_enet_autoneg(struct apm_enet_priv *priv, int autoneg)
 {
 	if (priv->autoneg)
 		priv->autoneg(priv, autoneg);
 }
 
-int apm_enet_mac_init(struct apm_data_priv *priv,
-		unsigned char *dev_addr, int speed, int mtu, int crc)
+int apm_enet_mac_init(struct apm_enet_priv *priv,
+		unsigned char *dev_addr, int speed, int crc)
 {
 	int rc = 0;
 
 	if (priv->mac_init)
-		rc = priv->mac_init(priv, dev_addr, speed, mtu, crc);
+		rc = priv->mac_init(priv, dev_addr, speed, crc);
 
 	return rc;
 }
 
-void apm_enet_mac_tx_state(struct apm_data_priv *priv, u32 enable)
+void apm_enet_mac_tx_state(struct apm_enet_priv *priv, u32 enable)
 {
 	if (priv->mac_tx_state)
 		priv->mac_tx_state(priv, enable);
 }
 
-void apm_enet_mac_rx_state(struct apm_data_priv *priv, u32 enable)
+void apm_enet_mac_rx_state(struct apm_enet_priv *priv, u32 enable)
 {
 	if (priv->mac_rx_state)
 		priv->mac_rx_state(priv, enable);
 }
 
-void apm_enet_mac_change_mtu(struct apm_data_priv *priv, u32 new_mtu)
-{
-	if (priv->mac_change_mtu)
-		priv->mac_change_mtu(priv, new_mtu);
-}
-
-void apm_enet_mac_set_ipg(struct apm_data_priv *priv, u16 ipg)
+void apm_enet_mac_set_ipg(struct apm_enet_priv *priv, u16 ipg)
 {
 	if (priv->mac_set_ipg)
 		priv->mac_set_ipg(priv, ipg);
 }
 
-void apm_enet_get_stats(struct apm_data_priv *priv, struct eth_detailed_stats *stats)
+void apm_enet_get_stats(struct apm_enet_priv *priv, struct eth_detailed_stats *stats)
 {
 	if (priv->get_stats)
 		priv->get_stats(priv, stats);
 }
 
-void apm_enet_set_mac_addr(struct apm_data_priv *priv, unsigned char *dev_addr)
+void apm_enet_set_mac_addr(struct apm_enet_priv *priv, unsigned char *dev_addr)
 {
 	if (priv->set_mac_addr)
 		priv->set_mac_addr(priv, dev_addr);
 }
 
-void apm_enet_cle_bypass(struct apm_data_priv *priv, u32 dstqid, u32 fpsel)
+void apm_enet_cle_bypass(struct apm_enet_priv *priv, u32 dstqid, u32 fpsel,
+	u32 nxtfpsel, int bypass_en)
 {
 	if (priv->cle_bypass)
-		priv->cle_bypass(priv, dstqid, fpsel);
+		priv->cle_bypass(priv, dstqid, fpsel, nxtfpsel, bypass_en);
 }
 
-void apm_enet_tx_offload(struct apm_data_priv *priv, u32 command, u32 value)
+void apm_enet_tx_offload(struct apm_enet_priv *priv, u32 command, u32 value)
 {
 	if (priv->tx_offload)
 		priv->tx_offload(priv, command, value);
 }
 
-void apm_enet_port_shutdown(struct apm_data_priv *priv)
+void apm_enet_port_shutdown(struct apm_enet_priv *priv)
 {
 	if (priv->port_shutdown)
 		priv->port_shutdown(priv);
+}
+
+inline enum xgene_qmtm_qaccess apm_enet_get_qacess(void)
+{
+	enum xgene_qmtm_qaccess qaccess;
+#ifdef CONFIG_ARCH_MSLIM
+	qaccess = QACCESS_QMI;
+#else
+	qaccess = QACCESS_ALT;
+#endif
+	return qaccess;
 }

@@ -37,22 +37,19 @@
 #define DBG(arg...)
 #endif
 
-#ifdef APM_XGENE /* TODO */
+#ifdef APM_XGENE
 #include "ethernet/apm_enet_access.h"
-extern int apm_eth_initialize(u8 *mac_addr);
-extern struct eth_device *emac_dev;
+extern int apm_eth_initialize(int index, u8* mac_addr);
+extern struct eth_device *emac_dev[];
 extern int apm_eth_tx(struct eth_device *dev, volatile void *ptr, int len);
 extern UINT32 eth_initialized;
 extern int putshex(unsigned char *buf, int len);
-
-//#define PXE_SWAP_UINT16(n)  ((((UINT16) (n) & 0x00FF) << 8) | (((UINT16) (n) & 0xFF00) >> 8))
 #endif
 
 typedef struct _SNP_GLOBAL_DATA  SNP_GLOBAL_DATA;
 typedef struct _SNP_INSTANCE_DATA SNP_INSTANCE_DATA;
 
 /* FIXME: Do we need pack attribute here ? */
-//TODO add pack
 #pragma pack(1)
 typedef struct _NET_INTERFACE_INFO {
   UINT32          InterfaceIndex;

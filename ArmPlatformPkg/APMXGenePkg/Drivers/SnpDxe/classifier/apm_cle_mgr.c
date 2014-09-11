@@ -1,16 +1,29 @@
-/**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+/*
+ * AppliedMicro APM88xxxx CLE Configuration Header
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * Ravi Patel <rapatel@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
  *
- **/
-
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
+ *
+ * @file apm_cle_mgr.c
+ *
+ * This file implements Management APIs for
+ * AppliedMicro APM88xxxx SoC Classifier module.
+ */
 #ifndef APM_XGENE
 #include <misc/xgene/cle/apm_cle_mgr.h>
 #else
@@ -315,7 +328,7 @@ int apm_ptree_alloc(u8 port, u8 ptnodes, u16 dbptrs,
 			PCLS_ERR("Patricia Tree Node-Check error %d \n", rc);
 			return rc;
 		}
-		PCLS_PRNT("%s: Prepared-N-Checked index %d\n", __func__, i);
+		PCLS_PRNT("%a: Prepared-N-Checked index %d\n", __func__, i);
 	}
 
 	/* Check for branch count in ptree nodes configuration */
@@ -349,7 +362,7 @@ int apm_ptree_alloc(u8 port, u8 ptnodes, u16 dbptrs,
 
 			return rc;
 		}
-		PCLS_PRNT("%s: Configured node index %d\n", __func__, dst_node.index);
+		PCLS_PRNT("%a: Configured node index %d\n", __func__, dst_node.index);
 	}
 
 	for (i = 0; i < dbptrs; i++) {
@@ -375,7 +388,7 @@ int apm_ptree_alloc(u8 port, u8 ptnodes, u16 dbptrs,
 
 			return rc;
 		}
-		PCLS_PRNT("%s: Configured dbptr index %d\n", __func__, index);
+		PCLS_PRNT("%a: Configured dbptr index %d\n", __func__, index);
 	}
 
 	if (ptree_config) {
@@ -454,7 +467,7 @@ int apm_avl_alloc(u8 port, u16 avlnodes, u16 dbptrs,
 			PCLS_ERR("AVL Engine Node-Check error %d \n", rc);
 			return rc;
 		}
-		PCLS_PRNT("%s: Prepared-N-Checked index %d\n", __func__, i);
+		PCLS_PRNT("%a: Prepared-N-Checked index %d\n", __func__, i);
 	}
 
 	dbptr_entry_count[cid] = 0;
@@ -472,7 +485,7 @@ int apm_avl_alloc(u8 port, u16 avlnodes, u16 dbptrs,
 
 			return rc;
 		}
-		PCLS_PRNT("%s: Configured node index %d\n", __func__, dst_node.index);
+		PCLS_PRNT("%a: Configured node index %d\n", __func__, dst_node.index);
 		node[i].index = dst_node.index;
 	}
 
@@ -495,7 +508,7 @@ int apm_avl_alloc(u8 port, u16 avlnodes, u16 dbptrs,
 
 			return rc;
 		}
-		PCLS_PRNT("%s: Configured dbptr index %d\n", __func__, index);
+		PCLS_PRNT("%a: Configured dbptr index %d\n", __func__, index);
 
 		dbptr[i].index = index;		/* Updating for Caller */
 	}
@@ -565,7 +578,7 @@ int apm_dbptr_alloc(u8 port, u16 dbptrs, struct apm_cle_dbptr *dbptr)
 			PCLS_ERR("Result Pointer-Check error %d \n", rc);
 			return rc;
 		}
-		PCLS_PRNT("%s: Prepared-N-Checked index %d\n", __func__, i);
+		PCLS_PRNT("%a: Prepared-N-Checked index %d\n", __func__, i);
 	}
 
 	dbptr_entry_count[cid] = 0;
@@ -583,7 +596,7 @@ int apm_dbptr_alloc(u8 port, u16 dbptrs, struct apm_cle_dbptr *dbptr)
 
 			return rc;
 		}
-		PCLS_PRNT("%s: Configured dbptr index %d\n", __func__, dst_dbptr.index);
+		PCLS_PRNT("%a: Configured dbptr index %d\n", __func__, dst_dbptr.index);
 
 		dbptr[i].index = dst_dbptr.index;	/* Updating for Caller */
 	}

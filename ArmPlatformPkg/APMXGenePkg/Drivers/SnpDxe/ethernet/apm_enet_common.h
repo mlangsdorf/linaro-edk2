@@ -1,18 +1,37 @@
 /**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+ * AppliedMicro X-Gene Ethernet Common Header
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
+ * Copyright (c) 2013 Applied Micro Circuits Corporation.
+ * All rights reserved. Ravi Patel <rapatel@apm.com>
+ *                      Iyappan Subramanian <isubramanian@apm.com>
+ *                      Fushen Chen <fchen@apm.com>
  *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- **/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * @file apm_enet_common.h
+ *
+ * This file implements X-Gene Ethernet Common Header
+ *
+ */
 
 #ifndef __APM_ENET_COMMON_H__
 #define __APM_ENET_COMMON_H__
+
+#ifndef APM_XGENE
+#include "../drivers/misc/xgene/qmtm/xgene_qmtm_main.h"
+#include <misc/xgene/qmtm/xgene_qmtm.h>
+#else
+#include "../qm/xgene_qmtm_main.h"
+#include "../qm/xgene_qmtm.h"
+#endif
 
 /* ===== APM MAC definitions =====*/
 
@@ -48,10 +67,6 @@ enum eth_port_ids {
 	MAX_ENET_PORTS
 };
 
-#define MAX_LOOP_POLL_CNT	10
-#define MAX_LOOP_POLL_TIMEMS	500
-#define ACCESS_DELAY_TIMEMS	(MAX_LOOP_POLL_TIMEMS / MAX_LOOP_POLL_CNT)
-
 /* TSO Parameters */
 #define TSO_ENABLE		1
 #define TSO_ENABLE_MASK		1
@@ -80,7 +95,7 @@ enum {
 
 /* TYPE_SEL for Ethernt egress message */
 #define TYPE_SEL_TIMESTAMP_MSG	0
-#define TYPE_SEL_WORK_MSG	1
+#define TYPE_SEL_WORK_MSG	1U
 
 /* Blocks for defined regions */
 enum {
@@ -105,6 +120,7 @@ enum {
 	BLOCK_AXG_MAC_CSR,
 	BLOCK_XGENET_PCS,
 	BLOCK_XGENET_MDIO_CSR,
+	BLOCK_XGENET_PCS_IND,
 
 	BLOCK_ETH_MAX
 };
@@ -142,9 +158,9 @@ enum {
 #define STAT_READ_REG_OFFSET		12
 #define STAT_COMMAND_DONE_REG_OFFSET	16
 
-#define MAX_LOOP_POLL_TIMEMS		500
+#define MAX_LOOP_POLL_TIMES		500
 #define MAX_LOOP_POLL_CNT		10
-#define ACCESS_DELAY_TIMEMS	(MAX_LOOP_POLL_TIMEMS / MAX_LOOP_POLL_CNT)
+#define ACCESS_DELAY_TIMES		(MAX_LOOP_POLL_TIMES / MAX_LOOP_POLL_CNT)
 
 #define DRV_VERSION			"1.0"
 
@@ -152,18 +168,27 @@ enum {
 #define PCM_LOOPBACK
 #endif
 
-#define HW_MTU(m) ((m) + 12 + 2 + 4 /* MAC + CRC */)
-#define SPEED_0		 	0xffff
-#define SPEED_10	    	10
-#define SPEED_100	     	100
-#define SPEED_1000	     	1000
-#define SPEED_10000             10000
-#define HALF_DUPLEX	     	1
-#define FULL_DUPLEX	     	2
-#define PHY_MODE_NONE		0
-#define PHY_MODE_RGMII		1
-#define PHY_MODE_SGMII		2
-#define PHY_MODE_XGMII		3
+enum apm_enum_speed {
+	APM_ENET_SPEED_0 = 0xffff,
+	APM_ENET_SPEED_10 = 10,
+	APM_ENET_SPEED_100 = 100,
+	APM_ENET_SPEED_1000 = 1000,
+	APM_ENET_SPEED_10000 = 10000
+};
+
+enum apm_enet_mode {
+	HALF_DUPLEX = 1,
+	FULL_DUPLEX = 2
+};
+
+enum apm_enet_phy_mode {
+PHY_MODE_NONE,
+PHY_MODE_RGMII,
+PHY_MODE_SGMII,
+PHY_MODE_XGMII
+};
+
+#define CMU 0
 
 /* ===== MII definitions ===== */
 
@@ -399,6 +424,9 @@ enum {
 #define RTL_PHYID2_ADR          3
 #define RTL_PHYSR_ADR           0X11
 
+/* No need to poll CSR faster than 1 ms */
+#define PHY_CSR_POLL_DELAY
+
 /* SGMII related functions */
 #define INT_PHY_ADDR	0x1E
 #define apm_miiphy_write(priv, reg, data) \
@@ -432,52 +460,12 @@ enum apm_enet_lerr {
 };
 
 /* Statistics related variables */
-/* Normal TX/RX Statistics */
-struct apm_emac_stats {
-	u64 rx_packets;
-	u64 rx_bytes;
-	u64 tx_packets;
-	u64 tx_bytes;
-	u64 rx_packets_csum;
-	u64 tx_packets_csum;
-	u64 pkts_handled;
-	u64 data_len_err;
-	short tx_err_log[MAX_ERR_LOG];
-	short rx_err_log[MAX_ERR_LOG];
-};
 
-/* Error TX/RX Statistics */
+/* Error TX/RX Statistics - maintained by software */
 struct apm_emac_error_stats {
-	/* Software RX Errors */
-	u64 rx_dropped_stack;
-	u64 rx_dropped_error;
-	u64 rx_dropped_mtu;
-
-	/* HW reported RX errors */
 	u64 rx_hw_errors;
 	u64 rx_hw_overrun;
-	u64 rx_hw_bad_packet;
-	u64 rx_bd_bad_fcs;
-
-	/* EMAC IRQ reported RX errors */
-	u64 rx_parity;
-	u64 rx_fifo_overrun;
-	u64 rx_overrun;
-	u64 rx_bad_packet;
-	u64 rx_bus_err;
-
-	/* Software TX Errors */
 	u64 tx_dropped;
-	/* HW reported TX errors */
-	u64 tx_hw_errors;
-	u64 tx_hw_bad_fcs;
-	u64 tx_hw_underrun;
-
-	/* EMAC IRQ reported TX errors */
-	u64 tx_parity;
-	u64 tx_underrun;
-	u64 tx_errors;
-	u64 tx_bus_err;
 };
 
 /**
@@ -549,20 +537,6 @@ struct eth_tx_stats {
 };
 
 /**
- * @struct  eth_brief_stats
- * @brief   This is the brief statistics counts for Ethernet device
- **
- */
-struct eth_brief_stats {
-	u32 rx_byte_count;		/**< Receive Byte Counter */
-	u32 rx_packet_count;		/**< Receive Packet Counter */
-	u32 rx_drop_pkt_count;		/**< Receive Drop Packet Counter */
-	u32 tx_byte_count;		/**< Transmit Byte Counter */
-	u32 tx_pkt_count;		/**< Transmit Packet Counter */
-	u32 tx_drop_frm_count;		/**< Transmit Drop Packet Counter */
-};
-
-/**
  * @struct  eth_detailed_stats
  * @brief   This is the detailed statistics counts for Ethernet device
  **
@@ -572,10 +546,11 @@ struct eth_detailed_stats {
 					/**< Tx, Rx combined stats */
 	struct eth_rx_stat rx_stats;	/**< Rx statistics */
 	struct eth_tx_stats tx_stats;	/**< Tx statistics */
+	struct apm_emac_error_stats estats;
 };
 
 /* Ethernet private structure */
-struct apm_data_priv {
+struct apm_enet_priv {
 	void *eth_csr_addr_v;        /**< Virtual base addr of xNET CSR */
 	void *eth_cle_addr_v;        /**< Virtual base addr of xNET CLE */
 	void *eth_qmi_addr_v;        /**< Virtual base addr of xNET QMI */
@@ -618,25 +593,25 @@ struct apm_data_priv {
 				    ** allow to force controller reset */
 
 	/* Function pointers */
-	void (*port_reset)(struct apm_data_priv *priv, u32 mii_mode);
-	int (*phy_autoneg_done)(struct apm_data_priv *priv);
-	void (*phy_link_mode)(struct apm_data_priv *priv, u32 *speed, u32 *state);
-	void (*mac_reset)(struct apm_data_priv *priv);
-	int (*mac_init)(struct apm_data_priv *priv,
-			unsigned char *dev_addr, int speed, int mtu, int crc);
-	void (*mac_rx_state)(struct apm_data_priv *priv, u32 enable);
-	void (*mac_tx_state)(struct apm_data_priv *priv, u32 enable);
-	void (*mac_change_mtu)(struct apm_data_priv *priv, u32 new_mtu);
-	void (*mac_set_ipg)(struct apm_data_priv *priv, u16 new_ipg);
-	void (*get_stats)(struct apm_data_priv *priv, struct eth_detailed_stats *stats);
-	void (*set_mac_addr)(struct apm_data_priv *priv, unsigned char *dev_addr);
-	void (*cle_bypass)(struct apm_data_priv *priv, u32 dstqid, u32 fpsel);
-	void (*tx_offload)(struct apm_data_priv *priv, u32 command, u32 value);
-	void (*qmi_assoc)(struct apm_data_priv *priv);
-	int (*get_link_status)(struct apm_data_priv *priv);
-	void (*port_shutdown)(struct apm_data_priv *priv);
-	void (*serdes_reset)(struct apm_data_priv *priv, int port);
-	void (*autoneg)(struct apm_data_priv *priv, int autoneg);
+	void (*port_reset)(struct apm_enet_priv *priv, u32 mii_mode);
+	int (*phy_autoneg_done)(struct apm_enet_priv *priv);
+	void (*phy_link_mode)(struct apm_enet_priv *priv, u32 *speed, u32 *state);
+	void (*mac_reset)(struct apm_enet_priv *priv);
+	int (*mac_init)(struct apm_enet_priv *priv,
+			unsigned char *dev_addr, int speed, int crc);
+	void (*mac_rx_state)(struct apm_enet_priv *priv, u32 enable);
+	void (*mac_tx_state)(struct apm_enet_priv *priv, u32 enable);
+	void (*mac_set_ipg)(struct apm_enet_priv *priv, u16 new_ipg);
+	void (*get_stats)(struct apm_enet_priv *priv, struct eth_detailed_stats *stats);
+	void (*set_mac_addr)(struct apm_enet_priv *priv, unsigned char *dev_addr);
+	void (*cle_bypass)(struct apm_enet_priv *priv,
+		u32 cle_dstqid, u32 cle_fpsel, u32 cle_nxtfpsel, int bypass_en);
+	void (*tx_offload)(struct apm_enet_priv *priv, u32 command, u32 value);
+	void (*qmi_assoc)(struct apm_enet_priv *priv);
+	int (*get_link_status)(struct apm_enet_priv *priv);
+	void (*port_shutdown)(struct apm_enet_priv *priv);
+	void (*serdes_reset)(struct apm_enet_priv *priv, int port);
+	void (*autoneg)(struct apm_enet_priv *priv, int autoneg);
 };
 
 /**
@@ -647,7 +622,7 @@ struct apm_data_priv {
  * @return  value  value to be written
  **
  */
-int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
+int apm_enet_write(struct apm_enet_priv *priv, u8 block_id,
 		u32 reg_offset, u32 value);
 
 /**
@@ -658,7 +633,7 @@ int apm_enet_write(struct apm_data_priv *priv, u8 block_id,
  * @return  value  Pointer to value
  **
  */
-int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
+int apm_enet_read(struct apm_enet_priv *priv, u8 block_id,
 		 u32 reg_offset, u32 *value);
 
 /**
@@ -670,7 +645,7 @@ int apm_enet_read(struct apm_data_priv *priv, u8 block_id,
  * @return  0 - success or -1 - failure
  **
  */
-int apm_genericmiiphy_read(struct apm_data_priv *priv, u8 phy_id,
+int apm_genericmiiphy_read(struct apm_enet_priv *priv, u8 phy_id,
 			   unsigned char reg, u32 *data);
 /**
  * @brief   This function writes to the MII Management registers
@@ -681,7 +656,7 @@ int apm_genericmiiphy_read(struct apm_data_priv *priv, u8 phy_id,
  * @return  0 - success or -1 - failure
  **
  */
-int apm_genericmiiphy_write(struct apm_data_priv *priv, u8 phy_id,
+int apm_genericmiiphy_write(struct apm_enet_priv *priv, u8 phy_id,
 			    unsigned char reg, u32 data);
 
 /**
@@ -694,7 +669,7 @@ int apm_genericmiiphy_write(struct apm_data_priv *priv, u8 phy_id,
             in reset and then init with specified mii_mode.
  **
  */
-void apm_enet_port_reset(struct apm_data_priv *priv, u32 mii_mode);
+void apm_enet_port_reset(struct apm_enet_priv *priv, u32 mii_mode);
 
 /**
  * @brief   This function resets the entire part of MAC
@@ -705,10 +680,10 @@ void apm_enet_port_reset(struct apm_data_priv *priv, u32 mii_mode);
             in reset and then init.
  **
  */
-void apm_enet_mac_reset(struct apm_data_priv *priv);
-void apm_enet_serdes_reset(struct apm_data_priv *priv);
-int apm_enet_get_link_status(struct apm_data_priv *priv);
-void apm_enet_autoneg(struct apm_data_priv *privi, int autoneg);
+void apm_enet_mac_reset(struct apm_enet_priv *priv);
+void apm_enet_serdes_reset(struct apm_enet_priv *priv);
+int apm_enet_get_link_status(struct apm_enet_priv *priv);
+void apm_enet_autoneg(struct apm_enet_priv *privi, int autoneg);
 
 /**
  * @brief   This function initializes the MAC
@@ -720,8 +695,8 @@ void apm_enet_autoneg(struct apm_data_priv *privi, int autoneg);
  * @return  0 - success or -1 - failure
  **
  */
-int apm_enet_mac_init(struct apm_data_priv *priv, unsigned char *dev_addr,
-			int speed, int mtu, int crc);
+int apm_enet_mac_init(struct apm_enet_priv *priv, unsigned char *dev_addr,
+			int speed, int crc);
 
 /**
  * @brief   This function Enables/Disables Receive interface of MAC
@@ -733,7 +708,7 @@ int apm_enet_mac_init(struct apm_data_priv *priv, unsigned char *dev_addr,
  *	    interface will prevent the reception of frames.
  **
  */
-void apm_enet_mac_rx_state(struct apm_data_priv *priv, u32 enable);
+void apm_enet_mac_rx_state(struct apm_enet_priv *priv, u32 enable);
 
 /**
  * @brief   This function Enables/Disabled Transmit interface of MAC
@@ -745,18 +720,7 @@ void apm_enet_mac_rx_state(struct apm_data_priv *priv, u32 enable);
  *	    prevent the transmission of frames.
  **
  */
-void apm_enet_mac_tx_state(struct apm_data_priv *priv, u32 enable);
-
-
-/**
- * @brief   This function changed the MTU of given interface
- * @param   priv MAC private stucture
- * @param   new_mtu New MTU value to set
- * @return  None
- * @note    Used to modify the MTU of given interface
- **
- */
-void apm_enet_mac_change_mtu(struct apm_data_priv *priv, u32 new_mtu);
+void apm_enet_mac_tx_state(struct apm_enet_priv *priv, u32 enable);
 
 /**
  * @brief   Set InterFrameGap in terms of bits
@@ -765,7 +729,7 @@ void apm_enet_mac_change_mtu(struct apm_data_priv *priv, u32 new_mtu);
  * @return  None
  *
  */
-void apm_enet_mac_set_ipg(struct apm_data_priv *priv, u16 ipg);
+void apm_enet_mac_set_ipg(struct apm_enet_priv *priv, u16 ipg);
 
 /**
  * @brief   This function returns detailed statistics counts for the device
@@ -774,7 +738,7 @@ void apm_enet_mac_set_ipg(struct apm_data_priv *priv, u16 ipg);
  * @return  None
  **
  */
-void apm_enet_get_stats(struct apm_data_priv *priv,
+void apm_enet_get_stats(struct apm_enet_priv *priv,
 				struct eth_detailed_stats *detailed_stats);
 
 /**
@@ -785,17 +749,19 @@ void apm_enet_get_stats(struct apm_data_priv *priv,
  * @return  None.
  **
  */
-void apm_enet_set_mac_addr(struct apm_data_priv *priv, unsigned char *dev_addr);
+void apm_enet_set_mac_addr(struct apm_enet_priv *priv, unsigned char *dev_addr);
 
 /**
  * @brief   This function configures the Ethernet to bypass Classifier block
  * @param   priv MAC private stucture
  * @param   dstqid Ethernet RX work queue ID
  *	    fpsel  Ethernet FP PBN
+ *	    nxtfpsel  Ethernet Next FP PBN
  * @return  None.
  **
  */
-void apm_enet_cle_bypass(struct apm_data_priv *priv, u32 dstqid, u32 fpsel);
+void apm_enet_cle_bypass(struct apm_enet_priv *priv, u32 dstqid,
+		 u32 fpsel, u32 nxtfpsel, int en);
 
 /**
  * @brief   This function configures the Ethernet TX Offload configuration like
@@ -807,7 +773,7 @@ void apm_enet_cle_bypass(struct apm_data_priv *priv, u32 dstqid, u32 fpsel);
  * @return  None.
  **
  */
-void apm_enet_tx_offload(struct apm_data_priv *priv, u32 command, u32 value);
+void apm_enet_tx_offload(struct apm_enet_priv *priv, u32 command, u32 value);
 
 /**
  * @brief   This function resets the Ethernet csr, core and serdes
@@ -816,6 +782,8 @@ void apm_enet_tx_offload(struct apm_data_priv *priv, u32 command, u32 value);
  * @return  None.
  **
  */
-void apm_enet_port_shutdown(struct apm_data_priv *priv);
+void apm_enet_port_shutdown(struct apm_enet_priv *priv);
+
+enum xgene_qmtm_qaccess apm_enet_get_qacess(void);
 
 #endif	/* __APM_ENET_COMMON_H__ */

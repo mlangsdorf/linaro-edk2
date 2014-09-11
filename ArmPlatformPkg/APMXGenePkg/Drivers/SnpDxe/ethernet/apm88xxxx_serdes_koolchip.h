@@ -1,15 +1,12 @@
-/**
- * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
+/*
+ * Diag team: vdc_diag@apm.com
+ * $Id: apm88xxxx_serdes_koolchip.h,v 1.6 2013/04/07 02:48:46 hknguyen Exp $
+ **
+ * apm88xxxx_serdes_koolchip.h
  *
- * This program and the accompanying materials
- * are licensed and made available under the terms and conditions of the BSD License
- * which accompanies this distribution.  The full text of the license may be found at
- * http://opensource.org/licenses/bsd-license.php
- *
- * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
- * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
- *
- **/
+ *  Created on: Jan 22, 2013
+ *      Author: hknguyen
+ */
 
 #ifndef APM88XXXX_SERDES_KOOLCHIP_H_
 #define APM88XXXX_SERDES_KOOLCHIP_H_

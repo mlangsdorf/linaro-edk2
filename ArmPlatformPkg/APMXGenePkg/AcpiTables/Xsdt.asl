@@ -19,7 +19,7 @@
 [0001]                           Revision : 01
 [0001]                           Checksum : 8B
 [0006]                             Oem ID : "APM   "
-[0008]                       Oem Table ID : "XGENE    "
+[0008]                       Oem Table ID : "XGENE   "
 [0004]                       Oem Revision : 00000002
 [0004]                    Asl Compiler ID : "INTL"
 [0004]              Asl Compiler Revision : 20100528

@@ -36,6 +36,7 @@
   ShellPkg/ShellPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPlatformPkg/APMXGenePkg/APMXGene.dec
 
 [LibraryClasses]
@@ -59,6 +60,9 @@
 
 [FeaturePcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdBootingLinuxUEFI
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdGicDistributorBase

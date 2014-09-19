@@ -25,6 +25,12 @@
 #define PALIGN(p, a)    ((void *)(ALIGN((unsigned long)(p), (a))))
 #define GET_CELL(p)     (p += 4, *((const UINT32 *)(p-4)))
 
+#ifdef AARCH64_MP_PROTOCOL
+#define CPU_OFFSET	8
+#else
+#define CPU_OFFSET	0
+#endif
+
 STATIC inline
 UINTN
 cpu_to_fdtn (UINTN x) {
@@ -612,7 +618,7 @@ PrepareFdt (
           Method = fdt_getprop(fdt, cpu_node, "enable-method", &lenp);
           if ( (Method == NULL) || (!AsciiStrCmp((CHAR8 *)Method, "spin-table")) ) {
             fdt_setprop_string(fdt, cpu_node, "enable-method", "spin-table");
-            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress);
+            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress + CPU_OFFSET);
             fdt_setprop(fdt, cpu_node, "cpu-release-addr", &CpuReleaseAddr, sizeof(CpuReleaseAddr));
           } else {
             Print(L"Warning: Unsupported enable-method type for CPU[%d] : %a\n", Index, (CHAR8 *)Method);

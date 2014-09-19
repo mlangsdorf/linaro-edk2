@@ -38,7 +38,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 0000004000008000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -55,7 +55,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 0000004000009000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -72,7 +72,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000A000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -89,7 +89,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000B000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -106,7 +106,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000C000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -123,7 +123,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000D000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000
@@ -140,7 +140,7 @@
                        Processor Enabled : 1
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000E000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]              Hyp GIC Base Address : 00000000780C0000

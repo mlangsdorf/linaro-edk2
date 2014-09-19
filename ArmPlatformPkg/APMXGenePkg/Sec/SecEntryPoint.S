@@ -259,10 +259,18 @@ secondary_core_wait:
 	mrs     x0, mpidr_el1
 	and     x0, x0, #0xffff
 
-1:	wfi
-	ldr     w2, [x1]
-	cmp     w2, w0 /* Check processor ID */
-	b.ne	1b
+/* For backward compatibility reasons with systems using DTBs, we're not
+ * fully and implementing parking protocol.
+ */
+1:
+#ifdef TRUE_AARCH64_MP_PROTOCOL
+	wfi
+ 	ldr	 w2, [x1]
+ 	cmp	 w2, w0 /* Check processor ID */
+ 	b.ne	1b
+#else
+	wfe
+#endif
 
 	ldr     x3, [x1, #8]
 	cbz	    x3, 1b

@@ -81,7 +81,7 @@
 
   #
   # Enable this option to run from GFC NOR and VHP (Model)
-  #GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_NO_NORDELAY -DAPM_XGENE_GFC_FLASH -DAPM_XGENE_NOSATA
+  #GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_NO_NORDELAY -DAPM_XGENE_GFC_FLASH -DAPM_XGENE_NOSATA -DAARCH64_MP_PROTOCOL
 
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
@@ -109,7 +109,7 @@
    gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
 [PcdsDynamicDefault.common]
-   gArmTokenSpaceGuid.PcdBootingLinuxUEFI|1
+   gArmTokenSpaceGuid.PcdBootingLinuxUEFI|2
 
 [PcdsFixedAtBuild.common]
    gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0"

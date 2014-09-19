@@ -75,7 +75,7 @@
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
-  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR -fno-omit-frame-pointer
+  GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR -DAARCH64_MP_PROTOCOL -fno-omit-frame-pointer
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
 
@@ -102,7 +102,7 @@
    gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
 [PcdsDynamicDefault.common]
-   gArmTokenSpaceGuid.PcdBootingLinuxUEFI|1
+   gArmTokenSpaceGuid.PcdBootingLinuxUEFI|2
 
 [PcdsFixedAtBuild.common]
    gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0"
@@ -397,7 +397,10 @@
    #
    MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
    MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
-   ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
+   ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf {
+     <LibraryClasses>
+       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+   }
    ArmPlatformPkg/APMXGenePkg/AcpiTables/APMXGene-Mustang/AcpiTables.inf
 
    #

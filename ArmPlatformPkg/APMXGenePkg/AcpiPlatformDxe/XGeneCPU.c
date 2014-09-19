@@ -31,6 +31,12 @@
 #include <Guid/Acpi.h>
 #include <IndustryStandard/Acpi51.h>
 
+#ifdef AARCH64_MP_PROTOCOL
+#define CPU_OFFSET	8
+#else
+#define CPU_OFFSET	0
+#endif
+
 EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE APICGicDistributerTemplate = {
   EFI_ACPI_5_1_GICD,
   sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE),
@@ -152,7 +158,11 @@ XGeneInstallApicTable(VOID)
                                   ArmCoreInfoTable[Count1].CoreId;
         EntryPointer[Count1].CPUInterfaceNumber = Count1;
         EntryPointer[Count1].MPIDR = EntryPointer[Count1].AcpiProcessorUid;
-        EntryPointer[Count1].ParkedAddress = ArmCoreInfoTable[Count1].MailboxSetAddress;
+        /* FixMe: Work around for non Redhat kernel */
+        if (PcdGet32 (PcdBootingLinuxUEFI) == 1)
+          EntryPointer[Count1].ParkedAddress = ArmCoreInfoTable[Count1].MailboxSetAddress + CPU_OFFSET;
+        else
+          EntryPointer[Count1].ParkedAddress = ArmCoreInfoTable[Count1].MailboxSetAddress;
       }
 
       CopyMem(ApicTablePointer, &APICProcessorTableHeaderTemplate,

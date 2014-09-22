@@ -161,8 +161,10 @@ UpdateFdt(
 
   node = fdt_subnode_offset(fdt, soc, "serial");
   while (node > 0) {
-    fdt_setprop(fdt, node, "clock-frequency", &Freq, sizeof(Freq));
-    node = fdt_subnode_offset(fdt, node, "serial");
+    if (fdt_node_check_compatible(fdt, node, "ns16550a") == 0)
+      fdt_setprop(fdt, node, "clock-frequency", &Freq, sizeof(Freq));
+
+    node = fdt_next_node(fdt, node, NULL);
   }
 }
 

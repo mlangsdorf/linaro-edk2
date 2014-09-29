@@ -29,7 +29,7 @@
  * 
  * NB: This License is also known as the "BSD 2-Clause License".
  * 
- * 
+ *
  * [GTDT] Generic Timer Description Table
  * Format: [ByteLength]  FieldName : HexFieldValue
  *
@@ -37,19 +37,18 @@
 
 [0004]                          Signature : "GTDT"
 [0004]                       Table Length : 00000050
-[0001]                           Revision : 01
+[0001]                           Revision : 02
 [0001]                           Checksum : F1
 [0006]                             Oem ID : "LINARO"
-[0008]                       Oem Table ID : "FOUNDATI"
+[0008]                       Oem Table ID : "RTSMVEV8"
 [0004]                       Oem Revision : 00000001
 [0004]                    Asl Compiler ID : "INTL"
 [0004]              Asl Compiler Revision : 20110623
 
-[0008]                      Timer Address : 0000000000000000
-[0004]              Flags (decoded below) : 00000001
-                           Memory Present : 1
+[0008]              Counter Block Address : 0000000000000000
+[0004]                           Reserved : 00000000
 
-/* In Foundation model's dts file, the last cell of interrupts
+/* In RTSM model's dts file, the last cell of interrupts
  * is 0xff01, it means its cpu mask is FF, and trigger type
  * and flag is 1 = low-to-high edge triggered.
  * 
@@ -59,22 +58,58 @@
  * using direct mapping for hwirqs, it means that we using
  * ID [16, 31] for PPI, not [0, 15] used in FDT.
  */
-[0004]               Secure PL1 Interrupt : 0000001d
-[0004]         SPL1 Flags (decoded below) : 00000001
+[0004]               Secure EL1 Interrupt : 0000001d
+[0004]          EL1 Flags (decoded below) : 00000001
                              Trigger Mode : 1
                                  Polarity : 0
+                                Always-on : 0
 
-[0004]           Non-Secure PL1 Interrupt : 0000001e
-[0004]        NSPL1 Flags (decoded below) : 00000001
+[0004]           Non-Secure EL1 Interrupt : 0000001e
+[0004]         NEL1 Flags (decoded below) : 00000005
                              Trigger Mode : 1
                                  Polarity : 0
+                                Always-on : 1
 
 [0004]            Virtual Timer Interrupt : 0000001b
 [0004]           VT Flags (decoded below) : 00000001
                              Trigger Mode : 1
                                  Polarity : 0
+                                Always-on : 0
 
-[0004]           Non-Secure PL2 Interrupt : 0000001a
-[0004]        NSPL2 Flags (decoded below) : 00000001
+[0004]           Non-Secure EL2 Interrupt : 0000001a
+[0004]         NEL2 Flags (decoded below) : 00000001
                              Trigger Mode : 1
                                  Polarity : 0
+				Always-on : 0
+
+/* The 64-bit physical address at which the Counter Read block is located */
+[0008]	     CntReadBase Physical address : 0000000000000000
+
+[0004]               Platform Timer Count : 00000001
+[0004]              Platform Timer Offset : 0000005C
+
+/* Memory-mapped GT (Generic Timer) structures */
+[0001]                      Subtable Type : 00
+[0002]                             Length : 0064
+[0001]                           Reserved : 000000
+[0008]                      Block Address : 000000002a810000
+[0004]                        Timer Count : 00000001
+[0004]                       Timer Offset : 00000010
+
+/* One frame is available */
+[0001]                       Frame Number : 00
+[0003]                           Reserved : 000000
+[0008]                       Base Address : 000000002a820000
+[0008]                   EL0 Base Address : FFFFFFFFFFFFFFFF
+[0004]                    Timer Interrupt : 00000029 /* 25+16 */
+[0004]        Timer Flags (decoded below) : 00000000 /* Active high level-sensitive */
+                             Trigger Mode : 0
+                                 Polarity : 0
+/* No virtual timer */
+[0004]            Virtual Timer Interrupt : 00000000
+[0004] Virtual Timer Flags (decoded below) : 00000000
+                             Trigger Mode : 0
+                                 Polarity : 0
+[0004]       Common Flags (decoded below) : 00000000
+                                   Secure : 0
+                                Always On : 0

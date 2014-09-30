@@ -3040,4 +3040,108 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 ///////////////////////////////////////////////////////////////////////////////
+// PktDMA
+	Device(\_SB.PDMA) {
+		Name(_HID, "APMC0D16") // Device Identification Objects
+		Name(_UID, 0)
+		Name(_STR, Unicode("X-Gene PktDMA"))
+		Method(_STA, 0, NotSerialized)
+		{
+			Return (One)
+		}
+		Name(_CRS, ResourceTemplate () {
+			Memory32Fixed (ReadWrite, 0x1f270000, 0x10000)
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA3}
+		})
+		OperationRegion(RSTQ, SystemMemory, 0x1f27c000, 4)
+		Field(RSTQ, DWordAcc, NoLock, Preserve) {
+			RSTE, 2,
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x1f27c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, RSTE)
+			Stall(100)
+			Store(0x0, RSTE)
+			Stall(100)
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+// Pkt
+	Device(\_SB.PKA) {
+		Name(_HID, "APMC0D17") // Device Identification Objects
+		Name(_UID, 0)
+		Name(_STR, Unicode("X-Gene Pka"))
+		Method(_STA, 0, NotSerialized)
+		{
+			Return (One)
+		}
+		Name(_CRS, ResourceTemplate () {
+			Memory32Fixed (ReadWrite, 0x10524000, 0x4000)
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x63}
+		})
+		OperationRegion(RSTQ, SystemMemory, 0x1700000c, 4)
+		Field(RSTQ, DWordAcc, NoLock, Preserve) {
+			RSV1, 4,
+			RSTE, 1,
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x17000010, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			RSV2, 4,
+			CLKE, 1,
+		}
+		Method(_INI, 0, NotSerialized) {
+			If (LNot(CLKE)) {
+				Store(0x1, RSTE)
+				Stall(100)
+				Store(0x0, RSTE)
+				Stall(100)
+				Store(0x1, CLKE)
+				Stall(100)
+			}
+		}
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+// Trng
+	Device(\_SB.TRNG) {
+		Name(_HID, "APMC0D18") // Device Identification Objects
+		Name(_UID, 0)
+		Name(_STR, Unicode("X-Gene TRNG"))
+		Method(_STA, 0, NotSerialized)
+		{
+			Return (One)
+		}
+		Name(_CRS, ResourceTemplate () {
+			Memory32Fixed (ReadWrite, 0x10520000, 0x4000)
+			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x61}
+		})
+		OperationRegion(RSTQ, SystemMemory, 0x1700000c, 4)
+		Field(RSTQ, DWordAcc, NoLock, Preserve) {
+			RSV1, 4,
+			RSTE, 1,
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x17000010, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			RSV2, 4,
+			CLKE, 1,
+		}
+		Method(_INI, 0, NotSerialized) {
+			If (LNot(CLKE)) {
+				Store(0x1, RSTE)
+				Stall(100)
+				Store(0x0, RSTE)
+				Stall(100)
+				Store(0x1, CLKE)
+				Stall(100)
+			}
+		}
+	}
+
+///////////////////////////////////////////////////////////////////////////////
 }//DSDT

@@ -600,6 +600,7 @@ EfiPxeBcDiscover (
     if (EFI_ERROR (Status)) {
       goto ON_EXIT;
     }
+    ASSERT (NewCreatedInfo != NULL);
     Info = NewCreatedInfo;
   } else {
     //
@@ -2024,7 +2025,7 @@ EfiPxeBcSetStationIP (
     CopyMem (&Private->SubnetMask ,NewSubnetMask, sizeof (EFI_IP_ADDRESS));
   }
 
-  Status = PxeBcFlushStaionIp (Private, NewStationIp, NewSubnetMask);
+  Status = PxeBcFlushStationIp (Private, NewStationIp, NewSubnetMask);
 ON_EXIT:
   return Status;
 }

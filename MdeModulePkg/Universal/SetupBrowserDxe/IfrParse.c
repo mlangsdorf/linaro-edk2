@@ -1,7 +1,7 @@
 /** @file
 Parser for IFR binary encoding.
 
-Copyright (c) 2007 - 2013, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2007 - 2014, Intel Corporation. All rights reserved.<BR>
 This program and the accompanying materials
 are licensed and made available under the terms and conditions of the BSD License
 which accompanies this distribution.  The full text of the license may be found at
@@ -286,13 +286,15 @@ CreateQuestion (
   Allocate a FORM_EXPRESSION node.
 
   @param  Form                   The Form associated with this Expression
+  @param  OpCode                 The binary opcode data.
 
   @return Pointer to a FORM_EXPRESSION data structure.
 
 **/
 FORM_EXPRESSION *
 CreateExpression (
-  IN OUT FORM_BROWSER_FORM        *Form
+  IN OUT FORM_BROWSER_FORM        *Form,
+  IN     UINT8                    *OpCode
   )
 {
   FORM_EXPRESSION  *Expression;
@@ -301,6 +303,7 @@ CreateExpression (
   ASSERT (Expression != NULL);
   Expression->Signature = FORM_EXPRESSION_SIGNATURE;
   InitializeListHead (&Expression->OpCodeListHead);
+  Expression->OpCode = (EFI_IFR_OP_HEADER *) OpCode;
 
   return Expression;
 }
@@ -660,6 +663,7 @@ InitializeRequestElement (
     ASSERT (ConfigInfo != NULL);
     ConfigInfo->Signature     = FORM_BROWSER_CONFIG_REQUEST_SIGNATURE;
     ConfigInfo->ConfigRequest = AllocateCopyPool (StrSize (Storage->ConfigHdr), Storage->ConfigHdr);
+    ASSERT (ConfigInfo->ConfigRequest != NULL);
     ConfigInfo->SpareStrLen   = 0;
     ConfigInfo->Storage       = Storage;
     InsertTailList(&Form->ConfigRequestHead, &ConfigInfo->Link);
@@ -909,6 +913,8 @@ DestroyForm (
     FreePool (Form->SuppressExpression);
   }
 
+  UiFreeMenuList (&Form->FormViewListHead);
+
   //
   // Free this Form
   //
@@ -1071,6 +1077,23 @@ IsStatementOpCode (
 }
 
 /**
+  Tell whether this Operand is an known OpCode.
+
+  @param  Operand                Operand of an IFR OpCode.
+
+  @retval TRUE                   This is an Statement OpCode.
+  @retval FALSE                  Not an Statement OpCode.
+
+**/
+BOOLEAN
+IsUnKnownOpCode (
+  IN UINT8              Operand
+  )
+{
+  return Operand > EFI_IFR_WARNING_IF_OP ? TRUE : FALSE;
+}
+
+/**
   Calculate number of Statemens(Questions) and Expression OpCodes.
 
   @param  FormSet                The FormSet to be counted.
@@ -1162,6 +1185,8 @@ ParseOpCodes (
   EFI_VARSTORE_ID         TempVarstoreId;
   BOOLEAN                 InScopeDisable;
   INTN                    ConditionalExprCount;
+  BOOLEAN                 InUnknownScope;
+  UINT8                   UnknownDepth;
 
   SuppressForQuestion      = FALSE;
   SuppressForOption        = FALSE;
@@ -1181,6 +1206,8 @@ ParseOpCodes (
   MapExpressionList        = NULL;
   TempVarstoreId           = 0;
   ConditionalExprCount     = 0;
+  InUnknownScope           = FALSE;
+  UnknownDepth             = 0;
 
   //
   // Get the number of Statements and Expressions
@@ -1202,6 +1229,7 @@ ParseOpCodes (
 
   InitializeListHead (&FormSet->StatementListOSF);
   InitializeListHead (&FormSet->StorageListHead);
+  InitializeListHead (&FormSet->SaveFailStorageListHead);
   InitializeListHead (&FormSet->DefaultStoreListHead);
   InitializeListHead (&FormSet->FormListHead);
   InitializeListHead (&FormSet->ExpressionListHead);
@@ -1222,6 +1250,31 @@ ParseOpCodes (
     OpCodeOffset += OpCodeLength;
     Operand = ((EFI_IFR_OP_HEADER *) OpCodeData)->OpCode;
     Scope = ((EFI_IFR_OP_HEADER *) OpCodeData)->Scope;
+
+    if (InUnknownScope) {
+      if (Operand == EFI_IFR_END_OP) {
+        UnknownDepth --;
+
+        if (UnknownDepth == 0) {
+          InUnknownScope = FALSE;
+        }
+      } else {
+        if (Scope != 0) {
+          UnknownDepth ++;
+        }
+      }
+
+      continue;
+    }
+
+    if (IsUnKnownOpCode(Operand)) {
+      if (Scope != 0) {
+        InUnknownScope = TRUE;
+        UnknownDepth ++;
+      }
+
+      continue;
+    }
 
     //
     // If scope bit set, push onto scope stack
@@ -1466,7 +1519,7 @@ ParseOpCodes (
       // Create sub expression nested in MAP opcode
       //
       if (CurrentExpression == NULL && MapScopeDepth > 0) {
-        CurrentExpression = CreateExpression (CurrentForm);
+        CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
         ASSERT (MapExpressionList != NULL);
         InsertTailList (MapExpressionList, &CurrentExpression->Link);
         if (Scope == 0) {
@@ -1510,11 +1563,7 @@ ParseOpCodes (
             return Status;
           }
 
-          if (CurrentExpression->Result.Type != EFI_IFR_TYPE_BOOLEAN) {
-            return EFI_INVALID_PARAMETER;
-          }
-
-          OpCodeDisabled = CurrentExpression->Result.Value.b;
+          OpCodeDisabled = IsTrue(&CurrentExpression->Result);
         }
 
         CurrentExpression = NULL;
@@ -1558,6 +1607,7 @@ ParseOpCodes (
       InitializeListHead (&CurrentForm->ExpressionListHead);
       InitializeListHead (&CurrentForm->StatementListHead);
       InitializeListHead (&CurrentForm->ConfigRequestHead);
+      InitializeListHead (&CurrentForm->FormViewListHead);
 
       CurrentForm->FormType = STANDARD_MAP_FORM_TYPE;
       CopyMem (&CurrentForm->FormId,    &((EFI_IFR_FORM *) OpCodeData)->FormId,    sizeof (UINT16));
@@ -1599,6 +1649,8 @@ ParseOpCodes (
       InitializeListHead (&CurrentForm->ExpressionListHead);
       InitializeListHead (&CurrentForm->StatementListHead);
       InitializeListHead (&CurrentForm->ConfigRequestHead);
+      InitializeListHead (&CurrentForm->FormViewListHead);
+
       CopyMem (&CurrentForm->FormId, &((EFI_IFR_FORM *) OpCodeData)->FormId, sizeof (UINT16));
 
       MapMethod = (EFI_IFR_FORM_MAP_METHOD *) (OpCodeData + sizeof (EFI_IFR_FORM_MAP));
@@ -2048,7 +2100,7 @@ ParseOpCodes (
       //
       // Create an Expression node
       //
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CopyMem (&CurrentExpression->Error, &((EFI_IFR_INCONSISTENT_IF *) OpCodeData)->Error, sizeof (EFI_STRING_ID));
 
       if (Operand == EFI_IFR_NO_SUBMIT_IF_OP) {
@@ -2072,7 +2124,7 @@ ParseOpCodes (
       //
       // Create an Expression node
       //
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CopyMem (&CurrentExpression->Error, &((EFI_IFR_WARNING_IF *) OpCodeData)->Warning, sizeof (EFI_STRING_ID));
       CurrentExpression->TimeOut = ((EFI_IFR_WARNING_IF *) OpCodeData)->TimeOut;
       CurrentExpression->Type    = EFI_HII_EXPRESSION_WARNING_IF;
@@ -2091,7 +2143,7 @@ ParseOpCodes (
       //
       // Question and Option will appear in scope of this OpCode
       //
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_SUPPRESS_IF;
 
       if (CurrentForm == NULL) {
@@ -2121,7 +2173,7 @@ ParseOpCodes (
       //
       // Questions will appear in scope of this OpCode
       //
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_GRAY_OUT_IF;
       InsertTailList (&CurrentForm->ExpressionListHead, &CurrentExpression->Link);
       PushConditionalExpression(CurrentExpression, ExpressStatement);
@@ -2169,7 +2221,7 @@ ParseOpCodes (
     // Expression
     //
     case EFI_IFR_VALUE_OP:
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_VALUE;
       InsertTailList (&CurrentForm->ExpressionListHead, &CurrentExpression->Link);
 
@@ -2201,7 +2253,7 @@ ParseOpCodes (
       break;
 
     case EFI_IFR_RULE_OP:
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_RULE;
 
       CurrentExpression->RuleId = ((EFI_IFR_RULE *) OpCodeData)->RuleId;
@@ -2217,7 +2269,7 @@ ParseOpCodes (
       break;
 
     case EFI_IFR_READ_OP:
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_READ;
       InsertTailList (&CurrentForm->ExpressionListHead, &CurrentExpression->Link);
 
@@ -2239,7 +2291,7 @@ ParseOpCodes (
       break;
 
     case EFI_IFR_WRITE_OP:
-      CurrentExpression = CreateExpression (CurrentForm);
+      CurrentExpression = CreateExpression (CurrentForm, OpCodeData);
       CurrentExpression->Type = EFI_HII_EXPRESSION_WRITE;
       InsertTailList (&CurrentForm->ExpressionListHead, &CurrentExpression->Link);
 
@@ -2282,6 +2334,7 @@ ParseOpCodes (
         break;
 
       case EFI_IFR_ONE_OF_OPTION_OP:
+        ASSERT (CurrentOption != NULL);
         ImageId = &CurrentOption->ImageId;
         break;
 
@@ -2463,11 +2516,8 @@ ParseOpCodes (
               return Status;
             }
 
-            if (CurrentExpression->Result.Type != EFI_IFR_TYPE_BOOLEAN) {
-              return EFI_INVALID_PARAMETER;
-            }
+            OpCodeDisabled = IsTrue (&CurrentExpression->Result);
 
-            OpCodeDisabled = CurrentExpression->Result.Value.b;
             //
             // DisableIf Expression is only used once and not queued, free it
             //

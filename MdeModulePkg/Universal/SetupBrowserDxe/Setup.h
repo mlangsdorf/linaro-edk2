@@ -164,17 +164,19 @@ typedef struct {
   UINTN            Signature;
   LIST_ENTRY       Link;
 
+  LIST_ENTRY       SaveFailLink;
+
   UINT16           VarStoreId;
 
   BROWSER_STORAGE  *BrowserStorage;
 
   CHAR16           *ConfigRequest; // <ConfigRequest> = <ConfigHdr> + <RequestElement>
-  CHAR16           *ConfigElements;// Elements need to load initial data.
   UINTN            ElementCount;   // Number of <RequestElement> in the <ConfigRequest>
   UINTN            SpareStrLen;    // Spare length of ConfigRequest string buffer
 } FORMSET_STORAGE;
 
 #define FORMSET_STORAGE_FROM_LINK(a)  CR (a, FORMSET_STORAGE, Link, FORMSET_STORAGE_SIGNATURE)
+#define FORMSET_STORAGE_FROM_SAVE_FAIL_LINK(a)  CR (a, FORMSET_STORAGE, SaveFailLink, FORMSET_STORAGE_SIGNATURE)
 
 typedef union {
   EFI_STRING_ID         VarName;
@@ -228,6 +230,7 @@ typedef struct {
   EFI_HII_VALUE     Result;          // Expression evaluation result
 
   UINT8             TimeOut;         // For EFI_IFR_WARNING_IF
+  EFI_IFR_OP_HEADER *OpCode;         // Save the opcode buffer.
 
   LIST_ENTRY        OpCodeListHead;  // OpCodes consist of this expression (EXPRESSION_OPCODE)
 } FORM_EXPRESSION;
@@ -373,6 +376,8 @@ typedef struct {
   UINTN                 Signature;
   LIST_ENTRY            Link;
 
+  LIST_ENTRY            SaveFailLink;
+
   CHAR16                *ConfigRequest; // <ConfigRequest> = <ConfigHdr> + <RequestElement>
   UINTN                 ElementCount;   // Number of <RequestElement> in the <ConfigRequest>  
   UINTN                 SpareStrLen;
@@ -380,6 +385,7 @@ typedef struct {
   BROWSER_STORAGE       *Storage;
 } FORM_BROWSER_CONFIG_REQUEST;
 #define FORM_BROWSER_CONFIG_REQUEST_FROM_LINK(a)  CR (a, FORM_BROWSER_CONFIG_REQUEST, Link, FORM_BROWSER_CONFIG_REQUEST_SIGNATURE)
+#define FORM_BROWSER_CONFIG_REQUEST_FROM_SAVE_FAIL_LINK(a)  CR (a, FORM_BROWSER_CONFIG_REQUEST, SaveFailLink, FORM_BROWSER_CONFIG_REQUEST_SIGNATURE)
 
 #define FORM_BROWSER_FORM_SIGNATURE  SIGNATURE_32 ('F', 'F', 'R', 'M')
 #define STANDARD_MAP_FORM_TYPE 0x01
@@ -397,6 +403,7 @@ typedef struct {
   BOOLEAN              ModalForm;            // Whether this is a modal form.
   BOOLEAN              Locked;               // Whether this form is locked.
 
+  LIST_ENTRY           FormViewListHead;     // List of type FORMID_INFO is Browser View Form History List.
   LIST_ENTRY           ExpressionListHead;   // List of Expressions (FORM_EXPRESSION)
   LIST_ENTRY           StatementListHead;    // List of Statements and Questions (FORM_BROWSER_STATEMENT)
   LIST_ENTRY           ConfigRequestHead;    // List of configreques for all storage.
@@ -422,6 +429,8 @@ typedef struct {
 typedef struct {
   UINTN                           Signature;
   LIST_ENTRY                      Link;
+  LIST_ENTRY                      SaveFailLink;
+
   EFI_HII_HANDLE                  HiiHandle;      // unique id for formset.
   EFI_HANDLE                      DriverHandle;
   EFI_HII_CONFIG_ACCESS_PROTOCOL  *ConfigAccess;
@@ -442,14 +451,19 @@ typedef struct {
 
   FORM_BROWSER_STATEMENT          *StatementBuffer;     // Buffer for all Statements and Questions
   EXPRESSION_OPCODE               *ExpressionBuffer;    // Buffer for all Expression OpCode
+  FORM_BROWSER_FORM               *SaveFailForm;        // The form which failed to save.
+  FORM_BROWSER_STATEMENT          *SaveFailStatement;   // The Statement which failed to save.
 
   LIST_ENTRY                      StatementListOSF;     // Statement list out side of the form.
   LIST_ENTRY                      StorageListHead;      // Storage list (FORMSET_STORAGE)
+  LIST_ENTRY                      SaveFailStorageListHead; // Storage list for the save fail storage.
   LIST_ENTRY                      DefaultStoreListHead; // DefaultStore list (FORMSET_DEFAULTSTORE)
   LIST_ENTRY                      FormListHead;         // Form list (FORM_BROWSER_FORM)
   LIST_ENTRY                      ExpressionListHead;   // List of Expressions (FORM_EXPRESSION)
 } FORM_BROWSER_FORMSET;
 #define FORM_BROWSER_FORMSET_FROM_LINK(a)  CR (a, FORM_BROWSER_FORMSET, Link, FORM_BROWSER_FORMSET_SIGNATURE)
+
+#define FORM_BROWSER_FORMSET_FROM_SAVE_FAIL_LINK(a)  CR (a, FORM_BROWSER_FORMSET, SaveFailLink, FORM_BROWSER_FORMSET_SIGNATURE)
 
 typedef struct {
   LIST_ENTRY   Link;
@@ -534,9 +548,10 @@ typedef enum {
 // Get/set question value from/to.
 //
 typedef enum {
-  GetSetValueWithEditBuffer,       // Get/Set question value from/to editbuffer in the storage.
+  GetSetValueWithEditBuffer = 0,   // Get/Set question value from/to editbuffer in the storage.
   GetSetValueWithBuffer,           // Get/Set question value from/to buffer in the storage.
   GetSetValueWithHiiDriver,        // Get/Set question value from/to hii driver.
+  GetSetValueWithBothBuffer,       // Compare the editbuffer with buffer for this question, not use the question value.
   GetSetValueWithMax               // Invalid value.
 } GET_SET_QUESTION_VALUE_WITH;
 
@@ -547,7 +562,6 @@ extern EDKII_FORM_DISPLAY_ENGINE_PROTOCOL *mFormDisplay;
 
 extern BOOLEAN               gResetRequired;
 extern BOOLEAN               gExitRequired;
-extern BOOLEAN               gFinishRetrieveCall;
 extern LIST_ENTRY            gBrowserFormSetList;
 extern LIST_ENTRY            gBrowserHotKeyList;
 extern BROWSER_SETTING_SCOPE gBrowserSettingScope;
@@ -1206,6 +1220,7 @@ ProcessCallBackFunction (
 
   @param ConfigAccess          The config access protocol produced by the hii driver.
   @param Statement             The Question which need to call.
+  @param FormSet               The formset this question belong to.
 
   @retval EFI_SUCCESS          The call back function excutes successfully.
   @return Other value if the call back function failed to excute.  
@@ -1213,7 +1228,8 @@ ProcessCallBackFunction (
 EFI_STATUS 
 ProcessRetrieveForQuestion (
   IN     EFI_HII_CONFIG_ACCESS_PROTOCOL  *ConfigAccess,
-  IN     FORM_BROWSER_STATEMENT          *Statement
+  IN     FORM_BROWSER_STATEMENT          *Statement,
+  IN     FORM_BROWSER_FORMSET            *FormSet
   );
 
 /**
@@ -1349,6 +1365,19 @@ ExecuteAction (
 UINT32
 EFIAPI
 SaveReminder (
+  VOID
+  );
+
+/**
+  Check whether the Reset Required for the browser
+
+  @retval TRUE      Browser required to reset after exit.
+  @retval FALSE     Browser not need to reset after exit.
+
+**/
+BOOLEAN
+EFIAPI
+IsResetRequired (
   VOID
   );
 
@@ -1510,6 +1539,19 @@ UiFindParentMenu (
   );
 
 /**
+  Copy current Menu list to the new menu list.
+  
+  @param  NewMenuListHead        New create Menu list.
+  @param  CurrentMenuListHead    Current Menu list.
+
+**/
+VOID
+UiCopyMenuList (
+  OUT LIST_ENTRY   *NewMenuListHead,
+  IN  LIST_ENTRY   *CurrentMenuListHead
+  );
+
+/**
   Search an Option of a Question by its value.
 
   @param  Question               The Question
@@ -1655,6 +1697,78 @@ EFI_HII_HANDLE
 DevicePathToHiiHandle (
   IN EFI_DEVICE_PATH_PROTOCOL   *DevicePath,
   IN EFI_GUID                   *FormsetGuid
+  );
+
+/**
+  Adjust the config request info, remove the request elements which already in AllConfigRequest string.
+
+  @param  Storage                Form set Storage.
+  @param  Request                The input request string.
+  @param  RespString             Whether the input is ConfigRequest or ConfigResp format.
+
+  @retval TRUE                   Has element not covered by current used elements, need to continue to call ExtractConfig
+  @retval FALSE                  All elements covered by current used elements.
+
+**/
+BOOLEAN 
+ConfigRequestAdjust (
+  IN  BROWSER_STORAGE         *Storage,
+  IN  CHAR16                  *Request,
+  IN  BOOLEAN                 RespString
+  );
+
+/**
+  Perform question check. 
+  
+  If one question has more than one check, process form high priority to low.
+
+  @param  FormSet                FormSet data structure.
+  @param  Form                   Form data structure.
+  @param  Question               The Question to be validated.
+
+  @retval EFI_SUCCESS            Form validation pass.
+  @retval other                  Form validation failed.
+
+**/
+EFI_STATUS
+ValueChangedValidation (
+  IN  FORM_BROWSER_FORMSET            *FormSet,
+  IN  FORM_BROWSER_FORM               *Form,
+  IN  FORM_BROWSER_STATEMENT          *Question
+  );
+
+/**
+  Pop up the error info.
+
+  @param      BrowserStatus    The input browser status.
+  @param      HiiHandle        The HiiHandle for this error opcode.
+  @param      OpCode           The opcode use to get the erro info and timeout value.
+  @param      ErrorString      Error string used by BROWSER_NO_SUBMIT_IF.
+
+**/
+UINT32
+PopupErrorMessage (
+  IN UINT32                BrowserStatus,
+  IN EFI_HII_HANDLE        HiiHandle,
+  IN EFI_IFR_OP_HEADER     *OpCode, OPTIONAL
+  IN CHAR16                *ErrorString
+  );
+
+/**
+  Check whether the result is TRUE or FALSE.
+
+  For the EFI_HII_VALUE value type is numeric, return TRUE if the
+  value is not 0.
+
+  @param  Result             Input the result data.
+
+  @retval TRUE               The result is TRUE.
+  @retval FALSE              The result is FALSE.
+
+**/
+BOOLEAN
+IsTrue (
+  IN EFI_HII_VALUE     *Result
   );
 
 #endif

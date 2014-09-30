@@ -30,16 +30,16 @@
 };
 
 &serial0 {
-       status = "ok";
+	status = "ok";
 };
 &menet {
         status = "ok";
 };
 
 &pcie0clk {
-       status = "ok";
+	status = "ok";
 };
 
 &pcie0 {
-       status = "ok";
+	status = "ok";
 };

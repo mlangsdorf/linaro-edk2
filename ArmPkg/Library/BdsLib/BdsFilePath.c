@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2011-2013, ARM Limited. All rights reserved.
+*  Copyright (c) 2011-2014, ARM Limited. All rights reserved.
 *  
 *  This program and the accompanying materials                          
 *  are licensed and made available under the terms and conditions of the BSD License         
@@ -304,30 +304,19 @@ TryRemovableDevice (
   return Status;
 }
 
-/**
-  Connect a Device Path and return the handle of the driver that support this DevicePath
-
-  @param  DevicePath            Device Path of the File to connect
-  @param  Handle                Handle of the driver that support this DevicePath
-  @param  RemainingDevicePath   Remaining DevicePath nodes that do not match the driver DevicePath
-
-  @retval EFI_SUCCESS           A driver that matches the Device Path has been found
-  @retval EFI_NOT_FOUND         No handles match the search.
-  @retval EFI_INVALID_PARAMETER DevicePath or Handle is NULL
-
-**/
+STATIC
 EFI_STATUS
-BdsConnectDevicePath (
-  IN  EFI_DEVICE_PATH_PROTOCOL  ** DevicePath,
-  OUT EFI_HANDLE                *Handle,
-  OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
+BdsConnectAndUpdateDevicePath (
+  IN OUT EFI_DEVICE_PATH_PROTOCOL  **DevicePath,
+  OUT    EFI_HANDLE                *Handle,
+  OUT    EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
   )
 {
   EFI_DEVICE_PATH*            Remaining;
   EFI_DEVICE_PATH*            NewDevicePath;
   EFI_STATUS                  Status;
 
-  if ((DevicePath == NULL)  || (*DevicePath == NULL) || (Handle == NULL)) {
+  if ((DevicePath == NULL) || (*DevicePath == NULL) || (Handle == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -379,8 +368,9 @@ BdsConnectDevicePath (
   } else {
     Status = TryRemovableDevice (*DevicePath, Handle, &NewDevicePath);
     if (!EFI_ERROR (Status)) {
+      Status = BdsConnectAndUpdateDevicePath (&NewDevicePath, Handle, RemainingDevicePath);
       *DevicePath = NewDevicePath;
-      return BdsConnectDevicePath (&NewDevicePath, Handle, RemainingDevicePath);
+      return Status;
     }
   }
 
@@ -389,6 +379,28 @@ BdsConnectDevicePath (
   }
 
   return Status;
+}
+
+/**
+  Connect a Device Path and return the handle of the driver that support this DevicePath
+
+  @param  DevicePath            Device Path of the File to connect
+  @param  Handle                Handle of the driver that support this DevicePath
+  @param  RemainingDevicePath   Remaining DevicePath nodes that do not match the driver DevicePath
+
+  @retval EFI_SUCCESS           A driver that matches the Device Path has been found
+  @retval EFI_NOT_FOUND         No handles match the search.
+  @retval EFI_INVALID_PARAMETER DevicePath or Handle is NULL
+
+**/
+EFI_STATUS
+BdsConnectDevicePath (
+  IN  EFI_DEVICE_PATH_PROTOCOL  *DevicePath,
+  OUT EFI_HANDLE                *Handle,
+  OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
+  )
+{
+  return BdsConnectAndUpdateDevicePath (&DevicePath, Handle, RemainingDevicePath);
 }
 
 BOOLEAN
@@ -926,6 +938,7 @@ BdsTftpLoadImage (
   UnicodeStrToAsciiStr (FilePathDevicePath->PathName, AsciiPathName);
 
   FileLoadSizePrint = 0;
+  // Try to get the size (required the TFTP server to have "tsize" extension)
   Status = Pxe->Mtftp (
                   Pxe,
                   EFI_PXE_BASE_CODE_TFTP_GET_FILE_SIZE,
@@ -938,7 +951,6 @@ BdsTftpLoadImage (
                   NULL,
                   FALSE
                   );
-
   // Pxe.Mtftp replies EFI_PROTOCOL_ERROR if tsize is not supported by the TFTP server
   if (EFI_ERROR (Status) && (Status != EFI_PROTOCOL_ERROR)) {
     if (Status == EFI_TFTP_ERROR) {
@@ -1049,8 +1061,8 @@ BDS_FILE_LOADER FileLoaders[] = {
 };
 
 EFI_STATUS
-BdsLoadImage (
-  IN     EFI_DEVICE_PATH       **DevicePath,
+BdsLoadImageAndUpdateDevicePath (
+  IN OUT EFI_DEVICE_PATH       **DevicePath,
   IN     EFI_ALLOCATE_TYPE     Type,
   IN OUT EFI_PHYSICAL_ADDRESS* Image,
   OUT    UINTN                 *FileSize
@@ -1061,7 +1073,7 @@ BdsLoadImage (
   EFI_DEVICE_PATH *RemainingDevicePath;
   BDS_FILE_LOADER*  FileLoader;
 
-  Status = BdsConnectDevicePath (DevicePath, &Handle, &RemainingDevicePath);
+  Status = BdsConnectAndUpdateDevicePath (DevicePath, &Handle, &RemainingDevicePath);
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -1075,6 +1087,17 @@ BdsLoadImage (
   }
 
   return EFI_UNSUPPORTED;
+}
+
+EFI_STATUS
+BdsLoadImage (
+  IN     EFI_DEVICE_PATH       **DevicePath,
+  IN     EFI_ALLOCATE_TYPE     Type,
+  IN OUT EFI_PHYSICAL_ADDRESS* Image,
+  OUT    UINTN                 *FileSize
+  )
+{
+  return BdsLoadImageAndUpdateDevicePath (DevicePath, Type, Image, FileSize);
 }
 
 /**
@@ -1103,7 +1126,7 @@ BdsStartEfiApplication (
   EFI_LOADED_IMAGE_PROTOCOL*   LoadedImage;
 
   // Find the nearest supported file loader
-  Status = BdsLoadImage (&DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
+  Status = BdsLoadImageAndUpdateDevicePath (&DevicePath, AllocateAnyPages, &BinaryBuffer, &BinarySize);
   if (EFI_ERROR (Status)) {
     return Status;
   }

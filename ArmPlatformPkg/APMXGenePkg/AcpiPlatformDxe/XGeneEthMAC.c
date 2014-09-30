@@ -41,7 +41,7 @@
 #define DSDT_SIGNATURE			0x54445344
 #define ACPI_ETH_ID			"APMC0D05"
 #define PREFIX_VARIABLE_NAME		L"MAC"
-#define PREFIX_VARIABLE_NAME_COMPAT    L"RGMII_MAC"
+#define PREFIX_VARIABLE_NAME_COMPAT	L"RGMII_MAC"
 #define ACPI_ETH_DEVID_KEY "devid"
 #define ACPI_ETH_MAC_KEY "local-mac-address"
 
@@ -199,14 +199,14 @@ static EFI_STATUS XGeneProcessDSDTChild(
             if (EFI_ERROR(Status)) {
               DEBUG((DEBUG_VERBOSE, "No MAC set for %S\n", MACEnv));
 
-              UnicodeSPrint(MACEnv, sizeof(MACEnv), L"%s%d", PREFIX_VARIABLE_NAME_COMPAT, *MacNextID);
-              Size = sizeof(MACValue16);
-              Status = gRT->GetVariable(MACEnv, &gShellVariableGuid,
-                                        0, &Size, (VOID *) MACValue16);
-              if (EFI_ERROR(Status)) {
+	      UnicodeSPrint(MACEnv, sizeof(MACEnv), L"%s%d", PREFIX_VARIABLE_NAME_COMPAT, *MacNextID);
+	      Size = sizeof(MACValue16);
+	      Status = gRT->GetVariable(MACEnv, &gShellVariableGuid,
+					0, &Size, (VOID *) MACValue16);
+	      if (EFI_ERROR(Status)) {
                 DEBUG((DEBUG_VERBOSE, "No MAC set for %S\n", MACEnv));
-                return EFI_SUCCESS;
-              }
+		return EFI_SUCCESS;
+	      }
             }
             *MacNextID += 1;
             DEBUG((DEBUG_VERBOSE, "%s %s\n", MACEnv, MACValue16));

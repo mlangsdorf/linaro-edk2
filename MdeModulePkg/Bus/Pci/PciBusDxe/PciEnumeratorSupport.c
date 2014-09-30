@@ -1,7 +1,7 @@
 /** @file
   PCI emumeration support functions implementation for PCI Bus module.
 
-Copyright (c) 2006 - 2012, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2006 - 2014, Intel Corporation. All rights reserved.<BR>
 This program and the accompanying materials
 are licensed and made available under the terms and conditions of the BSD License
 which accompanies this distribution.  The full text of the license may be found at
@@ -487,14 +487,6 @@ GatherDeviceInfo (
   }
 
   //
-  // Create a device path for this PCI device and store it into its private data
-  //
-  CreatePciDevicePath (
-    Bridge->DevicePath,
-    PciIoDevice
-    );
-
-  //
   // If it is a full enumeration, disconnect the device in advance
   //
   if (gFullEnumeration) {
@@ -568,14 +560,6 @@ GatherPpbInfo (
   if (PciIoDevice == NULL) {
     return NULL;
   }
-
-  //
-  // Create a device path for this PCI device and store it into its private data
-  //
-  CreatePciDevicePath (
-    Bridge->DevicePath,
-    PciIoDevice
-    );
 
   if (gFullEnumeration) {
     PCI_DISABLE_COMMAND_REGISTER (PciIoDevice, EFI_PCI_COMMAND_BITS_OWNED);
@@ -727,14 +711,6 @@ GatherP2CInfo (
   if (PciIoDevice == NULL) {
     return NULL;
   }
-
-  //
-  // Create a device path for this PCI device and store it into its private data
-  //
-  CreatePciDevicePath (
-    Bridge->DevicePath,
-    PciIoDevice
-    );
 
   if (gFullEnumeration) {
     PCI_DISABLE_COMMAND_REGISTER (PciIoDevice, EFI_PCI_COMMAND_BITS_OWNED);
@@ -2121,6 +2097,14 @@ CreatePciIoDevice (
   InitializePciDriverOverrideInstance (PciIoDevice);
   InitializePciLoadFile2 (PciIoDevice);
   PciIo = &PciIoDevice->PciIo;
+
+  //
+  // Create a device path for this PCI device and store it into its private data
+  //
+  CreatePciDevicePath (
+    Bridge->DevicePath,
+    PciIoDevice
+    );
 
   //
   // Detect if PCI Express Device

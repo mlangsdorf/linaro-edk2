@@ -46,8 +46,7 @@ STATIC CONST MEMORY_DEVICE_PATH MemoryDevicePathTemplate =
   {
     END_DEVICE_PATH_TYPE,
     END_ENTIRE_DEVICE_PATH_SUBTYPE,
-    sizeof (EFI_DEVICE_PATH_PROTOCOL),
-    0
+    { sizeof (EFI_DEVICE_PATH_PROTOCOL), 0 }
   } // End
 };
 
@@ -117,6 +116,8 @@ BootAndroidBootImg (
   if (RamdiskDevicePath) {
     FreePool (RamdiskDevicePath);
   }
+
+  FreePool (FdtDevicePath);
 
   // If we got here we do a confused face because BootLinuxFdt returned,
   // reporting success.

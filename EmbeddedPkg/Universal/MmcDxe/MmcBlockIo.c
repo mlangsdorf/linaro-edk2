@@ -60,6 +60,7 @@ RaiseTplIfLow() {
   return Current ;
 }
 
+#include "Mmc.h"
 
 EFI_STATUS
 MmcNotifyState (
@@ -589,7 +590,7 @@ MmcIoBlocks (
       if (EFI_ERROR(Status)) {
         DEBUG((EFI_D_BLKIO, "MmcIoBlocks(): Error Write Block Data and Status = %r\n", Status));
         return Status;
-      }
+    }
 
 #endif
     }

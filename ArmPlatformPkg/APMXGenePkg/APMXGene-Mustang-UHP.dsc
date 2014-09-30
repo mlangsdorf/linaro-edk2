@@ -177,7 +177,7 @@
    #
    # ARM General Interrupt Controller
    gArmTokenSpaceGuid.PcdGicDistributorBase|0x78090000
-   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x780A0000
+   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x780a0000
 
    #
    # ARM OS Loader
@@ -400,7 +400,7 @@
        FileHandleLib|ShellPkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
        ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
        SortLib|ShellPkg/Library/UefiSortLib/UefiSortLib.inf
-       PathLib|ShellPkg/Library/BasePathLib/BasePathLib.inf
+       PathLib|MdeModulePkg/Library/BasePathLib/BasePathLib.inf
 
      <PcdsFixedAtBuild>
        gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xFF

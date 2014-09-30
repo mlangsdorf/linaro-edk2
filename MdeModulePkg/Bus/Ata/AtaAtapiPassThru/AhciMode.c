@@ -156,9 +156,16 @@ AhciWaitMmioSet (
   )
 {
   UINT32     Value;
-  UINT32     Delay;
+  UINT64     Delay;
+  BOOLEAN    InfiniteWait;
 
-  Delay = (UINT32) (DivU64x32 (Timeout, 1000) + 1);
+  if (Timeout == 0) {
+    InfiniteWait = TRUE;
+  } else {
+    InfiniteWait = FALSE;
+  }
+
+  Delay = DivU64x32 (Timeout, 1000) + 1;
 
   do {
     //
@@ -177,7 +184,7 @@ AhciWaitMmioSet (
 
     Delay--;
 
-  } while (Delay > 0);
+  } while (InfiniteWait || (Delay > 0));
 
   return EFI_TIMEOUT;
 }
@@ -204,9 +211,16 @@ AhciWaitMemSet (
   )
 {
   UINT32     Value;
-  UINT32     Delay;
+  UINT64     Delay;
+  BOOLEAN    InfiniteWait;
 
-  Delay = (UINT32) (DivU64x32 (Timeout, 1000) + 1);
+  if (Timeout == 0) {
+    InfiniteWait = TRUE;
+  } else {
+    InfiniteWait = FALSE;
+  }
+
+  Delay =  DivU64x32 (Timeout, 1000) + 1;
 
   do {
     //
@@ -231,7 +245,7 @@ AhciWaitMemSet (
 
     Delay--;
 
-  } while (Delay > 0);
+  } while (InfiniteWait || (Delay > 0));
 
   return EFI_TIMEOUT;
 }
@@ -242,7 +256,8 @@ AhciWaitMemSet (
   @param[in]       Address           The memory address to test.
   @param[in]       MaskValue         The mask value of memory.
   @param[in]       TestValue         The test value of memory.
-  @param[in, out]  RetryTimes        The retry times value for waitting memory set. If 0, then just try once.
+  @param[in, out]  Task              Optional. Pointer to the ATA_NONBLOCK_TASK used by
+                                     non-blocking mode. If NULL, then just try once.
 
   @retval EFI_NOTREADY      The memory is not set.
   @retval EFI_TIMEOUT       The memory setting retry times out.
@@ -255,13 +270,13 @@ AhciCheckMemSet (
   IN     UINTN                     Address,
   IN     UINT32                    MaskValue,
   IN     UINT32                    TestValue,
-  IN OUT UINTN                     *RetryTimes OPTIONAL
+  IN OUT ATA_NONBLOCK_TASK         *Task
   )
 {
   UINT32     Value;
 
-  if (RetryTimes != NULL) {
-    (*RetryTimes)--;
+  if (Task != NULL) {
+    Task->RetryTimes--;
   }
 
   Value  = *(volatile UINT32 *) Address;
@@ -271,7 +286,7 @@ AhciCheckMemSet (
     return EFI_SUCCESS;
   }
 
-  if ((RetryTimes != NULL) && (*RetryTimes == 0)) {
+  if ((Task != NULL) && !Task->InfiniteWait && (Task->RetryTimes == 0)) {
     return EFI_TIMEOUT;
   } else {
     return EFI_NOT_READY;
@@ -689,11 +704,18 @@ AhciPioTransfer (
   VOID                          *Map;
   UINTN                         MapLength;
   EFI_PCI_IO_PROTOCOL_OPERATION Flag;
-  UINT32                        Delay;
+  UINT64                        Delay;
   EFI_AHCI_COMMAND_FIS          CFis;
   EFI_AHCI_COMMAND_LIST         CmdList;
   UINT32                        PortTfd;
   UINT32                        PrdCount;
+  BOOLEAN                       InfiniteWait;
+
+  if (Timeout == 0) {
+    InfiniteWait = TRUE;
+  } else {
+    InfiniteWait = FALSE;
+  }
 
   if (Read) {
     Flag = EfiPciIoOperationBusMasterWrite;
@@ -762,11 +784,11 @@ AhciPioTransfer (
     // Wait device sends the PIO setup fis before data transfer
     //
     Status = EFI_TIMEOUT;
-    Delay  = (UINT32) (DivU64x32 (Timeout, 1000) + 1);
+    Delay  = DivU64x32 (Timeout, 1000) + 1;
     do {
       Offset = FisBaseAddr + EFI_AHCI_PIO_FIS_OFFSET;
 
-      Status = AhciCheckMemSet (Offset, EFI_AHCI_FIS_TYPE_MASK, EFI_AHCI_FIS_PIO_SETUP, 0);
+      Status = AhciCheckMemSet (Offset, EFI_AHCI_FIS_TYPE_MASK, EFI_AHCI_FIS_PIO_SETUP, NULL);
       if (!EFI_ERROR (Status)) {
         Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_TFD;
         PortTfd = AhciReadReg (PciIo, (UINT32) Offset);
@@ -786,7 +808,7 @@ AhciPioTransfer (
       }
 
       Offset = FisBaseAddr + EFI_AHCI_D2H_FIS_OFFSET;
-      Status = AhciCheckMemSet (Offset, EFI_AHCI_FIS_TYPE_MASK, EFI_AHCI_FIS_REGISTER_D2H, 0);
+      Status = AhciCheckMemSet (Offset, EFI_AHCI_FIS_TYPE_MASK, EFI_AHCI_FIS_REGISTER_D2H, NULL);
       if (!EFI_ERROR (Status)) {
         Status = EFI_DEVICE_ERROR;
         break;
@@ -798,7 +820,7 @@ AhciPioTransfer (
       MicroSecondDelay(100);
 
       Delay--;
-    } while (Delay > 0);
+    } while (InfiniteWait || (Delay > 0));
   } else {
     //
     // Wait for D2H Fis is received
@@ -930,7 +952,6 @@ AhciDmaTransfer (
     //
     if (Task != NULL) {
       Task->IsStart      = TRUE;
-      Task->RetryTimes   = (UINT32) (DivU64x32(Timeout, 1000) + 1);
     }
     if (Read) {
       Flag = EfiPciIoOperationBusMasterWrite;
@@ -1006,7 +1027,7 @@ AhciDmaTransfer (
                Offset,
                EFI_AHCI_FIS_TYPE_MASK,
                EFI_AHCI_FIS_REGISTER_D2H,
-               (UINTN *) (&Task->RetryTimes)
+               Task
                );
   } else {
     Status = AhciWaitMemSet (
@@ -1408,14 +1429,14 @@ AhciReset (
   IN  UINT64                    Timeout
   )
 {
-  UINT32                 Delay;
+  UINT64                 Delay;
   UINT32                 Value;
 
   AhciOrReg (PciIo, EFI_AHCI_GHC_OFFSET, EFI_AHCI_GHC_ENABLE);
 
   AhciOrReg (PciIo, EFI_AHCI_GHC_OFFSET, EFI_AHCI_GHC_RESET);
 
-  Delay = (UINT32) (DivU64x32(Timeout, 1000) + 1);
+  Delay = DivU64x32(Timeout, 1000) + 1;
 
   do {
     Value = AhciReadReg(PciIo, EFI_AHCI_GHC_OFFSET);
@@ -2457,7 +2478,7 @@ comreset_retry:
       if (EFI_ERROR (Status)) {
         continue;
       }
-	
+
       Data = AhciReadReg (PciIo, Offset);
       if ((Data & EFI_AHCI_ATAPI_SIG_MASK) == EFI_AHCI_ATAPI_DEVICE_SIG) {
         Status = AhciIdentifyPacket (PciIo, AhciRegisters, Port, 0, &Buffer);

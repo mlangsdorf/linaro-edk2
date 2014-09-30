@@ -509,6 +509,7 @@ UefiMain (
           // Reset page break back to default.
           //
           ShellInfoObject.PageBreakEnabled        = PcdGetBool(PcdShellPageBreakDefault);
+          ASSERT (ShellInfoObject.ConsoleInfo != NULL);
           ShellInfoObject.ConsoleInfo->Enabled    = TRUE;
           ShellInfoObject.ConsoleInfo->RowCounter = 0;
 
@@ -835,9 +836,13 @@ ProcessCommandLine(
   ShellInfoObject.ShellInitSettings.BitUnion.Bits.Exit         = FALSE;
   ShellInfoObject.ShellInitSettings.Delay = 5;
 
-  // Start LoopVar at 1 to ignore Argv[0] which is the name of this binary
-  // (probably "Shell.efi")
-  for (LoopVar = 1 ; LoopVar < gEfiShellParametersProtocol->Argc ; LoopVar++) {
+  //
+  // Start LoopVar at 0 to parse only optional arguments at Argv[0]
+  // and parse other parameters from Argv[1].  This is for use case that
+  // UEFI Shell boot option is created, and OptionalData is provided
+  // that starts with shell command-line options.
+  //
+  for (LoopVar = 0 ; LoopVar < gEfiShellParametersProtocol->Argc ; LoopVar++) {
     CurrentArg = gEfiShellParametersProtocol->Argv[LoopVar];
     if (UnicodeCollation->StriColl (
                             UnicodeCollation,
@@ -925,6 +930,13 @@ ProcessCommandLine(
         );
       return EFI_INVALID_PARAMETER;
     } else {
+      //
+      // First argument should be Shell.efi image name
+      //
+      if (LoopVar == 0) {
+        continue;
+      }
+
       ShellInfoObject.ShellInitSettings.FileName = AllocateZeroPool(StrSize(CurrentArg));
       if (ShellInfoObject.ShellInitSettings.FileName == NULL) {
         return (EFI_OUT_OF_RESOURCES);
@@ -1367,14 +1379,14 @@ StripUnreplacedEnvironmentVariables(
     }
     ASSERT(FirstPercent < FirstQuote);
     if (SecondPercent < FirstQuote) {
+      FirstPercent[0] = L'\"';
+      SecondPercent[0] = L'\"';
+
       //
       // We need to remove from FirstPercent to SecondPercent
       //
-      CopyMem(FirstPercent, SecondPercent + 1, StrSize(SecondPercent + 1));
-
-      //
-      // dont need to update the locator.  both % characters are gone.
-      //
+      CopyMem(FirstPercent + 1, SecondPercent, StrSize(SecondPercent));
+      CurrentLocator = FirstPercent + 2;
       continue;
     }
     ASSERT(FirstQuote < SecondPercent);
@@ -2080,6 +2092,7 @@ ProcessCommandLineToFinal(
   if (EFI_ERROR(Status)) {
     return (Status);
   }
+  ASSERT (*CmdLine != NULL);
 
   TrimSpaces(CmdLine);
 
@@ -2220,6 +2233,7 @@ RunCommandOrFile(
 )
 {
   EFI_STATUS                Status;
+  EFI_STATUS                StartStatus;
   CHAR16                    *CommandWithPath;
   EFI_DEVICE_PATH_PROTOCOL  *DevPath;
   SHELL_STATUS              CalleeExitStatus;
@@ -2297,6 +2311,7 @@ RunCommandOrFile(
             DevPath,
             CmdLine,
             NULL,
+            &StartStatus,
             NULL,
             NULL
            );
@@ -2306,7 +2321,7 @@ RunCommandOrFile(
           if(EFI_ERROR (Status)) {
             CalleeExitStatus = (SHELL_STATUS) (Status & (~MAX_BIT));
           } else {
-            CalleeExitStatus = SHELL_SUCCESS;
+            CalleeExitStatus = (SHELL_STATUS) StartStatus;
           }
 
           //

@@ -237,8 +237,6 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
-  gArmPlatformTokenSpaceGuid.PcdDisableTftpBootList|FALSE
-
 [PcdsFixedAtBuild.common]
   gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"AppliedMicro XGene"
 

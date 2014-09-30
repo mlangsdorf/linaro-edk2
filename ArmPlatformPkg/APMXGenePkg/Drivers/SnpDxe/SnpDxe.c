@@ -889,16 +889,16 @@ SNP_INSTANCE_DATA gSnpDxeInstanceTemplate = {
     MAX_MCAST_FILTER_CNT,                 //  MaxMCastFilterCount
     0,                                    //  MCastFilterCount
     {
-      0
+      { { 0 } }
     },                                    //  MCastFilter
     {
-      0
+      { 0 }
     },                                    //  CurrentAddress
     {
-      0
+      { 0 }
     },                                    //  BroadcastAddress
     {
-      0
+      { 0 }
     },                                    //  PermanentAddress
     NET_IFTYPE_ETHERNET,                  //  IfType
     FALSE,                                //  MacAddressChangeable

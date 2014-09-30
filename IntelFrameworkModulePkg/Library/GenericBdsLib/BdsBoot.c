@@ -521,6 +521,15 @@ BdsDeleteAllInvalidLegacyBootOptions (
     return Status;
   }
 
+  BootOrder = BdsLibGetVariableAndSize (
+                L"BootOrder",
+                &gEfiGlobalVariableGuid,
+                &BootOrderSize
+                );
+  if (BootOrder == NULL) {
+    return EFI_NOT_FOUND;
+  }
+
   LegacyBios->GetBbsInfo (
                 LegacyBios,
                 &HddCount,
@@ -528,15 +537,6 @@ BdsDeleteAllInvalidLegacyBootOptions (
                 &BbsCount,
                 &LocalBbsTable
                 );
-
-  BootOrder = BdsLibGetVariableAndSize (
-                L"BootOrder",
-                &gEfiGlobalVariableGuid,
-                &BootOrderSize
-                );
-  if (BootOrder == NULL) {
-    BootOrderSize = 0;
-  }
 
   Index = 0;
   while (Index < BootOrderSize / sizeof (UINT16)) {
@@ -634,9 +634,7 @@ BdsDeleteAllInvalidLegacyBootOptions (
   // Shrinking variable with existing variable implementation shouldn't fail.
   //
   ASSERT_EFI_ERROR (Status);
-  if (BootOrder != NULL) {
-    FreePool (BootOrder);
-  }
+  FreePool (BootOrder);
 
   return Status;
 }
@@ -866,6 +864,7 @@ BdsAddNonExistingLegacyBootOptions (
                 &BootOrderSize
                 );
       if (!EFI_ERROR (Status)) {
+        ASSERT (BootOrder != NULL);
         BbsIndex     = Index;
         OptionNumber = BootOrder[BootOrderSize / sizeof (UINT16) - 1];
       }
@@ -2526,11 +2525,28 @@ BdsExpandPartitionPartialDevicePathToFull (
   // If exist, search the front path which point to partition node in the variable instants.
   // If fail to find or HD_BOOT_DEVICE_PATH_VARIABLE_NAME not exist, reconnect all and search in all system
   //
-  CachedDevicePath = BdsLibGetVariableAndSize (
-                      HD_BOOT_DEVICE_PATH_VARIABLE_NAME,
-                      &gHdBootDevicePathVariablGuid,
-                      &CachedDevicePathSize
-                      );
+  GetVariable2 (
+    HD_BOOT_DEVICE_PATH_VARIABLE_NAME,
+    &gHdBootDevicePathVariablGuid,
+    (VOID **) &CachedDevicePath,
+    &CachedDevicePathSize
+    );
+
+  //
+  // Delete the invalid HD_BOOT_DEVICE_PATH_VARIABLE_NAME variable.
+  //
+  if ((CachedDevicePath != NULL) && !IsDevicePathValid (CachedDevicePath, CachedDevicePathSize)) {
+    FreePool (CachedDevicePath);
+    CachedDevicePath = NULL;
+    Status = gRT->SetVariable (
+                    HD_BOOT_DEVICE_PATH_VARIABLE_NAME,
+                    &gHdBootDevicePathVariablGuid,
+                    0,
+                    0,
+                    NULL
+                    );
+    ASSERT_EFI_ERROR (Status);
+  }
 
   if (CachedDevicePath != NULL) {
     TempNewDevicePath = CachedDevicePath;
@@ -2593,7 +2609,7 @@ BdsExpandPartitionPartialDevicePathToFull (
         Status = gRT->SetVariable (
                         HD_BOOT_DEVICE_PATH_VARIABLE_NAME,
                         &gHdBootDevicePathVariablGuid,
-                        EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                        EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
                         GetDevicePathSize (CachedDevicePath),
                         CachedDevicePath
                         );
@@ -2692,7 +2708,7 @@ BdsExpandPartitionPartialDevicePathToFull (
       Status = gRT->SetVariable (
                       HD_BOOT_DEVICE_PATH_VARIABLE_NAME,
                       &gHdBootDevicePathVariablGuid,
-                      EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                      EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
                       GetDevicePathSize (CachedDevicePath),
                       CachedDevicePath
                       );
@@ -3204,9 +3220,16 @@ BdsLibEnumerateAllBootOption (
                       (VOID **) &BlkIo
                       );
       //
-      // skip the fixed block io then the removable block io
+      // skip the logical partition
       //
-      if (EFI_ERROR (Status) || (BlkIo->Media->RemovableMedia == Removable[RemovableIndex])) {
+      if (EFI_ERROR (Status) || BlkIo->Media->LogicalPartition) {
+        continue;
+      }
+
+      //
+      // firstly fixed block io then the removable block io
+      //
+      if (BlkIo->Media->RemovableMedia == Removable[RemovableIndex]) {
         continue;
       }
       DevicePath  = DevicePathFromHandle (BlockIoHandles[Index]);
@@ -3268,6 +3291,7 @@ BdsLibEnumerateAllBootOption (
         break;
 
       case BDS_EFI_MESSAGE_MISC_BOOT:
+      default:
         if (MiscNumber != 0) {
           UnicodeSPrint (Buffer, sizeof (Buffer), L"%s %d", BdsLibGetStringById (STRING_TOKEN (STR_DESCRIPTION_MISC)), MiscNumber);
         } else {
@@ -3275,9 +3299,6 @@ BdsLibEnumerateAllBootOption (
         }
         BdsLibBuildOptionFromHandle (BlockIoHandles[Index], BdsBootOptionList, Buffer);
         MiscNumber++;
-        break;
-
-      default:
         break;
       }
     }
@@ -4332,6 +4353,7 @@ BdsLibUpdateFvFileDevicePath (
     NewDevicePath = DevicePathFromHandle (FoundFvHandle);
     EfiInitializeFwVolDevicepathNode (&FvFileNode, FileGuid);
     NewDevicePath = AppendDevicePathNode (NewDevicePath, (EFI_DEVICE_PATH_PROTOCOL *) &FvFileNode);
+    ASSERT (NewDevicePath != NULL);
     *DevicePath = NewDevicePath;
     return EFI_SUCCESS;
   }

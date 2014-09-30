@@ -694,8 +694,10 @@ APMSDHCIInit(VOID)
 
 }
 
-EFI_GUID gMciDevicePathGuid[APM_SDHCI_HOST_SUPPORT] = {{0xb225ed30, 0x6dfd, 0x43a9, 0xbf, 0x6b, 0x57, 0x53, 0x35, 0x8f, 0x2f, 0x70},
-                                        {0x30b3030d, 0x3310, 0x4c8c, 0xa3, 0x11, 0x5f, 0xa0, 0xc9, 0xf3, 0xc0, 0x1b}};
+EFI_GUID gMciDevicePathGuid[APM_SDHCI_HOST_SUPPORT] = {
+  {0xb225ed30, 0x6dfd, 0x43a9,  { 0xbf, 0x6b, 0x57, 0x53, 0x35, 0x8f, 0x2f, 0x70} },
+  {0x30b3030d, 0x3310, 0x4c8c,  { 0xa3, 0x11, 0x5f, 0xa0, 0xc9, 0xf3, 0xc0, 0x1b} }
+};
 
 EFI_STATUS
 MciBuildDevicePath (
@@ -1151,16 +1153,30 @@ MciNotifyState (
 }
 
 EFI_MMC_HOST_PROTOCOL gMciHost[APM_SDHCI_HOST_SUPPORT] = {
-  MMC_HOST_PROTOCOL_REVISION,
-  MciIsCardPresent,
-  MciIsReadOnly,
-  MciBuildDevicePath,
-  MciNotifyState,
-  MciSendCommand,
-  MciReceiveResponse,
-  MciReadBlockData,
-  MciWriteBlockData,
-  NULL
+  {
+    MMC_HOST_PROTOCOL_REVISION,
+    MciIsCardPresent,
+    MciIsReadOnly,
+    MciBuildDevicePath,
+    MciNotifyState,
+    MciSendCommand,
+    MciReceiveResponse,
+    MciReadBlockData,
+    MciWriteBlockData,
+    NULL
+  },
+  {
+    MMC_HOST_PROTOCOL_REVISION,
+    MciIsCardPresent,
+    MciIsReadOnly,
+    MciBuildDevicePath,
+    MciNotifyState,
+    MciSendCommand,
+    MciReceiveResponse,
+    MciReadBlockData,
+    MciWriteBlockData,
+    NULL
+  }
 };
 
 EFI_STATUS

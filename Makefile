@@ -137,7 +137,7 @@ tianocore:
 	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D AARCH64_MP_PROTOCOL -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
 
 tianocore_UHP:
 	@echo

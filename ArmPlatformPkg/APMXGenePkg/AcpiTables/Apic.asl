@@ -40,7 +40,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 0x00004000008000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -59,7 +59,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 0000004000009000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -78,7 +78,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000a000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -97,7 +97,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000b000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -116,7 +116,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000c000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -135,7 +135,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000d000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -154,7 +154,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000e000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000
@@ -173,7 +173,7 @@
       Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000F000
+[0008]                    Parked Address : 000000400000f000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
 [0008]       Hypervisor GIC Base Address : 00000000780C0000

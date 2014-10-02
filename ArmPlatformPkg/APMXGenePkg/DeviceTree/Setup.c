@@ -39,6 +39,12 @@ extern unsigned long get_AHB_CLK(void);
 
 #define A_D(x) ( ((x >= L'a')&&(x <= L'f'))?(x-L'a'+0xa):(((x >= L'A')&&(x <= L'F'))?(x-L'A'+0xa):(x-L'0')) )
 
+#ifdef AARCH64_MP_PROTOCOL
+#define CPU_OFFSET	8
+#else
+#define CPU_OFFSET	0
+#endif
+
 STATIC VOID
 UpdateFdt(
   IN OUT UINT8 *fdt
@@ -101,7 +107,7 @@ UpdateFdt(
 	  INT32       lenp;
           Method = fdt_getprop(fdt, cpu_node, "enable-method", &lenp);
           if (Method && !AsciiStrCmp((CHAR8 *)Method, "spin-table")) {
-            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress);
+            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress + CPU_OFFSET);
             fdt_setprop(fdt, cpu_node, "cpu-release-addr", &CpuReleaseAddr, sizeof(CpuReleaseAddr));
           }
         }

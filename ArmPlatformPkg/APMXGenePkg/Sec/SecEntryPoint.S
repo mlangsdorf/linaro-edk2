@@ -16,7 +16,11 @@
 #include <Library/ArmGicLib.h>
 
 #define APM88XXX_EFUSE_ADDR        0x1054a000
+#ifdef AARCH64_MP_PROTOCOL
+#define KERNEL_MAILBOX_ADDR        0x4000008000
+#else
 #define KERNEL_MAILBOX_ADDR        0x400000F000
+#endif
 
 ASM_GLOBAL ASM_PFX(CEntryPoint)
 ASM_GLOBAL ASM_PFX(_ModuleEntryPoint)
@@ -247,10 +251,18 @@ to be called
 	movz	x4, #0
 	str	x4, [x1, #8]
 
-1:	wfi
+/* For backward compatibility reasons with systems using DTBs, we're not
+ * fully and implementing parking protocol.
+ */
+1:
+#ifdef TRUE_AARCH64_MP_PROTOCOL
+	wfi
 	ldr	 w2, [x1]
 	cmp	 w2, w0 /* Check processor ID */
 	b.ne	1b
+#else
+	wfe
+#endif
 
 	ldr     x3, [x1, #8]
 	cbz	    x3, 1b

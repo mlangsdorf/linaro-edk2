@@ -53,7 +53,7 @@ clean_conf:
 	rm -rf $(EDK2DIR)/Conf/target.txt
 	rm -rf $(EDK2DIR)/Conf/tools_def.txt
 
-reallyclean: clean_conf clean_tianocore clean_tianocore_debug clean_tianocore_VHP_debug clean_tianocore_VHP clean_basetools
+reallyclean: clean_conf clean_tianocore clean_tianocore_debug clean_tianocore_UHP_debug clean_tianocore_UHP clean_basetools
 	@echo
 	@echo "############################### Clean Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang
@@ -101,6 +101,13 @@ clean_tianocore_UHP_debug:
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc clean
+
+clean_tianocore_UHP:
+	@echo
+	@echo "################################# Clean TianoCore UHP ############################"
+	cd $(EDK2DIR) && \
+	.  $(EDK2DIR)/edksetup.sh && \
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc clean
 
 clean_tianocore_debug:
 	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c

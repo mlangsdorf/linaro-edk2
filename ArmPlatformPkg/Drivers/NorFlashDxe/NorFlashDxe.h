@@ -19,17 +19,19 @@
 #include <Base.h>
 #include <PiDxe.h>
 
+#include <Guid/EventGroup.h>
+
 #include <Protocol/BlockIo.h>
+#include <Protocol/DiskIo.h>
 #include <Protocol/FirmwareVolumeBlock.h>
 
 #include <Library/DebugLib.h>
 #include <Library/IoLib.h>
 #include <Library/NorFlashPlatformLib.h>
 #include <Library/UefiLib.h>
+#include <Library/UefiRuntimeLib.h>
 
 #define NOR_FLASH_ERASE_RETRY                     10
-
-#define MAX_RUNTIME_BUFFER_SIZE                   0x100000
 
 // Device access macros
 // These are necessary because we use 2 x 16bit parts to make up 32bit data
@@ -45,17 +47,11 @@
 
 // Each command must be sent simultaneously to both chips,
 // i.e. at the lower 16 bits AND at the higher 16 bits
-#if !defined(APM_XGENE_GFC_FLASH) && !defined(APM_XGENE_SPI_FLASH)
 #define CREATE_NOR_ADDRESS(BaseAddr,OffsetAddr)   ((BaseAddr) + ((OffsetAddr) << 2))
 #define CREATE_DUAL_CMD(Cmd)                      ( ( Cmd << 16) | ( Cmd & LOW_16_BITS) )
 #define SEND_NOR_COMMAND(BaseAddr,Offset,Cmd) MmioWrite32 (CREATE_NOR_ADDRESS(BaseAddr,Offset), CREATE_DUAL_CMD(Cmd))
-#else
-#define CREATE_NOR_ADDRESS(BaseAddr,OffsetAddr)   ((BaseAddr) + ((OffsetAddr) << 1))
-#endif
-
 #define GET_NOR_BLOCK_ADDRESS(BaseAddr,Lba,LbaSize)( BaseAddr + (UINTN)((Lba) * LbaSize) )
 
-#ifdef APM_XGENE_GFC_FLASH
 // Status Register Bits
 #define P30_SR_BIT_WRITE                          (BIT7 << 16 | BIT7)
 #define P30_SR_BIT_ERASE_SUSPEND                  (BIT6 << 16 | BIT6)
@@ -119,88 +115,10 @@
 #define P30_CMD_READ_CONFIGURATION_REGISTER_SETUP 0x0060
 #define P30_CMD_READ_CONFIGURATION_REGISTER       0x0003
 
-#endif
-
-#define SEND_NOR_COMMAND(BaseAddr,Offset,Cmd)  NorCmdSet2SendNorCmd(BaseAddr,Offset,Cmd)
-
-#define SEND_TO_NOR(BaseAddr,Offset,Data) \
-	*((volatile UINT16 *)(CREATE_NOR_ADDRESS(BaseAddr,Offset))) = Data; \
-        asm volatile("dsb sy":::); \
-        asm volatile("isb":::)
-
-#define VALID_NOR_ADDR(Addr, Base) ((((Addr) >= (Base)) && ((Addr) < (Base)  + APM_XGENE_SYS_FLASH_LEN)) ? 1 : 0)
-// Device Commands for Spansion S29WS-N (CFI CMDSET2 - AMD)
-
-enum NorFlashCmd {
-
-/* READ Commands  */
-CMDSET2_CMD_READ_DEVICE_ID,
-CMDSET2_CMD_READ_STATUS_REGISTER,
-CMDSET2_CMD_CLEAR_STATUS_REGISTER,
-CMDSET2_CMD_READ_ARRAY,
-CMDSET2_CMD_READ_CFI_QUERY,
-
-/* WRITE Commands */
-CMDSET2_CMD_WORD_PROGRAM_SETUP,
-CMDSET2_CMD_ALTERNATE_WORD_PROGRAM_SETUP,
-CMDSET2_CMD_BUFFERED_PROGRAM_SETUP,
-CMDSET2_CMD_BUFFERED_PROGRAM_CONFIRM,
-CMDSET2_CMD_BEFP_SETUP,
-CMDSET2_CMD_BEFP_CONFIRM,
-
-/* ERASE Commands */
-CMDSET2_CMD_BLOCK_ERASE_SETUP,
-CMDSET2_CMD_BLOCK_ERASE_CONFIRM,
-
-/* SUSPEND Commands */
-CMDSET2_CMD_PROGRAM_OR_ERASE_SUSPEND,
-CMDSET2_CMD_SUSPEND_RESUME,
-
-/* BLOCK LOCKING / UNLOCKING Commands */
-CMDSET2_CMD_LOCK_BLOCK_SETUP,
-CMDSET2_CMD_LOCK_BLOCK,
-CMDSET2_CMD_UNLOCK_BLOCK,
-CMDSET2_CMD_LOCK_DOWN_BLOCK,
-
-/* PROTECTION Commands */
-CMDSET2_CMD_PROGRAM_PROTECTION_REGISTER_SETUP,
-
-/* CONFIGURATION Commands  */
-CMDSET2_CMD_READ_CONFIGURATION_REGISTER_SETUP,
-CMDSET2_CMD_READ_CONFIGURATION_REGISTER,
-
-};
-
-#define MaxNorCmdSet2Cycles 6
-
-struct NorCmdSequence {
-	UINT16 NorBusCycleAddr[MaxNorCmdSet2Cycles];
-	UINT16 NorBusCycleData[MaxNorCmdSet2Cycles];
-};
-
-// Status Register Bits
-#define CMDSET2_SR_BIT_WRITE                          (BIT7 << 16 | BIT7)
-#define CMDSET2_SR_BIT_ERASE_SUSPEND                  (BIT6 << 16 | BIT6)
-#define CMDSET2_SR_BIT_ERASE                          (BIT5 << 16 | BIT5)
-#define CMDSET2_SR_BIT_PROGRAM                        (BIT4 << 16 | BIT4)
-#define CMDSET2_SR_BIT_VPP                            (BIT3 << 16 | BIT3)
-#define CMDSET2_SR_BIT_PROGRAM_SUSPEND                (BIT2 << 16 | BIT2)
-#define CMDSET2_SR_BIT_BLOCK_LOCKED                   (BIT1 << 16 | BIT1)
-#define CMDSET2_SR_BIT_BEFP                           (BIT0 << 16 | BIT0)
-
-
-#define CMDSET2_MAX_BUFFER_SIZE_IN_BYTES              ((UINTN)64)
-#define CMDSET2_MAX_BUFFER_SIZE_IN_WORDS              (CMDSET2_MAX_BUFFER_SIZE_IN_BYTES/((UINTN)2))
-#define MAX_BUFFERED_PROG_ITERATIONS              10000000
-#define BOUNDARY_OF_32_WORDS                      0x7F
-
-// CFI Addresses
-#define CMDSET2_CFI_ADDR_QUERY_UNIQUE_QRY             0x10
-#define CMDSET2_CFI_ADDR_VENDOR_ID                    0x13
-
 #define NOR_FLASH_SIGNATURE                       SIGNATURE_32('n', 'o', 'r', '0')
 #define INSTANCE_FROM_FVB_THIS(a)                 CR(a, NOR_FLASH_INSTANCE, FvbProtocol, NOR_FLASH_SIGNATURE)
 #define INSTANCE_FROM_BLKIO_THIS(a)               CR(a, NOR_FLASH_INSTANCE, BlockIoProtocol, NOR_FLASH_SIGNATURE)
+#define INSTANCE_FROM_DISKIO_THIS(a)              CR(a, NOR_FLASH_INSTANCE, DiskIoProtocol, NOR_FLASH_SIGNATURE)
 
 typedef struct _NOR_FLASH_INSTANCE                NOR_FLASH_INSTANCE;
 
@@ -225,12 +143,13 @@ struct _NOR_FLASH_INSTANCE {
 
   EFI_BLOCK_IO_PROTOCOL               BlockIoProtocol;
   EFI_BLOCK_IO_MEDIA                  Media;
+  EFI_DISK_IO_PROTOCOL                DiskIoProtocol;
 
   BOOLEAN                             SupportFvb;
   EFI_FIRMWARE_VOLUME_BLOCK2_PROTOCOL FvbProtocol;
+  VOID*                               ShadowBuffer;
 
   NOR_FLASH_DEVICE_PATH	              DevicePath;
-  EFI_PHYSICAL_ADDRESS                PhysicalAddress;
 };
 
 EFI_STATUS
@@ -294,6 +213,31 @@ NorFlashBlockIoFlushBlocks (
   IN EFI_BLOCK_IO_PROTOCOL    *This
 );
 
+//
+// DiskIO Protocol function EFI_DISK_IO_PROTOCOL.ReadDisk
+//
+EFI_STATUS
+EFIAPI
+NorFlashDiskIoReadDisk (
+  IN EFI_DISK_IO_PROTOCOL         *This,
+  IN UINT32                       MediaId,
+  IN UINT64                       Offset,
+  IN UINTN                        BufferSize,
+  OUT VOID                        *Buffer
+  );
+
+//
+// DiskIO Protocol function EFI_DISK_IO_PROTOCOL.WriteDisk
+//
+EFI_STATUS
+EFIAPI
+NorFlashDiskIoWriteDisk (
+  IN EFI_DISK_IO_PROTOCOL         *This,
+  IN UINT32                       MediaId,
+  IN UINT64                       Offset,
+  IN UINTN                        BufferSize,
+  IN VOID                         *Buffer
+  );
 
 //
 // NorFlashFvbDxe.c
@@ -322,13 +266,6 @@ FvbSetAttributes(
 EFI_STATUS
 EFIAPI
 FvbGetPhysicalAddress(
-  IN CONST  EFI_FIRMWARE_VOLUME_BLOCK2_PROTOCOL     *This,
-  OUT       EFI_PHYSICAL_ADDRESS                    *Address
-  );
-
-EFI_STATUS
-EFIAPI
-FvbGetMappedAddress(
   IN CONST  EFI_FIRMWARE_VOLUME_BLOCK2_PROTOCOL     *This,
   OUT       EFI_PHYSICAL_ADDRESS                    *Address
   );
@@ -380,12 +317,20 @@ NorFlashUnlockAndEraseSingleBlock (
   );
 
 EFI_STATUS
+NorFlashWriteSingleBlock (
+  IN        NOR_FLASH_INSTANCE   *Instance,
+  IN        EFI_LBA               Lba,
+  IN        UINTN                 Offset,
+  IN OUT    UINTN                *NumBytes,
+  IN        UINT8                *Buffer
+  );
+
+EFI_STATUS
 NorFlashWriteBlocks (
   IN  NOR_FLASH_INSTANCE *Instance,
   IN  EFI_LBA           Lba,
   IN  UINTN             BufferSizeInBytes,
-  IN  VOID              *Buffer,
-  IN  BOOLEAN           Erase
+  IN  VOID              *Buffer
   );
 
 EFI_STATUS
@@ -397,29 +342,32 @@ NorFlashReadBlocks (
   );
 
 EFI_STATUS
+NorFlashRead (
+  IN NOR_FLASH_INSTANCE   *Instance,
+  IN EFI_LBA              Lba,
+  IN UINTN                Offset,
+  IN UINTN                BufferSizeInBytes,
+  OUT VOID                *Buffer
+  );
+
+EFI_STATUS
+NorFlashWrite (
+  IN        NOR_FLASH_INSTANCE   *Instance,
+  IN        EFI_LBA               Lba,
+  IN        UINTN                 Offset,
+  IN OUT    UINTN                *NumBytes,
+  IN        UINT8                *Buffer
+  );
+
+EFI_STATUS
 NorFlashReset (
   IN  NOR_FLASH_INSTANCE *Instance
   );
 
-#if !defined(APM_XGENE_GFC_FLASH) && !defined(APM_XGENE_SPI_FLASH)
-
 EFI_STATUS
-NorFlashWriteSingleBlock (
+NorFlashUnlockSingleBlockIfNecessary (
   IN NOR_FLASH_INSTANCE     *Instance,
-  IN EFI_LBA                Lba,
-  IN UINT32                 *DataBuffer,
-  IN UINT32                 BlockSizeInWords
+  IN UINTN                  BlockAddress
   );
-
-#else
-
-EFI_STATUS
-NorFlashWriteMultipleBuffers (
-  IN NOR_FLASH_INSTANCE     *Instance,
-  IN EFI_LBA                Lba,
-  IN UINTN                  BufferSizeInBytes,
-  IN UINT8                  *Buffer
-  );
-#endif
 
 #endif /* __NOR_FLASH_DXE_H__ */

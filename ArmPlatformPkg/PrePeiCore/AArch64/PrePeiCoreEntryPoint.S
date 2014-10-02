@@ -53,9 +53,7 @@ ASM_PFX(_ModuleEntryPoint):
 ASM_PFX(MainEntryPoint):
   // Identify CPU ID
   bl    ASM_PFX(ArmReadMpidr)
-  // Get ID of this CPU in Multicore system
-  LoadConstantToReg (FixedPcdGet32(PcdArmPrimaryCoreMask), x1)
-  and   x0, x0, x1
+  // Keep a copy of the MpId register value
   mov   x5, x0
 
   // Is it the Primary Core ?
@@ -110,6 +108,3 @@ _SetupPrimaryCoreStack:
   // 128-bit variable on the stack
   SetPrimaryStack (x1, x2, x3, x4)
   b     _PrepareArguments
-
-dead:
-  b     dead

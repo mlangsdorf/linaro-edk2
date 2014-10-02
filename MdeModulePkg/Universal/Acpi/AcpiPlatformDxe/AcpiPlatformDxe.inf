@@ -31,7 +31,6 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  ShellPkg/ShellPkg.dec
   MdeModulePkg/MdeModulePkg.dec
 
 [LibraryClasses]
@@ -40,12 +39,8 @@
   PcdLib
   BaseMemoryLib
   DebugLib
-  UefiRuntimeServicesTableLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
-
-[Guids]
-  gShellVariableGuid                                      # ALWAYS_CONSUMED
 
 [Protocols]
   gEfiAcpiTableProtocolGuid                     # PROTOCOL ALWAYS_CONSUMED

@@ -61,10 +61,9 @@ typedef UINT32 MMC_CMD;
 #define MMC_CMD20             (MMC_INDX(20) | MMC_CMD_WAIT_RESPONSE)
 #define MMC_CMD23             (MMC_INDX(23) | MMC_CMD_WAIT_RESPONSE)
 #define MMC_CMD24             (MMC_INDX(24) | MMC_CMD_WAIT_RESPONSE)
-#define MMC_CMD25             (MMC_INDX(25) | MMC_CMD_WAIT_RESPONSE)
 #define MMC_CMD55             (MMC_INDX(55) | MMC_CMD_WAIT_RESPONSE)
 #define MMC_ACMD41            (MMC_INDX(41) | MMC_CMD_WAIT_RESPONSE | MMC_CMD_NO_CRC_RESPONSE)
-#define MMC_ACMD6             (MMC_INDX(6) | MMC_CMD_WAIT_RESPONSE | MMC_CMD_NO_CRC_RESPONSE)
+
 // Valid responses for CMD1 in eMMC
 #define EMMC_CMD1_CAPACITY_LESS_THAN_2GB 0x00FF8080 // Capacity <= 2GB, byte addressing used
 #define EMMC_CMD1_CAPACITY_GREATER_THAN_2GB 0x40FF8080 // Capacity > 2GB, 512-byte sector addressing used
@@ -82,16 +81,6 @@ typedef enum _MMC_STATE {
     MmcProgrammingState,
     MmcDisconnectState,
 } MMC_STATE;
-
-struct MMC_DATA {
-  union {
-    CHAR8 *Dest;
-    CONST CHAR8 *Src; /* src buffers don't get written to */
-  };
-  UINTN Flags;
-  UINTN Blocks;
-  UINTN BlockSize;
-};
 
 ///
 /// Forward declaration for EFI_MMC_HOST_PROTOCOL
@@ -119,8 +108,7 @@ typedef EFI_STATUS (EFIAPI *MMC_NOTIFYSTATE) (
 typedef EFI_STATUS (EFIAPI *MMC_SENDCOMMAND) (
   IN  EFI_MMC_HOST_PROTOCOL     *This,
   IN  MMC_CMD                   Cmd,
-  IN  UINT32                    Argument,
-  IN struct MMC_DATA            *Mmc_Data
+  IN  UINT32                    Argument
   );
 
 typedef EFI_STATUS (EFIAPI *MMC_RECEIVERESPONSE) (
@@ -159,7 +147,6 @@ struct _EFI_MMC_HOST_PROTOCOL {
   MMC_READBLOCKDATA       ReadBlockData;
   MMC_WRITEBLOCKDATA      WriteBlockData;
 
-  VOID                    *InternalData;
 };
 
 #define MMC_HOST_PROTOCOL_REVISION    0x00010001    // 1.1

@@ -26,11 +26,8 @@ GCC_ASM_EXPORT( ArmPlatformGetCorePosition)
 ASM_PFX(ArmPlatformPeiBootAction):
   ret
 
-//UINTN
-//ArmPlatformIsPrimaryCore (
-//  IN UINTN MpId
-//  );
 ASM_PFX(ArmPlatformIsPrimaryCore):
+  and   x0, x0, 0xFFFF
   ldr	x1, =APM88XXX_EFUSE_ADDR
   ldr	w1, [x1, #0x0]
   tst	w1, #1
@@ -39,19 +36,18 @@ ASM_PFX(ArmPlatformIsPrimaryCore):
   b.eq	done_find_primary_core2
   tst	w1, #4
   b.eq	done_find_primary_core4
-  tst	w1, #8
   b.eq	done_find_primary_core6
 done_find_primary_core0:
-  cmp   x0, #0
+  cmp   x0, 0x0
   b.eq  done_yes
 done_find_primary_core2:
-  cmp   x0, #2
+  cmp   x0, 0x100
   b.eq  done_yes
 done_find_primary_core4:
-  cmp   x0, #4
+  cmp   x0, 0x200
   b.eq  done_yes
 done_find_primary_core6:
-  cmp   x0, #6
+  cmp   x0, 0x300
   b.eq  done_yes
 done_no:
   mov   x0, xzr

@@ -26,7 +26,6 @@
   BdsHelper.c
   BdsLoadOption.c
   BdsLinuxFdt.c
-  BdsLinuxUEFI.c
 
 [Sources.ARM]
   Arm/BdsLinuxLoader.c
@@ -38,7 +37,6 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
@@ -54,9 +52,7 @@
   SerialPortLib
   FdtLib
   TimerLib
-  PcdLib
-  NetLib
-  
+
 [LibraryClasses.AARCH64]
   ArmGicLib
 
@@ -66,35 +62,29 @@
   gArmGlobalVariableGuid
 
 [Protocols]
-  gEfiBdsArchProtocolGuid
+  gEfiBdsArchProtocolGuid                       
   gEfiDevicePathProtocolGuid
   gEfiDevicePathFromTextProtocolGuid
   gEfiSimpleFileSystemProtocolGuid
   gEfiFirmwareVolume2ProtocolGuid
   gEfiLoadFileProtocolGuid
-  gEfiPxeBaseCodeCallbackProtocolGuid
   gEfiPxeBaseCodeProtocolGuid
   gEfiDiskIoProtocolGuid
   gEfiUsbIoProtocolGuid
   gEfiLoadedImageProtocolGuid
   gEfiSimpleNetworkProtocolGuid
     
-[Pcd]
-  gArmTokenSpaceGuid.PcdBootingLinuxUEFI
-
 [FeaturePcd]
   gArmTokenSpaceGuid.PcdArmPsciSupport
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
-  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
 
   gArmTokenSpaceGuid.PcdArmMachineType
   gArmTokenSpaceGuid.PcdArmLinuxFdtMaxOffset
   gArmTokenSpaceGuid.PcdArmLinuxFdtAlignment
   gArmTokenSpaceGuid.PcdArmLinuxKernelMaxOffset
-  gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset
 
   gArmTokenSpaceGuid.PcdMaxTftpFileSize
 
@@ -102,7 +92,6 @@
   gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset
 
 [FixedPcd.AARCH64]
-  gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicSgiIntId
 

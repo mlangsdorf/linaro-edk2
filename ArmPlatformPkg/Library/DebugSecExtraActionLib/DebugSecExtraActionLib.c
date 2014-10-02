@@ -35,8 +35,7 @@ NonSecureWaitForFirmware (
   UINTN InterruptId;
 
   // The secondary cores will execute the firmware once wake from WFI.
-//  secondary_start = (VOID (*)())PcdGet64(PcdFvBaseAddress);
-  SecondaryStart = (VOID (*)())PcdGet32 (PcdFvBaseAddress);
+  SecondaryStart = (VOID (*)())PcdGet64 (PcdFvBaseAddress);
 
   ArmCallWFI ();
 

@@ -329,10 +329,6 @@ IdentifyAtaDevice (
     }
   }
 
-#ifdef APM_XGENE
-  AtaDevice->UdmaValid = FALSE;
-#endif
-
   Capacity = GetAtapi6Capacity (AtaDevice);
   if (Capacity > MAX_28BIT_ADDRESSING_CAPACITY) {
     //

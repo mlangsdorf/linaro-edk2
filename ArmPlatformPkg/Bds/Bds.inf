@@ -47,13 +47,10 @@
   DebugLib
   PrintLib
   BaseLib
-  ArmPlatformLib
-  ArmPlatformDeviceTree
-  
+
 [Guids]
   gEfiFileSystemInfoGuid
   gArmGlobalVariableGuid
-  gEfiPartTypeSystemPartGuid
 
 [Protocols]
   gEfiBdsArchProtocolGuid
@@ -62,7 +59,6 @@
   gEfiPxeBaseCodeProtocolGuid
   gEfiSimpleNetworkProtocolGuid
   gEfiDevicePathToTextProtocolGuid
-  gEfiSimpleFileSystemProtocolGuid
 
 [Pcd]
   gArmPlatformTokenSpaceGuid.PcdFirmwareVendor

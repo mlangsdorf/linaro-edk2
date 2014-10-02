@@ -85,13 +85,4 @@ ArmPlatformSecTrustzoneInit (
   IN  UINTN                     MpId
   );
 
-/** 
-  Check if this core is primary core 
- 
- **/
-BOOLEAN
-ArmPlatformSecIsPrimaryCore (
-  IN  UINTN                     MpId
-  );
-
 #endif

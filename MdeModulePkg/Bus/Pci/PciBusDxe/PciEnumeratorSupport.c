@@ -186,97 +186,6 @@ PciPciDeviceInfoCollector (
 }
 
 /**
-  This routine is used to set MaxPayLoad of a PCIE device.
-
-  @param  PciIoDevice PCI device instance.
-
-**/
-VOID
-PcieSetMaxPayLoad (
-  IN PCI_IO_DEVICE    *PciIoDevice
-  )
-{
-  PCI_IO_DEVICE *Parent;
-  EFI_PCI_IO_PROTOCOL *PciIo;
-  EFI_PCI_IO_PROTOCOL *ParentPciIo;
-  EFI_STATUS  Status;
-  UINT8       CapExtPos;
-  UINT8       ParentCapExtPos;
-  UINT16      DevMaxPayLoadCap;
-  UINT16      DevMaxPayLoad;
-  UINT16      ParentMaxPayLoadCap;
-  UINT16      ParentMaxPayLoad;
-  UINT16      SetMaxPayLoad;
-  UINT16      SetMaxPayLoadCtrlVal;
-
-
-  PciIo = &(PciIoDevice->PciIo);
-
-  PciIoDevice->PciCapExp.DevCap = 0;
-  PciIoDevice->PciCapExp.DevCtrl = 0;
-  CapExtPos = 0;
-  ParentCapExtPos = 0;
-
-  Status = LocateCapabilityRegBlock (
-            PciIoDevice,
-            EFI_PCI_CAPABILITY_ID_EXP,
-            &CapExtPos,
-            NULL
-            );
-
-  if (EFI_ERROR (Status)) {
-    return;
-  }
-
-  PciIo->Pci.Read (PciIo, EfiPciIoWidthUint8, CapExtPos, sizeof(EFI_PCI_CAPABILITY_EXP), &PciIoDevice->PciCapExp);
-
-  DevMaxPayLoadCap  = 1 << ((PciIoDevice->PciCapExp.DevCap & 0x7) + 7);
-  DevMaxPayLoad     = 1 << (((PciIoDevice->PciCapExp.DevCtrl >> 5) & 0x7) + 7);
-
-  Parent = PciIoDevice->Parent;
-  if (!Parent)
-    return;
-
-  ParentMaxPayLoadCap  = 1 << ((Parent->PciCapExp.DevCap & 0x7) + 7);
-  ParentMaxPayLoad     = 1 << (((Parent->PciCapExp.DevCtrl >> 5) & 0x7) + 7);
-
-  if (ParentMaxPayLoadCap >= DevMaxPayLoadCap) {
-    SetMaxPayLoad = DevMaxPayLoadCap;
-    SetMaxPayLoadCtrlVal = PciIoDevice->PciCapExp.DevCap & 0x7;
-  }
-  else {
-    SetMaxPayLoad = ParentMaxPayLoadCap;
-    SetMaxPayLoadCtrlVal = Parent->PciCapExp.DevCap & 0x7;
-  }
-
-  if (ParentMaxPayLoad < SetMaxPayLoad) {
-    Parent->PciCapExp.DevCtrl &= ~(7 << 5);
-    Parent->PciCapExp.DevCtrl |= SetMaxPayLoadCtrlVal << 5;
-
-    ParentPciIo = &(Parent->PciIo);
-    Status = LocateCapabilityRegBlock (
-              Parent,
-              EFI_PCI_CAPABILITY_ID_EXP,
-              &ParentCapExtPos,
-              NULL
-              );
-
-    if (EFI_ERROR (Status)) {
-      return;
-    }
-
-    ParentPciIo->Pci.Write (ParentPciIo, EfiPciIoWidthUint8, ParentCapExtPos, sizeof(EFI_PCI_CAPABILITY_EXP), &Parent->PciCapExp);
-  }
-
-  if (DevMaxPayLoad < SetMaxPayLoad) {
-    PciIoDevice->PciCapExp.DevCtrl &= ~(7 << 5);
-    PciIoDevice->PciCapExp.DevCtrl |= SetMaxPayLoadCtrlVal << 5;
-
-    PciIo->Pci.Write (PciIo, EfiPciIoWidthUint8, CapExtPos, sizeof(EFI_PCI_CAPABILITY_EXP), &PciIoDevice->PciCapExp);
-  }
-}
-
-/**
   Seach required device and create PCI device instance.
 
   @param Bridge     Parent bridge instance.
@@ -394,9 +303,6 @@ PciSearchDevice (
   // Insert it into a global tree for future reference
   //
   InsertPciDevice (Bridge, PciIoDevice);
-
-  if (gFullEnumeration)
-    PcieSetMaxPayLoad(PciIoDevice);
 
   //
   // Determine PCI device attributes

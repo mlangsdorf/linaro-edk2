@@ -3420,8 +3420,8 @@ NetLibGetSystemGuid (
     return EFI_NOT_FOUND;
   }
 
-  Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) (SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32));
-  SmbiosEnd.Raw = (UINT8 *) (UINTN) ((UINTN)(SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32)) + SmbiosTable->TableLength);
+  Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) SmbiosTable->TableAddress;
+  SmbiosEnd.Raw = (UINT8 *) (UINTN) (SmbiosTable->TableAddress + SmbiosTable->TableLength);
 
   do {
     if (Smbios.Hdr->Type == 1) {

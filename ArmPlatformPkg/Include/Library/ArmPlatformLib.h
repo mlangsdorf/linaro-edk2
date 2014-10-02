@@ -120,15 +120,6 @@ ArmPlatformInitializeSystemMemory (
   );
 
 /**
-  Return size of platform DRAM
-
-**/
-UINT64
-ArmPlatformDRAMSize (
-  VOID
-  );
-
-/**
   Return the Virtual Memory Map of your platform
 
   This Virtual Memory Map is used by MemoryInitPei Module to initialize the MMU on your platform.
@@ -157,17 +148,6 @@ VOID
 ArmPlatformGetPlatformPpiList (
   OUT UINTN                   *PpiListSize,
   OUT EFI_PEI_PPI_DESCRIPTOR  **PpiList
-  );
-
-/**
-  Display the Platform banner
-
-  This function display the Platform board banner.
-  
-**/
-VOID
-ArmPlatformShowBoardBanner (
-  UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   );
 
 #endif

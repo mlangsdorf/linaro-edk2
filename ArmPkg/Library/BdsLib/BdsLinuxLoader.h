@@ -16,10 +16,9 @@
 #define __BDSLINUXLOADER_H
 
 #define LINUX_UIMAGE_SIGNATURE    0x56190527
-#define LINUX_KERNEL_MAX_OFFSET   (PcdGet64(PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxKernelMaxOffset))
-#define LINUX_ATAG_MAX_OFFSET     (PcdGet64(PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxAtagMaxOffset))
-#define LINUX_FDT_MAX_OFFSET      (PcdGet64(PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxFdtMaxOffset))
-#define LINUX_INITRD_MAX_OFFSET   (PcdGet64(PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxInitrdMaxOffset))
+#define LINUX_KERNEL_MAX_OFFSET   (PcdGet64 (PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxKernelMaxOffset))
+#define LINUX_ATAG_MAX_OFFSET     (PcdGet64 (PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxAtagMaxOffset))
+#define LINUX_FDT_MAX_OFFSET      (PcdGet64 (PcdSystemMemoryBase) + PcdGet32(PcdArmLinuxFdtMaxOffset))
 
 // Additional size that could be used for FDT entries added by the UEFI OS Loader
 // Estimation based on: EDID (300bytes) + bootargs (200bytes) + initrd region (20bytes)
@@ -29,13 +28,6 @@
 #define ARM_FDT_MACHINE_TYPE            0xFFFFFFFF
 
 typedef VOID (*LINUX_KERNEL)(UINT32 Zero, UINT32 Arch, UINTN ParametersBase);
-
-VOID
-DebugDumpFdt (
-  IN VOID*                FdtBlob
-  );
-
-
 
 //
 // ATAG Definitions
@@ -159,16 +151,6 @@ PrepareFdt (
   IN     UINTN                InitrdImageSize,
   IN OUT EFI_PHYSICAL_ADDRESS *FdtBlobBase,
   IN OUT UINTN                *FdtBlobSize
-  );
-
-EFI_STATUS
-PrepareUEFI (
-  IN     CONST CHAR8*         CommandLineString,
-  IN     UINTN                KernelImageSize,
-  IN     EFI_PHYSICAL_ADDRESS InitrdImage,
-  IN     UINTN                InitrdImageSize,
-  IN OUT EFI_PHYSICAL_ADDRESS *ParamBlobBase,
-  IN OUT UINTN                *ParamBlobSize
   );
 
 #endif

@@ -52,14 +52,14 @@ typedef struct _USB_DEV_CONTEXT      USB_DEV_CONTEXT;
 #define XHC_1_MILLISECOND            (1000)
 //
 // XHC generic timeout experience values.
-// The unit is microsecond, setting it as 100ms.
+// The unit is microsecond, setting it as 10ms.
 //
-#define XHC_GENERIC_TIMEOUT          (100 * 1000)
+#define XHC_GENERIC_TIMEOUT          (10 * 1000)
 //
 // XHC reset timeout experience values.
-// The unit is microsecond, setting it as 10s.
+// The unit is microsecond, setting it as 1s.
 //
-#define XHC_RESET_TIMEOUT            (10 * 1000 * 1000)
+#define XHC_RESET_TIMEOUT            (1000 * 1000)
 //
 // XHC delay experience value for polling operation.
 // The unit is microsecond, set it as 1ms.

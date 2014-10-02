@@ -145,12 +145,12 @@ LoadedImageProtocolDumpInformation(
   )
 {
   EFI_LOADED_IMAGE_PROTOCOL         *LoadedImage;
+  EFI_STATUS                        Status;
   CHAR16                            *RetVal;
   CHAR16                            *Temp;
   CHAR16                            *CodeType;
   CHAR16                            *DataType;
-  EFI_STATUS			    Status;
-  
+
   if (!Verbose) {
     return (CatSPrint(NULL, L"LoadedImage"));
   }

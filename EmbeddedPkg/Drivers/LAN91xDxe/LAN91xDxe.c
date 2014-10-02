@@ -1042,8 +1042,6 @@ SnpStart (
     ReturnUnlock (EFI_DEVICE_ERROR);
   }
 
-  // Set the Current MAC address
-  Mode->CurrentAddress = Mode->PermanentAddress;
 
   // Change state
   Mode->State = EfiSimpleNetworkStarted;
@@ -1552,7 +1550,7 @@ SnpStatistics (
   }
 
   // Fill in the statistics
-  CopyMem(Statistics, &LanDriver->Stats, sizeof(EFI_NETWORK_STATISTICS));
+  CopyMem(&Statistics, &LanDriver->Stats, sizeof(EFI_NETWORK_STATISTICS));
   Status = EFI_SUCCESS;
 
   // Restore TPL and return
@@ -1820,9 +1818,9 @@ SnpTransmit (
   PktNum &= ARR_PACKET;
 
   // Check for the nature of the frame
-  if (DstAddr && DstAddr->Addr[0] == 0xFF) {
+  if (DstAddr->Addr[0] == 0xFF) {
     LanDriver->Stats.TxBroadcastFrames += 1;
-  } else if (DstAddr && (DstAddr->Addr[0] & 0x1) == 1) {
+  } else if ((DstAddr->Addr[0] & 0x1) == 1) {
     LanDriver->Stats.TxMulticastFrames += 1;
   } else {
     LanDriver->Stats.TxUnicastFrames += 1;

@@ -43,11 +43,11 @@
   UefiBootServicesTableLib
   UefiRuntimeLib
   DxeServicesTableLib
-  TimerLib
 
 [Guids]
   gEfiSystemNvDataFvGuid
   gEfiVariableGuid
+  gEfiEventVirtualAddressChangeGuid
 
 [Protocols]
   gEfiBlockIoProtocolGuid

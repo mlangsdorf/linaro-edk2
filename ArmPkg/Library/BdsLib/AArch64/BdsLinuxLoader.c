@@ -43,15 +43,6 @@
 #define LINUX_ALIGN_VAL       (0x080000) // 2MB + 0x80000 mask
 #define LINUX_ALIGN_MASK      (0x1FFFFF) // Bottom 21bits
 #define ALIGN_2MB(addr)       ALIGN_POINTER(addr , (2*1024*1024))
-#define ALIGN_16MB(addr)      ALIGN_POINTER(addr, (16*1024*1024))
-
-UINT32 be32toh(UINT32 val)
-{
-  return ((val >> 24) & 0x000000FF) |
-	 ((val >>  8) & 0x0000FF00) |
-	 ((val <<  8) & 0x00FF0000) |
-	 ((val << 24) & 0xFF000000);
-}
 
 /* ARM32 and AArch64 kernel handover differ.
  * x0 is set to FDT base.
@@ -66,7 +57,7 @@ extern VOID  *SecondariesPenEnd;
 extern UINTN *AsmMailboxbase;
 
 
-//STATIC
+STATIC
 EFI_STATUS
 PreparePlatformHardware (
   VOID
@@ -90,42 +81,17 @@ PreparePlatformHardware (
   return EFI_SUCCESS;
 }
 
-EFI_STATUS
-PrepareBootLinux (
-VOID
-)
-{
-  EFI_STATUS            Status = EFI_SUCCESS;
-  // Send msg to secondary cores to go to the kernel pen.
-  ArmGicSendSgiTo (PcdGet32(PcdGicDistributorBase), ARM_GIC_ICDSGIR_FILTER_EVERYONEELSE, 0x0E, PcdGet32 (PcdGicSgiIntId));
-
-  // Shut down UEFI boot services. ExitBootServices() will notify every driver that created an event on
-  // ExitBootServices event. Example the Interrupt DXE driver will disable the interrupts on this event.
-  Status = ShutdownUefiBootServices ();
-  if(EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR,"ERROR: Can not shutdown UEFI boot services. Status=0x%X\n", Status));
-  }
-  //PreparePlatformHardware();
-
-  return Status;
-}
-
 STATIC
 EFI_STATUS
 StartLinux (
   IN  EFI_PHYSICAL_ADDRESS  LinuxImage,
   IN  UINTN                 LinuxImageSize,
   IN  EFI_PHYSICAL_ADDRESS  FdtBlobBase,
-  IN  UINTN                 FdtBlobSize,
-  IN  EFI_PHYSICAL_ADDRESS  InitrdAddress,
-  IN  UINTN                 InitrdSize,
-  IN  UINT32                MachineType
+  IN  UINTN                 FdtBlobSize
   )
 {
   EFI_STATUS            Status;
   LINUX_KERNEL64        LinuxKernel = (LINUX_KERNEL64)LinuxImage;
-
-  EfiSignalEventReadyToBoot ();
 
   // Send msg to secondary cores to go to the kernel pen.
   ArmGicSendSgiTo (PcdGet32(PcdGicDistributorBase), ARM_GIC_ICDSGIR_FILTER_EVERYONEELSE, 0x0E, PcdGet32 (PcdGicSgiIntId));
@@ -139,34 +105,11 @@ StartLinux (
   }
 
   // Check if the Linux Image is a uImage
-  if (*(UINT32 *)LinuxKernel == LINUX_UIMAGE_SIGNATURE) {
+  if (*(UINTN*)LinuxKernel == LINUX_UIMAGE_SIGNATURE) {
     // Assume the Image Entry Point is just after the uImage header (64-byte size)
     LinuxKernel = (LINUX_KERNEL64)((UINTN)LinuxKernel + 64);
     LinuxImageSize -= 64;
   }
-
-  // The kernel needs to be placed at start of memory (2MB aligned) + 0x80000
-  if ((UINT64) LinuxKernel != PcdGet64(PcdSystemMemoryBase) + 0x80000) {
-    DEBUG((EFI_D_ERROR, "Relocate Linux kernel from 0x%16LX to 0x%16LX\n",
-		LinuxKernel, PcdGet64(PcdSystemMemoryBase) + 0x80000));
-    LinuxKernel = (LINUX_KERNEL64) CopyMem(
-                    (VOID *) (PcdGet64(PcdSystemMemoryBase) + 0x80000),
-                    (VOID *) LinuxKernel, LinuxImageSize);
-  }
-
-  /*
-     Load the FDT binary from a device path close to the kernel. It needs to
-     fall within the memory the kernel can map. So an address below the kernel
-     load address and within 512MB. Must be 2MB aligned. On AARCH64, this
-     need to be 16MB aligned.
-  */
-
-  DEBUG((EFI_D_ERROR, "Relocate kernel parameter from 0x%16LX to 0x%16LX\n",
-        FdtBlobBase, ALIGN_16MB(LinuxKernel + LinuxImageSize)));
-  FdtBlobBase = (EFI_PHYSICAL_ADDRESS) CopyMem(
-                    ALIGN_16MB(LinuxKernel + LinuxImageSize),
-                    (VOID *) FdtBlobBase,
-                    FdtBlobSize);
 
   //
   // Switch off interrupts, caches, mmu, etc
@@ -182,8 +125,7 @@ StartLinux (
 
   //
   // Start the Linux Kernel
-  DEBUG((EFI_D_ERROR, "\nStarting Linux at 0x%16LX parameter at 0x%16LX\n\n",
-        LinuxKernel, FdtBlobBase));
+  //
 
   // x1-x3 are reserved (set to zero) for future use.
   LinuxKernel ((UINTN)FdtBlobBase, 0, 0, 0);
@@ -253,7 +195,6 @@ BdsBootLinuxFdt (
   UINTN                 InitrdImageBaseSize;
   UINTN                 FdtBlobSize;
   EFI_PHYSICAL_ADDRESS  FdtBlobBase;
-  UINT32                FdtMachineType;
   EFI_PHYSICAL_ADDRESS  LinuxImage;
   EFI_PHYSICAL_ADDRESS  InitrdImage;
   EFI_PHYSICAL_ADDRESS  InitrdImageBase;
@@ -266,7 +207,6 @@ BdsBootLinuxFdt (
 
   PenBaseStatus = EFI_UNSUPPORTED;
   PenSize = 0;
-  FdtMachineType = 0xFFFFFFFF;
   InitrdImage = 0;
   InitrdImageSize = 0;
   InitrdImageBase = 0;
@@ -277,62 +217,60 @@ BdsBootLinuxFdt (
   //
   // Load the Linux kernel from a device path
   //
-  LinuxImage = 0;
-  Status = BdsLoadImage (&LinuxKernelDevicePath, AllocateAnyPages, &LinuxImage, &LinuxImageSize);
+
+  // Try to put the kernel at the start of RAM so as to give it access to all memory.
+  // If that fails fall back to try loading it within LINUX_KERNEL_MAX_OFFSET of memory start.
+  LinuxImage = PcdGet64 (PcdSystemMemoryBase) + 0x80000;
+  Status = BdsLoadImage (LinuxKernelDevicePath, AllocateAddress, &LinuxImage, &LinuxImageSize);
   if (EFI_ERROR(Status)) {
+    // Try again but give the loader more freedom of where to put the image.
+    LinuxImage = LINUX_KERNEL_MAX_OFFSET;
+    Status = BdsLoadImage (LinuxKernelDevicePath, AllocateMaxAddress, &LinuxImage, &LinuxImageSize);
+    if (EFI_ERROR(Status)) {
       Print (L"ERROR: Did not find Linux kernel (%r).\n", Status);
-    return Status;
+      return Status;
+    }
+  }
+  // Adjust the kernel location slightly if required. The kernel needs to be placed at start
+  //  of memory (2MB aligned) + 0x80000.
+  if ((LinuxImage & LINUX_ALIGN_MASK) != LINUX_ALIGN_VAL) {
+    LinuxImage = (EFI_PHYSICAL_ADDRESS)CopyMem (ALIGN_2MB(LinuxImage) + 0x80000, (VOID*)(UINTN)LinuxImage, LinuxImageSize);
   }
 
-  DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d bytes\n", LinuxImage, LinuxImageSize));
-
   if (InitrdDevicePath) {
-    InitrdImageBase = 0;
-    DEBUG((EFI_D_ERROR, "Load initrd "));
-    Status = BdsLoadImage (&InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
+    InitrdImageBase = LINUX_KERNEL_MAX_OFFSET;
+    Status = BdsLoadImage (InitrdDevicePath, AllocateMaxAddress, &InitrdImageBase, &InitrdImageBaseSize);
+    if (Status == EFI_OUT_OF_RESOURCES) {
+      Status = BdsLoadImage (InitrdDevicePath, AllocateAnyPages, &InitrdImageBase, &InitrdImageBaseSize);
+    }
     if (EFI_ERROR (Status)) {
       Print (L"ERROR: Did not find initrd image (%r).\n", Status);
       goto EXIT_FREE_LINUX;
     }
 
     // Check if the initrd is a uInitrd
-    if (*(UINT32 *)((UINTN)InitrdImageBase) == LINUX_UIMAGE_SIGNATURE) {
-      UINT32 *ImgHdr = (UINT32 *) InitrdImageBase;
-      UINT32 ImageLoadSize = InitrdImageBaseSize;
-
-      InitrdImageSize = be32toh(ImgHdr[3]);
-      if (InitrdImageSize > ImageLoadSize - 64)
-        InitrdImageSize = ImageLoadSize - 64;
+    if (*(UINTN*)((UINTN)InitrdImageBase) == LINUX_UIMAGE_SIGNATURE) {
       // Skip the 64-byte image header
-      InitrdImage = (EFI_PHYSICAL_ADDRESS)((UINT64)InitrdImageBase + 64);
-      DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d (%d) bytes\n",
-            InitrdImage, InitrdImageSize, ImageLoadSize));
+      InitrdImage = (EFI_PHYSICAL_ADDRESS)((UINTN)InitrdImageBase + 64);
+      InitrdImageSize = InitrdImageBaseSize - 64;
     } else {
       InitrdImage = InitrdImageBase;
       InitrdImageSize = InitrdImageBaseSize;
-      DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d bytes\n",
-		InitrdImage, InitrdImageSize));
     }
   }
 
   // Load the FDT binary from a device path.
   // The FDT will be reloaded later to a more appropriate location for the Linux kernel.
-  FdtBlobBase = 0;
-  DEBUG((EFI_D_ERROR, "Load Fdt "));
-  Status = BdsLoadImage (&FdtDevicePath, AllocateAnyPages, &FdtBlobBase, &FdtBlobSize);
+  FdtBlobBase = LINUX_KERNEL_MAX_OFFSET;
+  Status = BdsLoadImage (FdtDevicePath, AllocateMaxAddress, &FdtBlobBase, &FdtBlobSize);
   if (EFI_ERROR(Status)) {
     Print (L"ERROR: Did not find Device Tree blob (%r).\n", Status);
     goto EXIT_FREE_INITRD;
   }
-  DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d bytes\n", FdtBlobBase, FdtBlobSize));
 
   //
   // Install secondary core pens if the Power State Coordination Interface is not supported
   //
-  // XGene doesn't fit well in this logic
-#ifdef APM_XGENE
-  if (0)
-#endif
   if (FeaturePcdGet (PcdArmPsciSupport) == FALSE) {
     // Place Pen at the start of Linux memory. We can then tell Linux to not use this bit of memory
     PenBase  = LinuxImage - 0x80000;
@@ -356,9 +294,6 @@ BdsBootLinuxFdt (
 
     // Update the MailboxBase variable used in the pen code
     *(UINTN*)(PenBase + ((UINTN)&AsmMailboxbase - (UINTN)&SecondariesPenStart)) = MailBoxBase;
-
-    // Flush caches to make sure our pen gets to mem before we free the cores.
-    ArmCleanDataCache();
 
     for (Index=0; Index < gST->NumberOfTableEntries; Index++) {
       // Check for correct GUID type
@@ -393,14 +328,7 @@ BdsBootLinuxFdt (
     goto EXIT_FREE_FDT;
   }
 
-  Print(L"\nLoaded: LinuxImage    = 0x%16LX, Size = %d bytes\n", LinuxImage, LinuxImageSize);
-  Print(L"Loaded: FDT           = 0x%16LX, Size = %d bytes\n", FdtBlobBase, FdtBlobSize);
-  Print(L"Laeded: Init RAM-disk = 0x%16LX, Size = %d bytes\n\n", InitrdImage, InitrdImageSize);
-
-  PcdSet32(PcdBootingLinuxUEFI, 0);
-
-  return StartLinux (LinuxImage, LinuxImageSize, FdtBlobBase, FdtBlobSize,
-			InitrdImage, InitrdImageSize, FdtMachineType);
+  return StartLinux (LinuxImage, LinuxImageSize, FdtBlobBase, FdtBlobSize);
 
 EXIT_FREE_FDT:
   if (!EFI_ERROR (PenBaseStatus)) {
@@ -418,96 +346,4 @@ EXIT_FREE_LINUX:
   gBS->FreePages (LinuxImage, EFI_SIZE_TO_PAGES (LinuxImageSize));
 
   return Status;
-}
-
-
-/**
-  Start a Linux kernel from a Device Path
-
-  @param  LinuxKernel           Device Path to the Linux Kernel
-  @param  Initrd                Device Path to the Initrd
-  @param  Parameters            Linux kernel agruments
-
-  @retval EFI_SUCCESS           All drivers have been connected
-  @retval EFI_NOT_FOUND         The Linux kernel Device Path has not been found
-  @retval EFI_OUT_OF_RESOURCES  There is not enough resource memory to store the matching results.
-
-**/
-EFI_STATUS
-BdsBootLinuxUEFI (
-  IN  EFI_DEVICE_PATH_PROTOCOL* LinuxKernelDevicePath,
-  IN  EFI_DEVICE_PATH_PROTOCOL* InitrdDevicePath,
-  IN  CONST CHAR8*              Arguments)
-{
-  EFI_STATUS            Status;
-  UINTN                 LinuxImageSize;
-  UINTN                 InitrdImageSize = 0;
-  UINTN                 KernelParamsSize;
-  EFI_PHYSICAL_ADDRESS  KernelParamsAddress;
-  UINT32                FdtMachineType;
-  EFI_PHYSICAL_ADDRESS  LinuxImage;
-  EFI_PHYSICAL_ADDRESS  InitrdImage = 0;
-
-  FdtMachineType = 0xFFFFFFFF;
-
-  PERF_START (NULL, "BDS", NULL, 0);
-
-  // Load the Linux kernel from a device path
-  LinuxImage = 0;
-  DEBUG((EFI_D_ERROR, "Load Linux image "));
-  Status = BdsLoadImage (&LinuxKernelDevicePath, AllocateAnyPages, &LinuxImage, &LinuxImageSize);
-  if (EFI_ERROR(Status)) {
-    Print (L"ERROR: Did not find Linux kernel.\n");
-    return Status;
-  }
-  DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d bytes\n",
-        LinuxImage, LinuxImageSize));
-
-  if (InitrdDevicePath) {
-    // Load the init ramdisk from a device path
-    InitrdImage = 0;
-    DEBUG((EFI_D_ERROR, "Load initrd "));
-    Status = BdsLoadImage (&InitrdDevicePath, AllocateAnyPages, &InitrdImage, &InitrdImageSize);
-    if (EFI_ERROR(Status)) {
-      Print (L"ERROR: Did not find initrd image.\n");
-      return Status;
-    }
-
-    // Check if the initrd is a uInitrd
-    if (*(UINT32 *) InitrdImage == LINUX_UIMAGE_SIGNATURE) {
-      UINT32 *ImgHdr = (UINT32 *) InitrdImage;
-      UINT32 ImageLoadSize = InitrdImageSize;
-
-      InitrdImageSize = be32toh(ImgHdr[3]);
-      if (InitrdImageSize > ImageLoadSize - 64)
-        InitrdImageSize = ImageLoadSize - 64;
-      // Skip the 64-byte image header
-      InitrdImage = (EFI_PHYSICAL_ADDRESS)((UINT64)InitrdImage + 64);
-      DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d (%d) bytes\n",
-            InitrdImage, InitrdImageSize, ImageLoadSize));
-    } else {
-	DEBUG((EFI_D_ERROR, "at 0x%16LX Size %d bytes\n",
-		InitrdImage, InitrdImageSize));
-    }
-  }
-
-  KernelParamsAddress = 0ULL;
-  KernelParamsSize = 0;
-
-  // By setting address=0 we leave the memory allocation to the function
-  Status = PrepareUEFI (Arguments, LinuxImageSize,
-                        InitrdImage, InitrdImageSize,
-                        &KernelParamsAddress, &KernelParamsSize);
-  if (EFI_ERROR(Status)) {
-    Print(L"ERROR: Can not load Linux kernel with Device Tree. Status=0x%X\n", Status);
-    return Status;
-  }
-
-  Print(L"\nLoaded: LinuxImage    = 0x%16LX, Size = %d bytes\n", LinuxImage, LinuxImageSize );
-  Print(L"Loaded: ACPI          = 0x%16LX, Size = %d bytes\n", KernelParamsAddress, KernelParamsSize );
-  Print(L"Laeded: Init RAM-disk = 0x%16LX, Size = %d bytes\n\n", InitrdImage, InitrdImageSize );
-
-  PcdSet32(PcdBootingLinuxUEFI, 1);
-
-  return StartLinux (LinuxImage, LinuxImageSize, KernelParamsAddress, KernelParamsSize, InitrdImage, InitrdImageSize, FdtMachineType);
 }

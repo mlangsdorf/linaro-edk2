@@ -51,10 +51,8 @@
   # ARM General Interrupt Driver in Secure and Non-secure
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
 
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-
   # Network General
-  NetLib|MdeModulePkg/Library/DxeNetLib/DxeNetLib.inf
+  NetLib|ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Library/DxeNetLib/DxeNetLib.inf
   IpIoLib|MdeModulePkg/Library/DxeIpIoLib/DxeIpIoLib.inf
   UdpIoLib|MdeModulePkg/Library/DxeUdpIoLib/DxeUdpIoLib.inf
   DpcLib|MdeModulePkg/Library/DxeDpcLib/DxeDpcLib.inf
@@ -68,16 +66,13 @@
   ArmLib|ArmPkg/Library/ArmLib/AArch64/AArch64LibSec.inf
   ArmPlatformSecLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneSecLib/APMXGeneSecLib.inf
 
-  # Uncomment to turn on GDB stub in SEC.
-  #DebugAgentLib|EmbeddedPkg/Library/GdbDebugAgent/GdbDebugAgent.inf
-
   #ArmGicSecLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
   GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_BOOT_SPI_NOR -DAARCH64_MP_PROTOCOL -fno-omit-frame-pointer
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
-  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
+  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/EmbeddedPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/MdePkg/Include
 
 ################################################################################
 #
@@ -112,7 +107,7 @@
 
    # Memory base start at 0x40.00000000 and above
    gArmTokenSpaceGuid.PcdSystemMemoryBase|0x4000000000
-   # System Memory (4GB)
+   # System Memory (4GB) 
    gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
 
 
@@ -182,6 +177,7 @@
    #
    # ARM OS Loader
    #
+   # Note that MemoryMapped when boot from SPI NOR must be PcdSystemMemoryBase + PcdSPIFlashMappedBaseOffset + (Offset in Flash. This offset must above 0x800000).
    gArmTokenSpaceGuid.PcdArmMachineType|2272
 
    gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"BOOT OS LOADER"
@@ -197,15 +193,30 @@
    gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x3AE800)/efi\\boot\\bootaa64.efi"
    gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\apm-mustang.dtb"
    gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(B225ED30-6DFD-43A9-BF6B-5753358F2F70)/HD(1,MBR,0x00000000,0x800,0x1D7400)/\\uRamdisk"
+   
+   # From U-Boot Memory (All images)
+   # This helps speed up Tianocore and UEFI/Linux testing
+   #    Mustang=> tftp 0x4002000000 ${user_dir}/mustang_tianocore_ubt.fd
+   #    Mustang=> tftp 0x1d000000   ${user_dir}/mustang_tianocore_sec_ubt.fd
+   #    Mustang=> tftp 0x4004800000 ${user_dir}/uImage
+   #    Mustang=> tftp 0x4005500000 ${user_dir}/mustang.dtb
+   #    Mustang=> tftp 0x4005600000 ${user_dir}/uRamdisk
+   #    Mustang=> go 0x1d000000
+   # Note, You need to erase Tianocore old "Boot Menu configration" if
+   # you are going "From NOR MTD" to "U-Boot Memory (All images)."
+   # If this is the case, do the following from U-Boot.
+   #    Mustang=> sf probe 0; sf erase 0x700000 0x100000
+   #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(02118005-9DA7-443A-92D5-781F022AEDBB)/MemoryMapped(0x0,0x4004800000,0x40054FFFFF)"
+   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(02118005-9DA7-443A-92D5-781F022AEDBB)/MemoryMapped(0x0,0x4005500000,0x40550FFFF)"
+   #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(02118005-9DA7-443A-92D5-781F022AEDBB)/MemoryMapped(0x0,0x4005600000,0x40087FFFFF)"
 
-   # From SATA disk
-   #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(F9DD58FC-C9AC-4C50-9F78-A7631E79B296)/Sata(0x0,0x0,0x0)/HD(1,MBR,0x4178A07E,0x800,0x3C00000)/\\uImage"
-   #gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(F9DD58FC-C9AC-4C50-9F78-A7631E79B296)/Sata(0x0,0x0,0x0)/HD(1,MBR,0x4178A07E,0x800,0x3C00000)/\\mustang.dtb"
-   #gArmPlatformTokenSpaceGuid.PcdDefaultBootInitrdPath|L"VenHw(F9DD58FC-C9AC-4C50-9F78-A7631E79B296)/Sata(0x0,0x0,0x0)/HD(1,MBR,0x4178A07E,0x800,0x3C00000)/\\uRamdisk"
+   #Map SPI_NOR flash from 0x800000 to 0x800000 + PcdSPIFlashMappedLen to PcdSystemMemoryBase + PcdSPIFlashMappedBaseOffset + 0x800000. Need to fix it for fast booting
+   #gArmPlatformTokenSpaceGuid.PcdSPIFlashMappedBaseOffset|0x4000000
+   #gArmPlatformTokenSpaceGuid.PcdSPIFlashMappedLen|0x1000000
 
    # Use the serial console (ConIn & ConOut) and the Graphic driver (ConOut)
-   gArmPlatformTokenSpaceGuid.PcdDefaultConOutPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(115200,8, N,1)/VenPcAnsi()"
-   gArmPlatformTokenSpaceGuid.PcdDefaultConInPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(115200,8, N,1)/VenPcAnsi()"
+   gArmPlatformTokenSpaceGuid.PcdDefaultConOutPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(115200,8,N,1)/VenPcAnsi()"
+   gArmPlatformTokenSpaceGuid.PcdDefaultConInPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(115200,8,N,1)/VenPcAnsi()"
    gArmPlatformTokenSpaceGuid.PcdPlatformBootTimeOut|5
 
    #
@@ -272,9 +283,9 @@
        PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
    }
    ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf {
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf {
        <LibraryClasses>
-	   PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+       PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
    }
    ArmPkg/Drivers/CpuPei/CpuPei.inf
    IntelFrameworkModulePkg/Universal/StatusCode/Pei/StatusCodePei.inf
@@ -303,22 +314,22 @@
    #
    # SMBIOS
    #
-   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
    ArmPlatformPkg/APMXGenePkg/PlatformSmbiosDxe/PlatformSmbiosDxe.inf {
        <LibraryClasses>
        SmbiosLib|ArmPlatformPkg/APMXGenePkg/Library/SmbiosLib/SmbiosLib.inf
    }
-
+   
    #
    # Architectural Protocols
    #
    ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-   ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
    MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
    MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
    MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
    MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
    EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
    EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
@@ -331,6 +342,7 @@
    EmbeddedPkg/SerialDxe/SerialDxe.inf
 
    MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+   #MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
 
    ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
    ArmPkg/Drivers/TimerDxe/TimerDxe.inf
@@ -344,7 +356,7 @@
    #
    # Multimedia Card Interface
    #
-   EmbeddedPkg/Universal/MmcDxe/MmcDxe.inf
+   ArmPlatformPkg/APMXGenePkg/MmcDxe/MmcDxe.inf
    ArmPlatformPkg/APMXGenePkg/Drivers/MciDxe/MciDxe.inf
 
    #
@@ -359,7 +371,7 @@
    #
    ArmPlatformPkg/APMXGenePkg/Bus/Usb/UsbControllerDxe/UsbControllerDxe.inf
    MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-   MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
    MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
    MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 
@@ -395,7 +407,7 @@
    #
    # ACPI Support
    #
-   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
    MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf {
      <LibraryClasses>
@@ -407,7 +419,7 @@
    # Bds
    #
    MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-   ArmPlatformPkg/Bds/Bds.inf {
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Bds/Bds.inf {
      <LibraryClasses>
        PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
    }
@@ -437,15 +449,15 @@
      <LibraryClasses>
        PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
    }
-   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
    
    #
    # IDE/AHCI Support
    #
    ArmPlatformPkg/APMXGenePkg/Drivers/SataControllerNewDxe/SataControllerDxe.inf
-   DuetPkg/SataControllerDxe/SataControllerDxe.inf
-   MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
-   MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Drivers/PCISataControllerDxe/SataControllerDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
    MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
    MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
    

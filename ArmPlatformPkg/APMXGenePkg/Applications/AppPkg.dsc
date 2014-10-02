@@ -42,7 +42,7 @@
 [BuildOptions]
   GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
-  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
+  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/EmbeddedPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/MdePkg/Include
 
 [PcdsFeatureFlag]
 
@@ -102,13 +102,6 @@
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf  
   I2CLib|ArmPlatformPkg/APMXGenePkg/Library/I2CLib/I2CLib.inf
   SlimproLib|ArmPlatformPkg/APMXGenePkg/Library/SlimproLib/SlimproLib.inf
-  
-  
-  
-  
-  
-  
-  
 
 ###################################################################################################
 #

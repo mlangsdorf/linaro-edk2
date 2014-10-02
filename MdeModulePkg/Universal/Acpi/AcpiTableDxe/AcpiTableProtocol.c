@@ -370,15 +370,6 @@ ReallocateAcpiTableBuffer (
                   );
 
   if (EFI_ERROR (Status)) {
-    Status = gBS->AllocatePages (
-                  AllocateAnyPages,
-                  EfiACPIReclaimMemory,
-                  EFI_SIZE_TO_PAGES (TotalSize),
-                  &PageAddress
-                  );
-  }
-
-  if (EFI_ERROR (Status)) {
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -516,14 +507,6 @@ AddTableToList (
                     CurrentTableList->NumberOfPages,
                     &CurrentTableList->PageAddress
                     );
-    if (EFI_ERROR (Status)) {
-      Status = gBS->AllocatePages (
-                    AllocateAnyPages,
-                    EfiACPIMemoryNVS,
-                    CurrentTableList->NumberOfPages,
-                    &CurrentTableList->PageAddress
-                    );
-    }
   } else {
     //
     // All other tables are ACPI reclaim memory, no alignment requirements.
@@ -534,14 +517,6 @@ AddTableToList (
                     CurrentTableList->NumberOfPages,
                     &CurrentTableList->PageAddress
                     );
-    if (EFI_ERROR (Status)) {
-      Status = gBS->AllocatePages (
-                    AllocateAnyPages,
-                    EfiACPIReclaimMemory,
-                    CurrentTableList->NumberOfPages,
-                    &CurrentTableList->PageAddress
-                    );
-    }
   }
   //
   // Check return value from memory alloc.
@@ -564,13 +539,6 @@ AddTableToList (
   *Handle                   = CurrentTableList->Handle;
   CurrentTableList->Version = Version;
 
-  DEBUG((DEBUG_VERBOSE, "Add ACPI table signature 0x%08X %c%c%c%c length %d\n",
-        CurrentTableSignature,
-        CurrentTableSignature & 0xFF,
-        (CurrentTableSignature >> 8) & 0xFF,
-        (CurrentTableSignature >> 16) & 0xFF,
-        (CurrentTableSignature >> 24) & 0xFF,
-        CurrentTableSize));
   //
   // Update internal pointers if this is a required table.  If it is a required
   // table and a table of that type already exists, return an error.
@@ -651,20 +619,17 @@ AddTableToList (
       // Note: If the FIRMWARE_CTRL is non-zero, then X_FIRMWARE_CTRL must be zero, and 
       // vice-versa.
       //
-      if ((UINT64) AcpiTableInstance->Facs3 > 0xFFFFFFFFULL)
-	      AcpiTableInstance->Fadt3->FirmwareCtrl = 0x00000000;
-      else
-	      AcpiTableInstance->Fadt3->FirmwareCtrl  = (UINT32) (UINTN) AcpiTableInstance->Facs3;
-      Buffer64 = (UINT64) (UINTN) AcpiTableInstance->Facs3;
-      CopyMem (
-		      &AcpiTableInstance->Fadt3->XFirmwareCtrl,
-		      &Buffer64,
-		      sizeof (UINT64)
-	      );
-      if ((UINT64) AcpiTableInstance->Dsdt3 > 0xFFFFFFFFULL)
-        AcpiTableInstance->Fadt3->Dsdt = 0x00000000;
-      else
-        AcpiTableInstance->Fadt3->Dsdt  = (UINT32) (UINTN) AcpiTableInstance->Dsdt3;
+      if ((UINT64)(UINTN)AcpiTableInstance->Facs3 < BASE_4GB) {
+        AcpiTableInstance->Fadt3->FirmwareCtrl  = (UINT32) (UINTN) AcpiTableInstance->Facs3;
+      } else {
+        Buffer64 = (UINT64) (UINTN) AcpiTableInstance->Facs3;
+        CopyMem (
+          &AcpiTableInstance->Fadt3->XFirmwareCtrl,
+          &Buffer64,
+          sizeof (UINT64)
+          );
+      }
+      AcpiTableInstance->Fadt3->Dsdt  = (UINT32) (UINTN) AcpiTableInstance->Dsdt3;
       Buffer64                          = (UINT64) (UINTN) AcpiTableInstance->Dsdt3;
       CopyMem (
         &AcpiTableInstance->Fadt3->XDsdt,
@@ -783,16 +748,15 @@ AddTableToList (
         // Note: If the FIRMWARE_CTRL is non-zero, then X_FIRMWARE_CTRL must be zero, and 
         // vice-versa.
         //
-        if ((UINT64) AcpiTableInstance->Facs3 > 0xFFFFFFFFULL)
-          AcpiTableInstance->Fadt3->FirmwareCtrl = 0x00000000;
-        else
+        if ((UINT64)(UINTN)AcpiTableInstance->Facs3 < BASE_4GB) {
           AcpiTableInstance->Fadt3->FirmwareCtrl  = (UINT32) (UINTN) AcpiTableInstance->Facs3;
-	Buffer64 = (UINT64) (UINTN) AcpiTableInstance->Facs3;
-	CopyMem (
-			&AcpiTableInstance->Fadt3->XFirmwareCtrl,
-			&Buffer64,
-			sizeof (UINT64)
-		);
+        } else {
+          Buffer64 = (UINT64) (UINTN) AcpiTableInstance->Facs3;
+          CopyMem (
+            &AcpiTableInstance->Fadt3->XFirmwareCtrl,
+            &Buffer64,
+            sizeof (UINT64)
+            );
         }
 
         //
@@ -804,6 +768,7 @@ AddTableToList (
           OFFSET_OF (EFI_ACPI_DESCRIPTION_HEADER,
           Checksum)
           );
+      }
     }
 
     break;
@@ -1673,18 +1638,6 @@ AcpiTableAcpiTableConstructor (
                   );
 
   if (EFI_ERROR (Status)) {
-    Status = gBS->AllocatePages (
-                  AllocateAnyPages,
-                  EfiACPIReclaimMemory,
-                  EFI_SIZE_TO_PAGES (RsdpTableSize),
-                  &PageAddress
-                  );
-    if (!EFI_ERROR (Status)) {
-      DEBUG((DEBUG_WARN, "ACPI 3.0 support only\n"));
-    }
-  }
-
-  if (EFI_ERROR (Status)) {
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -1721,15 +1674,6 @@ AcpiTableAcpiTableConstructor (
                   EFI_SIZE_TO_PAGES (TotalSize),
                   &PageAddress
                   );
-
-  if (EFI_ERROR (Status)) {
-    Status = gBS->AllocatePages (
-                  AllocateAnyPages,
-                  EfiACPIReclaimMemory,
-                  EFI_SIZE_TO_PAGES (TotalSize),
-                  &PageAddress
-                  );
-  }
 
   if (EFI_ERROR (Status)) {
     gBS->FreePages ((EFI_PHYSICAL_ADDRESS)(UINTN)AcpiTableInstance->Rsdp1, EFI_SIZE_TO_PAGES (RsdpTableSize));

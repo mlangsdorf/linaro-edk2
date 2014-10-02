@@ -25,13 +25,7 @@
 #define PALIGN(p, a)    ((void *)(ALIGN((unsigned long)(p), (a))))
 #define GET_CELL(p)     (p += 4, *((const UINT32 *)(p-4)))
 
-#ifdef AARCH64_MP_PROTOCOL
-#define CPU_OFFSET	8
-#else
-#define CPU_OFFSET	0
-#endif
-
-STATIC inline
+STATIC
 UINTN
 cpu_to_fdtn (UINTN x) {
   if (sizeof (UINTN) == sizeof (UINT32)) {
@@ -46,10 +40,6 @@ typedef struct {
   UINTN   Size;
 } FdtRegion;
 
-typedef struct __attribute__((packed)) {
-  UINTN   Base;
-  UINT32  Size;
-} FdtRegion32;
 
 STATIC
 UINTN
@@ -308,7 +298,6 @@ RelocateFdt (
     }
   }
 
-  DEBUG ((EFI_D_WARN, "\n", *RelocatedFdt));
   *RelocatedFdtAlloc = *RelocatedFdt;
   if (FdtAlignment != 0) {
     *RelocatedFdt = ALIGN (*RelocatedFdt, FdtAlignment);
@@ -324,7 +313,7 @@ RelocateFdt (
   }
 
   DEBUG_CODE_BEGIN();
-//    DebugDumpFdt ((VOID *) *RelocatedFdt);
+    //DebugDumpFdt (fdt);
   DEBUG_CODE_END();
 
   return EFI_SUCCESS;
@@ -354,13 +343,15 @@ PrepareFdt (
   EFI_PHYSICAL_ADDRESS  InitrdImageStart;
   EFI_PHYSICAL_ADDRESS  InitrdImageEnd;
   FdtRegion             Region;
-  FdtRegion32           Region32;
   UINTN                 Index;
   CHAR8                 Name[10];
   LIST_ENTRY            ResourceList;
   BDS_SYSTEM_MEMORY_RESOURCE  *Resource;
   ARM_PROCESSOR_TABLE   *ArmProcessorTable;
   ARM_CORE_INFO         *ArmCoreInfoTable;
+  UINT32                MpId;
+  UINT32                ClusterId;
+  UINT32                CoreId;
   UINT64                CpuReleaseAddr;
   UINTN                 MemoryMapSize;
   EFI_MEMORY_DESCRIPTOR *MemoryMap;
@@ -371,6 +362,7 @@ PrepareFdt (
   UINTN                 Pages;
   BOOLEAN               PsciSmcSupported;
   UINTN                 OriginalFdtSize;
+  BOOLEAN               CpusNodeExist;
   UINTN                 CoreMpId;
   UINTN                 Smc;
 
@@ -467,62 +459,21 @@ PrepareFdt (
   if (node < 0) {
     // The 'memory' node does not exist, create it
     node = fdt_add_subnode(fdt, 0, "memory");
-  }
-  if (node >= 0) {
-	  int FdtItemLen;
-	  const UINT32 *FdtItem;
-	  UINT64 FdtMemSize;
+    if (node >= 0) {
+      fdt_setprop_string(fdt, node, "name", "memory");
+      fdt_setprop_string(fdt, node, "device_type", "memory");
 
+      GetSystemMemoryResources (&ResourceList);
+      Resource = (BDS_SYSTEM_MEMORY_RESOURCE*)ResourceList.ForwardLink;
 
-	  fdt_setprop_string(fdt, node, "name", "memory");
-	  fdt_setprop_string(fdt, node, "device_type", "memory");
+      Region.Base = cpu_to_fdtn ((UINTN)Resource->PhysicalStart);
+      Region.Size = cpu_to_fdtn ((UINTN)Resource->ResourceLength);
 
-	  GetSystemMemoryResources (&ResourceList);
-	  Resource = (BDS_SYSTEM_MEMORY_RESOURCE*)ResourceList.ForwardLink;
-	  FdtItem = (UINT32 *) fdt_getprop(fdt, node, "reg", &FdtItemLen);
-	  if (FdtItemLen == sizeof(UINT32)*3) {
-		  /* Entry size is 3 DWORD - 64-bit base address and 32-bit size.
-		     Update size if entry size is 0. */
-		  FdtMemSize = fdt32_to_cpu(FdtItem[2]);
-		  if (FdtMemSize == 0) {
-			  Region32.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region32.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-			  err = fdt_setprop(fdt, node, "reg", &Region32, sizeof(Region32));
-
-		  }
-	  } else if (FdtItemLen == sizeof(UINT32)*4) {
-		  /* Entry size is 4 DWORD - 64-bit base address and 64-bit size.
-		     Update size if entry size is 0. */
-		  FdtMemSize = fdt64_to_cpu(*((UINT64 *) &FdtItem[2]));
-		  if (sizeof(UINTN) == sizeof(UINT32)) {
-			  Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-		  } else {
-			  Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
-		  }
-
-		  if (FdtMemSize != 0) {
-			  err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
-		  }
-	  } else if (FdtItemLen == 0) {
-		  /* Newly added - just add it */
-		  if (sizeof(UINTN) == sizeof(UINT32)) {
-			  Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-		  } else {
-			  Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
-		  }
-
-		  Region.Base = cpu_to_fdtn ((UINTN)Resource->PhysicalStart);
-		  Region.Size = cpu_to_fdtn ((UINTN)Resource->ResourceLength);
-
-		  err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
-	  }
-	  if (err) {
-		  DEBUG((EFI_D_ERROR,"Fail to set new 'memory region' (err:%d)\n",err));
-	  }
+      err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
+      if (err) {
+        DEBUG((EFI_D_ERROR,"Fail to set new 'memory region' (err:%d)\n",err));
+      }
+    }
   }
 
   //
@@ -573,17 +524,21 @@ PrepareFdt (
   for (Index=0; Index < gST->NumberOfTableEntries; Index++) {
     // Check for correct GUID type
     if (CompareGuid (&gArmMpCoreInfoGuid, &(gST->ConfigurationTable[Index].VendorGuid))) {
-      node = fdt_subnode_offset(fdt, 0, "cpus");
-      if (node >= 0) {
-        /* remove existing cpus in fdt */
-        fdt_del_node(fdt, node);
-      }
+      MpId = ArmReadMpidr ();
+      ClusterId = GET_CLUSTER_ID(MpId);
+      CoreId    = GET_CORE_ID(MpId);
 
-      // Create the /cpus node
-      node = fdt_add_subnode(fdt, 0, "cpus");
-      fdt_setprop_string(fdt, node, "name", "cpus");
-      fdt_setprop_cell (fdt, node, "#address-cells", sizeof (UINTN) / 4);
-      fdt_setprop_cell(fdt, node, "#size-cells", 0);
+      node = fdt_subnode_offset(fdt, 0, "cpus");
+      if (node < 0) {
+        // Create the /cpus node
+        node = fdt_add_subnode(fdt, 0, "cpus");
+        fdt_setprop_string(fdt, node, "name", "cpus");
+        fdt_setprop_cell (fdt, node, "#address-cells", sizeof (UINTN) / 4);
+        fdt_setprop_cell(fdt, node, "#size-cells", 0);
+        CpusNodeExist = FALSE;
+      } else {
+        CpusNodeExist = TRUE;
+      }
 
       // Get pointer to ARM processor table
       ArmProcessorTable = (ARM_PROCESSOR_TABLE *)gST->ConfigurationTable[Index].VendorTable;
@@ -592,21 +547,28 @@ PrepareFdt (
       for (Index = 0; Index < ArmProcessorTable->NumberOfEntries; Index++) {
         CoreMpId = (UINTN) GET_MPID (ArmCoreInfoTable[Index].ClusterId,
                              ArmCoreInfoTable[Index].CoreId);
-        AsciiSPrint (Name, 10, "cpu@%03x", CoreMpId);
+        AsciiSPrint (Name, 10, "cpu@%x", CoreMpId);
 
-        cpu_node = fdt_add_subnode (fdt, node, Name);
-        if (cpu_node < 0) {
-          DEBUG ((EFI_D_ERROR, "Error on creating '%s' node\n", Name));
-          Status = EFI_INVALID_PARAMETER;
-          goto FAIL_COMPLETE_FDT;
-        }
+        // If the 'cpus' node did not exist then create all the 'cpu' nodes.
+        // In case 'cpus' node is provided in the original FDT then we do not add
+        // any 'cpu' node.
+        if (!CpusNodeExist) {
+          cpu_node = fdt_add_subnode (fdt, node, Name);
+          if (cpu_node < 0) {
+            DEBUG ((EFI_D_ERROR, "Error on creating '%s' node\n", Name));
+            Status = EFI_INVALID_PARAMETER;
+            goto FAIL_COMPLETE_FDT;
+          }
 
-        fdt_setprop_string (fdt, cpu_node, "device_type", "cpu");
+          fdt_setprop_string (fdt, cpu_node, "device_type", "cpu");
 
-        CoreMpId = cpu_to_fdtn (CoreMpId);
-        fdt_setprop (fdt, cpu_node, "reg", &CoreMpId, sizeof (CoreMpId));
-        if (PsciSmcSupported) {
-          fdt_setprop_string (fdt, cpu_node, "enable-method", "psci");
+          CoreMpId = cpu_to_fdtn (CoreMpId);
+          fdt_setprop (fdt, cpu_node, "reg", &CoreMpId, sizeof (CoreMpId));
+          if (PsciSmcSupported) {
+            fdt_setprop_string (fdt, cpu_node, "enable-method", "psci");
+          }
+        } else {
+          cpu_node = fdt_subnode_offset(fdt, node, Name);
         }
 
         // If Power State Coordination Interface (PSCI) is not supported then it is expected the secondary
@@ -618,8 +580,13 @@ PrepareFdt (
           Method = fdt_getprop(fdt, cpu_node, "enable-method", &lenp);
           if ( (Method == NULL) || (!AsciiStrCmp((CHAR8 *)Method, "spin-table")) ) {
             fdt_setprop_string(fdt, cpu_node, "enable-method", "spin-table");
-            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress + CPU_OFFSET);
+            CpuReleaseAddr = cpu_to_fdt64(ArmCoreInfoTable[Index].MailboxSetAddress);
             fdt_setprop(fdt, cpu_node, "cpu-release-addr", &CpuReleaseAddr, sizeof(CpuReleaseAddr));
+
+            // If it is not the primary core than the cpu should be disabled
+            if (((ArmCoreInfoTable[Index].ClusterId != ClusterId) || (ArmCoreInfoTable[Index].CoreId != CoreId))) {
+              fdt_setprop_string(fdt, cpu_node, "status", "disabled");
+            }
           } else {
             Print(L"Warning: Unsupported enable-method type for CPU[%d] : %a\n", Index, (CHAR8 *)Method);
           }

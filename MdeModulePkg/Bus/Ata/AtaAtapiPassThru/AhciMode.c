@@ -426,15 +426,13 @@ AhciEnableFisReceive (
   Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_CMD;
   AhciOrReg (PciIo, Offset, EFI_AHCI_PORT_CMD_FRE);
 
-  /* FIXME: These code doesn't work for most device so comment out */
-//  return AhciWaitMmioSet (
-//           PciIo,
-//           Offset,
-//           EFI_AHCI_PORT_CMD_FR,
-//           EFI_AHCI_PORT_CMD_FR,
-//           Timeout
-//           );
-  return EFI_SUCCESS;
+  return AhciWaitMmioSet (
+           PciIo,
+           Offset,
+           EFI_AHCI_PORT_CMD_FR,
+           EFI_AHCI_PORT_CMD_FR,
+           Timeout
+           );
 }
 
 /**
@@ -479,10 +477,7 @@ AhciDisableFisReceive (
   }
 
   AhciAndReg (PciIo, Offset, (UINT32)~(EFI_AHCI_PORT_CMD_FRE));
-#ifdef APM_XGENE
-  /* the HW doesn't clear CMD_FR quickly */
-  return EFI_SUCCESS;
-#else
+
   return AhciWaitMmioSet (
            PciIo,
            Offset,
@@ -490,7 +485,6 @@ AhciDisableFisReceive (
            0,
            Timeout
            );
-#endif
 }
 
 
@@ -2188,72 +2182,6 @@ Error6:
 
   return Status;
 }
-UINT32
-EFIAPI
-AhciSendComreset (
- EFI_PCI_IO_PROTOCOL		*PciIo,
- UINT8 				 Port 
-)
-{
-	UINT32 Offset;
-	UINT32 Val, timeout = 0;
-
-	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SCTL;
-	AhciOrReg(PciIo, Offset, 0x4);
-      	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_CMD;
-	AhciAndReg(PciIo, Offset, 0xfffffffe);
-	AhciOrReg(PciIo, Offset, 0x1);
-	AhciAndReg(PciIo, Offset, 0xfffffffe);
-
-	MicroSecondDelay((1000));
-	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SCTL;
-	AhciOrReg(PciIo, Offset, 0x1);
-
-	AhciAndReg(PciIo, Offset, 0xfffffff0);
-	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SCTL;
-	Val = AhciReadReg(PciIo, Offset);
-	AhciWriteReg(PciIo, Offset, Val);
-	MicroSecondDelay((1000));
-
-	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SERR;
-	Val = AhciReadReg(PciIo, Offset);
-
-	/* Wait for COMINIT and COMWAKE */
-	timeout = 1000;
-	do {
-		Val = AhciReadReg(PciIo, Offset);
-		if ((Val & EFI_AHCI_PORT_SERR_EX) && (Val & EFI_AHCI_PORT_SERR_CW))
-			break;
-
-		MicroSecondDelay((1000));
-	} while (--timeout > 0);
-
-
-	Val = AhciReadReg(PciIo, Offset);
-	if (!(Val & EFI_AHCI_PORT_SERR_CW))
-		DEBUG((EFI_D_ERROR, "COMWAKE[port%d] not detected\n", Port));
-
-	/* DEVICE PRESENCE */
-	timeout = 5;
-	do {
-      		Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SSTS;
-		Val = AhciReadReg(PciIo, Offset);
-		if ( (Val & EFI_AHCI_PORT_SCTL_DET_MASK) == 0x3) {
-			DEBUG((EFI_D_INFO, "Device Presence detected\n", Port));
-			break;
-		}
-
-		MicroSecondDelay((1000));
-	} while (--timeout > 0);
-
-	Val = AhciReadReg(PciIo, Offset);
-	if ((Val & EFI_AHCI_PORT_SCTL_DET_MASK) != 0x3) {
-		DEBUG((EFI_D_ERROR, "Speed negotiation is failuture xgene_port_send_comreset\n"));
-		return -1;
-	}
-
-	return 0;
-}
 
 /**
   Initialize ATA host controller at AHCI mode.
@@ -2287,7 +2215,6 @@ AhciModeInitialization (
   EFI_ATA_COLLECTIVE_MODE          *SupportedModes;
   EFI_ATA_TRANSFER_MODE            TransferMode;
   UINT32                           PhyDetectDelay;
-  UINT8 issue_comreset;
 
   if (Instance == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -2344,8 +2271,7 @@ AhciModeInitialization (
       }
 
       IdeInit->NotifyPhase (IdeInit, EfiIdeBeforeChannelEnumeration, Port);
-       issue_comreset = 3;
-comreset_retry:
+
       //
       // Initialize FIS Base Address Register and Command List Base Address Register for use.
       //
@@ -2392,17 +2318,16 @@ comreset_retry:
       //
       Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_CMD;
       AhciOrReg (PciIo, Offset, EFI_AHCI_PORT_CMD_FRE);
-      /* FIXME: These code doesn't work for most device so comment out */
-//      Status = AhciWaitMmioSet (
-//                 PciIo,
-//                 Offset,
-//                 EFI_AHCI_PORT_CMD_FR,
-//                 EFI_AHCI_PORT_CMD_FR,
-//                 EFI_AHCI_PORT_CMD_FR_CLEAR_TIMEOUT
-//                 );
-//      if (EFI_ERROR (Status)) {
-//        continue;
-//      }
+      Status = AhciWaitMmioSet (
+                 PciIo,
+                 Offset,
+                 EFI_AHCI_PORT_CMD_FR,
+                 EFI_AHCI_PORT_CMD_FR,
+                 EFI_AHCI_PORT_CMD_FR_CLEAR_TIMEOUT
+                 );
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
 
       //
       // Wait no longer than 10 ms to wait the Phy to detect the presence of a device.
@@ -2425,15 +2350,6 @@ comreset_retry:
         // No device detected at this port.
         // Clear PxCMD.SUD for those ports at which there are no device present.
         //
-	Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_SERR;
-	Data = AhciReadReg (PciIo, Offset);
-	if (issue_comreset && (Data & EFI_AHCI_PORT_SERR_EX)) {
-		--issue_comreset;
-		DEBUG ((EFI_D_ERROR, "Device presence detected but speed negotiation failure issue comreset = %d \n", 
-			issue_comreset));
-		AhciSendComreset(PciIo, Port);
-		goto comreset_retry;
-	}	
         Offset = EFI_AHCI_PORT_START + Port * EFI_AHCI_PORT_REG_WIDTH + EFI_AHCI_PORT_CMD;
         AhciAndReg (PciIo, Offset, (UINT32) ~(EFI_AHCI_PORT_CMD_SUD));
         continue;

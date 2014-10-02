@@ -52,18 +52,19 @@
 
   # 1/123 faster than Stm or Vstm version
   #BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  BaseMemoryLib|ArmPkg/Library/BaseMemoryLibStm/BaseMemoryLibStm.inf
+  BaseMemoryLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Library/BaseMemoryLibStm/BaseMemoryLibStm.inf
 
   # ARM Architectural Libraries
   CacheMaintenanceLib|ArmPkg/Library/ArmCacheMaintenanceLib/ArmCacheMaintenanceLib.inf
-  DefaultExceptionHandlerLib|ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLib.inf
+  DefaultExceptionHandlerLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLib.inf
   CpuExceptionHandlerLib|MdeModulePkg/Library/CpuExceptionHandlerLibNull/CpuExceptionHandlerLibNull.inf
   ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
   DmaLib|ArmPkg/Library/ArmDmaLib/ArmDmaLib.inf
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
   ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
-
+  TimerLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  
   # APM XGene specific libraries
   EfiResetSystemLib|ArmPlatformPkg/APMXGenePkg/Library/ResetSystemLib/ResetSystemLib.inf
   NorFlashPlatformLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneNorFlashPlatformLib/APMXGeneNorFlashPlatformLib.inf
@@ -72,7 +73,7 @@
   SlimproLib|ArmPlatformPkg/APMXGenePkg/Library/SlimproLib/SlimproLib.inf
 
   # EBL Related Libraries
-  EblCmdLib|ArmPlatformPkg/Library/EblCmdLib/EblCmdLib.inf
+  EblCmdLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Library/EblCmdLib/EblCmdLib.inf
   EfiFileLib|EmbeddedPkg/Library/EfiFileLib/EfiFileLib.inf
   EblAddExternalCommandLib|EmbeddedPkg/Library/EblAddExternalCommandLib/EblAddExternalCommandLib.inf
   EblNetworkLib|EmbeddedPkg/Library/EblNetworkLib/EblNetworkLib.inf
@@ -93,15 +94,14 @@
   SemihostLib|ArmPkg/Library/SemihostLib/SemihostLib.inf
 
   # BDS Libraries
-  BdsLib|ArmPkg/Library/BdsLib/BdsLib.inf
+  BdsLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Library/BdsLib/BdsLib.inf
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
 
 [LibraryClasses.common.SEC]
   ArmPlatformSecExtraActionLib|ArmPlatformPkg/Library/DebugSecExtraActionLib/DebugSecExtraActionLib.inf
   ArmPlatformGlobalVariableLib|ArmPlatformPkg/Library/ArmPlatformGlobalVariableLib/Sec/SecArmPlatformGlobalVariableLib.inf
 
-  DebugAgentLib|ArmPkg/Library/DebugAgentSymbolsBaseLib/DebugAgentSymbolsBaseLib.inf
-  DefaultExceptionHandlerLib|ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLibBase.inf
+  DefaultExceptionHandlerLib|ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLibBase.inf
 
 !ifdef $(EDK2_SKIP_PEICORE)
   PrePiLib|EmbeddedPkg/Library/PrePiLib/PrePiLib.inf
@@ -239,7 +239,7 @@
 
 [PcdsFixedAtBuild.common]
   gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"AppliedMicro XGene"
-
+  gArmPlatformTokenSpaceGuid.PcdCoreCount|8
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"APM-XGENE"
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize|40
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|40

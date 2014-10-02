@@ -18,10 +18,6 @@
 #include <Protocol/DiskIo.h>
 #include <Protocol/LoadedImage.h>
 #include <Protocol/SimpleNetwork.h>
-#include <Protocol/PxeBaseCode.h>
-#include <Protocol/PxeBaseCodeCallBack.h>
-#include <Library/NetLib.h>
-#include <Library/TimerLib.h>
 
 #define IS_DEVICE_PATH_NODE(node,type,subtype) (((node)->Type == (type)) && ((node)->SubType == (subtype)))
 
@@ -320,10 +316,8 @@ BdsConnectAndUpdateDevicePath (
     return EFI_INVALID_PARAMETER;
   }
 
-  //For tftp, this sould be here, not in the do { } while
-  Remaining = *DevicePath;
   do {
-    // Not for tftp, Remaining = DevicePath;
+    Remaining = *DevicePath;
     // The LocateDevicePath() function locates all devices on DevicePath that support Protocol and returns
     // the handle to the device that is closest to DevicePath. On output, the device path pointer is modified
     // to point to the remaining part of the device path
@@ -395,7 +389,7 @@ BdsConnectAndUpdateDevicePath (
 **/
 EFI_STATUS
 BdsConnectDevicePath (
-  IN  EFI_DEVICE_PATH_PROTOCOL  *DevicePath,
+  IN  EFI_DEVICE_PATH_PROTOCOL* DevicePath,
   OUT EFI_HANDLE                *Handle,
   OUT EFI_DEVICE_PATH_PROTOCOL  **RemainingDevicePath
   )
@@ -516,7 +510,7 @@ BdsMemoryMapLoadImage (
     MemMapPathDevicePath = (MEMMAP_DEVICE_PATH*)DevicePath;
   }
 
-  Size = MemMapPathDevicePath->EndingAddress - MemMapPathDevicePath->StartingAddress + 1;
+  Size = MemMapPathDevicePath->EndingAddress - MemMapPathDevicePath->StartingAddress;
   if (Size == 0) {
       return EFI_INVALID_PARAMETER;
   }
@@ -528,7 +522,6 @@ BdsMemoryMapLoadImage (
   }
   if (!EFI_ERROR (Status)) {
     CopyMem ((VOID*)(UINTN)(*Image), (CONST VOID*)(UINTN)MemMapPathDevicePath->StartingAddress, Size);
-    DEBUG((DEBUG_BLKIO, "BdsMemoryMapLoadImage: Load from 0x%p to %p.\n", (CONST VOID*)MemMapPathDevicePath->StartingAddress, (VOID*)(*Image)));
 
     if (ImageSize != NULL) {
         *ImageSize = Size;
@@ -750,77 +743,6 @@ BdsTftpSupport (
   }
 }
 
-STATIC UINT64 FileLoadSizePrint = 0;
-
-/**
-  Callback function that is invoked when the PXE Base Code Protocol is about to transmit, has
-  received, or is waiting to receive a packet.
-
-  This function is invoked when the PXE Base Code Protocol is about to transmit, has received,
-  or is waiting to receive a packet. Parameters Function and Received specify the type of event.
-  Parameters PacketLen and Packet specify the packet that generated the event. If these fields
-  are zero and NULL respectively, then this is a status update callback. If the operation specified
-  by Function is to continue, then CALLBACK_STATUS_CONTINUE should be returned. If the operation
-  specified by Function should be aborted, then CALLBACK_STATUS_ABORT should be returned. Due to
-  the polling nature of UEFI device drivers, a callback function should not execute for more than 5 ms.
-  The SetParameters() function must be called after a Callback Protocol is installed to enable the
-  use of callbacks.
-
-  @param  This                  Pointer to the EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL instance.
-  @param  Function              The PXE Base Code Protocol function that is waiting for an event.
-  @param  Received              TRUE if the callback is being invoked due to a receive event. FALSE if
-                                the callback is being invoked due to a transmit event.
-  @param  PacketLength          The length, in bytes, of Packet. This field will have a value of zero if
-                                this is a wait for receive event.
-  @param  PacketPtr             If Received is TRUE, a pointer to the packet that was just received;
-                                otherwise a pointer to the packet that is about to be transmitted.
-
-  @retval EFI_PXE_BASE_CODE_CALLBACK_STATUS_CONTINUE if Function specifies a continue operation
-  @retval EFI_PXE_BASE_CODE_CALLBACK_STATUS_ABORT    if Function specifies an abort operation
-
-**/
-EFI_PXE_BASE_CODE_CALLBACK_STATUS
-EFIAPI
-EfiPxeLoadFileCallback (
-  IN EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL  * This,
-  IN EFI_PXE_BASE_CODE_FUNCTION           Function,
-  IN BOOLEAN                              Received,
-  IN UINT32                               PacketLength,
-  IN EFI_PXE_BASE_CODE_PACKET             * PacketPtr OPTIONAL
-  )
-{
-  EFI_INPUT_KEY Key;
-  EFI_STATUS    Status;
-
-  //
-  // Catch Ctrl-C or ESC to abort.
-  //
-  Status = gST->ConIn->ReadKeyStroke (gST->ConIn, &Key);
-
-  if (!EFI_ERROR (Status)) {
-
-    if (Key.ScanCode == SCAN_ESC || Key.UnicodeChar == (0x1F & 'c')) {
-
-      return EFI_PXE_BASE_CODE_CALLBACK_STATUS_ABORT;
-    }
-  }
-
-  if (Received) {
-    FileLoadSizePrint += PacketLength;
-    if (FileLoadSizePrint > 128*1024) {
-      AsciiPrint (".");
-      FileLoadSizePrint = 0;
-    }
-  }
-
-  return EFI_PXE_BASE_CODE_CALLBACK_STATUS_CONTINUE;
-}
-
-EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL mPxeBcCallBackTemplate = {
-  EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL_REVISION,
-  EfiPxeLoadFileCallback
-};
-
 EFI_STATUS
 BdsTftpLoadImage (
   IN     EFI_DEVICE_PATH*       DevicePath,
@@ -831,39 +753,25 @@ BdsTftpLoadImage (
   OUT    UINTN                  *ImageSize
   )
 {
-  EFI_STATUS                                Status;
-  EFI_PXE_BASE_CODE_PROTOCOL                *Pxe;
-  UINT64                                    TftpBufferSize;
-  UINT64                                    TftpTransferSize;
-  EFI_IP_ADDRESS                            ServerIp;
-  IPv4_DEVICE_PATH*                         IPv4DevicePathNode;
-  FILEPATH_DEVICE_PATH*                     FilePathDevicePath;
-  EFI_IP_ADDRESS                            LocalIp;
-  EFI_IP_ADDRESS                            Submask;
-  CHAR8*                                    AsciiPathName;
-  EFI_SIMPLE_NETWORK_PROTOCOL               *Snp;
-  BOOLEAN                                   MediaPresent;
-  BOOLEAN                                   NewMakeCallback;
-  EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL       *PxeBcCallback;
-  EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL       LoadFileCallback;
+  EFI_STATUS                  Status;
+  EFI_PXE_BASE_CODE_PROTOCOL  *Pxe;
+  UINT64                      TftpBufferSize;
+  UINT64                      TftpTransferSize;
+  EFI_IP_ADDRESS              ServerIp;
+  IPv4_DEVICE_PATH*           IPv4DevicePathNode;
+  FILEPATH_DEVICE_PATH*       FilePathDevicePath;
+  EFI_IP_ADDRESS              LocalIp;
+  CHAR8*                      AsciiPathName;
+  EFI_SIMPLE_NETWORK_PROTOCOL *Snp;
 
   ASSERT(IS_DEVICE_PATH_NODE (RemainingDevicePath, MESSAGING_DEVICE_PATH, MSG_IPv4_DP));
 
   IPv4DevicePathNode = (IPv4_DEVICE_PATH*)RemainingDevicePath;
   FilePathDevicePath = (FILEPATH_DEVICE_PATH*)(IPv4DevicePathNode + 1);
 
-  Status = gBS->HandleProtocol (Handle, &gEfiPxeBaseCodeProtocolGuid, (VOID **)&Pxe);
+  Status = gBS->LocateProtocol (&gEfiPxeBaseCodeProtocolGuid, NULL, (VOID **)&Pxe);
   if (EFI_ERROR (Status)) {
     return Status;
-  }
-
-  //
-  // Check media status before PXE start
-  //
-  MediaPresent = TRUE;
-  NetLibDetectMedia (Handle, &MediaPresent);
-  if (!MediaPresent) {
-    return EFI_NO_MEDIA;
   }
 
   Status = Pxe->Start (Pxe, FALSE);
@@ -871,45 +779,18 @@ BdsTftpLoadImage (
     return Status;
   }
 
-  Status = gBS->HandleProtocol (
-                  Handle,
-                  &gEfiPxeBaseCodeCallbackProtocolGuid,
-                  (VOID **) &PxeBcCallback
-                  );
-  if (Status == EFI_UNSUPPORTED) {
-
-    CopyMem (&LoadFileCallback, &mPxeBcCallBackTemplate, sizeof (LoadFileCallback));
-
-    Status = gBS->InstallProtocolInterface (
-                    &Handle,
-                    &gEfiPxeBaseCodeCallbackProtocolGuid,
-                    EFI_NATIVE_INTERFACE,
-                    &LoadFileCallback
-                    );
-
-    NewMakeCallback = (BOOLEAN) (Status == EFI_SUCCESS);
-
-    Status          = Pxe->SetParameters (Pxe, NULL, NULL, NULL, NULL, &NewMakeCallback);
-    if (EFI_ERROR (Status)) {
-      Pxe->Stop (Pxe);
-      return Status;
-    }
-  }
-
   do {
     if (!IPv4DevicePathNode->StaticIpAddress) {
       Status = Pxe->Dhcp (Pxe, TRUE);
     } else {
       CopyMem (&LocalIp.v4, &IPv4DevicePathNode->LocalIpAddress, sizeof (EFI_IPv4_ADDRESS));
-      CopyMem (&Submask.v4, &IPv4DevicePathNode->SubnetMask, sizeof (EFI_IPv4_ADDRESS));
-
-      Status = Pxe->SetStationIp (Pxe, &LocalIp, &Submask);
+      Status = Pxe->SetStationIp (Pxe, &LocalIp, NULL);
     }
 
     // If an IP Address has already been set and a different static IP address is requested then restart
     // the Network service.
     if (Status == EFI_ALREADY_STARTED) {
-      Status = gBS->HandleProtocol (Handle, &gEfiSimpleNetworkProtocolGuid, (VOID **)&Snp);
+      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, (VOID **)&Snp);
       if (!EFI_ERROR (Status) && IPv4DevicePathNode->StaticIpAddress &&
           (CompareMem (&Snp->Mode->CurrentAddress, &IPv4DevicePathNode->LocalIpAddress, sizeof(EFI_MAC_ADDRESS)) != 0))
       {
@@ -937,7 +818,6 @@ BdsTftpLoadImage (
   }
   UnicodeStrToAsciiStr (FilePathDevicePath->PathName, AsciiPathName);
 
-  FileLoadSizePrint = 0;
   // Try to get the size (required the TFTP server to have "tsize" extension)
   Status = Pxe->Mtftp (
                   Pxe,
@@ -978,7 +858,6 @@ BdsTftpLoadImage (
         goto EXIT;
       }
 
-      FileLoadSizePrint = 0;
       TftpTransferSize = TftpBufferSize;
       Status = Pxe->Mtftp (
                       Pxe,
@@ -1012,7 +891,6 @@ BdsTftpLoadImage (
       goto EXIT;
     }
 
-    FileLoadSizePrint = 0;
     Status = Pxe->Mtftp (
                     Pxe,
                     EFI_PXE_BASE_CODE_TFTP_READ_FILE,
@@ -1033,19 +911,6 @@ BdsTftpLoadImage (
   }
 
 EXIT:
-  if (NewMakeCallback) {
-
-    NewMakeCallback = FALSE;
-
-    Pxe->SetParameters (Pxe, NULL, NULL, NULL, NULL, &NewMakeCallback);
-
-    gBS->UninstallProtocolInterface (
-          Handle,
-          &gEfiPxeBaseCodeCallbackProtocolGuid,
-          &LoadFileCallback
-          );
-  }
-
   FreePool (AsciiPathName);
   return Status;
 }
@@ -1091,13 +956,13 @@ BdsLoadImageAndUpdateDevicePath (
 
 EFI_STATUS
 BdsLoadImage (
-  IN     EFI_DEVICE_PATH       **DevicePath,
+  IN     EFI_DEVICE_PATH       *DevicePath,
   IN     EFI_ALLOCATE_TYPE     Type,
   IN OUT EFI_PHYSICAL_ADDRESS* Image,
   OUT    UINTN                 *FileSize
   )
 {
-  return BdsLoadImageAndUpdateDevicePath (DevicePath, Type, Image, FileSize);
+  return BdsLoadImageAndUpdateDevicePath (&DevicePath, Type, Image, FileSize);
 }
 
 /**

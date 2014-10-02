@@ -42,7 +42,6 @@ GetLbaAndOffsetByAddress (
 {
   EFI_STATUS                          Status;
   EFI_PHYSICAL_ADDRESS                FvbBaseAddress;
-  EFI_PHYSICAL_ADDRESS                FvbHeaderAddress;
   EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL  *Fvb;
   EFI_FIRMWARE_VOLUME_HEADER          *FwVolHeader;
   EFI_FV_BLOCK_MAP_ENTRY              *FvbMapEntry;
@@ -67,15 +66,7 @@ GetLbaAndOffsetByAddress (
     return Status;
   }
 
-  if (Fvb->GetMappedAddress) {
-    Status = Fvb->GetMappedAddress(Fvb, &FvbHeaderAddress);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-    FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) FvbHeaderAddress;
-  } else {
-    FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) FvbBaseAddress;
-  }
+  FwVolHeader = (EFI_FIRMWARE_VOLUME_HEADER *) ((UINTN) FvbBaseAddress);
 
   //
   // Get the (LBA, Offset) of Address.

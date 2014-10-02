@@ -394,9 +394,6 @@ SataControllerStart (
   EFI_SATA_CONTROLLER_PRIVATE_DATA  *SataPrivateData;
   UINT32                            Data32;
   UINTN                             ChannelDeviceCount;
-  UINT64                            Supports;
-  UINT64                            OriginalPciAttributes;
-  BOOLEAN                           PciAttributesSaved;
 
   DEBUG ((EFI_D_INFO, "SataControllerStart START\n"));
 
@@ -416,43 +413,6 @@ SataControllerStart (
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "SataControllerStart error return status = %r\n", Status));
     return Status;
-  }
-
-  PciAttributesSaved = FALSE;
-  //
-  // Save original PCI attributes
-  //
-  Status = PciIo->Attributes (
-                    PciIo,
-                    EfiPciIoAttributeOperationGet,
-                    0,
-                    &OriginalPciAttributes
-                    );
-
-  if (EFI_ERROR (Status)) {
-    goto Done;
-  }
-  PciAttributesSaved = TRUE;
-
-  Status = PciIo->Attributes (
-                    PciIo,
-                    EfiPciIoAttributeOperationSupported,
-                    0,
-                    &Supports
-                    );
-  if (!EFI_ERROR (Status)) {
-    Supports &= EFI_PCI_DEVICE_ENABLE;
-    Status = PciIo->Attributes (
-                      PciIo,
-                      EfiPciIoAttributeOperationEnable,
-                      Supports,
-                      NULL
-                      );
-  }
-
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "EhcDriverBindingStart: failed to enable controller\n"));
-    goto Done;
   }
 
   //
@@ -534,17 +494,7 @@ SataControllerStart (
 
 Done:
   if (EFI_ERROR (Status)) {
-    if (PciAttributesSaved) {
-      //
-      // Restore original PCI attributes
-      //
-      PciIo->Attributes (
-                      PciIo,
-                      EfiPciIoAttributeOperationSet,
-                      OriginalPciAttributes,
-                      NULL
-                      );
-    }
+
     gBS->CloseProtocol (
           Controller,
           &gEfiPciIoProtocolGuid,

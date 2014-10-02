@@ -68,7 +68,7 @@
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecSecondaryStackSize|0x1000|UINT32|0x00000006
 
   # Stack for CPU Cores in Non Secure Mode
-  gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0|UINT64|0x0000000000000009
+  gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0|UINT64|0x00000009
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x10000|UINT32|0x00000037
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x1000|UINT32|0x0000000A
     
@@ -123,9 +123,6 @@
   ## PL180 MCI
   gArmPlatformTokenSpaceGuid.PcdPL180SysMciRegAddress|0x00000000|UINT32|0x00000028
   gArmPlatformTokenSpaceGuid.PcdPL180MciBaseAddress|0x00000000|UINT32|0x00000029
-
-  ## APM RealTimeClock
-  gArmPlatformTokenSpaceGuid.PcdApmRtcBase|0x10510000|UINT64|0x00000040
 
   #
   # BDS - Boot Manager

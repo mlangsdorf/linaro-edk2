@@ -301,7 +301,7 @@ GetUnalignedDevicePathSize (
   UINTN Size;
   EFI_DEVICE_PATH* AlignedDevicePath;
 
-  if ((EFI_PHYSICAL_ADDRESS)DevicePath & 0x1) {
+  if ((UINTN)DevicePath & 0x1) {
     AlignedDevicePath = DuplicateDevicePath (DevicePath);
     Size = GetDevicePathSize (AlignedDevicePath);
     FreePool (AlignedDevicePath);
@@ -316,7 +316,7 @@ GetAlignedDevicePath (
   IN EFI_DEVICE_PATH* DevicePath
   )
 {
-  if ((EFI_PHYSICAL_ADDRESS)DevicePath & 0x1) {
+  if ((UINTN)DevicePath & 0x1) {
     return DuplicateDevicePath (DevicePath);
   } else {
     return DevicePath;

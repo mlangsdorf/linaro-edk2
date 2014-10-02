@@ -96,18 +96,14 @@ ArmGicEnableInterruptInterface (
   IN  INTN          GicInterruptInterfaceBase
   )
 {
-  UINT32    ControlValue;
-
   // Set Priority Mask to allow interrupts
   MmioWrite32 (GicInterruptInterfaceBase + ARM_GIC_ICCPMR, 0x000000FF);
-
-  ControlValue = MmioRead32 (GicInterruptInterfaceBase + ARM_GIC_ICCICR);
 
   // Enable CPU interface in Secure world
   // Enable CPU interface in Non-secure World
   // Signal Secure Interrupts to CPU using FIQ line *
   MmioWrite32 (GicInterruptInterfaceBase + ARM_GIC_ICCICR,
-      ControlValue | ARM_GIC_ICCICR_ENABLE_SECURE |
+      ARM_GIC_ICCICR_ENABLE_SECURE |
       ARM_GIC_ICCICR_ENABLE_NS |
       ARM_GIC_ICCICR_SIGNAL_SECURE_TO_FIQ);
 }

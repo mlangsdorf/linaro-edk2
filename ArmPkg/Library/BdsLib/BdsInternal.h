@@ -82,11 +82,6 @@ GetSystemMemoryResources (
   LIST_ENTRY *ResourceList
   );
 
-EFI_STATUS
-GetMemmoryMapIOResources (
-  IN  LIST_ENTRY *ResourceList
-  );
-
 VOID
 PrintPerformance (
   VOID
@@ -94,7 +89,7 @@ PrintPerformance (
 
 EFI_STATUS
 BdsLoadImage (
-  IN     EFI_DEVICE_PATH       **DevicePath,
+  IN     EFI_DEVICE_PATH       *DevicePath,
   IN     EFI_ALLOCATE_TYPE     Type,
   IN OUT EFI_PHYSICAL_ADDRESS* Image,
   OUT    UINTN                 *FileSize

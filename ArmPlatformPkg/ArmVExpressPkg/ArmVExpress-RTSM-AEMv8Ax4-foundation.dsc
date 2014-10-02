@@ -72,7 +72,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|FALSE
 
 [PcdsFixedAtBuild.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0-rh-0.10-rc2"
   gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"ARM Foundation Model"
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"ArmFoundation"
 
@@ -117,17 +116,15 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x2C001000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C002000
 
-  # Ethernet (SMSC 91C111)
-  gArmPlatformTokenSpaceGuid.PcdLan91xDxeBaseAddress|0x1A000000
   #
   # ARM OS Loader
   #
   # Versatile Express machine type (ARM VERSATILE EXPRESS = 2272) required for ARM Linux:
-  gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"Linux from first ESP"
-  gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L""
-  gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|""
-  gArmPlatformTokenSpaceGuid.PcdDefaultBootType|0
-  gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L""
+  gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"Linux from SemiHosting"
+  gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(C5B9C74A-6D72-4719-99AB-C59F199091EB)/Image"
+  gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|"root=/dev/vda2 rw console=ttyAMA0 earlyprintk=pl011,0x1c090000 maxcpus=4 debug user_debug=31 loglevel=9"
+  gArmPlatformTokenSpaceGuid.PcdDefaultBootType|2
+  gArmPlatformTokenSpaceGuid.PcdFdtDevicePath|L"VenHw(C5B9C74A-6D72-4719-99AB-C59F199091EB)/foundation-v8.dtb"
 
   # Use the serial console (ConIn & ConOut) and the Graphic driver (ConOut)
   gArmPlatformTokenSpaceGuid.PcdDefaultConOutPaths|L"VenHw(D3987D4B-971A-435F-8CAF-4967EB627241)/Uart(38400,8,N,1)/VenPcAnsi();"
@@ -217,12 +214,6 @@
   EmbeddedPkg/SerialDxe/SerialDxe.inf
 
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
-  #
-  # ACPI Support
-  #
-  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
-  ArmPlatformPkg/ArmVExpressPkg/AcpiTables/foundation-v8/AcpiTables.inf
 
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf

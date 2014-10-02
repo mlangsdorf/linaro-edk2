@@ -23,15 +23,17 @@ BootOptionStart (
   )
 {
   EFI_STATUS                            Status;
+  EFI_DEVICE_PATH_FROM_TEXT_PROTOCOL*   EfiDevicePathFromTextProtocol;
   UINT32                                LoaderType;
   ARM_BDS_LOADER_OPTIONAL_DATA*         OptionalData;
   ARM_BDS_LINUX_ARGUMENTS*              LinuxArguments;
   EFI_DEVICE_PATH_PROTOCOL*             FdtDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL*             DefaultFdtDevicePath;
+  UINTN                                 FdtDevicePathSize;
   UINTN                                 CmdLineSize;
   UINTN                                 InitrdSize;
   EFI_DEVICE_PATH*                      Initrd;
   UINT16                                LoadOptionIndexSize;
-  UINTN                                 FdtSize;
 
   if (IS_ARM_BDS_BOOTENTRY (BootOption)) {
     Status = EFI_UNSUPPORTED;
@@ -63,7 +65,6 @@ BootOptionStart (
       LinuxArguments = &(OptionalData->Arguments.LinuxArguments);
       CmdLineSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->CmdLineSize);
       InitrdSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->InitrdSize);
-      FdtSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->FdtSize);
 
       if (InitrdSize > 0) {
         Initrd = GetAlignedDevicePath ((EFI_DEVICE_PATH*)((UINTN)(LinuxArguments + 1) + CmdLineSize));
@@ -71,31 +72,24 @@ BootOptionStart (
         Initrd = NULL;
       }
 
-      if (FdtSize > 0) {
-        FdtDevicePath = GetAlignedDevicePath ((EFI_DEVICE_PATH*)((UINTN)(LinuxArguments + 1) + CmdLineSize +InitrdSize));
-      } else {
-        /* must have Fdt */
-        return EFI_UNSUPPORTED;
-      }
+      // Get the default FDT device path
+      Status = gBS->LocateProtocol (&gEfiDevicePathFromTextProtocolGuid, NULL, (VOID **)&EfiDevicePathFromTextProtocol);
+      ASSERT_EFI_ERROR(Status);
+      DefaultFdtDevicePath = EfiDevicePathFromTextProtocol->ConvertTextToDevicePath ((CHAR16*)PcdGetPtr(PcdFdtDevicePath));
+
+      // Get the FDT device path
+      FdtDevicePathSize = GetDevicePathSize (DefaultFdtDevicePath);
+      Status = GetEnvironmentVariable ((CHAR16 *)L"Fdt", &gArmGlobalVariableGuid,
+                 DefaultFdtDevicePath, &FdtDevicePathSize, (VOID **)&FdtDevicePath);
+      ASSERT_EFI_ERROR(Status);
 
       Status = BdsBootLinuxFdt (BootOption->FilePathList,
                                 Initrd, // Initrd
                                 (CHAR8*)(LinuxArguments + 1),
                                 FdtDevicePath);
-    } else if (LoaderType == BDS_LOADER_KERNEL_LINUX_UEFI) {
-      LinuxArguments = &(OptionalData->Arguments.LinuxArguments);
-      CmdLineSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->CmdLineSize);
-      InitrdSize = ReadUnaligned16 ((CONST UINT16*)&LinuxArguments->InitrdSize);
 
-      if (InitrdSize > 0) {
-        Initrd = GetAlignedDevicePath ((EFI_DEVICE_PATH*)((UINTN)(LinuxArguments + 1) + CmdLineSize));
-      } else {
-        Initrd = NULL;
-      }
-
-      Status = BdsBootLinuxUEFI (BootOption->FilePathList,
-                                Initrd, // Initrd
-                                (CHAR8*)(LinuxArguments + 1));
+      FreePool (DefaultFdtDevicePath);
+      FreePool (FdtDevicePath);
     }
   } else {
     // Connect all the drivers if the EFI Application is not a EFI OS Loader
@@ -173,7 +167,6 @@ BootOptionSetFields (
   UINT16                        FilePathListLength;
   UINT8*                        EfiLoadOptionPtr;
   UINT8*                        InitrdPathListPtr;
-  UINT8*                        FdtPathListPtr;
   ARM_BDS_LINUX_ARGUMENTS*      DestLinuxArguments;
   ARM_BDS_LINUX_ARGUMENTS*      SrcLinuxArguments;
   ARM_BDS_LOADER_ARGUMENTS*     BootArguments;
@@ -186,9 +179,7 @@ BootOptionSetFields (
   BootDescriptionSize = StrSize (BootDescription);
 
   // Fixup the size in case of entry specific to ArmPlatformPkg/Bds
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
-      (BootType == BDS_LOADER_KERNEL_LINUX_FDT) ||
-      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_FDT)) {
     OptionalDataSize += sizeof(ARM_BDS_LOADER_OPTIONAL_DATA_HEADER);
   }
 
@@ -227,9 +218,7 @@ BootOptionSetFields (
   // Optional Data fields, Do unaligned writes
   BootOption->OptionalData = EfiLoadOptionPtr;
 
-  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) ||
-      (BootType == BDS_LOADER_KERNEL_LINUX_FDT) ||
-      (BootType == BDS_LOADER_KERNEL_LINUX_UEFI)) {
+  if ((BootType == BDS_LOADER_KERNEL_LINUX_ATAG) || (BootType == BDS_LOADER_KERNEL_LINUX_FDT)) {
     // Write the header
     WriteUnaligned32 ((UINT32 *)EfiLoadOptionPtr, ARM_BDS_OPTIONAL_DATA_SIGNATURE);
     WriteUnaligned32 ((UINT32 *)(EfiLoadOptionPtr + 4), BootType);
@@ -240,7 +229,6 @@ BootOptionSetFields (
 
     WriteUnaligned16 ((UINT16 *)&(DestLinuxArguments->CmdLineSize), SrcLinuxArguments->CmdLineSize);
     WriteUnaligned16 ((UINT16 *)&(DestLinuxArguments->InitrdSize), SrcLinuxArguments->InitrdSize);
-    WriteUnaligned16 ((UINT16 *)&(DestLinuxArguments->FdtSize), SrcLinuxArguments->FdtSize);
 
     if (SrcLinuxArguments->CmdLineSize > 0) {
       CopyMem ((VOID*)(DestLinuxArguments + 1), (VOID*)(SrcLinuxArguments + 1), SrcLinuxArguments->CmdLineSize);
@@ -249,13 +237,6 @@ BootOptionSetFields (
     if (SrcLinuxArguments->InitrdSize > 0) {
       InitrdPathListPtr = (UINT8*)((UINTN)(DestLinuxArguments + 1) + SrcLinuxArguments->CmdLineSize);
       CopyMem (InitrdPathListPtr, (VOID*)((UINTN)(SrcLinuxArguments + 1) + SrcLinuxArguments->CmdLineSize), SrcLinuxArguments->InitrdSize);
-    }
-
-    if (SrcLinuxArguments->FdtSize > 0) {
-      FdtPathListPtr = (UINT8*)((UINTN)(DestLinuxArguments + 1) + SrcLinuxArguments->CmdLineSize +
-                                SrcLinuxArguments->InitrdSize);
-      CopyMem (FdtPathListPtr, (VOID*)((UINTN)(SrcLinuxArguments + 1) + SrcLinuxArguments->CmdLineSize +
-               SrcLinuxArguments->InitrdSize), SrcLinuxArguments->FdtSize);
     }
   } else {
     CopyMem (BootOption->OptionalData, OptionalData, OptionalDataSize);
@@ -316,10 +297,6 @@ BootOptionCreate (
       BootOption->LoadOptionSize,
       BootOption->LoadOption
       );
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_WARN,"Fail to set variable %S error %d\n",
-          BootVariableName, Status));
-  }
 
   // Add the new Boot Index to the list
   Status = GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize, (VOID**)&BootOrder);
@@ -342,10 +319,6 @@ BootOptionCreate (
       BootOrderSize,
       BootOrder
       );
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_WARN,"Fail to set variable %S error %d\n",
-          L"BootOrder", Status));
-  }
 
   // We only free it if the UEFI Variable 'BootOrder' was already existing
   if (BootOrderSize > sizeof(UINT16)) {

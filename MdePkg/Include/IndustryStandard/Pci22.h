@@ -632,7 +632,6 @@ typedef union {
 #define EFI_PCI_CAPABILITY_ID_SLOTID  0x04
 #define EFI_PCI_CAPABILITY_ID_MSI     0x05
 #define EFI_PCI_CAPABILITY_ID_HOTPLUG 0x06
-#define EFI_PCI_CAPABILITY_ID_EXP     0x10
 
 ///
 /// Capabilities List Header
@@ -720,17 +719,6 @@ typedef struct {
   /// not finished - fields need to go here
   ///
 } EFI_PCI_CAPABILITY_HOTPLUG;
-
-///
-/// Capability EFI_PCI_CAPABILITY_ID_EXP for PCIE
-/// FIXME: Add description
-///
-typedef struct {
-  EFI_PCI_CAPABILITY_HDR  Hdr;
-  UINT16                  PCIECapRegister;
-  UINT32                  DevCap;
-  UINT16                  DevCtrl;
-} EFI_PCI_CAPABILITY_EXP;
 
 #define DEVICE_ID_NOCARE    0xFFFF
 

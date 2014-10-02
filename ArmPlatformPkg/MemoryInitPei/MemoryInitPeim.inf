@@ -23,7 +23,7 @@
 #
 # The following information is for reference only and not required by the build tools.
 #
-#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC ARM AARCH64
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC ARM
 #
 
 [Sources]
@@ -43,7 +43,6 @@
   HobLib
   ArmLib
   ArmPlatformLib
-  PcdLib
 
 [Guids]
   gEfiMemoryTypeInformationGuid

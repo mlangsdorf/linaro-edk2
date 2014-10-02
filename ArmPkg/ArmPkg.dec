@@ -68,9 +68,6 @@
   # Define if the Power State Coordination Interface (PSCI) is supported by the Platform Trusted Firmware
   gArmTokenSpaceGuid.PcdArmPsciSupport|FALSE|BOOLEAN|0x00000033
 
-[PcdsDynamic.common]
-  gArmTokenSpaceGuid.PcdBootingLinuxUEFI|0|UINT32|0x00000040
-
 [PcdsFixedAtBuild.common]
   gArmTokenSpaceGuid.PcdTrustzoneSupport|FALSE|BOOLEAN|0x00000006
 
@@ -101,9 +98,9 @@
   #
   # ARM Normal (or Non Secure) Firmware PCDs
   #
-  gArmTokenSpaceGuid.PcdFdBaseAddress|0|UINT64|0x000000000000002B
+  gArmTokenSpaceGuid.PcdFdBaseAddress|0|UINT64|0x0000002B
   gArmTokenSpaceGuid.PcdFdSize|0|UINT32|0x0000002C
-  gArmTokenSpaceGuid.PcdFvBaseAddress|0|UINT64|0x000000000000002D
+  gArmTokenSpaceGuid.PcdFvBaseAddress|0|UINT64|0x0000002D
   gArmTokenSpaceGuid.PcdFvSize|0|UINT32|0x0000002E
 
   #
@@ -136,7 +133,6 @@
   gArmTokenSpaceGuid.PcdArmMachineType|0|UINT32|0x0000001E
   # The compressed Linux kernel is expected to be under 128MB from the beginning of the System Memory
   gArmTokenSpaceGuid.PcdArmLinuxKernelMaxOffset|0x08000000|UINT32|0x0000001F
-  gArmTokenSpaceGuid.PcdArmLinuxInitrdMaxOffset|0x00800000|UINT32|0x00000044
   # Maximum file size for TFTP servers that do not support 'tsize' extension
   gArmTokenSpaceGuid.PcdMaxTftpFileSize|0x01000000|UINT32|0x00000000
 
@@ -221,7 +217,6 @@
   # If the fixed FDT address is not available, then it should be loaded above the kernel.
   # The recommendation from the AArch64 Linux kernel is to have the FDT below 512MB.
   # (see the kernel doc: Documentation/arm64/booting.txt)
-  gArmTokenSpaceGuid.PcdArmLinuxAtagMaxOffset|0x4000|UINT32|0x00000020
   gArmTokenSpaceGuid.PcdArmLinuxFdtMaxOffset|0x20000000|UINT32|0x00000023
   # The FDT blob must be loaded at a 2MB aligned address.
   gArmTokenSpaceGuid.PcdArmLinuxFdtAlignment|0x00200000|UINT32|0x00000026

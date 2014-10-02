@@ -28,6 +28,7 @@
 ################################################################################
 [Includes.common]
   Include                        # Root include for the package
+  Modules/ArmPkg/Include
 
 [Guids.common]
   gArmPlatformTokenSpaceGuid   = { 0x9c0aaed4, 0x74c5, 0x4043, { 0xb4, 0x17, 0xa3, 0x22, 0x38, 0x14, 0xce, 0x76 } }
@@ -56,8 +57,6 @@
   gArmPlatformTokenSpaceGuid.PcdPcieRootBridgeResetGpio|FALSE|BOOLEAN|0x00000076
 
 [PcdsFixedAtBuild.common]
-  gArmPlatformTokenSpaceGuid.PcdClusterCount|2|UINT32|0x00000038
-
   # Stack for CPU Cores in Secure Mode (Top of OCM)
   gArmPlatformTokenSpaceGuid.PcdCPUCoresSecStackBase|0x1D0FF000|UINT32|0x00000005
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecPrimaryStackSize|0x1000|UINT32|0x00000036
@@ -199,6 +198,12 @@
 
   gArmPlatformTokenSpaceGuid.PcdKernMailboxAddr|0|UINT64|0x0000007B
   gArmPlatformTokenSpaceGuid.PcdTTBBaseAddr|0|UINT64|0x0000007C
-  gArmPlatformTokenSpaceGuid.PcdApmRtcBase|0x10510000|UINT32|0x0000007E
-  
+
+  ## APM RealTimeClock
+  gArmPlatformTokenSpaceGuid.PcdApmRtcBase|0x10510000|UINT64|0x0000007E
+
   gArmPlatformTokenSpaceGuid.PcdL3cSize|8|UINT32|0x0000007F
+
+[PcdsDynamic.common]
+  gArmTokenSpaceGuid.PcdBootingLinuxUEFI|0|UINT32|0x00000080
+

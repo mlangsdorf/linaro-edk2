@@ -25,7 +25,6 @@
 #include <Guid/FileSystemInfo.h>
 
 #define IS_DEVICE_PATH_NODE(node,type,subtype) (((node)->Type == (type)) && ((node)->SubType == (subtype)))
-#define FDT_RESPONSE_LEN 2  // 1 character, plus carriage return
 
 EFI_STATUS
 BdsLoadOptionFileSystemList (
@@ -225,6 +224,7 @@ BootDeviceGetType (
   EFI_STATUS              Status;
   BOOLEAN                 IsEfiApp;
   BOOLEAN                 IsBootLoader;
+  BOOLEAN                 HasFDTSupport;
   CHAR16*                 FileName;
   EFI_DEVICE_PATH*        PrevDevicePathNode;
   EFI_DEVICE_PATH*        DevicePathNode;
@@ -233,7 +233,6 @@ BootDeviceGetType (
   EFI_IMAGE_DOS_HEADER*   DosHeader;
   UINTN                   PeCoffHeaderOffset;
   EFI_IMAGE_NT_HEADERS32* NtHeader;
-  CHAR16                  FDTType[ FDT_RESPONSE_LEN ];
 
   //
   // Check if the last node of the device path is a FilePath node
@@ -241,11 +240,6 @@ BootDeviceGetType (
   PrevDevicePathNode = NULL;
   DevicePathNode = DevicePath;
   while ((DevicePathNode != NULL) && !IsDevicePathEnd (DevicePathNode)) {
-    if (DevicePathNode->Type == MESSAGING_DEVICE_PATH) {
-      /* no check type for messaging device path */
-      PrevDevicePathNode = NULL;
-      break;
-    }
     PrevDevicePathNode = DevicePathNode;
     DevicePathNode = NextDevicePathNode (DevicePathNode);
   }
@@ -269,8 +263,9 @@ BootDeviceGetType (
     IsEfiApp = TRUE;
   } else {
     // Check if the file exist
-    Status = BdsLoadImage (&DevicePath, AllocateAnyPages, &Image, &FileSize);
+    Status = BdsLoadImage (DevicePath, AllocateAnyPages, &Image, &FileSize);
     if (!EFI_ERROR (Status)) {
+
       DosHeader = (EFI_IMAGE_DOS_HEADER *)(UINTN) Image;
       if (DosHeader->e_magic == EFI_IMAGE_DOS_SIGNATURE) {
         //
@@ -315,15 +310,13 @@ BootDeviceGetType (
     }
     *BootType = BDS_LOADER_EFI_APPLICATION;
   } else {
-    Print(L"Boot Type: [a] ATAGS, [u] UEFI, [f] FDT? [a/u/f] ");
-    Status = GetHIInputStr (FDTType, FDT_RESPONSE_LEN );
+    Print(L"Has FDT support? ");
+    Status = GetHIInputBoolean (&HasFDTSupport);
     if (EFI_ERROR(Status)) {
       return EFI_ABORTED;
     }
-    if (StrCmp(FDTType, L"f") == 0) {
+    if (HasFDTSupport) {
       *BootType = BDS_LOADER_KERNEL_LINUX_FDT;
-    } else if (StrCmp(FDTType, L"u") == 0) {
-      *BootType = BDS_LOADER_KERNEL_LINUX_UEFI;
     } else {
       *BootType = BDS_LOADER_KERNEL_LINUX_ATAG;
     }
@@ -633,14 +626,14 @@ BdsLoadOptionMemMapUpdateDevicePath (
   EndingDevicePath = (MEMMAP_DEVICE_PATH*)GetLastDevicePathNode (DevicePath);
 
   Print(L"Starting Address of the %s: ", FileName);
-  UnicodeSPrint (StrStartingAddress, BOOT_DEVICE_ADDRESS_MAX, L"0x%p", (VOID *)EndingDevicePath->StartingAddress);
+  UnicodeSPrint (StrStartingAddress, BOOT_DEVICE_ADDRESS_MAX, L"0x%X", (UINTN)EndingDevicePath->StartingAddress);
   Status = EditHIInputStr (StrStartingAddress, BOOT_DEVICE_ADDRESS_MAX);
   if (EFI_ERROR(Status)) {
     return EFI_ABORTED;
   }
 
   Print(L"Ending Address of the %s: ", FileName);
-  UnicodeSPrint (StrEndingAddress, BOOT_DEVICE_ADDRESS_MAX, L"0x%p", (VOID *)EndingDevicePath->EndingAddress);
+  UnicodeSPrint (StrEndingAddress, BOOT_DEVICE_ADDRESS_MAX, L"0x%X", (UINTN)EndingDevicePath->EndingAddress);
   Status = EditHIInputStr (StrEndingAddress, BOOT_DEVICE_ADDRESS_MAX);
   if (EFI_ERROR(Status)) {
     return EFI_ABORTED;
@@ -698,8 +691,7 @@ BdsLoadOptionPxeList (
       // Allocate BDS Supported Device structure
       SupportedDevice = (BDS_SUPPORTED_DEVICE*)AllocatePool(sizeof(BDS_SUPPORTED_DEVICE));
 
-      //Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, (VOID **)&SimpleNet);
-      Status = gBS->HandleProtocol (HandleBuffer[Index], &gEfiSimpleNetworkProtocolGuid, (VOID **)&SimpleNet);
+      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, (VOID **)&SimpleNet);
       if (!EFI_ERROR(Status)) {
         Mac = &SimpleNet->Mode->CurrentAddress;
         UnicodeSPrint (DeviceDescription,BOOT_DEVICE_DESCRIPTION_MAX,L"MAC Address: %02x:%02x:%02x:%02x:%02x:%02x", Mac->Addr[0],  Mac->Addr[1],  Mac->Addr[2],  Mac->Addr[3],  Mac->Addr[4],  Mac->Addr[5]);
@@ -749,7 +741,7 @@ BdsLoadOptionPxeUpdateDevicePath (
 
 BOOLEAN
 BdsLoadOptionPxeIsSupported (
-  IN  EFI_DEVICE_PATH_PROTOCOL           *DevicePath
+  IN  EFI_DEVICE_PATH           *DevicePath
   )
 {
   EFI_STATUS  Status;
@@ -802,8 +794,7 @@ BdsLoadOptionTftpList (
       // Allocate BDS Supported Device structure
       SupportedDevice = (BDS_SUPPORTED_DEVICE*)AllocatePool(sizeof(BDS_SUPPORTED_DEVICE));
 
-      //Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, (VOID **)&SimpleNet);
-      Status = gBS->HandleProtocol (HandleBuffer[Index], &gEfiSimpleNetworkProtocolGuid, (VOID **)&SimpleNet);
+      Status = gBS->LocateProtocol (&gEfiSimpleNetworkProtocolGuid, NULL, (VOID **)&SimpleNet);
       if (!EFI_ERROR(Status)) {
         Mac = &SimpleNet->Mode->CurrentAddress;
         UnicodeSPrint (DeviceDescription,BOOT_DEVICE_DESCRIPTION_MAX,L"MAC Address: %02x:%02x:%02x:%02x:%02x:%02x", Mac->Addr[0],  Mac->Addr[1],  Mac->Addr[2],  Mac->Addr[3],  Mac->Addr[4],  Mac->Addr[5]);
@@ -833,7 +824,6 @@ BdsLoadOptionTftpCreateDevicePath (
   EFI_STATUS    Status;
   BOOLEAN       IsDHCP;
   EFI_IP_ADDRESS  LocalIp;
-  EFI_IP_ADDRESS  MaskIp;
   EFI_IP_ADDRESS  RemoteIp;
   IPv4_DEVICE_PATH*   IPv4DevicePathNode;
   FILEPATH_DEVICE_PATH* FilePathDevicePath;
@@ -849,12 +839,6 @@ BdsLoadOptionTftpCreateDevicePath (
   if (!IsDHCP) {
     Print(L"Get the static IP address: ");
     Status = GetHIInputIP (&LocalIp);
-    if (EFI_ERROR(Status)) {
-      return EFI_ABORTED;
-    }
-
-    Print(L"Get the static Submask address: ");
-    Status = GetHIInputIP (&MaskIp);
     if (EFI_ERROR(Status)) {
       return EFI_ABORTED;
     }
@@ -886,7 +870,6 @@ BdsLoadOptionTftpCreateDevicePath (
   SetDevicePathNodeLength (&IPv4DevicePathNode->Header, sizeof(IPv4_DEVICE_PATH));
   CopyMem (&IPv4DevicePathNode->LocalIpAddress, &LocalIp.v4, sizeof (EFI_IPv4_ADDRESS));
   CopyMem (&IPv4DevicePathNode->RemoteIpAddress, &RemoteIp.v4, sizeof (EFI_IPv4_ADDRESS));
-  CopyMem (&IPv4DevicePathNode->SubnetMask, &MaskIp.v4, sizeof (EFI_IPv4_ADDRESS));
   IPv4DevicePathNode->LocalPort  = 0;
   IPv4DevicePathNode->RemotePort = 0;
   IPv4DevicePathNode->Protocol = EFI_IP_PROTO_TCP;
@@ -920,7 +903,7 @@ BdsLoadOptionTftpUpdateDevicePath (
 
 BOOLEAN
 BdsLoadOptionTftpIsSupported (
-  IN  EFI_DEVICE_PATH_PROTOCOL        *DevicePath
+  IN  EFI_DEVICE_PATH           *DevicePath
   )
 {
   EFI_STATUS  Status;

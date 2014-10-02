@@ -51,10 +51,8 @@
   # ARM General Interrupt Driver in Secure and Non-secure
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
 
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-
   # Network General
-  NetLib|MdeModulePkg/Library/DxeNetLib/DxeNetLib.inf
+  NetLib|ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Library/DxeNetLib/DxeNetLib.inf
   IpIoLib|MdeModulePkg/Library/DxeIpIoLib/DxeIpIoLib.inf
   UdpIoLib|MdeModulePkg/Library/DxeUdpIoLib/DxeUdpIoLib.inf
   DpcLib|MdeModulePkg/Library/DxeDpcLib/DxeDpcLib.inf
@@ -68,16 +66,13 @@
   ArmLib|ArmPkg/Library/ArmLib/AArch64/AArch64LibSec.inf
   ArmPlatformSecLib|ArmPlatformPkg/APMXGenePkg/Library/APMXGeneSecLib/APMXGeneSecLib.inf
 
-  # Uncomment to turn on GDB stub in SEC.
-  #DebugAgentLib|EmbeddedPkg/Library/GdbDebugAgent/GdbDebugAgent.inf
-
   #ArmGicSecLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
   #ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicSecLib.inf
 
 [BuildOptions]
   GCC:*_*_AARCH64_ARCHCC_FLAGS = -mgeneral-regs-only -DARM_CPU_AARCH64 -DAPM_XGENE -DAPM_XGENE_SPI_FLASH -DAPM_XGENE_UHP -DAARCH64_MP_PROTOCOL -fno-omit-frame-pointer
   GCC:*_*_AARCH64_PP_FLAGS = -DARM_CPU_AARCH64
-  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include
+  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/EmbeddedPkg/Include -I$(WORKSPACE)/ArmPlatformPkg/APMXGenePkg/Modules/MdePkg/Include
 
 ################################################################################
 #
@@ -288,9 +283,9 @@
        PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
    }
    ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf {
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf {
        <LibraryClasses>
-	   PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+       PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
    }
    ArmPkg/Drivers/CpuPei/CpuPei.inf
    IntelFrameworkModulePkg/Universal/StatusCode/Pei/StatusCodePei.inf
@@ -319,7 +314,7 @@
    #
    # SMBIOS
    #
-   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
    ArmPlatformPkg/APMXGenePkg/PlatformSmbiosDxe/PlatformSmbiosDxe.inf {
        <LibraryClasses>
        SmbiosLib|ArmPlatformPkg/APMXGenePkg/Library/SmbiosLib/SmbiosLib.inf
@@ -329,12 +324,12 @@
    # Architectural Protocols
    #
    ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-   ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
    MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
    MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
    MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
    MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
    EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
    EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
@@ -361,7 +356,7 @@
    #
    # Multimedia Card Interface
    #
-   EmbeddedPkg/Universal/MmcDxe/MmcDxe.inf
+   ArmPlatformPkg/APMXGenePkg/MmcDxe/MmcDxe.inf
    ArmPlatformPkg/APMXGenePkg/Drivers/MciDxe/MciDxe.inf
 
    #
@@ -376,7 +371,7 @@
    #
    ArmPlatformPkg/APMXGenePkg/Bus/Usb/UsbControllerDxe/UsbControllerDxe.inf
    MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-   MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
    MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
    MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 
@@ -412,7 +407,7 @@
    #
    # ACPI Support
    #
-   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
    MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
    ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf {
      <LibraryClasses>
@@ -424,7 +419,7 @@
    # Bds
    #
    MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-   ArmPlatformPkg/Bds/Bds.inf {
+   ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Bds/Bds.inf {
      <LibraryClasses>
        PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
    }
@@ -454,15 +449,15 @@
      <LibraryClasses>
        PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
    }
-   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
    
    #
    # IDE/AHCI Support
    #
    ArmPlatformPkg/APMXGenePkg/Drivers/SataControllerNewDxe/SataControllerDxe.inf
-   DuetPkg/SataControllerDxe/SataControllerDxe.inf
-   MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
-   MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Drivers/PCISataControllerDxe/SataControllerDxe.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+   ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
    MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
    MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
    

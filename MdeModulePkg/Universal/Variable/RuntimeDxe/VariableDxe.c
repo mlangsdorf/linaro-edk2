@@ -228,7 +228,6 @@ VariableClassAddressChangeEvent (
 
   EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->GetBlockSize);
   EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->GetPhysicalAddress);
-  EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->GetMappedAddress);
   EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->GetAttributes);
   EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->SetAttributes);
   EfiConvertPointer (0x0, (VOID **) &mVariableModuleGlobal->FvbInstance->Read);
@@ -360,7 +359,6 @@ FtwNotificationEvent (
   }
   Status = GetFvbInfoByAddress (NvStorageVariableBase, NULL, &FvbProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_BLKIO, "FtwNotificationEvent: Fvb not found\n"));
     return ;
   }
   mVariableModuleGlobal->FvbInstance = FvbProtocol;
@@ -375,20 +373,16 @@ FtwNotificationEvent (
   Length      = (Length + EFI_PAGE_SIZE - 1) & (~EFI_PAGE_MASK);
 
   Status      = gDS->GetMemorySpaceDescriptor (BaseAddress, &GcdDescriptor);
-  if (!FvbProtocol->GetMappedAddress) {
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_WARN, "Variable driver failed to add EFI_MEMORY_RUNTIME attribute to Flash.\n"));
+  } else {
+    Status = gDS->SetMemorySpaceAttributes (
+                    BaseAddress,
+                    Length,
+                    GcdDescriptor.Attributes | EFI_MEMORY_RUNTIME
+                    );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_WARN, "Variable driver failed to add EFI_MEMORY_RUNTIME "
-             "attribute to Flash error %d.\n", Status));
-    } else {
-      Status = gDS->SetMemorySpaceAttributes (
-                      BaseAddress,
-                      Length,
-                      GcdDescriptor.Attributes | EFI_MEMORY_RUNTIME
-                      );
-      if (EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_WARN, "Variable driver failed to add EFI_MEMORY_RUNTIME "
-               "attribute to Flash error %d.\n", Status));
-      }
+      DEBUG ((DEBUG_WARN, "Variable driver failed to add EFI_MEMORY_RUNTIME attribute to Flash.\n"));
     }
   }
   

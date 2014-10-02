@@ -1,0 +1,2 @@
+Before compile Tianocore for APMXGene processor
+ + Apply the patch: ArmPlatformPkg/APMXGenePkg/apm_changes.diff

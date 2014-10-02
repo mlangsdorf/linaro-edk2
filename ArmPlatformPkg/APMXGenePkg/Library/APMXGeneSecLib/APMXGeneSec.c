@@ -88,14 +88,6 @@ int apm88xxxx_start_secondary_cores(void)
   return 0;
 }
 
-BOOLEAN
-ArmPlatformSecIsPrimaryCore (
-  IN  UINTN                     MpId
-  )
-{
-  return 1; /* FIXME */
-}
-
 /**
   Initialize the Secure peripherals and memory regions
 
@@ -125,10 +117,6 @@ ArmPlatformSecInitialize (
 {
 
   RETURN_STATUS Status;
-  /* If it is not the primary core then there is nothing to do */
-  if (!ArmPlatformSecIsPrimaryCore(MpId)) {
-    return RETURN_SUCCESS;
-  }
 
   /* Initialize DDR */
   Status = APMXGeneMemcInit();

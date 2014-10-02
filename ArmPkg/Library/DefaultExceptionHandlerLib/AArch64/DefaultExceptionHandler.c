@@ -29,17 +29,6 @@
 
 EFI_DEBUG_IMAGE_INFO_TABLE_HEADER *gDebugImageTableHeader = NULL;
 
-/* ARM-specific macro to align a stack pointer (downwards). */
-#define STACKALIGNBYTES         (0x4000 - 1)
-#define STACKALIGN(p)           ((UINTN)(p + STACKALIGNBYTES) &~ STACKALIGNBYTES)
-
-typedef struct {
-  UINTN FramePointer;
-  UINTN StackPointer;
-  UINTN ProgramCounter;
-} StackFrame;
-
-
 STATIC CHAR8 *gExceptionTypeString[] = {
   "Synchronous",
   "IRQ",
@@ -147,44 +136,9 @@ DefaultExceptionHandler (
 {
   CHAR8  Buffer[100];
   UINTN  CharCount;
-  UINTN                  FrameCount = 0;
-  StackFrame     Frame;
 
   CharCount = AsciiSPrint (Buffer,sizeof (Buffer),"\n\n%a Exception at 0x%016lx\n", gExceptionTypeString[ExceptionType], SystemContext.SystemContextAArch64->ELR);
   SerialPortWrite ((UINT8 *) Buffer, CharCount);
-
-  Frame.FramePointer = SystemContext.SystemContextAArch64->FP;
-  Frame.StackPointer = SystemContext.SystemContextAArch64->SP;
-  Frame.ProgramCounter = SystemContext.SystemContextAArch64->LR;
-
-  /* unwind the last 10 frames on the stack */
-  for (FrameCount = 0; FrameCount < 25; FrameCount++) {
-    UINTN High, Low;
-    UINTN FramePointer;
-
-    FramePointer = Frame.FramePointer;
-    Low = Frame.StackPointer;
-    High = STACKALIGN(Low);
-
-    if ((FramePointer < Low) || (FramePointer > (High - 0x18)) ||
-        (FramePointer & 0xf)) {
-      break;
-    }
-
-    CharCount = AsciiSPrint (Buffer, sizeof (Buffer),
-                       "%d: FP 0x%016lx SP 0x%016lx PC 0x%016lx\n",
-                        FrameCount, Frame.FramePointer, Frame.StackPointer,
-                        Frame.ProgramCounter);
-    Frame.StackPointer = FramePointer + 0x10;
-    Frame.FramePointer = *(UINTN *)(FramePointer);
-    Frame.ProgramCounter = *(UINTN *)(FramePointer + 8) - 4;
-
-    if ((CharCount < 100) && (CharCount > 0)) {
-      SerialPortWrite ((UINT8 *) Buffer, CharCount);
-    } else {
-      break;
-    }
-  }
 
   DEBUG_CODE_BEGIN ();
     CHAR8  *Pdb;
@@ -228,10 +182,6 @@ DefaultExceptionHandler (
 
   DEBUG ((EFI_D_ERROR, "\n ESR : EC 0x%02x  IL 0x%x  ISS 0x%08x\n", (SystemContext.SystemContextAArch64->ESR & 0xFC000000) >> 26, (SystemContext.SystemContextAArch64->ESR >> 25) & 0x1, SystemContext.SystemContextAArch64->ESR & 0x1FFFFFF ));
 
-  DEBUG ((EFI_D_ERROR, "\n"));
-
   DescribeExceptionSyndrome (SystemContext.SystemContextAArch64->ESR);
-
-  while (1);
   ASSERT (FALSE);
 }

@@ -15,7 +15,6 @@
 
 #include <Library/ArmTrustedMonitorLib.h>
 #include <Library/TimerLib.h>
-#include <Library/DebugAgentLib.h>
 #include <Library/PrintLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/SerialPortLib.h>
@@ -187,7 +186,7 @@ CEntryPoint (
   }
 
   // Primary CPU clears out the SCU tag RAMs, secondaries wait
-  if (ArmPlatformSecIsPrimaryCore(MpId)) {
+  if (1) {
 #if 0
     /* We don't support having secondary core continue execute to here */
     if (ArmIsMpCore()) {

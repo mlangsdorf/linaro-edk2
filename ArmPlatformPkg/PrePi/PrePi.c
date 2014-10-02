@@ -107,7 +107,7 @@ PrePiMain (
   UINTN                         StacksSize;
 
   // If ensure the FD is either part of the System Memory or totally outside of the System Memory (XIP)
-  ASSERT (IS_XIP() ||
+  ASSERT (IS_XIP() || 
           ((FixedPcdGet64 (PcdFdBaseAddress) >= FixedPcdGet64 (PcdSystemMemoryBase)) &&
            ((UINT64)(FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= (UINT64)(FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize)))));
 
@@ -123,7 +123,7 @@ PrePiMain (
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
   SaveAndSetDebugTimerInterrupt (TRUE);
-
+  
   // Declare the PI/UEFI memory region
   HobList = HobConstructor (
     (VOID*)UefiMemoryBase,
@@ -140,7 +140,7 @@ PrePiMain (
   // Create the Stacks HOB (reserve the memory for all stacks)
   if (ArmIsMpCore ()) {
     StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize) +
-				 (FixedPcdGet32(PcdClusterCount) * 4 * FixedPcdGet32(PcdCPUCoreSecondaryStackSize));
+                 ((FixedPcdGet32 (PcdCoreCount) - 1) * FixedPcdGet32 (PcdCPUCoreSecondaryStackSize));
   } else {
     StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize);
   }
@@ -208,7 +208,7 @@ CEntryPoint (
   )
 {
   UINT64   StartTimeStamp;
-
+ 
   ASSERT(!ArmIsMpCore() || (PcdGet32 (PcdCoreCount) > 1));
 
   // Initialize the platform specific controllers
@@ -245,7 +245,7 @@ CEntryPoint (
       ArmCallWFE ();
     }
   }
-
+  
   // If not primary Jump to Secondary Main
   if (ArmPlatformIsPrimaryCore (MpId)) {
     // Goto primary Main.

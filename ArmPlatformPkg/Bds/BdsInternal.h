@@ -18,7 +18,6 @@
 #include <PiDxe.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/BdsLib.h>
-#include <Library/BdsUnixLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
 #include <Library/UefiLib.h>
@@ -52,19 +51,15 @@ typedef enum {
     BDS_LOADER_EFI_APPLICATION = 0,
     BDS_LOADER_KERNEL_LINUX_ATAG,
     BDS_LOADER_KERNEL_LINUX_FDT,
-    BDS_LOADER_KERNEL_LINUX_UEFI,
 } ARM_BDS_LOADER_TYPE;
 
 typedef struct {
   UINT16                     CmdLineSize;
   UINT16                     InitrdSize;
-  UINT16                     FdtSize;
 
   // These following fields have variable length and are packed:
   //CHAR8                      *CmdLine;
   //EFI_DEVICE_PATH_PROTOCOL   *InitrdPathList;
-  //EFI_DEVICE_PATH_PROTOCOL   *FdtPathList;
-
 } ARM_BDS_LINUX_ARGUMENTS;
 
 typedef union {

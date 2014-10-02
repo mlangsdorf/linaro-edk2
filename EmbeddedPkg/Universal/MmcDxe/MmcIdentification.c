@@ -47,7 +47,7 @@ EmmcIdentificationMode (
   Media = MmcHostInstance->BlockIo.Media;
 
   // Fetch card identity register
-  Status = Host->SendCommand (Host, MMC_CMD2, 0, NULL);
+  Status = Host->SendCommand (Host, MMC_CMD2, 0);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "EmmcIdentificationMode(): Failed to send CMD2, Status=%r.\n", Status));
     return Status;
@@ -62,14 +62,14 @@ EmmcIdentificationMode (
   // Assign a relative address value to the card
   MmcHostInstance->CardInfo.RCA = ++mEmmcRcaCount; // TODO: might need a more sophisticated way of doing this
   RCA = MmcHostInstance->CardInfo.RCA << RCA_SHIFT_OFFSET;
-  Status = Host->SendCommand (Host, MMC_CMD3, RCA, NULL);
+  Status = Host->SendCommand (Host, MMC_CMD3, RCA);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "EmmcIdentificationMode(): RCA set error, Status=%r.\n", Status));
     return Status;
   }
 
   // Fetch card specific data
-  Status = Host->SendCommand (Host, MMC_CMD9, RCA, NULL);
+  Status = Host->SendCommand (Host, MMC_CMD9, RCA);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "EmmcIdentificationMode(): Failed to send CMD9, Status=%r.\n", Status));
     return Status;
@@ -82,13 +82,13 @@ EmmcIdentificationMode (
   }
 
   // Select the card
-  Status = Host->SendCommand (Host, MMC_CMD7, RCA, NULL);
+  Status = Host->SendCommand (Host, MMC_CMD7, RCA);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "EmmcIdentificationMode(): Card selection error, Status=%r.\n", Status));
   }
 
   // Fetch ECSD
-  Status = Host->SendCommand (Host, MMC_CMD8, RCA, NULL);
+  Status = Host->SendCommand (Host, MMC_CMD8, RCA);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "EmmcIdentificationMode(): ECSD fetch error, Status=%r.\n", Status));
   }
@@ -132,7 +132,7 @@ InitializeSdMmcDevice (
 
   // Send a command to get Card specific data
   CmdArg = MmcHostInstance->CardInfo.RCA << 16;
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD9, CmdArg, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD9, CmdArg);
   if (EFI_ERROR (Status)) {
     DEBUG((EFI_D_ERROR, "InitializeSdMmcDevice(MMC_CMD9): Error, Status=%r\n", Status));
     return Status;
@@ -169,7 +169,7 @@ InitializeSdMmcDevice (
   MmcHostInstance->BlockIo.Media->MediaId++;
 
   CmdArg = MmcHostInstance->CardInfo.RCA << 16;
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD7, CmdArg, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD7, CmdArg);
   if (EFI_ERROR (Status)) {
     DEBUG((EFI_D_ERROR, "InitializeSdMmcDevice(MMC_CMD7): Error and Status = %r\n", Status));
     return Status;
@@ -211,7 +211,7 @@ MmcIdentificationMode (
     }
   }
 
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD0, 0, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD0, 0);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "MmcIdentificationMode(MMC_CMD0): Error, Status=%r.\n", Status));
     return Status;
@@ -222,8 +222,9 @@ MmcIdentificationMode (
     return Status;
   }
 
-  // Send CMD1 to get OCR (SD / MMC)
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD1, EMMC_CMD1_CAPACITY_GREATER_THAN_2GB, NULL);
+  // Send CMD1 to get OCR (MMC)
+  // This command only valid for MMC and eMMC
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD1, EMMC_CMD1_CAPACITY_GREATER_THAN_2GB);
   if (Status == EFI_SUCCESS) {
     Status = MmcHost->ReceiveResponse (MmcHost, MMC_RESPONSE_TYPE_OCR, (UINT32 *)&OcrResponse);
     if (EFI_ERROR (Status)) {
@@ -247,13 +248,10 @@ MmcIdentificationMode (
         OcrResponse.Raw == EMMC_CMD1_CAPACITY_LESS_THAN_2GB) {
       return EmmcIdentificationMode (MmcHostInstance, OcrResponse);
     }
-  } else {
-    DEBUG ((EFI_D_ERROR, "MmcIdentificationMode(MMC_CMD1) : Failed to send command, Status=%r.\n", Status));
-    return Status;
   }
 
   // Are we using SDIO ?
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD5, 0, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD5, 0);
   if (Status == EFI_SUCCESS) {
     DEBUG ((EFI_D_ERROR, "MmcIdentificationMode(MMC_CMD5): Error - SDIO not supported, Status=%r.\n", Status));
     return EFI_UNSUPPORTED;
@@ -261,7 +259,7 @@ MmcIdentificationMode (
 
   // Check which kind of card we are using. Ver2.00 or later SD Memory Card (PL180 is SD v1.1)
   CmdArg = (0x0UL << 12 | BIT8 | 0xCEUL << 0);
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD8, CmdArg, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD8, CmdArg);
   if (Status == EFI_SUCCESS) {
     DEBUG ((EFI_D_ERROR, "Card is SD2.0 => Supports high capacity\n"));
     IsHCS = TRUE;
@@ -284,7 +282,7 @@ MmcIdentificationMode (
   Timeout = MAX_RETRY_COUNT;
   while (Timeout > 0) {
     // SD Card or MMC Card ? CMD55 indicates to the card that the next command is an application specific command
-    Status = MmcHost->SendCommand (MmcHost, MMC_CMD55, 0, NULL);
+    Status = MmcHost->SendCommand (MmcHost, MMC_CMD55, 0);
     if (Status == EFI_SUCCESS) {
       DEBUG ((EFI_D_INFO, "Card should be SD\n"));
       if (IsHCS) {
@@ -298,7 +296,7 @@ MmcIdentificationMode (
       if (IsHCS) {
         CmdArg |= BIT30;
       }
-      Status = MmcHost->SendCommand (MmcHost, MMC_ACMD41, CmdArg, NULL);
+      Status = MmcHost->SendCommand (MmcHost, MMC_ACMD41, CmdArg);
       if (!EFI_ERROR (Status)) {
         Status = MmcHost->ReceiveResponse (MmcHost, MMC_RESPONSE_TYPE_OCR, Response);
         if (EFI_ERROR (Status)) {
@@ -311,7 +309,7 @@ MmcIdentificationMode (
       DEBUG ((EFI_D_INFO, "Card should be MMC\n"));
       MmcHostInstance->CardInfo.CardType = MMC_CARD;
 
-      Status = MmcHost->SendCommand (MmcHost, MMC_CMD1, 0x800000, NULL);
+      Status = MmcHost->SendCommand (MmcHost, MMC_CMD1, 0x800000);
       if (!EFI_ERROR (Status)) {
         Status = MmcHost->ReceiveResponse (MmcHost, MMC_RESPONSE_TYPE_OCR, Response);
         if (EFI_ERROR (Status)) {
@@ -352,7 +350,7 @@ MmcIdentificationMode (
     return Status;
   }
 
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD2, 0, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD2, 0);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "MmcIdentificationMode(MMC_CMD2): Error\n"));
     return Status;
@@ -377,7 +375,7 @@ MmcIdentificationMode (
   // The status returned for this CMD3 will be 2 - identification
   //
   CmdArg = 1;
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD3, CmdArg, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD3, CmdArg);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "MmcIdentificationMode(MMC_CMD3): Error\n"));
     return Status;
@@ -437,7 +435,7 @@ InitializeMmcDevice (
   }
 
   // Set Block Length
-  Status = MmcHost->SendCommand (MmcHost, MMC_CMD16, MmcHostInstance->BlockIo.Media->BlockSize, NULL);
+  Status = MmcHost->SendCommand (MmcHost, MMC_CMD16, MmcHostInstance->BlockIo.Media->BlockSize);
   if (EFI_ERROR (Status)) {
     DEBUG((EFI_D_ERROR, "InitializeMmcDevice(MMC_CMD16): Error MmcHostInstance->BlockIo.Media->BlockSize: %d and Error = %r\n",
                         MmcHostInstance->BlockIo.Media->BlockSize, Status));
@@ -446,7 +444,7 @@ InitializeMmcDevice (
 
   // Block Count (not used). Could return an error for SD card
   if (MmcHostInstance->CardInfo.CardType == MMC_CARD) {
-    Status = MmcHost->SendCommand (MmcHost, MMC_CMD23, BlockCount, NULL);
+    Status = MmcHost->SendCommand (MmcHost, MMC_CMD23, BlockCount);
     if (EFI_ERROR (Status)) {
       DEBUG((EFI_D_ERROR, "InitializeMmcDevice(MMC_CMD23): Error, Status=%r\n", Status));
       return Status;

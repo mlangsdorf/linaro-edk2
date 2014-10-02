@@ -45,7 +45,7 @@ SMBIOS_TABLE_ENTRY_POINT EntryPointStructureData = {
   //
   // EntryPointStructure Length
   //
-  0x23,
+  0x1f,
   //
   // MajorVersion
   //
@@ -102,8 +102,7 @@ SMBIOS_TABLE_ENTRY_POINT EntryPointStructureData = {
   // SmbiosBcdRevision
   //
   (UINT8) ((FixedPcdGet16 (PcdSmbiosVersion) >> 4) & 0xf0)
-  | (UINT8) (FixedPcdGet16 (PcdSmbiosVersion) & 0x0f),
-  0
+  | (UINT8) (FixedPcdGet16 (PcdSmbiosVersion) & 0x0f)
 };
 
 
@@ -972,28 +971,26 @@ SmbiosCreateTable (
       // Free the original pre-allocated page
       //      
       FreePages (
-            (VOID*)(UINTN)(EntryPointStructure->TableAddress | ((UINTN)EntryPointStructure->ExtHighAddressTableAddress << 32)),
+            (VOID*)(UINTN)EntryPointStructure->TableAddress,
             mPreAllocatedPages
             );
       EntryPointStructure->TableAddress = 0;
       mPreAllocatedPages = 0;
     }
     
-    PhysicalAddress = (UINTN)EntryPointStructure | 0xffffffff;
+    PhysicalAddress = 0xffffffff;
     Status = gBS->AllocatePages (
                     AllocateMaxAddress,
-                    EfiReservedMemoryType,
+                    EfiRuntimeServicesData,
                     EFI_SIZE_TO_PAGES (EntryPointStructure->TableLength),
                     &PhysicalAddress
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "SmbiosCreateTable() could not allocate SMBIOS\n"));
+      DEBUG ((EFI_D_ERROR, "SmbiosCreateTable() could not allocate SMBIOS table < 4GB\n"));
       EntryPointStructure->TableAddress = 0;
       return EFI_OUT_OF_RESOURCES;
     } else {
-      DEBUG ((EFI_D_VERBOSE, "SmbiosCreateTable() SMBIOS table:%llX\n", PhysicalAddress));
       EntryPointStructure->TableAddress = (UINT32) PhysicalAddress;
-      EntryPointStructure->ExtHighAddressTableAddress = (UINT32) ((PhysicalAddress & 0xffffffff00000000ULL) >> 32);
       mPreAllocatedPages = EFI_SIZE_TO_PAGES (EntryPointStructure->TableLength);
     }
   }
@@ -1002,7 +999,7 @@ SmbiosCreateTable (
   // Assemble the tables
   //
   ASSERT (EntryPointStructure->TableAddress != 0);
-  BufferPointer = (UINT8 *) (UINTN) (EntryPointStructure->TableAddress | ((UINTN)EntryPointStructure->ExtHighAddressTableAddress << 32));
+  BufferPointer = (UINT8 *) (UINTN) EntryPointStructure->TableAddress;
   CurrentSmbiosEntry = NULL;
   do {
     Status = GetNextSmbiosRecord (SmbiosProtocol, &CurrentSmbiosEntry, &SmbiosRecord);
@@ -1096,7 +1093,7 @@ SmbiosDriverEntryPoint (
   PhysicalAddress = 0xffffffff;
   Status = gBS->AllocatePages (
                   AllocateMaxAddress,
-                  EfiReservedMemoryType,
+                  EfiRuntimeServicesData,
                   EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
                   &PhysicalAddress
                   );
@@ -1104,7 +1101,7 @@ SmbiosDriverEntryPoint (
     DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate EntryPointStructure < 4GB\n"));
     Status = gBS->AllocatePages (
                     AllocateAnyPages,
-                    EfiReservedMemoryType,
+                    EfiRuntimeServicesData,
                     EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
                     &PhysicalAddress
                     );
@@ -1122,26 +1119,23 @@ SmbiosDriverEntryPoint (
     );
 
   //
-  // Pre-allocate 1 page for SMBIOS table.
+  // Pre-allocate 1 page for SMBIOS table below 4GB.
   // SMBIOS table will be updated when new SMBIOS type is added or 
   // existing SMBIOS type is updated. If the total size of SMBIOS table exceeds 1 page,
   // we will re-allocate new memory when creating whole SMBIOS table.
   //
-  PhysicalAddress= ((EFI_PHYSICAL_ADDRESS)EntryPointStructure | 0xffffffff);
+  PhysicalAddress = 0xffffffff;
   Status = gBS->AllocatePages (
                   AllocateMaxAddress,
-                  EfiReservedMemoryType,
+                  EfiRuntimeServicesData,
                   1,
                   &PhysicalAddress
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate SMBIOS table\n"));
+    DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate SMBIOS table < 4GB\n"));
     EntryPointStructure->TableAddress = 0;
   } else {
-    DEBUG ((EFI_D_VERBOSE, "SmbiosDriverEntryPoint() SMBIOS table:%llX\n", PhysicalAddress));
-    /* high address should be the same with EntryPointStructure address */
     EntryPointStructure->TableAddress = (UINT32) PhysicalAddress;
-    EntryPointStructure->ExtHighAddressTableAddress = (UINT32) ((PhysicalAddress & 0xffffffff00000000ULL) >> 32);
     mPreAllocatedPages = 1;
   }
 

@@ -13,12 +13,12 @@
 #
 ##
 
-#SHELL:=/bin/bash
+SHELL:=/bin/bash
 EDK2DIR=$(shell pwd)
 EDK2TOOLSDIR=$(EDK2DIR)/BaseTools
 export EDK_TOOLS_PATH=$(EDK2TOOLSDIR)
 
-export ARCH=
+export ARCH=arm64
 #export CROSS_COMPILE:=aarch64-apm-linux-gnu-
 #export CROSS_COMPILER_PATH:=/tools/arm/armv8/Theobroma/opt/apm-aarch64/6.0.4/bin
 export ASL_BIN_DIR:=$(shell pwd)/../tools/acpi

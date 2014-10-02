@@ -137,12 +137,12 @@ READ_LOCK_STATUS   = TRUE
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
   INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
   INF EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
   INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
@@ -170,7 +170,7 @@ READ_LOCK_STATUS   = TRUE
 
   #
   # ACPI Table
-  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF ArmPlatformPkg/APMXGenePkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF RuleOverride=ACPITABLE ArmPlatformPkg/APMXGenePkg/AcpiTables/APMXGene-Mustang/AcpiTables.inf
@@ -188,14 +188,14 @@ READ_LOCK_STATUS   = TRUE
   #
   INF ArmPlatformPkg/APMXGenePkg/Bus/Usb/UsbControllerDxe/UsbControllerDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-  INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 
   #
   # Multimedia Card Interface
   #
-  INF EmbeddedPkg/Universal/MmcDxe/MmcDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/MmcDxe/MmcDxe.inf
   INF ArmPlatformPkg/APMXGenePkg/Drivers/MciDxe/MciDxe.inf
 
   #
@@ -220,16 +220,16 @@ READ_LOCK_STATUS   = TRUE
   #
   INF ArmPlatformPkg/APMXGenePkg/Drivers/GpioDxe/GpioDxe.inf
   INF ArmPlatformPkg/APMXGenePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
-  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 
 
   #
   # IDE/AHCI Support
   #
   INF ArmPlatformPkg/APMXGenePkg/Drivers/SataControllerNewDxe/SataControllerDxe.inf
-  INF DuetPkg/SataControllerDxe/SataControllerDxe.inf
-  INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
-  INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Drivers/PCISataControllerDxe/SataControllerDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
   INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
   INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 
@@ -246,12 +246,12 @@ READ_LOCK_STATUS   = TRUE
   # Bds
   #
   INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-  INF ArmPlatformPkg/Bds/Bds.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/Bds/Bds.inf
   
   #
   # Smbios
   #
-  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   INF ArmPlatformPkg/APMXGenePkg/PlatformSmbiosDxe/PlatformSmbiosDxe.inf
 
   #
@@ -283,7 +283,7 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPlatformPkg/PrePeiCore/PrePeiCoreMPCore.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
+  INF ArmPlatformPkg/APMXGenePkg/Modules/ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   INF ArmPkg/Drivers/CpuPei/CpuPei.inf
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF IntelFrameworkModulePkg/Universal/StatusCode/Pei/StatusCodePei.inf

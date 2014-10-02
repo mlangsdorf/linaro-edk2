@@ -70,7 +70,6 @@
   gArmTokenSpaceGuid.PcdFvSize
 
   gArmTokenSpaceGuid.PcdArmPrimaryCore
-  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
 
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize

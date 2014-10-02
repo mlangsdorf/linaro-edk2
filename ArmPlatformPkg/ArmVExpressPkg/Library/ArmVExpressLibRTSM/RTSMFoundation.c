@@ -163,15 +163,3 @@ ArmPlatformGetPlatformPpiList (
   *PpiListSize = sizeof(gPlatformPpiTable);
   *PpiList = gPlatformPpiTable;
 }
-
-/**
-  Display the Platform banner
-
-  This function display the Platform board banner.
-
-**/
-VOID
-ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
-  )
-{
-}

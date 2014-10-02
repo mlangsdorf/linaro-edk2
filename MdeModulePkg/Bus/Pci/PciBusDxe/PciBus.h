@@ -295,9 +295,6 @@ struct _PCI_IO_DEVICE {
   // This field is used to support this case.
   //
   UINT16                                    BridgeIoAlignment;
-
-  //PCIE Capatibility
-  EFI_PCI_CAPABILITY_EXP                    PciCapExp;
 };
 
 #define PCI_IO_DEVICE_FROM_PCI_IO_THIS(a) \

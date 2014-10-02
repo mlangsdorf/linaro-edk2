@@ -59,14 +59,5 @@ CopyMem (
   if (DestinationBuffer == SourceBuffer) {
     return DestinationBuffer;
   }
-#ifdef ARM_CPU_AARCH64
-  if (((UINTN) DestinationBuffer & 0x7) == 0 &&
-      ((UINTN) SourceBuffer & 0x7) == 0 &&
-      // Test for overlapped that requires reverse copy
-      SourceBuffer < DestinationBuffer &&
-      (SourceBuffer + Length - 1) < DestinationBuffer) {
-    return InternalMemCopyMemAlign (DestinationBuffer, SourceBuffer, Length);
-  }
-#endif
   return InternalMemCopyMem (DestinationBuffer, SourceBuffer, Length);
 }

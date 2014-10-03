@@ -2426,19 +2426,16 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Store(0x3, CLKE)
 			Stall(100)
 		}
-		Method(_DSM, 4, NotSerialized) {
-			Store (Package (14) {
-				"devid", "8",
-				"slave_name", "RGMII",
-				"slave_info", "3 0 4 32 4",
-				"max-frame-size", "9018",
-				"phyid", "3",
-				"phy-mode", "rgmii",
-				"local-mac-address", "00:00:00:00:00:00"
-			}, Local0)
-			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
-			Return (Local0)
-		}
+		Name (_DSD, Package () {
+			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+			Package () {
+				Package (2) {"mac-address", Package (6) {00, 00, 00, 00, 00, 00}},
+				Package (2) {"phy-channel", 3},
+				Package (2) {"phy-mode", "rgmii"},
+				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
+				Package (2) {"max-speed", 0x3e8},           // 1000 Mbps
+			}
+		})
 	}
 
 	Device(\_SB.ET8) {

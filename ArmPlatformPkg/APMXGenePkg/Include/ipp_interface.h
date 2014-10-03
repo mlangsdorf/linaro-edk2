@@ -1437,8 +1437,33 @@ typedef struct ipp_net_stats {
 	unsigned int rx_Lerr_cnt;      /**< Number of message with Lerr received */
 } ipp_net_stats_t;
 
-
 #endif /* __ASSEMBLY__ */
+
+typedef union ipp_bd_pwr_info {
+        struct {
+                unsigned int adv_mode : 1;
+                unsigned int tpc_en : 1;
+                unsigned int avs_en : 1;
+                unsigned int reset_cap : 1;
+                unsigned int rsvd1 : 12;
+                unsigned int pmd_vltg : 4;
+                unsigned int soc_vltg : 4;
+                unsigned int rsvd2 : 8;
+        } inf;
+        unsigned int data;
+} ipp_bd_pwr_info_t;
+typedef union ipp_build_info {
+        struct {
+                unsigned int dd : 8;
+                unsigned int mm : 8;
+                unsigned int yyyy : 16;
+        } inf;
+        unsigned int date;
+} ipp_build_info_t;
+typedef struct ipp_info {
+        ipp_bd_pwr_info_t bd_pwr_info;
+        ipp_build_info_t build_info;
+} ipp_info_t;
 
 /** 
  * Voltage Scaling Sub commands

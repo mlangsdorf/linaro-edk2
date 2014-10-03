@@ -26,6 +26,7 @@
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.fdf
+  DEFINE EDK2_ENABLE_SMSC_91X=1
 
 !include ArmPlatformPkg/ArmVExpressPkg/ArmVExpress.dsc.inc
 
@@ -116,6 +117,8 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x2C001000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C002000
 
+  # Ethernet (SMSC 91C111)
+  gEmbeddedTokenSpaceGuid.PcdLan91xDxeBaseAddress|0x1A000000
   #
   # ARM OS Loader
   #

@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2013, AppliedMicro Corp. All rights reserved.
  *
  * This program and the accompanying materials
@@ -61,7 +61,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	Name(_UID, 0)
 	Name(_HID, "ACPI0007")
-	Method (_STA) {
+	Method(_STA) {
 		Return (One)
 	}
 
@@ -180,14 +180,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU0
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU1) {
 
 	Name(_UID, 1)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 0)	//Domain 0
@@ -309,14 +309,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU1
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU2) {
 
-	Name(_UID, 2)
+	Name(_UID, 0x100)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 1)	//Domain 1
@@ -438,14 +438,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU2
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU3) {
 
-	Name(_UID, 3)
+	Name(_UID, 0x101)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 1)	//Domain 1
@@ -567,14 +567,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU3
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU4) {
 
-	Name(_UID, 4)
+	Name(_UID, 0x200)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 2)	//Domain 2
@@ -696,14 +696,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU4
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU5) {
 
-	Name(_UID, 5)
+	Name(_UID, 0x201)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 2)	//Domain 2
@@ -825,14 +825,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU5
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU6) {
 
-	Name(_UID, 6)
+	Name(_UID, 0x300)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 3)	//Domain 3
@@ -954,14 +954,14 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	}//CPU6
 ////////////////////////////////////////////////////////////////////////////////
-//Device
+//Processor
 	Device(\_SB.CPU7) {
 
-	Name(_UID, 7)
+	Name(_UID, 0x301)
 	Name(_HID, "ACPI0007")
-        Method(_STA) {
-                Return (One)
-        }
+	Method(_STA) {
+		Return (One)
+	}
 
 //Clock Domain Object
 	Name(_CDM, 3)	//Domain 3
@@ -1360,7 +1360,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 				"nirq", "6",
 				"irq_pins", "8 9 10 11 12 13",
 			}, Local0)
-			Return (Local0)
+			 Return (Local0)
 		}
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17001000, 0x400)
@@ -2529,7 +2529,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
                     // complex. In this example, the minimum bus number will be
                     // 0, the maximum bus number will be 0xFF, supporting
                     // 256 busses total.
-                   // Section 19.5.141
+                    // Section 19.5.141
                     //
 
                     WordBusNumber (

@@ -23,7 +23,7 @@
 
 [0008]                     Reserved : 0000000000000000
 
-[0008]                 Base Address : 00000000F0000000
+[0008]                 Base Address : 000000e0d0000000
 [0002]         Segment Group Number : 0000
 [0001]             Start Bus Number : 00
 [0001]               End Bus Number : 0F

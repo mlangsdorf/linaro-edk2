@@ -2429,7 +2429,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name (_DSD, Package () {
 			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 			Package () {
-				Package (2) {"mac-address", Package (6) {00, 00, 00, 00, 00, 00}},
+				Package (2) {"mac-address", Package (6) {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}},
 				Package (2) {"phy-channel", 3},
 				Package (2) {"phy-mode", "rgmii"},
 				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
@@ -2450,7 +2450,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }

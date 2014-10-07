@@ -1,3 +1,4 @@
+<<<<<<< HEAD:ArmPlatformPkg/APMXGenePkg/AcpiTables/APMXGene-Mustang/AcpiTables.inf
 ##
 #  Component description file for PlatformAcpiTables module.
 #
@@ -23,7 +24,7 @@
   VERSION_STRING                 = 1.0
 
 [Sources]
-#  Apic.asl
+  Apic.asl
   Facp.asl
   Facs.asl
   Dsdt.asl
@@ -31,6 +32,7 @@
   Dbg2.asl
   Spcr.asl
   Ssdt.asl
+  Mcfg.asl
 
 [Packages]
   MdePkg/MdePkg.dec

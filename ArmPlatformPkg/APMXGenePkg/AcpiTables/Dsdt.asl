@@ -2426,7 +2426,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name (_DSD, Package () {
 			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 			Package () {
-				Package (2) {"mac-address", Package (6) {00, 00, 00, 00, 00, 00}},
+				Package (2) {"mac-address", Package (6) {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}},
 				Package (2) {"phy-channel", 3},
 				Package (2) {"phy-mode", "rgmii"},
 				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
@@ -2435,6 +2435,229 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		})
 	}
 
+
+	Device(\_SB.ET8) {
+		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_DDN, "ET08")
+		Name(_UID, "ET08")
+		Name(_STR, Unicode("Ethernet RGMII Device for APM kernel"))
+		Name(_CID, "APMC0D19")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
+		})
+
+		OperationRegion(ETHD, SystemMemory, 0x17000238, 4)
+		Field(ETHD, DWordAcc, NoLock, Preserve) {
+			NDIV, 9,
+		}
+		Method(S10, 0, NotSerialized) {
+			// 10Mbps requires 2.5MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/2500000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 2500000), NDIV)
+		}
+		Method(S100, 0, NotSerialized) {
+			// 100Mbps requires 25MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// 100Mbps = (SOC DIV 2)/25000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 25000000), NDIV)
+		}
+		Method(S1G, 0, NotSerialized) {
+			// 1Gbps requires 125MHz clock
+			// SOC DIV 2 = REF * (CLKF/((CLKR+1) * (CLKD+1)))
+			// NDIV = (SOC DIV 2)/125000000
+			Store(Divide(Divide(Multiply(100000000, Divide(CLKF, Multiply(Add(CLKR, One), Add(CLOD, One)))), 2), 125000000), NDIV)
+		}
+		OperationRegion(CLKQ, SystemMemory, 0x1702c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "8",
+				"slave_name", "RGMII",
+				"slave_info", "3 0 4 32 4",
+				"max-frame-size", "9018",
+				"phyid", "3",
+				"phy-mode", "rgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
+
+	Device(\_SB.ET00) {
+		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_DDN, "ET00")
+		Name(_UID, "ET00")
+		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
+		Name(_CID, "APMC0D19")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xad }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb0 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f21c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 4,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0xf, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "0",
+				"slave_name", "SGMII0",
+				"slave_info", "1 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "30",
+				"phy-mode", "sgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
+
+	Device(\_SB.ET01) {
+		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_DDN, "ET01")
+		Name(_UID, "ET01")
+		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
+		Name(_CID, "APMC0D19")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f210030, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xad }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb0 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f21c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 4,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0xf, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "1",
+				"slave_name", "SGMII1",
+				"slave_info", "1 8 8 40 8",
+				"max-frame-size", "9018",
+				"phyid", "30",
+				"phy-mode", "sgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
+
+	Device(\_SB.ET04) {
+		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_DDN, "ET04")
+		Name(_UID, "ET04")
+		Name(_STR, Unicode("Ethernet 10Gb Device"))
+		Name(_CID, "APMC0D19")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f610000, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f610000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x70 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x71 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x72 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "4",
+				"slave_name", "SXGMII0",
+				"slave_info", "0 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "1",
+				"phy-mode", "xgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
+
+	Device(\_SB.ET05) {
+		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_DDN, "ET05")
+		Name(_UID, "ET05")
+		Name(_STR, Unicode("Ethernet 10Gb Device"))
+		Name(_CID, "APMC0D05")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x0)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f620000, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f620000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x73 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x74 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x75 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Method(_DSM, 4, NotSerialized) {
+			Store (Package (14) {
+				"devid", "5",
+				"slave_name", "SXGMII1",
+				"slave_info", "0 0 8 32 8",
+				"max-frame-size", "9018",
+				"phyid", "1",
+				"phy-mode", "xgmii",
+				"local-mac-address", "00:00:00:00:00:00"
+			}, Local0)
+			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+			Return (Local0)
+		}
+	}
 ///////////////////////////////////////////////////////////////////////////////
 //PCIe0
 	Device(\_SB.PCI0) {

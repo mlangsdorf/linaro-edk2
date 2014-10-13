@@ -58,7 +58,7 @@
        Performance Interrupt Trigger Mode : 0
        Virtual GIC Interrupt Trigger Mode : 0
 [0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
+[0004]              Performance Interrupt : 0000005C
 [0008]                     Parked Address : 0000000080001000
 [0008]                       Base Address : 000000002C002000
 [0008]           Virtual GIC Base Address : 0
@@ -77,7 +77,7 @@
        Performance Interrupt Trigger Mode : 0
        Virtual GIC Interrupt Trigger Mode : 0
 [0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
+[0004]              Performance Interrupt : 0000005D
 [0008]                     Parked Address : 0000000080002000
 [0008]                       Base Address : 000000002C002000
 [0008]           Virtual GIC Base Address : 0
@@ -96,7 +96,7 @@
        Performance Interrupt Trigger Mode : 0
        Virtual GIC Interrupt Trigger Mode : 0
 [0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
+[0004]              Performance Interrupt : 0000005E
 [0008]                     Parked Address : 0000000080003000
 [0008]                       Base Address : 000000002C002000
 [0008]           Virtual GIC Base Address : 0
@@ -115,7 +115,7 @@
        Performance Interrupt Trigger Mode : 0
        Virtual GIC Interrupt Trigger Mode : 0
 [0004]           Parking Protocol Version : 00000001
-[0004]              Performance Interrupt : 00000000
+[0004]              Performance Interrupt : 0000005F
 [0008]                     Parked Address : 0000000080004000
 [0008]                       Base Address : 000000002C002000
 [0008]           Virtual GIC Base Address : 0

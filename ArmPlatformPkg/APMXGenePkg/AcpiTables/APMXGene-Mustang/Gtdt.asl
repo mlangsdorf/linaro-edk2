@@ -23,7 +23,7 @@
 [0008]                       Oem Table ID : "XGENE   "
 [0004]                       Oem Revision : 00000001
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20140724
+[0004]              Asl Compiler Revision : 20140424
 
 [0008]              Counter Block Address : 0000000000000000
 [0004]                           Reserved : 00000000

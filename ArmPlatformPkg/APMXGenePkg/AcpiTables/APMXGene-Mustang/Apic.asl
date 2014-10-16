@@ -36,15 +36,17 @@
 [0004]                     Processor UID : 00000000
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 0000004000008000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 0x00004000008000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000000
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000000
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -53,15 +55,17 @@
 [0004]                     Processor UID : 00000001
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
 [0004]             Performance Interrupt : 0000001A
 [0008]                    Parked Address : 0000004000009000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000001
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000001
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -70,15 +74,17 @@
 [0004]                     Processor UID : 00000100
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 000000400000A000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000a000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000100
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000100
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -87,15 +93,17 @@
 [0004]                     Processor UID : 00000101
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 000000400000B000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000b000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000101
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000101
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -104,15 +112,17 @@
 [0004]                     Processor UID : 00000200
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 000000400000C000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000c000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000200
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000200
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -121,15 +131,17 @@
 [0004]                     Processor UID : 00000201
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 000000400000D000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000d000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000201
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000201
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -138,15 +150,17 @@
 [0004]                     Processor UID : 00000300
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0004]             Performance Interrupt : 00000000
-[0008]                    Parked Address : 000000400000E000
+[0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000e000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000300
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000300
 
 [0001]                     Subtable Type : 0B [Generic Interrupt Controller]
 [0001]                            Length : 4C
@@ -155,15 +169,17 @@
 [0004]                     Processor UID : 00000301
 [0004]             Flags (decoded below) : 00000001
                        Processor Enabled : 1
+      Performance Interrupt Trigger Mode : 0
+      Virtual GIC Interrupt Trigger Mode : 0
 [0004]          Parking Protocol Version : 00000001
-[0008]                    Parked Address : 000000400000F000
 [0004]             Performance Interrupt : 0000001A
+[0008]                    Parked Address : 000000400000f000
 [0008]                      Base Address : 00000000780A0000
 [0008]          Virtual GIC Base Address : 00000000780E0000
-[0008]              Hyp GIC Base Address : 00000000780C0000
-[0004] Virtual GIC Maintenance Interrupt : 00000009
-[0008]                 RedistBaseAddress : 0000000078090000
-[0008]                             MPIDR : 0000000000000301
+[0008]       Hypervisor GIC Base Address : 00000000780C0000
+[0004]             Virtual GIC Interrupt : 00000009
+[0008]        Redistributor Base Address : 0000000078090000
+[0008]                         ARM MPIDR : 0000000000000301
 
 [0001]                     Subtable Type : 0C [Generic Interrupt Distributor]
 [0001]                            Length : 18

@@ -1170,7 +1170,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7E800000, 0x1000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC MC0 Device
 
 // EDAC MC1 Device
@@ -1189,7 +1189,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7E840000, 0x1000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC MC1 Device
 
 // EDAC MC2 Device
@@ -1208,7 +1208,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7E880000, 0x1000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC MC2 Device
 
 // EDAC MC3 Device
@@ -1227,7 +1227,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7E8C0000, 0x1000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC MC3 Device
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1244,7 +1244,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x7E600000, 0x1000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC L3 Device
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1262,7 +1262,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1054A000, 0x10, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC PMD0 Device
 
 // EDAC PMD1 Device
@@ -1279,7 +1279,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1054A000, 0x10, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC PMD1 Device
 
 // EDAC PMD2 Device
@@ -1296,7 +1296,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1054A000, 0x10, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC PMD2 Device
 
 // EDAC PMD3 Device
@@ -1313,7 +1313,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1054A000, 0x10, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
-			})
+		})
 	} //EDAC PMD3 Device
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1332,7 +1332,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x40 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x41 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x47 }
-			})
+		})
 	} //EDAC SOC Device
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1950,8 +1950,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 				Return (0)
 			}
 		}
-
-	Device(\_SB.GP01) {
+		Device(\_SB.GP01) {
 			Name(_HID, "APMC0D14")
 			Name(_DDN, "GP01")
 			Name(_UID, "GP01")
@@ -1964,17 +1963,16 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //AHBC
 ////////////////////////////////////////////////////////////////////////////////
 // DesignWare I2C
-	Device (I2C0)
-	{
+	Device (I2C0) {
 		// Serial IO I2C0 Controller
 		Name (_HID, "APMC0D0F")
-			Name (_CID, "APMC0D0F")
-			Name (_UID, 1)
-			Name (_ADR, 0x00150001)
+		Name (_CID, "APMC0D0F")
+		Name (_UID, 1)
+		Name (_ADR, 0x00150001)
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x10512000, 0x10000,)
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x64 }
-			})
+		})
 		OperationRegion(\SMEM, SystemMemory, 0x1051E008, 4)
 		Field(\SMEM, DWordAcc, NoLock, Preserve) {
 			CLK0, 2,
@@ -1983,8 +1981,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			// initial clock value
 			Store(0xf4240, CLK0)
 		}
-		Method(_STA, 0, NotSerialized)
-		{
+		Method(_STA, 0, NotSerialized) {
 			Return (0x0)
 		}
 	} //I2C0 -- DesignWare
@@ -2377,9 +2374,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 ///////////////////////////////////////////////////////////////////////////////
 // Ethernet Device
-    // APMC0D05: For Open Source
-	// APMC0D19: For APM's driver. When APM driver sync up with open source then
-	// this ID will be changed to APMC0D05
+// APMC0D05: For Open Source
+// APMC0D19: For APM's driver. When APM driver sync up with open source then
+// this ID will be changed to APMC0D05
 	Device(\_SB.ET08) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET08")
@@ -2429,7 +2426,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name (_DSD, Package () {
 			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 			Package () {
-				Package (2) {"mac-address", Package (6) {00, 00, 00, 00, 00, 00}},
+				Package (2) {"mac-address", Package (6) {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}},
 				Package (2) {"phy-channel", 3},
 				Package (2) {"phy-mode", "rgmii"},
 				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
@@ -2437,6 +2434,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			}
 		})
 	}
+
 
 	Device(\_SB.ET8) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
@@ -2450,7 +2448,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17020000, 0xd100, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x20, )
+			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x58 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x59 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x5a }
@@ -2622,11 +2620,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET05) {
-		Name(_HID, "APMC0D19") // Device Identification Objects
+		Name(_HID, "APMC0D05") // Device Identification Objects
 		Name(_DDN, "ET05")
 		Name(_UID, "ET05")
 		Name(_STR, Unicode("Ethernet 10Gb Device"))
-		Name(_CID, "APMC0D19")
+		Name(_CID, "APMC0D05")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x0)
 		}
@@ -3042,8 +3040,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D16") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene PktDMA"))
-		Method(_STA, 0, NotSerialized)
-		{
+		Method(_STA, 0, NotSerialized) {
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {
@@ -3074,8 +3071,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D17") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene Pka"))
-		Method(_STA, 0, NotSerialized)
-		{
+		Method(_STA, 0, NotSerialized) {
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {
@@ -3110,8 +3106,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D18") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene TRNG"))
-		Method(_STA, 0, NotSerialized)
-		{
+		Method(_STA, 0, NotSerialized) {
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {

@@ -15,7 +15,7 @@
 [0008]                       Oem Table ID : "XGENEDBG"
 [0004]                       Oem Revision : 00000000
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20140724
+[0004]              Asl Compiler Revision : 20131115
 
 [0004]                        Info Offset : 0000002C
 [0004]                         Info Count : 00000002

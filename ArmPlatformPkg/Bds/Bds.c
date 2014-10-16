@@ -619,9 +619,6 @@ BdsEntry (
         0, NULL);
   }
 
-  // If Boot Order does not exist then create a default entry
-  DefineDefaultBootEntries ();
-
   // Now we need to setup the EFI System Table with information about the console devices.
   InitializeConsole ();
 
@@ -631,6 +628,9 @@ BdsEntry (
   gST->Hdr.CRC32 = 0;
   Status = gBS->CalculateCrc32 ((VOID*)gST, gST->Hdr.HeaderSize, &gST->Hdr.CRC32);
   ASSERT_EFI_ERROR (Status);
+
+  // If Boot Order does not exist then create a default entry
+  DefineDefaultBootEntries ();
 
   // Timer before initiating the default boot selection
   StartDefaultBootOnTimeout ();

@@ -172,9 +172,20 @@ EFI_STATUS _SearchReplacePackageMACAddress(
         StringByte[2] = '\0';
         Value = StrHexToUintn(StringByte);
 
+        Status = AcpiTableProtocol->GetOption(CurrentHandle, 1, &DataType, &Buffer, &DataSize);
+        if (EFI_ERROR(Status))
+          break;
+
+        Data = Buffer;
+        DBG("    _DSD Child Subnode Store Op Code 0x%02X 0x%02X %02X\n",
+            DataSize, Data[0], DataSize > 1 ? Data[1] : 0);
+
+        if (DataType != EFI_ACPI_DATA_TYPE_UINT)
+          break;
+
         // only need one byte.
         // FIXME: Assume the CPU is little endian
-        Status = AcpiTableProtocol->SetOption(CurrentHandle, 0, (VOID *)&Value, sizeof(UINT8));
+        Status = AcpiTableProtocol->SetOption(CurrentHandle, 1, (VOID *)&Value, sizeof(UINT8));
         if (EFI_ERROR(Status))
           break;
 

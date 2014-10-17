@@ -697,44 +697,15 @@ WriteSections64 (
             break;
 
           case R_AARCH64_CALL26:
-	  case R_AARCH64_JUMP26:
-	    /* N.B.: The entire implementation of this file is not
-	       endian-safe and can not operate in a cross-endian
-	       (e.g. compiling for a little-endian target on a
-	       big-endian build host). Endianness-conversions are
-	       performed neither on the read-path (from ELF) nor on
-	       the write-patch (to COFF).
+            if  (Rel->r_addend != 0 ) { /* TODO */
+              Error (NULL, 0, 3000, "Invalid", "AArch64: R_AARCH64_CALL26 Need to fixup with addend!.");
+            }
+            break;
 
-	       To keep with the spirit of this (as this limitation
-	       would first need to be fixed throughout the GenFw
-	       source), our implementation of the CALL26 and JUMP26
-	       relocations will too work for matching target and host
-	       endianness only.
-	    */
-	    {
-	      /* We could simply compute the relative offset of the
-		 two involved sections (i.e. the section containing
-		 the relocation and the section containing the target)
-		 and combine this into the original IMM26 field. As it
-		 is somewhat easier to understand and check using
-		 readelf, we instead compute a new IMM26 from the
-		 offset between the full target address and the full
-		 relocation address. */
-
-	      UINT64  target_addr = mCoffSectionsOffset[Sym->st_shndx] + Sym->st_value + Rel->r_addend;
-	      UINT64  reloc_addr  = SecOffset + Rel->r_offset;
-
-	      UINT32  imm26       = ((target_addr - reloc_addr) >> 2) & ((1 << 26) - 1);
-
-	      /* All instructions containing an IMM26 have a similar
-		 structure with the uppermost 6 bits for the opcode. */
-	      UINT32  opcode      = *(UINT32*)Targ & 0xfc000000;
-
-	      VerboseMsg ("0x%016x: relocating IMM26 in insn: %08x -> %08x", 
-			  Rel->r_offset, *(UINT32*)Targ, (opcode | imm26));
-
-	      *(UINT32 *)Targ = opcode | imm26;
-	    }
+          case R_AARCH64_JUMP26:
+            if  (Rel->r_addend != 0 ) { /* TODO : AArch64 '-O2' optimisation. */
+              Error (NULL, 0, 3000, "Invalid", "AArch64: R_AARCH64_JUMP26 Need to fixup with addend!.");
+            }
             break;
 
           case R_AARCH64_ADR_PREL_PG_HI21:

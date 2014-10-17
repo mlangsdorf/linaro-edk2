@@ -28,7 +28,6 @@
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/TimerLib.h>
-#include <netinet/in.h>
 #define readl           MmioRead32
 #define writel(v, a)    MmioWrite32((a), (v))
 #define swab16(x) \

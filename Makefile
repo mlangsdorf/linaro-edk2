@@ -13,16 +13,21 @@
 #
 ##
 
-SHELL:=/bin/bash
+# SHELL:=/bin/bash
 EDK2DIR=$(shell pwd)
 EDK2TOOLSDIR=$(EDK2DIR)/BaseTools
 export EDK_TOOLS_PATH=$(EDK2TOOLSDIR)
 
-export ARCH=arm64
-#export CROSS_COMPILE:=aarch64-apm-linux-gnu-
-#export CROSS_COMPILER_PATH:=/tools/arm/armv8/Theobroma/opt/apm-aarch64/6.0.4/bin
-export ASL_BIN_DIR:=$(shell pwd)/../tools/acpi
-export IASL_PREFIX:=$(shell pwd)/../tools/acpi/usr/bin/
+export ARCH=
+export CROSS_COMPILE:=aarch64-linux-gnu-
+export CROSS_COMPILER_PATH:=/usr/bin
+export ASL_BIN_DIR:=/usr/bin
+
+export FEDORA_CROSS:=/bin/aarch64-linux-gnu-
+export LINARO_CROSS:=/opt/gcc-linaro-aarch64-linux-gnu-4.8-2014.02_linux/bin/aarch64-linux-gnu-
+
+UEFI_TOOLS=../uefi-tools
+
 
 all: clean basetools tianocore tianocore_apps
 .PHONY : all
@@ -30,8 +35,13 @@ all: clean basetools tianocore tianocore_apps
 debug: clean basetools tianocore_debug tianocore_apps_debug
 .PHONY : debug
 
+linaro: clean basetools linaro_build
+.PHONY : linaro
 
-clean: clean_tianocore clean_tianocore_debug clean_tianocore_apps clean_tianocore_apps_debug clean_tianocore_UHP clean_tianocore_UHP_debug clean_tianocore_GFC clean_tianocore_GFC_debug  clean_basetools
+linaro_debug: clean basetools linaro_build_debug
+.PHONY : linaro_debug
+
+clean: clean_tianocore clean_tianocore_debug clean_basetools clean_linaro_tools clean_foundation clean_fvp
 	@echo
 	@echo "############################### Clean APM Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang
@@ -48,6 +58,13 @@ reallyclean: clean_conf clean_tianocore clean_tianocore_debug clean_tianocore_UH
 	@echo "############################### Clean Binary Files ###########################"
 	rm -rf $(EDK2DIR)/Build/APMXGene-Mustang
 
+clean_linaro_tools:
+	@echo
+	@echo "################################# Clean Linaro Tools ############################"
+	cd $(EDK2DIR) && \
+	.  $(EDK2DIR)/edksetup.sh && \
+	rm -f uefi-build.sh platforms.config parse-platforms.sh
+
 clean_basetools:
 	@echo
 	@echo "################################# Clean BaseTools ############################"
@@ -57,41 +74,30 @@ clean_basetools:
 	make -C $(EDK2TOOLSDIR) clean
 
 clean_tianocore:
+	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	@echo
 	@echo "################################# Clean TianoCore ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
 
-clean_tianocore_GFC:
+clean_tianocore_VHP:
 	@echo
-	@echo "################################# Clean TianoCore GFC ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
+	@echo "################################# Clean TianoCore VHP ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-GFC.dsc clean
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-VHP.dsc clean
 
-clean_tianocore_GFC_debug:
+clean_tianocore_VHP_debug:
 	@echo
-	@echo "################################# Clean TianoCore GFC Debug ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
+	@echo "################################# Clean TianoCore VHP Debug ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-GFC.dsc clean
-
-clean_tianocore_UHP:
-	@echo
-	@echo "################################# Clean TianoCore UHP Debug ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
-	cd $(EDK2DIR) && \
-	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc clean
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-VHP.dsc clean
 
 clean_tianocore_UHP_debug:
 	@echo
 	@echo "################################# Clean TianoCore UHP Debug ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc clean
@@ -104,9 +110,9 @@ clean_tianocore_UHP:
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc clean
 
 clean_tianocore_debug:
+	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	@echo
 	@echo "################################# Clean TianoCore Debug ############################"
-	@touch $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree/DeviceTree.c
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc clean
@@ -138,31 +144,28 @@ tianocore:
 	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D AARCH64_MP_PROTOCOL -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang.dsc
 
 tianocore_UHP:
 	@echo
 	@echo "################################# Build TianoCore UHP ############################"
-	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc
 
-tianocore_GFC:
+tianocore_VHP:
 	@echo
-	@echo "################################# Build TianoCore GFC ############################"
-	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
+	@echo "################################# Build TianoCore VHP ############################"
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-GFC.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-VHP.dsc
 
-tianocore_GFC_debug:
+tianocore_VHP_debug:
 	@echo
 	@echo "################################# Build TianoCore Debug ############################"
-	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
-	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-GFC.dsc
+	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-VHP.dsc
 
 tianocore_debug:
 	@echo
@@ -175,7 +178,6 @@ tianocore_debug:
 tianocore_UHP_debug:
 	@echo
 	@echo "################################# Build TianoCore UHP Debug ############################"
-	cd $(EDK2DIR)/ArmPlatformPkg/APMXGenePkg/DeviceTree && ./makedtb.sh
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/APMXGene-Mustang-UHP.dsc
@@ -193,3 +195,50 @@ tianocore_apps_debug:
 	cd $(EDK2DIR) && \
 	.  $(EDK2DIR)/edksetup.sh && \
 	AARCH64LINUXGCC_TOOLS=${CROSS_COMPILER_PATH}/${CROSS_COMPILE} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/APMXGenePkg/Applications/AppPkg.dsc
+
+clean_foundation:
+	@echo
+	@echo "################################# Clean Foundation ############################"
+	rm -rf Build/ArmVExpress-RTSM-AEMv8Ax4-foundation
+
+foundation:
+	@echo
+	@echo "################################# Build Foundation ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
+
+foundation_debug:
+	@echo
+	@echo "################################# Build Foundation Debug ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${FEDORA_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-RTSM-AEMv8Ax4-foundation.dsc
+
+clean_fvp:
+	@echo
+	@echo "################################# Clean FVP ############################"
+	rm -rf Build/ArmVExpress-FVP-AArch64
+
+fvp:
+	@echo
+	@echo "################################# Build FVP ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${LINARO_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b RELEASE -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-FVP-AArch64.dsc
+
+fvp_debug:
+	@echo
+	@echo "################################# Build FVP ############################"
+	. ./edksetup.sh && \
+	CROSS_COMPILE=${LINARO_CROSS} build -v -D EDK2_ARMVE_UEFI2_SHELL -b DEBUG -a AARCH64 -t ARMLINUXGCC -p ArmPlatformPkg/ArmVExpressPkg/ArmVExpress-FVP-AArch64.dsc
+
+uefi-build.sh platforms.config parse-platforms.sh:
+	@[ -d $(UEFI_TOOLS) ] || (echo "Please git clone $(UEFI_TOOLS) first." ; exit 1)
+	ln -s $(UEFI_TOOLS)/$@
+
+linaro_tools: uefi-build.sh platforms.config parse-platforms.sh
+
+linaro_build: linaro_tools
+	./uefi-build.sh -b RELEASE apm_mustang
+
+linaro_build_debug: linaro_tools
+	./uefi-build.sh -b DEBUG apm_mustang
+

@@ -92,16 +92,24 @@ struct eth_device {
 #define BOOTLOADER
 #undef BYPASS_CLE
 
+#ifdef DEBUG_ENET
 #define ENET_DBG_ERR
 #define ENET_PRINT_ENABLE
+#define ENET_DBG        //fscz
+#define DEBUG_TX        //fscz
+#else
+#undef ENET_DBG_ERR
+#undef ENET_PRINT_ENABLE
+#undef ENET_DBG        //fscz
+#undef DEBUG_TX        //fscz
+#endif
+
 #undef PHY_DEBUG
 #undef FAM_UBOOT
 #undef DEBUG_HEXDUMP
-#define ENET_DBG	//fscz
 #undef DEBUG_RD   
 #undef DEBUG_WR   
 #undef DEBUG_RX 
-#define DEBUG_TX	//fscz
 #undef ENET_REGISTER_READ
 #undef ENET_REGISTER_WRITE
 

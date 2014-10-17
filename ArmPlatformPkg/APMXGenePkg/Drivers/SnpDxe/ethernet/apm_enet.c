@@ -296,12 +296,10 @@ static void apm_eth_halt(struct eth_device *dev)
 {
 	struct apm_enet_dev *priv_dev;
 	struct apm_enet_priv *priv;
-	int port;
 
-	port = dev->index;
 	priv_dev = dev->priv;
 	priv = &priv_dev->priv;
-	ENET_DEBUG("%a port=%d, dev=0x%p priv=0x%p\n", __func__, port, dev, priv);
+	ENET_DEBUG("%a port=%d, dev=0x%p priv=0x%p\n", __func__, dev->index, dev, priv);
 #if defined(PCM_LOOPBACK)
 	/* PCM Loopback is support for 1G */
 	if (priv->port < XGENET_0 || priv->port > XGENET_3)

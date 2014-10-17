@@ -2159,7 +2159,7 @@ void apm_gmac_get_tx_stats(struct apm_enet_priv *priv,
 	tx_stats->tx_fragments_frm_count &= TX_FRAG_CNTR_MASK;
 }
 
-void apm_menet_clk_rst_cfg(struct apm_enet_priv *priv)
+void apm_menet_clk_rst(struct apm_enet_priv *priv)
 {
 	u32 wrdata;
 	ENET_DEBUG ("MENET CLK_RST configuration\n");
@@ -2187,6 +2187,13 @@ void apm_menet_clk_rst_cfg(struct apm_enet_priv *priv)
 		CSR1_RESET_WR(0) | ENET1_RESET_WR(0);
 	apm_enet_write(priv, BLOCK_ETH_CLKRST_CSR, ENET_SRST_ADDR, wrdata);
 	udelay(10);
+}
+
+void apm_menet_clk_rst_cfg(struct apm_enet_priv *priv)
+{
+	ENET_DEBUG ("MENET CLK_RST configuration\n");
+
+	apm_menet_clk_rst(priv);
 
 	apm_enet_ecc_init( priv );
 }

@@ -290,6 +290,8 @@ dealloc:
 	return data_len;
 }
 
+extern void apm_menet_clk_rst(struct apm_enet_priv *priv);
+
 static void apm_eth_halt(struct eth_device *dev)
 {
 	struct apm_enet_dev *priv_dev;
@@ -308,6 +310,7 @@ static void apm_eth_halt(struct eth_device *dev)
 	/* Disable MAC */
 	apm_enet_mac_rx_state(priv, 0);
 	apm_enet_mac_tx_state(priv, 0);
+	apm_menet_clk_rst(priv);
 }
 
 static int apm_eth_fp_init(struct apm_enet_dev *priv_dev)

@@ -68,6 +68,7 @@ InitializeCpuPeim (
   ARM_MP_CORE_INFO_PPI    *ArmMpCoreInfoPpi;
   UINTN                   ArmCoreCount;
   ARM_CORE_INFO           *ArmCoreInfoTable;
+  UINTN                   Index;
   // Enable program flow prediction, if supported.
   ArmEnableBranchPrediction ();
 
@@ -83,6 +84,11 @@ InitializeCpuPeim (
     if (!EFI_ERROR(Status) && (ArmCoreCount > 0)) {
       // Build MPCore Info HOB
       BuildGuidDataHob (&gArmMpCoreInfoGuid, ArmCoreInfoTable, sizeof (ARM_CORE_INFO) * ArmCoreCount);
+    }
+    for (Index =0; Index < ArmCoreCount; Index++) {
+      BuildMemoryAllocationHob((EFI_PHYSICAL_ADDRESS)ArmCoreInfoTable[Index].MailboxGetAddress, 0x1000, EfiReservedMemoryType);
+      BuildMemoryAllocationHob((EFI_PHYSICAL_ADDRESS)ArmCoreInfoTable[Index].MailboxSetAddress, 0x1000, EfiReservedMemoryType);
+      BuildMemoryAllocationHob((EFI_PHYSICAL_ADDRESS)ArmCoreInfoTable[Index].MailboxClearAddress, 0x1000, EfiReservedMemoryType);
     }
   }
 

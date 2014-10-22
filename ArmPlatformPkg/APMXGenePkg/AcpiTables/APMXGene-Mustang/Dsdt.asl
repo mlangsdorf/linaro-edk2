@@ -145,7 +145,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550018, 3)},
 			3,
 			200000,	//latency usec
@@ -169,7 +169,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -269,7 +269,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551018, 3)},
 			3,
 			200000,	//latency usec
@@ -293,7 +293,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -398,7 +398,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552018, 3)},
 			3,
 			200000,	//latency usec
@@ -422,7 +422,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -527,7 +527,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553018, 3)},
 			3,
 			200000,	//latency usec
@@ -551,7 +551,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -656,7 +656,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554018, 3)},
 			3,
 			200000,	//latency usec
@@ -680,7 +680,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -785,7 +785,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555018, 3)},
 			3,
 			200000,	//latency usec
@@ -809,7 +809,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -914,7 +914,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556018, 3)},
 			3,
 			200000,	//latency usec
@@ -938,7 +938,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {
@@ -1043,7 +1043,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			0,	//latency usec
 			0	//power mW
 		}, //C2 state
-/*		Package() {	//C3 state
+		Package() {	//C3 state
 			ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557018, 3)},
 			3,
 			200000,	//latency usec
@@ -1067,7 +1067,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			10000000,	//latency usec
 			0		//power mW
 		}, //C6 state
-*/
+
 	}) //_CST
 //C state dependency
 	Name(_CSD, Package() {

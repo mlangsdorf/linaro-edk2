@@ -100,9 +100,7 @@
    gArmTokenSpaceGuid.PcdBootingLinuxUEFI|2
 
 [PcdsFixedAtBuild.common]
-   # System Memory (4GB)
-   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.0.0"
-   gArmTokenSpaceGuid.PcdSystemMemorySize|0x100000000
+   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1.0"
    gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"X-Gene Mustang Board"
    gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"Mustang"
    gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000

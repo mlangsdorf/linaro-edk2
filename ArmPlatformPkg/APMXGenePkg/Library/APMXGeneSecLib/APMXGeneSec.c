@@ -17,6 +17,9 @@
 #include "APMXGeneMemc.h"
 #include "APMXGenePMD.h"
 
+#define readl(x)    *((volatile u32 *) (x))
+#define writel(v, x)    *((volatile u32 *) (x)) = (v)
+
 void apm88xxxx_print_valid_pmd(void)
 {
   int pmd;
@@ -88,6 +91,74 @@ int apm88xxxx_start_secondary_cores(void)
   return 0;
 }
 
+#define MIDR_EL1_REV_MASK   0x0000000f
+#define REVIDR_EL1_MINOR_REV_MASK 0x00000007
+#define EFUSE0_SHADOW_VERSION_SHIFT 28
+#define EFUSE0_SHADOW_VERSION_MASK  0xF
+
+int xgene_is_preB0(void)
+{
+  u32 val;
+  asm volatile("mrs %0, midr_el1" : "=r" (val));
+        val &= MIDR_EL1_REV_MASK;
+  return val == 0 ? 1 : 0;
+}
+
+int apm88xxxx_CPU_setup(void)
+{
+  int num_cores;
+  int i;
+
+  num_cores = MAX_NUM_PMD * 2;
+  for (i = 0; i < num_cores; i++) {
+    unsigned long cccr_addr = 0x7c0c0000 + (0x100000 * i);
+    unsigned long cccr_val = 0;
+
+    if (!apm88xxxx_is_pmd_available(i/2))
+      continue;
+
+    cccr_val = readl(cccr_addr);
+    if (xgene_is_preB0()) {
+      /*
+       * Bug 37385 FxBypDis = 0b01, skip disabled PMDs
+       * Disable Fx result bypass, inhibit 5 cycle feedback
+       */
+      cccr_val |= 0x4000;
+    }
+
+    /* Bug 44899, Disable L1 data prefetch */
+    cccr_val |= 0x200;
+    writel(cccr_val, cccr_addr);
+  }
+
+  /*
+   * L2 Cache modification
+   */
+  for(i=0; i<num_cores; i++) {
+    unsigned long l2rtocr_addr = 0x7c0d0010 + (0x100000 * i);
+    unsigned long val = 0;
+
+    if (!apm88xxxx_is_pmd_available(i/2))
+      continue;
+
+    val = readl(l2rtocr_addr);
+
+    /* Bug 44141, reduce request time out value */
+    val &= 0xffffffc0;
+    val |= 0x10;
+    writel(val, l2rtocr_addr);
+  }
+
+  /* Disable CGC for FSU */
+  if (xgene_is_preB0()){
+    writel(0x911, (unsigned long)0x7e200200);
+    writel(0x911, (unsigned long)0x7e200210);
+    writel(0x911, (unsigned long)0x7e200220);
+    writel(0x911, (unsigned long)0x7e200230);
+  }
+
+  return 0;
+}
 /**
   Initialize the Secure peripherals and memory regions
 
@@ -122,6 +193,8 @@ ArmPlatformSecInitialize (
   Status = APMXGeneMemcInit();
 
   apm88xxxx_start_secondary_cores();
+
+  apm88xxxx_CPU_setup();
 
   return Status;
 }

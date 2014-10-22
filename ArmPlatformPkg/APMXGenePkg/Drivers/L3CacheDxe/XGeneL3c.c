@@ -65,35 +65,39 @@ VOID XGeneL3cInit(VOID)
 
   DEBUG ((EFI_D_VERBOSE, "L3cSizeConfig: %d\n", L3cSizeConfig));
 
-  /* disable l3c clk */
-  Val = MmioRead32(CswBase + CSW_L3CCR);
-  Val &= ~(1 << 11);      /* L3CCR.L3cClkEn */
-  MmioWrite32(CswBase + CSW_L3CCR, Val);
-
-  Val = MmioRead32(CswBase + CSW_L3CCR);
-  Val &= ~(1 << 15);      /* L3CCR.L3cClkMacRst */
-  MmioWrite32(CswBase + CSW_L3CCR, Val);
-
-  MicroSecondDelay(1);
-
-  /* enable l3c clk */
-  Val = MmioRead32(CswBase + CSW_L3CCR);
-  Val |= (1 << 11);       /* L3CCR.L3cClkEn */
-  MmioWrite32(CswBase + CSW_L3CCR, Val);
-
-  MicroSecondDelay(1);
-
-  /* clear l3c reset */
-  Val = MmioRead32(CswBase + CSW_L3RCR);
-  Val &= ~(1 << 0);       /* L3RCR.ResetL3c */
-  MmioWrite32(CswBase + CSW_L3RCR, Val);
-
-  MicroSecondDelay(1);
-
-  /* set L3cAvail in RB Agent status register */
   Val = MmioRead32(RbBase + RB_RBASR);
-  Val |= (1 << 16);       /* RBASR.L3cAvail */
-  MmioWrite32(RbBase + RB_RBASR, Val);
+
+  if (!(Val & (1 << 16))) {
+    /* disable l3c clk */
+    Val = MmioRead32(CswBase + CSW_L3CCR);
+    Val &= ~(1 << 11);      /* L3CCR.L3cClkEn */
+    MmioWrite32(CswBase + CSW_L3CCR, Val);
+
+    Val = MmioRead32(CswBase + CSW_L3CCR);
+    Val &= ~(1 << 15);      /* L3CCR.L3cClkMacRst */
+    MmioWrite32(CswBase + CSW_L3CCR, Val);
+
+    MicroSecondDelay(1);
+
+    /* enable l3c clk */
+    Val = MmioRead32(CswBase + CSW_L3CCR);
+    Val |= (1 << 11);       /* L3CCR.L3cClkEn */
+    MmioWrite32(CswBase + CSW_L3CCR, Val);
+
+    MicroSecondDelay(1);
+
+    /* clear l3c reset */
+    Val = MmioRead32(CswBase + CSW_L3RCR);
+    Val &= ~(1 << 0);       /* L3RCR.ResetL3c */
+    MmioWrite32(CswBase + CSW_L3RCR, Val);
+
+    MicroSecondDelay(1);
+
+    /* set L3cAvail in RB Agent status register */
+    Val = MmioRead32(RbBase + RB_RBASR);
+    Val |= (1 << 16);       /* RBASR.L3cAvail */
+    MmioWrite32(RbBase + RB_RBASR, Val);
+  }
 
   /* read l3c Size from h/w */
   Val = MmioRead32(L3cBase + L3C_CR);

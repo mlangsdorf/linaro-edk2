@@ -36,6 +36,7 @@ enum phy_mode {
 	MODE_PCIE	= 2,
 	MODE_USB	= 3,
 	MODE_XFI	= 4,
+	SM_SATA_SGMII	= 5,
 	MODE_MAX
 };
 
@@ -61,6 +62,7 @@ struct xgene_phy_ctx {
 	enum clk_type_t clk_type;	/* Input clock selection */
 	int ssc;			/* Enable SSC */
 	int lane;			/* # of lane used */
+	int max_lanes;
 	void __iomem *sds_base;		/* PHY CSR base addr */
 	void __iomem *clk_base;		/* PHY clock CSR base addr */
 	void __iomem *core_base;	/* Core base if PCIE PHY */
@@ -68,11 +70,13 @@ struct xgene_phy_ctx {
 	struct clk *clk;		/* Optional clock */
 	int ref_100MHz;			/* Reference clock 100Mhz */
 	int inited;			/* Initialized? */
+	int eye_scan;			/* Enable eye scan support? */
 
 	/* Override Serdes parameters */
 	struct xgene_sata_override_param sata_param;
 };
 
+void enet_phy_reset_rxd_rxa(struct xgene_phy_ctx *ctx, int port);
 int xgene_phy_hw_init(struct xgene_phy_ctx *ctx);
 int xgene_is_preA3(void);
 int xgene_is_preB0(void);
@@ -80,7 +84,7 @@ void xgene_phy_reset_rxd(struct xgene_phy_ctx *ctx, int lane);
 int xgene_phy_set_ctle(struct xgene_phy_ctx *ctx, int lane, u32 disk_type);
 void xgene_phy_sata_force_gen(struct xgene_phy_ctx *ctx, int lane, int gen);
 void xgene_dump_serdes(struct xgene_phy_ctx *ctx, int lane);
-void xgene_eyescan(struct xgene_phy_ctx *ctx , int lane); 
+void xgene_eyescan(struct xgene_phy_ctx *ctx , int lane);
 void dump_momsel(struct xgene_phy_ctx *ctx , int lane);
 void xgene_reprogram_vco(struct xgene_phy_ctx *ctx, int ref_clk);
 #endif /* __XGENEPHY_H__ */

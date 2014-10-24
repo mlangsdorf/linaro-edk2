@@ -1,4 +1,4 @@
-/*
+/**
  * APM X-Gene PCIE PHY driver
  *
  * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
@@ -13,7 +13,7 @@
  *
  * This driver produces IDE_CONTROLLER_INIT protocol for APM X-Gene SATA
  * controllers.
- */
+ **/
 
 #define SDS0_CMU_STATUS0                0x2c
 #define SDS1_CMU_STATUS0                0x64
@@ -27,59 +27,85 @@
 #define USB_PCIE_CTRL			0x164
 #define PIPECTLREG			0x1b0
 #define  EQ_TX_PARAMS_VALID_SET(dst, src) \
-		(((dst) & ~0x01000000) | (((u32) (src) << 24) & 0x01000000))
+	(((dst) & ~0x01000000) | (((u32) (src) << 24) & 0x01000000))
 #define  PIPECTLREG_PHY_EQ_TX_FS_SET(dst, src) \
-		(((dst) & ~0xfc0000) | (((u32) (src) << 0x12) & 0x00fc0000))
+	(((dst) & ~0xfc0000) | (((u32) (src) << 0x12) & 0x00fc0000))
 #define  PIPECTLREG_PHY_EQ_TX_LF_SET(dst, src) \
-		(((dst) & ~0x3f000) | (((u32) (src) << 0xc) & 0x3f000))
+	(((dst) & ~0x3f000) | (((u32) (src) << 0xc) & 0x3f000))
 #define  PIPECTLREG_PHY_EQ_TX_MAX_PRE_SET(dst, src) \
-		(((dst) & ~0xfc0) | (((u32) (src) << 0x6) & 0xfc0))
+	(((dst) & ~0xfc0) | (((u32) (src) << 0x6) & 0xfc0))
 #define  PIPECTLREG_PHY_EQ_TX_MAX_POST_SET(dst, src) \
-		(((dst) & ~0x3f) | (((u32) (src)) & 0x3f))
+	(((dst) & ~0x3f) | (((u32) (src)) & 0x3f))
 #define  BYPASS_RECEIVER_DETECTION_SET(dst, src) \
-		(((dst) & ~0x10000000) | (((u32) (src) << 0x1c) & 0x10000000))
+	(((dst) & ~0x10000000) | (((u32) (src) << 0x1c) & 0x10000000))
 #define ONE_CNT_TH_MASK			0x0000ffff
 #define ONE_CNT_TH_SET(dst, src) \
-		(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
+	(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
 #define ONE_CNT_CMP_TH_MASK		0x0000ffff
 #define ONE_CNT_CMP_TH_SET(dst, src) \
-		(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
+	(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
 #define SEL_CDR_OVR_LN_MASK		0x0000000f
 #define SEL_CDR_OVR_LN_SET(dst, src) \
-		(((dst) & ~0x0000000f) | ((u32)(src) & 0x0000000f))
+	(((dst) & ~0x0000000f) | ((u32)(src) & 0x0000000f))
 #define TX_AMP_EN_LN0_MASK		0x00000040
 #define TX_AMP_EN_LN0_SET(dst, src) \
-		(((dst) & ~0x00000040) | (((u32)(src) << 0x6) & 0x00000040))
+	(((dst) & ~0x00000040) | (((u32)(src) << 0x6) & 0x00000040))
 #define TX_AMP_LN0_MASK			0x00000780
 #define TX_AMP_LN0_SET(dst, src) \
-		(((dst) & ~0x00000780) | (((u32)(src) << 0x7) & 0x00000780))
+	(((dst) & ~0x00000780) | (((u32)(src) << 0x7) & 0x00000780))
 #define TX_AMP_EN_LN1_MASK		0x00010000
 #define TX_AMP_EN_LN1_SET(dst, src) \
-		(((dst) & ~0x00010000) | (((u32)(src) << 0x10) & 0x00010000))
+	(((dst) & ~0x00010000) | (((u32)(src) << 0x10) & 0x00010000))
 #define TX_AMP_LN1_MASK			0x001e0000
 #define TX_AMP_LN1_SET(dst, src) \
-		(((dst) & ~0x001e0000) | (((u32)(src) << 0x11) & 0x001e0000))
+	(((dst) & ~0x001e0000) | (((u32)(src) << 0x11) & 0x001e0000))
 
 #define PIPE_REGS_LOS_PARAM		0x00a0
 #define  CNTON_GEN12_SET(dst, src) \
-		(((dst) & ~0xf0000000) | (((u32)(src) << 0x1c) & 0xf0000000))
+	(((dst) & ~0xf0000000) | (((u32)(src) << 0x1c) & 0xf0000000))
 #define  CNTOFF_GEN12_SET(dst, src) \
-		(((dst) & ~0x0f000000) | (((u32)(src) << 0x18) & 0x0f000000))
+	(((dst) & ~0x0f000000) | (((u32)(src) << 0x18) & 0x0f000000))
 #define  CNTON_GEN3_SET(dst, src) \
-		(((dst) & ~0x00f00000) | (((u32)(src) << 0x14) & 0x00f00000))
+	(((dst) & ~0x00f00000) | (((u32)(src) << 0x14) & 0x00f00000))
 #define  CNTOFF_GEN3_SET(dst, src) \
-		(((dst) & ~0x000f0000) | (((u32)(src) << 0x10) & 0x000f0000))
+	(((dst) & ~0x000f0000) | (((u32)(src) << 0x10) & 0x000f0000))
 #define PIPE_REGS_EFIFO_CONTROL0 	0x012c
 #define  BUF_DEPTH_PCI_SET(dst, src) \
-		(((dst) & ~0x00001f00) | (((u32)(src) << 0x8) & 0x00001f00))
+	(((dst) & ~0x00001f00) | (((u32)(src) << 0x8) & 0x00001f00))
 #define PIPE_REGS_PIPE_CONTROL		0x0004
 #define  WMSELECT_SET(dst, src) \
-		(((dst) & ~0x0000001e) | (((u32)(src) << 0x1) & 0x0000001e))
-
+	(((dst) & ~0x0000001e) | (((u32)(src) << 0x1) & 0x0000001e))
 #define PLL_RESETB_SET(dst, src) \
-		(((dst) & ~0x00000001) | (((u32) (src) << 0) & 0x00000001))
+	(((dst) & ~0x00000001) | (((u32) (src) << 0) & 0x00000001))
+#define BCA_NO_ACK_TMR_SEL    0x0168
+#define  BCA_NO_ACK_TIMER_SEL_SET(dst, src)	\
+	(((dst) & ~0x0000000f) | (((u32)(src) << 0x0) & 0x0000000f))
+#define CMU_REG0_RESETB_SET(dst, src) \
+	(((dst) & ~0x00008000) | (((u32)(src) << 0xf) & 0x00008000))
+#define RXTX_REG2_RESETB_TXA_SET(dst, src) \
+	(((dst) & ~0x00002000) | (((u32)(src) << 0xd) & 0x00002000))
+#define RXTX_REG12_RX_PDOWN_SET(dst, src) \
+	(((dst) & ~0x00001000) | (((u32)(src) << 0xc) & 0x00001000))
 
+#define RXTX_REG90	0x4b4
+#define RXTX_REG90_MU_BCA1_SET(dst, src) \
+	(((dst) & ~0x0000f800) | (((u32)(src) << 0xb) & 0x0000f800))
+#define RXTX_REG90_MU_BCA2_SET(dst, src) \
+	(((dst) & ~0x000007c0) | (((u32)(src) << 0x6) & 0x000007c0))
+#define RXTX_REG90_MU_BCA3_SET(dst, src) \
+	(((dst) & ~0x0000003e) | (((u32)(src) << 0x1) & 0x0000003e))
+
+#define PCIE_SDS_MUX	0x90
+#define FULL_WIDTH_SET(dst, src) \
+	(((dst) & ~0x1) | (((u32)(src) << 0x0) & 0x1))
+#define REG0_PDOWN_SET(dst, src) \
+	(((dst) & ~0x00004000) | (((u32)(src) << 0xe) & 0x00004000))
+#define REG0_RESETB_SET(dst, src) \
+	(((dst) & ~0x00008000) | (((u32)(src) << 0xf) & 0x00008000))
+
+#ifndef MIDR_EL1_REV_MASK
 #define MIDR_EL1_REV_MASK	0x0000000F
+#endif
 
 static void xgene_phy_cfg_pipe(struct xgene_phy_ctx *ctx)
 {
@@ -138,10 +164,14 @@ static void xgene_phy_cfg_pipe(struct xgene_phy_ctx *ctx)
 	pipe_rd(ctx, PIPE_REGS_PIPE_CONTROL, &val);
 	val = WMSELECT_SET(val, 0x6);
 	pipe_wr(ctx, PIPE_REGS_PIPE_CONTROL, val);
+
+	pipe_rd(ctx, BCA_NO_ACK_TMR_SEL, &val);
+	val = BCA_NO_ACK_TIMER_SEL_SET(val, 0x1);
+	pipe_wr(ctx, BCA_NO_ACK_TMR_SEL, val);
 }
 
 static void xgene_phy_pcie_cfg_cmu_core(struct xgene_phy_ctx *ctx,
-					enum cmu_type_t cmu_type)
+		enum cmu_type_t cmu_type)
 {
 	u32 dt;
 
@@ -316,7 +346,7 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 
 	serdes_rd(ctx, lane, RXTX_REG125, &dt);
 	if (xgene_is_preB0())
-		dt = RXTX_REG125_PQ_REG_SET(dt, 0xA);
+		dt = RXTX_REG125_PQ_REG_SET(dt, 0xA);	
 	else
 		dt = RXTX_REG125_PQ_REG_SET(dt, 0x11);
 	dt = RXTX_REG125_PHZ_MANUAL_SET(dt, 0x1);
@@ -387,15 +417,23 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 		addr += 2;
 	}
 
+	addr = RXTX_REG90;
+	for (i = 0; i < 3; i++) {
+		serdes_rd(ctx, lane, addr, &dt);
+		dt = RXTX_REG90_MU_BCA1_SET(dt, 0xb);
+		dt = RXTX_REG90_MU_BCA2_SET(dt, 0xb);
+		dt = RXTX_REG90_MU_BCA3_SET(dt, 0xb);
+		serdes_wr(ctx, lane, addr, dt);
+		addr += 2;
+	}
+
 	serdes_rd(ctx, lane, RXTX_REG145, &dt);
 	dt = RXTX_REG145_RXDFE_CONFIG_SET(dt, 0x3);
 	serdes_wr(ctx, lane, RXTX_REG145, dt);
+
 	if (xgene_is_preB0())
 		serdes_wr(ctx, lane, RXTX_REG28, 0x3);
 	else {
-		serdes_rd(ctx, lane, RXTX_REG92, &dt);
-		dt = RXTX_REG92_MU_BCA9_SET(dt, 0xa);
-		serdes_wr(ctx, lane, RXTX_REG92, dt);
 		serdes_wr(ctx, lane, RXTX_REG28, 0x7);
 	}
 
@@ -408,6 +446,14 @@ static void xgene_phy_pcie_cfg_rx(struct xgene_phy_ctx *ctx, u32 lane)
 	serdes_rd(ctx, lane, RXTX_REG12, &dt);
 	dt = RXTX_REG12_RX_INV_SET(dt, 0x0);
 	serdes_wr(ctx, lane, RXTX_REG12, dt);
+
+	if (ctx->eye_scan) { 
+		/* Enable eyescan latch calibration */
+		serdes_rd(ctx, lane, RXTX_REG145, &dt);
+		dt = RXTX_REG145_RXES_ENA_SET(dt, 0x1);
+		dt = RXTX_REG145_RXVWES_LATENA_SET(dt, 0x1);
+		serdes_wr(ctx, lane, RXTX_REG145, dt);
+	}
 }
 
 static void xgene_phy_pcie_cfg_tx(struct xgene_phy_ctx *ctx, u32 lane)
@@ -445,50 +491,152 @@ static void xgene_phy_pcie_cfg_tx(struct xgene_phy_ctx *ctx, u32 lane)
 	serdes_wr(ctx, lane, RXTX_REG145, dt);
 }
 
-static void xgene_phy_pcie_cfg(struct xgene_phy_ctx *ctx)
+static void xgene_phy_cmu_pd(struct xgene_phy_ctx *ctx)
 {
-	u32 i;
-	u32 j;
-	int lane;
-	int loop = ctx->lane <= 4 ? 1 : ctx->lane / 4;
+	u32 dt;
 
-	for (i = 0; i < loop; i++) {
-		xgene_phy_pcie_cfg_cmu_core(ctx, PHY_CMU + i);
-		lane = ctx->lane <= 4 ? ctx->lane : 4;
-		for (j = 0; j < lane; j++) {
-			xgene_phy_pcie_cfg_rx(ctx, i * 4 + j);
-			xgene_phy_pcie_cfg_tx(ctx, i * 4 + j);
-		}
+	cmu_rd(ctx, PHY_CMU, CMU_REG0, &dt);
+	dt = CMU_REG0_PDOWN_SET(dt, 0x1);
+	dt = CMU_REG0_RESETB_SET(dt, 0x0);
+	cmu_wr(ctx, PHY_CMU, CMU_REG0, dt);
+
+	if (ctx->lane > 4) {
+		cmu_rd(ctx, PHY_CMU + 1, CMU_REG0, &dt);
+		dt = CMU_REG0_PDOWN_SET(dt, 0x1);
+		dt = CMU_REG0_RESETB_SET(dt, 0x0);
+		cmu_wr(ctx, PHY_CMU + 1, CMU_REG0, dt);
 	}
 }
 
-static int xgene_phy_pcie_wait_pll_lock(struct xgene_phy_ctx *ctx)
+static void xgene_phy_rxtx_pd(struct xgene_phy_ctx *ctx)
 {
-	void __iomem *base = ctx->sds_base;
-	u32 dt1 = 0, dt2 = 0x7;
+	u32 dt, i;
 
-	/* wait for at least 10 ms per CMU */
+	for (i = 0; i < ctx->lane; i++) {
+		serdes_rd(ctx, i, RXTX_REG2, &dt);
+		dt = RXTX_REG2_RESETB_TXA_SET(dt, 0);
+		dt = RXTX_REG2_RESETB_TXD_SET(dt, 0);
+		dt = RXTX_REG2_TX_PDOWN_SET(dt, 1);
+		serdes_wr(ctx, i, RXTX_REG2, dt);
+
+		serdes_rd(ctx, i, RXTX_REG7, &dt);
+		dt = RXTX_REG7_RESETB_RXA_SET(dt, 0);
+		dt = RXTX_REG7_RESETB_RXD_SET(dt, 0);
+		serdes_wr(ctx, i, RXTX_REG7, dt);
+
+		serdes_rd(ctx, i, RXTX_REG12, &dt);
+		dt = RXTX_REG12_RX_PDOWN_SET(dt, 1);
+		serdes_wr(ctx, i, RXTX_REG12, dt);
+	}
+}
+
+static void xgene_phy_cmu_pup(struct xgene_phy_ctx *ctx)
+{
+	u32 dt;
+
+	cmu_rd(ctx, PHY_CMU, CMU_REG0, &dt);
+	dt = CMU_REG0_PDOWN_SET(dt, 0x0);
+	cmu_wr(ctx, PHY_CMU, CMU_REG0, dt);
+
+	/* 
+ 	 * PHY HW requires at least 1ms delay to settle down 
+ 	 * after CMU  power down
+ 	 */
+	mdelay(1);
+
+	cmu_rd(ctx, PHY_CMU, CMU_REG0, &dt);
+	dt = CMU_REG0_RESETB_SET(dt, 0x1);
+	cmu_wr(ctx, PHY_CMU, CMU_REG0, dt);
+
+	if (ctx->lane > 4) {
+		cmu_rd(ctx, PHY_CMU + 1, CMU_REG0, &dt);
+		dt = CMU_REG0_PDOWN_SET(dt, 0x0);
+		cmu_wr(ctx, PHY_CMU + 1, CMU_REG0, dt);
+
+		/* 
+		 * PHY HW requires at least 1ms delay to settle down 
+		 * after CMU  power down
+		 */
+		mdelay(1);
+
+		cmu_rd(ctx, PHY_CMU + 1, CMU_REG0, &dt);
+		dt = CMU_REG0_RESETB_SET(dt, 0x1);
+		cmu_wr(ctx, PHY_CMU + 1, CMU_REG0, dt);
+	}
+}
+
+static void xgene_phy_rxtx_pup(struct xgene_phy_ctx *ctx)
+{
+	u32 i, dt;
+
+	for (i = 0; i < ctx->lane; i++) {
+		serdes_rd(ctx, i, RXTX_REG2, &dt);
+		dt = RXTX_REG2_TX_PDOWN_SET(dt, 0);
+		serdes_wr(ctx, i, RXTX_REG2, dt);
+
+		serdes_rd(ctx, i, RXTX_REG12, &dt);
+		dt = RXTX_REG12_RX_PDOWN_SET(dt, 0);
+		serdes_wr(ctx, i, RXTX_REG12, dt);
+
+		/* 
+		 * PHY HW requires at least 1ms delay to settle down 
+		 * after CMU  power down
+		 */
+		mdelay(1);
+
+		serdes_rd(ctx, i, RXTX_REG2, &dt);
+		dt = RXTX_REG2_RESETB_TXA_SET(dt, 1);
+		dt = RXTX_REG2_RESETB_TXD_SET(dt, 1);
+		serdes_wr(ctx, i, RXTX_REG2, dt);
+
+		serdes_rd(ctx, i, RXTX_REG7, &dt);
+		dt = RXTX_REG7_RESETB_RXA_SET(dt, 1);
+		dt = RXTX_REG7_RESETB_RXD_SET(dt, 1);
+		serdes_wr(ctx, i, RXTX_REG7, dt);
+	}
+}
+
+static void xgene_phy_force_pvt_cal(struct xgene_phy_ctx *ctx)
+{
+	int i;
+	u32 val;
+
+	for (i = 0; i < (ctx->lane / 4); i++) {
+		cmu_rd(ctx, PHY_CMU + i, CMU_REG32, &val);
+		val = CMU_REG32_FORCE_PVT_CAL_START_SET(val, 0x1);
+		cmu_wr(ctx, PHY_CMU + i, CMU_REG32, val);
+
+		cmu_rd(ctx, PHY_CMU + i, CMU_REG32, &val);
+		val = CMU_REG32_FORCE_PVT_CAL_START_SET(val, 0x0);
+		cmu_wr(ctx, PHY_CMU + i, CMU_REG32, val);
+	}
+}
+
+static int xgene_phy_pcie_wait_phy_rdy(struct xgene_phy_ctx *ctx)
+{
 	int try = 10000;
+	u32 val;
+
+	if (!ctx->core_base)
+		return 0;
+
+	/* Check for 10 ms */
 	do {
-		dt1 = readl(base + SDS0_CMU_STATUS0);
-		if (ctx->lane > 4) {
-			dt2 = readl(base + SDS1_CMU_STATUS0);
-		}
-		if (((dt1 & 0x7) == 0x7) && ((dt2 & 0x7) == 0x7)) {
-			dev_dbg(ctx->dev, "PHY PLL calibration successful\n");
+		val = readl(ctx->core_base + PCIECORE_CTLANDSTATUS);
+		if ((val & 0xff) == 0)
 			return 0;
-		}
 		usleep_range(1, 10);
 	} while (try--);
-	dev_err(ctx->dev, "PHY PLL calibration failed - error Status: 0x%X 0x%X\n",
-			(dt1 & 0x7), (dt2 & 0x7));
-	return -ENODEV;
-}
+	return -1;
+};
+
 static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		enum cmu_type_t cmu_type)
 {
 	u32 dt;
-	int try = 10000;
+	u32 loop;
+	u32 vco_fail;
+	int try = 100;
 
 	do {
 		cmu_rd(ctx, cmu_type, CMU_REG32, &dt);
@@ -499,18 +647,37 @@ static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		dt = CMU_REG32_VCOCAL_START_SET(dt, 0x0);
 		cmu_wr(ctx, cmu_type, CMU_REG32, dt);
 
+		/* Wait for calibration completed for 10 ms */
+		loop = 1000;
+		do {
 			cmu_rd(ctx, cmu_type, CMU_REG7, &dt);
 			if (CMU_REG7_PLL_CALIB_DONE_RD(dt))
 				break;
-		usleep_range(1, 10);
-		if (try == 5000) {
 			/*
+			 * As per PHY design spec, PLL calibration status
+			 * requires a minimum of 10us to be updated.
+			 */
+			usleep_range(10, 100);
+		} while (--loop > 0);
+
+		vco_fail = CMU_REG7_VCO_CAL_FAIL_RD(dt) & 0x1;
+		if (!vco_fail)
+			break;
+		/*
 		 * If calibration failed, power down and reset PLL.
 		 * Do calibration again
 		 */
+		dev_dbg(ctx->dev, "VCO status 0x%08X\n", dt);
 		cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
 		dt = CMU_REG0_PDOWN_SET(dt, 0x1);
 		cmu_wr(ctx, cmu_type, CMU_REG0, dt);
+
+		cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
+		dt = CMU_REG0_PDOWN_SET(dt, 0x0);
+		cmu_wr(ctx, cmu_type, CMU_REG0, dt);
+
+		/* 1 us for PLL to power up */
+		usleep_range(1, 100);
 
 		cmu_rd(ctx, cmu_type, CMU_REG5, &dt);
 		dt = PLL_RESETB_SET(dt, 0x0);
@@ -520,22 +687,21 @@ static int xgene_phy_pcie_vco_cal(struct xgene_phy_ctx *ctx,
 		dt = PLL_RESETB_SET(dt, 0x1);
 		cmu_wr(ctx, cmu_type, CMU_REG5, dt);
 
-			cmu_rd(ctx, cmu_type, CMU_REG0, &dt);
-			dt = CMU_REG0_PDOWN_SET(dt, 0x0);
-			cmu_wr(ctx, cmu_type, CMU_REG0, dt);
-		}
-	} while (try--);
+		cmu_rd(ctx, cmu_type, CMU_REG7, &dt);
+		dev_dbg(ctx->dev, "VCO not successful loop val 0x%08X\n", dt);
+	} while (--try);
 
-	if (!CMU_REG7_PLL_CALIB_DONE_RD(dt)) {
-		dev_err(ctx->dev, "PHY PLL calibration failed\n");
+	if (!CMU_REG7_PLL_CALIB_DONE_RD(dt) ||
+			(CMU_REG7_PLL_CALIB_DONE_RD(dt) && vco_fail)) {
+		dev_err(ctx->dev, "vco momsel calibration failed\n");
 		return -ENODEV;
 	}
 	return 0;
 }
 
 static int xgene_phy_pcie_get_momsel(struct xgene_phy_ctx *ctx,
-				     enum cmu_type_t cmu_type, u32 *momsel,
-				     u32 *momsel_pcie)
+		enum cmu_type_t cmu_type, u32 *momsel,
+		u32 *momsel_pcie)
 {
 	u32 dt;
 
@@ -581,9 +747,8 @@ static int xgene_phy_pcie_get_momsel(struct xgene_phy_ctx *ctx,
 	dt = CMU_REG0_CAL_COUNT_RESOL_SET(dt, 0x7);
 	cmu_wr(ctx, cmu_type, CMU_REG0, dt);
 
-	if (xgene_phy_pcie_vco_cal(ctx, cmu_type) < 0) {
+	if (xgene_phy_pcie_vco_cal(ctx, cmu_type) < 0)
 		return -ENODEV;
-	}
 
 	cmu_rd(ctx, cmu_type, CMU_REG19, &dt);
 	*momsel_pcie = CMU_REG19_PLL_VCOMOMSEL_RD(dt);
@@ -644,7 +809,7 @@ static void xgene_phy_pcie_pll_cal(struct xgene_phy_ctx *ctx)
 
 	for (j = 0; j < loop; j++) {
 		xgene_phy_pcie_get_momsel(ctx, PHY_CMU + j, &momsel,
-					  &momsel_pcie);
+				&momsel_pcie);
 		cmu_rd(ctx, PHY_CMU + j, CMU_REG4, &dt);
 		dt = CMU_REG4_MANMOMSEL_PCIE_SET(dt, momsel_pcie);
 		cmu_wr(ctx, PHY_CMU + j, CMU_REG4, dt);
@@ -656,9 +821,13 @@ static void xgene_phy_pcie_pll_cal(struct xgene_phy_ctx *ctx)
 		cmu_rd(ctx, PHY_CMU + j, CMU_REG1, &dt);
 		dt = CMU_REG1_PLL_MANUALCAL_SET(dt, 0x1);
 		cmu_wr(ctx, PHY_CMU + j, CMU_REG1, dt);
+		dev_dbg(ctx->dev, "momsel 0x%x, momsel_pcie 0x%x\n",
+					momsel, momsel_pcie);
 	}
+
 	if (!preA3Chip)
 		return;
+
 	/* Only required for pre-A3 silicon */
 	for (j = 0; j < loop; j++) {
 		cmu_rd(ctx, PHY_CMU + j, CMU_REG6, &dt);
@@ -680,6 +849,7 @@ static void xgene_phy_pcie_manual_cal(struct xgene_phy_ctx *ctx)
 
 	if (!preA3Chip)
 		return;
+
 	/* Only required for pre-A3 chip */
 	for (j = 0; j < loop; j++) {
 		for (i = 0; i < 4; i++) {
@@ -716,23 +886,40 @@ static void xgene_phy_pcie_manual_cal(struct xgene_phy_ctx *ctx)
 	}
 }
 
-static int xgene_phy_pcie_wait_phy_rdy(struct xgene_phy_ctx *ctx)
+static void xgene_phy_pcie_cfg(struct xgene_phy_ctx *ctx)
 {
-	int try = 10000;
+	u32 i;
+	u32 j;
 	u32 val;
+	int lane;
+	int loop = ctx->lane <= 4 ? 1 : ctx->lane / 4;
 
-	if (!ctx->core_base)
-		return 0;
+	dev_dbg(ctx->dev, "Using modified serdes initialization sequence\n");
+	xgene_phy_cmu_pd(ctx);
+	xgene_phy_rxtx_pd(ctx);
 
-	/* Check for 10 ms */
-	do {
-		val = readl(ctx->core_base + PCIECORE_CTLANDSTATUS);
-		if ((val & 0xff) == 0)
-			return 0;
-		usleep_range(1, 10);
-	} while (try--);
-	return -1;
-};
+	/* release phy reset */
+	val = readl(ctx->clk_base);
+	writel(val & ~0x100, ctx->clk_base);
+
+	for (i = 0; i < loop; i++)
+		xgene_phy_pcie_cfg_cmu_core(ctx, PHY_CMU + i);
+
+	xgene_phy_cmu_pup(ctx);
+
+	xgene_phy_pcie_manual_cal(ctx);
+	xgene_phy_force_pvt_cal(ctx);
+
+	for (i = 0; i < loop; i++) {
+		lane = ctx->lane <= 4 ? ctx->lane : 4;
+		for (j = 0; j < lane; j++) {
+			xgene_phy_pcie_cfg_rx(ctx, i * 4 + j);
+			xgene_phy_pcie_cfg_tx(ctx, i * 4 + j);
+		}
+	}
+
+	xgene_phy_rxtx_pup(ctx);
+}
 
 int xgene_phy_hw_init_pcie(struct xgene_phy_ctx *ctx, enum clk_type_t clk_type,
 		int ssc_enable)
@@ -744,6 +931,12 @@ int xgene_phy_hw_init_pcie(struct xgene_phy_ctx *ctx, enum clk_type_t clk_type,
 	val = readl(csr_base + SATA_ENET_SDS_CTL0);
 	val &= ~0x1000;
 	writel(val, csr_base + SATA_ENET_SDS_CTL0);
+
+	/* This is required for x8 */
+	val = readl(csr_base + PCIE_SDS_MUX);
+	val = FULL_WIDTH_SET(val, (ctx->lane == 8));
+	writel(val, csr_base + PCIE_SDS_MUX);
+
 	if (ctx->lane == 8 && clk_type == CLK_EXT_DIFF) {
 		/* Configure the second PHY clock macro for external clock */
 		cmu_rd(ctx, PHY2_CMU, CMU_REG0, &val);
@@ -770,19 +963,9 @@ int xgene_phy_hw_init_pcie(struct xgene_phy_ctx *ctx, enum clk_type_t clk_type,
 
 	xgene_phy_cfg_pipe(ctx);
 	xgene_phy_pcie_cfg(ctx);
-
-	val = readl(ctx->clk_base);
-	writel(val & ~0x100, ctx->clk_base);
-
-	rc = xgene_phy_pcie_wait_pll_lock(ctx);
-	if (rc)
-		return rc;
-
+	dev_dbg(ctx->dev, "Initial PLL lock check skipped\n");
 	rc = xgene_phy_pcie_wait_phy_rdy(ctx);
-	if (rc)
-		return rc;
 
-	xgene_phy_pcie_manual_cal(ctx);
-
-	return 0;
+	return rc;
 }
+

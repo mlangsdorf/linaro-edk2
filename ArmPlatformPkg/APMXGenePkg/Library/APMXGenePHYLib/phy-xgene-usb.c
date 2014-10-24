@@ -1,35 +1,37 @@
+/**
+ * Copyright (c) 2014, AppliedMicro Corp. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are licensed and made available under the terms and conditions of the BSD License
+ * which accompanies this distribution.  The full text of the license may be found at
+ * http://opensource.org/licenses/bsd-license.php
+ *
+ * THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+ *
+ **/
+ 
 #define USB_PIPE_PCS_STATUS0           0x0004
 #define  CFG_O_PIPE_CLOCK_VALID        0x10000000
 #define USB_PIPE_PCS_CTL0              0x000c
 #define USB_SDS_CTL0                   0x0018
 #define  USB_SDS_CTL0_CFG_I_CUSTOMER_PIN_MODE_SET(dst, src) \
-		(((dst) & ~0x0007FFFF) | (((u32)(src) << 0) & 0x0007FFFF))
+		(((dst) & ~0x0007FFFF) | (((u32) (src) << 0) & 0x0007FFFF))
 #define USB_PIPE_PCS_PD_RDY_I          (1 << 31)
 #define USB_SDS_CMU_STATUS0            0x0020
 #define LOS_PARAM                      0xa0
 #define  LOS_PARAM_TH_CNTOFF_GEN12_SET(dst, src) \
-		(((dst) & ~0x0f000000) | (((u32)(src) << 24) & 0x0f000000))
+		(((dst) & ~0x0f000000) | (((u32) (src) << 24) & 0x0f000000))
 #define LOS_PARAM_TH_CNTON_GEN12_SET(dst, src) \
-		(((dst) & ~0xf0000000) | (((u32)(src) << 28) & 0xf0000000))
-#define SERDES_CONTROL3                0x108
-#define SERDES_CONTROL4                0x10c
+		(((dst) & ~0xf0000000) | (((u32) (src) << 28) & 0xf0000000))
 #define EFIFO_CONTROL0                 0x12c
 #define  EFIFO_CONTROL0_WM_SELECT_USB_SET(dst, src) \
-		(((dst) & ~0x0000000f) | ((u32)(src) & 0x0000000f))
+		(((dst) & ~0x0000000f) | ((u32) (src) & 0x0000000f))
 #define  EFIFO_CONTROL0_BUF_DEPTH_USB_SET(dst, src) \
-		(((dst) & ~0x0003e000) | (((u32)(src) << 13) & 0x0003e000))
+		(((dst) & ~0x0003e000) | (((u32) (src) << 13) & 0x0003e000))
 #define EFIFO_CONTROL1                 0x130
 #define  EFIFO_CONTROL1_INIT_BUF_FILL_USB_SET(dst, src) \
-		(((dst) & ~0x0000001f) | ((u32)(src) & 0x0000001f))
-#define DFE_CONTROL0                   0x134
-#define DETECT_CONTROL                 0x15c
-#define USB_PCIE_CTRL                  0x164
-#define  ONE_CNT_TH_SET(dst, src) \
-		(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
-#define  ONE_CNT_CMP_TH_SET(dst, src) \
-		(((dst) & ~0x0000ffff) | ((u32)(src) & 0x0000ffff))
-#define  SEL_CDR_OVR_LN_SET(dst, src) \
-		(((dst) & ~0x0000000f) | ((u32)(src) & 0x0000000f))
+		(((dst) & ~0x0000001f) | ((u32) (src) & 0x0000001f))
 
 /*
  * Wait for register has specific value or timeout.
@@ -43,7 +45,7 @@ u32 xgene_wait_register(void *reg, u32 mask, u32 val,
 
 	dt = readl(reg);
 	while (((dt & mask) != val) && (deadline < timeout)) {
-		usleep_range(interval, interval*2);
+		udelay(interval);
 		dt = readl(reg);
 		deadline += interval;
 	}
@@ -56,7 +58,6 @@ static void xgene_xhci_cmu_cfg(struct xgene_phy_ctx *ctx,
 {
 	u32 dt;
 
-	/* TX ready delay */
 	cmu_rd(ctx, cmu_type, CMU_REG12, &dt);
 	dt = CMU_REG12_STATE_DELAY9_SET(dt, 0x5);
 	cmu_wr(ctx, cmu_type, CMU_REG12, dt);
@@ -143,7 +144,6 @@ static void xgene_xhci_rxtx_cfg(struct xgene_phy_ctx *ctx)
 	dt = RXTX_REG147_STMC_OVERRIDE_SET(dt, 0x6);
 	serdes_wr(ctx, 0, RXTX_REG147, dt);
 
-	/* Workaround to prevent serdes power down to p1 */
 	serdes_rd(ctx, 0, RXTX_REG27, &dt);
 	dt = RXTX_REG27_RXPD_CONFIG_SET(dt, 0x1);
 	serdes_wr(ctx, 0, RXTX_REG27, dt);
@@ -337,7 +337,7 @@ static void xgene_xhci_phy_ssc_enable(struct xgene_phy_ctx *ctx,
 		CMU_REG32_FORCE_VCOCAL_START_MASK);
 }
 
-static int xgene_xhci_power_sequence_enable(struct xgene_phy_ctx *ctx)
+static void xgene_xhci_power_sequence_enable(struct xgene_phy_ctx *ctx)
 {
 	void *csr_base = ctx->sds_base;
 	u32 val;
@@ -348,46 +348,30 @@ static int xgene_xhci_power_sequence_enable(struct xgene_phy_ctx *ctx)
 	val |= USB_PIPE_PCS_PD_RDY_I;
 	writel(val, csr_base + USB_PIPE_PCS_CTL0);
 
-	/* Polling PCS_STATUS0 until PIPE clock valid status, maximum 1000ms */
+	/* Polling PCS_STATUS0 until PIPE clock valid status */
 	val = xgene_wait_register(csr_base + USB_PIPE_PCS_STATUS0,
-		CFG_O_PIPE_CLOCK_VALID, CFG_O_PIPE_CLOCK_VALID, 100, 1000000);
+		CFG_O_PIPE_CLOCK_VALID, CFG_O_PIPE_CLOCK_VALID, 100, 10000);
 	if (val & CFG_O_PIPE_CLOCK_VALID)
 		dev_dbg(ctx->dev, "PIPE clock ready\n");
-	else {
+	else
 		dev_err(ctx->dev, "Timeout waiting for PIPE clock ready\n");
-		return -1;
-	}
-	return 0;
 }
 
-static int apm_usb_superspeed_supported(void)
-{
-#ifdef APM_CONFIG_USB3_ENABLE
-	return 1;
-#else
-	return 0;
-#endif
-}
-
-static int xgene_phy_hw_init_usb(struct xgene_phy_ctx *ctx,
+int xgene_phy_hw_init_usb(struct xgene_phy_ctx *ctx,
 		enum clk_type_t clk_type, int ssc_enable)
 {
 	u32 dt;
 	enum cmu_type_t cmu_type = PHY_CMU;
-	void *sds_base = ctx->sds_base;
-	int rc = 0;
-
-	if (!apm_usb_superspeed_supported())
-		return -ENODEV;
+	void *csr_base = ctx->sds_base;
 
 	dev_dbg(ctx->dev, "Initialize USB PHY\n");
 
 	dev_dbg(ctx->dev, "Set the customer pin mode to USB\n");
-	dt = readl(sds_base + USB_SDS_CTL0);
+	dt = readl(csr_base + USB_SDS_CTL0);
 	dt = USB_SDS_CTL0_CFG_I_CUSTOMER_PIN_MODE_SET(dt, 0x0D21);
-	writel(dt, sds_base + USB_SDS_CTL0);
+	writel(dt, csr_base + USB_SDS_CTL0);
 
-	rc = xgene_xhci_power_sequence_enable(ctx);
+	xgene_xhci_power_sequence_enable(ctx);
 	xgene_xhci_phy_tuning(ctx);
 	xgene_xhci_rxtx_cfg(ctx);
 	xgene_phy_cfg_cmu_clk_type(ctx, cmu_type, clk_type);
@@ -395,5 +379,6 @@ static int xgene_phy_hw_init_usb(struct xgene_phy_ctx *ctx,
 	if (ssc_enable)
 		xgene_xhci_phy_ssc_enable(ctx, cmu_type);
 
-	return rc;
+	return 0;
 }
+

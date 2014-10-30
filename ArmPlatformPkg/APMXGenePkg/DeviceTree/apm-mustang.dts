@@ -42,4 +42,5 @@
 
 &pcie0 {
 	status = "ok";
+	bus-range = <0x0 0xff>;
 };

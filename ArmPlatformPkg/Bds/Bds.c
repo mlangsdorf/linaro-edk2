@@ -216,7 +216,7 @@ InitializeConsole (
 
 STATIC
 EFI_STATUS
-FindCandidate (
+FindCandidateOnHandle (
   IN  EFI_HANDLE       Handle,
   OUT EFI_DEVICE_PATH  **Candidate
   )
@@ -271,6 +271,43 @@ CloseRoot:
   return Status;
 }
 
+
+STATIC
+EFI_STATUS
+FindCandidate (
+  OUT EFI_DEVICE_PATH  **Candidate
+  )
+{
+  EFI_STATUS              Status;
+  EFI_GUID * CONST        *FilterGuid;
+  STATIC EFI_GUID * CONST FilterGuids[] = { &gEfiPartTypeSystemPartGuid,
+                            &gEfiSimpleFileSystemProtocolGuid, NULL };
+
+  Status = EFI_NOT_FOUND;
+  FilterGuid = FilterGuids;
+  while (EFI_ERROR (Status) && *FilterGuid != NULL) {
+    UINTN      NrHandles;
+    EFI_HANDLE *Handles;
+
+    Status = gBS->LocateHandleBuffer (ByProtocol, *FilterGuid,
+                    NULL /* SearchKey */, &NrHandles, &Handles);
+    if (!EFI_ERROR (Status)) {
+      UINTN Idx;
+
+      Status = EFI_NOT_FOUND;
+      Idx = 0;
+      while (EFI_ERROR (Status) && Idx < NrHandles) {
+        Status = FindCandidateOnHandle (Handles[Idx], Candidate);
+        ++Idx;
+      }
+      FreePool (Handles);
+    }
+    ++FilterGuid;
+  }
+  return Status;
+}
+
+
 EFI_STATUS
 DefineDefaultBootEntries (
   VOID
@@ -299,18 +336,8 @@ DefineDefaultBootEntries (
   Status = gRT->GetVariable (L"BootOrder", &gEfiGlobalVariableGuid, NULL, &Size, NULL);
   if (Status == EFI_NOT_FOUND) {
     if ((PcdGetPtr(PcdDefaultBootDevicePath) == NULL) || (StrLen ((CHAR16*)PcdGetPtr(PcdDefaultBootDevicePath)) == 0)) {
-      UINTN      NrHandles;
-      EFI_HANDLE *Handles;
-
       BdsConnectAllDrivers();
-      Status = gBS->LocateHandleBuffer (ByProtocol,
-                      &gEfiPartTypeSystemPartGuid, NULL /* SearchKey */,
-                      &NrHandles, &Handles);
-      if (!EFI_ERROR (Status)) {
-        ASSERT (NrHandles > 0);
-        Status = FindCandidate (Handles[0], &BootDevicePath);
-        FreePool (Handles);
-      }
+      Status = FindCandidate (&BootDevicePath);
       if (EFI_ERROR (Status)) {
         DEBUG ((EFI_D_ERROR, "failed to auto-create default boot option: %r\n",
           Status));

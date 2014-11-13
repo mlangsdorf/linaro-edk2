@@ -47,6 +47,7 @@
   DebugLib
   PrintLib
   BaseLib
+  DevicePathLib
 
 [Guids]
   gEfiFileSystemInfoGuid

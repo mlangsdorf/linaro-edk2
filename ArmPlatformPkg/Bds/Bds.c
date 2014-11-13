@@ -16,6 +16,7 @@
 
 #include <Library/PcdLib.h>
 #include <Library/PerformanceLib.h>
+#include <Library/DevicePathLib.h>
 
 #include <Protocol/Bds.h>
 #include <Protocol/SimpleFileSystem.h>
@@ -232,6 +233,7 @@ FindCandidateOnHandle (
     L"\\EFI\\fedora\\grubaa64.efi",
     NULL
   };
+  CHAR16                          *DevicePathString;
 
   Status = gBS->HandleProtocol (Handle, &gEfiSimpleFileSystemProtocolGuid,
                   (VOID **) &FileSystem);
@@ -264,7 +266,13 @@ FindCandidateOnHandle (
     goto CloseRoot;
   }
 
-  DEBUG ((EFI_D_INFO, "%a: found \"%s\"\n", __FUNCTION__, *FileName));
+  DevicePathString = ConvertDevicePathToText (*Candidate,
+                       FALSE /* DisplayOnly */, FALSE /* AllowShortcuts */);
+  DEBUG ((EFI_D_INFO, "%a: found \"%s\"\n", __FUNCTION__,
+    DevicePathString == NULL ? *FileName : DevicePathString));
+  if (DevicePathString != NULL) {
+    FreePool (DevicePathString);
+  }
 
 CloseRoot:
   RootDir->Close (RootDir);

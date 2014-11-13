@@ -59,6 +59,7 @@
   gEfiBdsArchProtocolGuid
   gEfiBlockIoProtocolGuid
   gEfiSimpleTextInProtocolGuid
+  gEfiSimpleFileSystemProtocolGuid
   gEfiPxeBaseCodeProtocolGuid
   gEfiSimpleNetworkProtocolGuid
   gEfiDevicePathToTextProtocolGuid

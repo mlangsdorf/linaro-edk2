@@ -181,8 +181,9 @@
    gArmTokenSpaceGuid.PcdArmMachineType|2272
 
    gArmPlatformTokenSpaceGuid.PcdDefaultBootDescription|L"BOOT OS LOADER"
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L""
    gArmPlatformTokenSpaceGuid.PcdDefaultBootType|0
-   gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|"console=ttyS0,115200 root=/dev/ram rw earlyprintk=uart8250-32bit,0x1c020000 debug"
+   gArmPlatformTokenSpaceGuid.PcdDefaultBootArgument|""
 
    # From NOR MTD
    #gArmPlatformTokenSpaceGuid.PcdDefaultBootDevicePath|L"VenHw(F40A3869-92C4-4275-8501-4491A1A20C19)/\\uImage"

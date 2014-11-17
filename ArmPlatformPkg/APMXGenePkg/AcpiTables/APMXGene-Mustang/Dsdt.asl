@@ -2077,6 +2077,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 // SATA Devices
 	Device(\_SB.SAT0) {
 		Name(_HID, "APMC0D00") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_UID, 1)
 		Name(_STR, Unicode("X-Gene SATA"))
 		Method(_STA, 0, NotSerialized)
@@ -2094,6 +2095,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //SAT0
 	Device(\_SB.SAT1) {
 		Name(_HID, "APMC0D0D") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_UID, 2)
 		Name(_STR, Unicode("X-Gene SATA"))
 		Method(_STA, 0, NotSerialized)
@@ -2111,6 +2113,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //SAT1
 	Device(\_SB.SAT2) {
 		Name(_HID, "APMC0D09") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_UID, 3)
 		Name(_STR, Unicode("X-Gene SATA"))
 		Method(_STA, 0, NotSerialized)
@@ -2130,6 +2133,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 // USB Devices
 	Device(\_SB.USB0) {
 		Name(_HID, "APMC0D03")
+		Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "USB0")
 		Name(_UID, "USB0")
 		Name(_STR, Unicode("X-Gene USB"))
@@ -2146,6 +2150,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //USB0
 	Device(\_SB.USB1) {
 		Name(_HID, "APMC0D03")
+		Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "USB1")
 		Name(_UID, "USB1")
 		Name(_STR, Unicode("X-Gene USB"))
@@ -2379,6 +2384,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 // this ID will be changed to APMC0D05
 	Device(\_SB.ET08) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
 		Name(_STR, Unicode("Ethernet RGMII Device Node Open Source"))
@@ -2438,6 +2444,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	Device(\_SB.ET8) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
 		Name(_STR, Unicode("Ethernet RGMII Device for APM kernel"))
@@ -2501,6 +2508,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	Device(\_SB.ET00) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET00")
 		Name(_UID, "ET00")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
@@ -2541,6 +2549,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 	Device(\_SB.ET01) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
+	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET01")
 		Name(_UID, "ET01")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
@@ -2667,6 +2676,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
             //
 
             Name(_HID,"PNP0A08")
+
+            Name(_CCA, One) // _CCA: Cache Coherency Attribute
 
             //
             // Optionally, include a compatible ID of PNP0A03, which maps to a PCI

@@ -2786,7 +2786,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 					Memory32Fixed(ReadWrite, 0x1F2B0000, 0x10000, )
 
 					QWordIO(
-						ResourceConsumer,
+						ResourceProducer,
 						MinFixed,
 						MaxFixed,
 						PosDecode,
@@ -2798,7 +2798,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						0x0000000000010000
 					)
 					QWordMemory(
-						ResourceConsumer,
+						ResourceProducer,
 						PosDecode,
 						MinFixed,
 						MaxFixed,
@@ -2811,7 +2811,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						0x0000000001000000
 					)
 					QWordMemory(
-						ResourceConsumer,
+						ResourceProducer,
 						PosDecode,
 						MinFixed,
 						MaxFixed,

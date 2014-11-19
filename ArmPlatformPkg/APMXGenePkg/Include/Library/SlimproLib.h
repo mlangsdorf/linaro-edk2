@@ -14,6 +14,17 @@
 #ifndef _SLIMPROLIB_H_
 #define _SLIMPROLIB_H_
 
+/** Mode mask */
+#define IPP_MODE_MASK           0x0C000000
+/** Mode value ROM Code */
+#define IPP_ROM_MODE_MASK       0x04000000
+/** Mode value RUNTIME Code */
+#define IPP_RUNTIME_MODE_MASK   0x08000000
+/** Mode value EXTERNAL Code */
+#define IPP_EXTBOOT_MODE_MASK   0x0C000000
+/** Mode shift */
+#define IPP_MODE_SHIFT          26
+
 EFI_STATUS
 EFIAPI
 XGeneBMCStart(BOOLEAN Start);
@@ -31,8 +42,12 @@ EFIAPI
 XGeneIppLoadFile(CHAR8* f_name, UINT64 addr,
         UINTN offset, UINTN size);
 
+UINT32
+EFIAPI
+XGeneIppGetBootMode(VOID);
+
 EFI_STATUS
 EFIAPI
-XGeneIppGetFWRevision(CHAR16* Str, UINT32 Len);
+XGeneIppGetFWStrInfo(CHAR16* Str, UINT32 Len);
 
 #endif /* _SLIMPROLIB_H_*/

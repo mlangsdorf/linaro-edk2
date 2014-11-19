@@ -44,6 +44,8 @@
 #define DBG_PRINT(arg...)
 #endif
 
+#define MAXTMPSTR 32
+
 #define IOB_RELAX(x)    { \
   volatile UINT32 delay; \
   for (delay = 0; delay < (x*1000); delay++); \
@@ -74,6 +76,34 @@ CHAR8 *strcpy(CHAR8 *dst, const CHAR8 *src)
 
   return rt_dst;
 }
+
+enum {
+  PMD_900 = 0x0,
+  PMD_910 = 0x1,
+  PMD_920 = 0x2,
+  PMD_930 = 0x3,
+  PMD_940 = 0x4,
+  PMD_950 = 0x5,
+  PMD_960 = 0x6,
+  PMD_970 = 0x7,
+  PMD_980 = 0x8,
+  PMD_990 = 0x9,
+  PMD_1000 = 0xa,
+  PMD_1100 = 0xb,
+  PMD_1200 = 0xc,
+  PMD_1300 = 0xd,
+  PMD_UNKNOWN = 0xf,
+};
+enum {
+  SOC_900 = 0x0,
+  SOC_910 = 0x1,
+  SOC_920 = 0x2,
+  SOC_930 = 0x3,
+  SOC_940 = 0x4,
+  SOC_950 = 0x5,
+  SOC_960 = 0x6,
+  SOC_UNKNOWN = 0xf,
+};
 
 EFI_STATUS
 EFIAPI
@@ -307,14 +337,153 @@ XGeneIppLoadFile(CHAR8* f_name, UINT64 addr,
   return EFI_SUCCESS;
 }
 
-EFI_STATUS
+UINT32
 EFIAPI
-XGeneIppGetFWRevision(CHAR16* Str, UINT32 Len)
+XGeneIppGetBootMode(VOID)
 {
   UINT32 Val = mmioread32(CONFIG_SYS_SCU_BASE +
-                          APM_MPA_REG_OFFSET + MPA_SCRATCH_ADDR);
-  UnicodeSPrint(Str, Len, L"%d.%d", SLIMPRO_MAJOR_VER(Val),
-                SLIMPRO_MINOR_VER(Val));
+                            APM_MPA_REG_OFFSET + MPA_SCRATCH_ADDR);
+
+  return (Val & IPP_MODE_MASK);
+}
+
+EFI_STATUS
+EFIAPI
+XGeneIppGetFWStrInfo(CHAR16* Str, UINT32 Len)
+{
+  ipp_info_t ipp_info;
+  CHAR16 TpcStr[MAXTMPSTR];
+  CHAR16 AvsStr[MAXTMPSTR];
+  UINT32 PMDVoltage;
+  CHAR16 PMDVoltageStr[MAXTMPSTR];
+  UINT32 SOCVoltage;
+  CHAR16 SOCVoltageStr[MAXTMPSTR];
+  UINT32 Val;
+
+  if (XGeneIppGetBootMode() == IPP_ROM_MODE_MASK)
+    return EFI_UNSUPPORTED;
+
+  Val = mmioread32(CONFIG_SYS_SCU_BASE +
+                            APM_MPA_REG_OFFSET + MPA_SCRATCH_ADDR);
+
+  ipp_info.build_info.date = mmioread32(CONFIG_SYS_SCU_BASE +
+                          APM_MPA_REG_OFFSET + MPA_SCRATCH15_ADDR);
+  ipp_info.bd_pwr_info.data = mmioread32(CONFIG_SYS_SCU_BASE +
+                          APM_MPA_REG_OFFSET + MPA_SCRATCH14_ADDR);
+
+  if (ipp_info.build_info.date == 0){
+    UnicodeSPrint(Str, Len, L"Slimpro FW:\n\r\tVer: %d.%d\n\r",
+                              SLIMPRO_MAJOR_VER(Val),
+                              SLIMPRO_MINOR_VER(Val));
+  } else {
+    if (ipp_info.bd_pwr_info.inf.adv_mode) {
+      if (ipp_info.bd_pwr_info.inf.tpc_en)
+        UnicodeSPrint(TpcStr, MAXTMPSTR, L"\n\r\tTPC: enable");
+      else {
+        UnicodeSPrint(TpcStr, MAXTMPSTR, L"\n\r\tTPC: disable");
+      }
+
+      if (ipp_info.bd_pwr_info.inf.avs_en)
+        UnicodeSPrint(AvsStr, MAXTMPSTR, L"\n\r\tAVS: supported");
+      else
+        UnicodeSPrint(AvsStr, MAXTMPSTR, L"\n\r\tAVS: unsupported");
+    } else {
+      UnicodeSPrint(TpcStr, MAXTMPSTR, L"");
+      UnicodeSPrint(AvsStr, MAXTMPSTR, L"");
+    }
+
+    switch (ipp_info.bd_pwr_info.inf.pmd_vltg) {
+    case PMD_900:
+      PMDVoltage = 900;
+      break;
+    case PMD_910:
+      PMDVoltage = 910;
+      break;
+    case PMD_920:
+      PMDVoltage = 920;
+      break;
+    case PMD_930:
+      PMDVoltage = 930;
+      break;
+    case PMD_940:
+      PMDVoltage = 940;
+      break;
+    case PMD_950:
+      PMDVoltage = 950;
+      break;
+    case PMD_960:
+      PMDVoltage = 960;
+      break;
+    case PMD_970:
+      PMDVoltage = 970;
+      break;
+    case PMD_980:
+      PMDVoltage = 980;
+      break;
+    case PMD_990:
+      PMDVoltage = 990;
+      break;
+    case PMD_1000:
+      PMDVoltage = 1000;
+      break;
+    case PMD_1100:
+      PMDVoltage = 1100;
+      break;
+    case PMD_1200:
+      PMDVoltage = 1200;
+      break;
+    case PMD_1300:
+      PMDVoltage = 1300;
+      break;
+    default:
+      PMDVoltage = 0;
+    }
+
+    if (PMDVoltage)
+      UnicodeSPrint(PMDVoltageStr, MAXTMPSTR, L"\n\r\tPMD: %d mV", PMDVoltage);
+    else
+      UnicodeSPrint(PMDVoltageStr, MAXTMPSTR, L"");
+
+    switch (ipp_info.bd_pwr_info.inf.soc_vltg) {
+    case SOC_900:
+      SOCVoltage = 900;
+      break;
+    case SOC_910:
+      SOCVoltage = 910;
+      break;
+    case SOC_920:
+      SOCVoltage = 920;
+      break;
+    case SOC_930:
+      SOCVoltage = 930;
+      break;
+    case SOC_940:
+      SOCVoltage = 940;
+      break;
+    case SOC_950:
+      SOCVoltage = 950;
+      break;
+    case SOC_960:
+      SOCVoltage = 960;
+      break;
+    default:
+      SOCVoltage = 0;
+    }
+
+    if (SOCVoltage)
+      UnicodeSPrint(SOCVoltageStr, MAXTMPSTR, L"\n\r\tSOC: %d mV", SOCVoltage);
+    else
+      UnicodeSPrint(SOCVoltageStr, MAXTMPSTR, L"");
+
+    UnicodeSPrint(Str, Len,
+            L"Slimpro FW:\n\r\tVer: %d.%d (build %04x/%02x/%02x)%s%s%s%s\n\r",
+            SLIMPRO_MAJOR_VER(Val), SLIMPRO_MINOR_VER(Val),
+            ipp_info.build_info.inf.yyyy,
+            ipp_info.build_info.inf.mm,
+            ipp_info.build_info.inf.dd,
+            TpcStr, AvsStr, PMDVoltageStr, SOCVoltageStr);
+
+  }
 
   return EFI_SUCCESS;
 }

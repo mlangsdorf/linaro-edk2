@@ -25,7 +25,7 @@
 #include "APMXGeneClock.h"
 #include "APMXGenePMD.h"
 
-#define FWSTRINGMAXLEN 32
+#define FWSTRINGMAXLEN 256
 #define MHZ_SCALE_FACTOR  1000000
 
 #ifdef AARCH64_MP_PROTOCOL
@@ -360,7 +360,7 @@ VOID
 ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   )
 {
-  CHAR16 FWRevision[FWSTRINGMAXLEN];
+  CHAR16 *FWStrInfo;
 
   PrintFunc(L"TianoCore %s UEFI %d.%d.%d %a %a\n\r",
             (CHAR16*) PcdGetPtr(PcdFirmwareVersionString), 
@@ -376,9 +376,16 @@ ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   PrintFunc(L" IOBAXI %dMHz", get_IOBAXI_CLK()/MHZ_SCALE_FACTOR);
   PrintFunc(L" AXI %dMHz", get_AXI_CLK()/MHZ_SCALE_FACTOR);
   PrintFunc(L" AHB %dMHz", get_AHB_CLK()/MHZ_SCALE_FACTOR);
-  PrintFunc(L" GFC %dMHz\n", get_GFC_CLK()/MHZ_SCALE_FACTOR);
+  PrintFunc(L" GFC %dMHz\n\r", get_GFC_CLK()/MHZ_SCALE_FACTOR);
   if (PcdGetPtr(PcdFirmwareVendor) != NULL)
     PrintFunc(L"Board: %a\n\r", PcdGetPtr(PcdFirmwareVendor));
-  XGeneIppGetFWRevision(FWRevision, FWSTRINGMAXLEN);
-  PrintFunc(L"SLIMpro FW : %s\n\r", FWRevision);
+
+  FWStrInfo = AllocateZeroPool(FWSTRINGMAXLEN * sizeof(CHAR16));
+  if (!FWStrInfo) {
+    DEBUG ((EFI_D_ERROR, "Out of memory\n"));
+    return;
+  }
+
+  XGeneIppGetFWStrInfo(FWStrInfo, FWSTRINGMAXLEN);
+  PrintFunc(L"%s", FWStrInfo);
 }

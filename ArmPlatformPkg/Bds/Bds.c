@@ -477,6 +477,15 @@ StartDefaultBootOnTimeout (
   EFI_STATUS          Status;
   EFI_INPUT_KEY       Key;
 
+  Status = GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize,
+             (VOID**)&BootOrder);
+  if (EFI_ERROR (Status)) {
+    //
+    // proceed to Boot Menu immediately
+    //
+    return Status;
+  }
+
   Size = sizeof(UINT16);
   Timeout = (UINT16)PcdGet16 (PcdPlatformBootTimeOut);
   Status = GetGlobalEnvironmentVariable (L"Timeout", &Timeout, &Size, (VOID**)&TimeoutPtr);
@@ -513,9 +522,6 @@ StartDefaultBootOnTimeout (
 
     // In case of Timeout we start the default boot selection
     if (Timeout == 0) {
-      // Get the Boot Option Order from the environment variable (a default value should have been created)
-      GetGlobalEnvironmentVariable (L"BootOrder", NULL, &BootOrderSize, (VOID**)&BootOrder);
-
       for (Index = 0; Index < BootOrderSize / sizeof (UINT16); Index++) {
         UnicodeSPrint (BootVariableName, 9 * sizeof(CHAR16), L"Boot%04X", BootOrder[Index]);
         Status = BdsStartBootOption (BootVariableName);
@@ -525,9 +531,10 @@ StartDefaultBootOnTimeout (
         }
         // In case of success, we should not return from this call.
       }
-      FreePool (BootOrder);
     }
   }
+
+  FreePool (BootOrder);
   return EFI_SUCCESS;
 }
 

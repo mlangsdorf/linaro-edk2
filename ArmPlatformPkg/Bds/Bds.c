@@ -344,7 +344,6 @@ DefineDefaultBootEntries (
   Status = gRT->GetVariable (L"BootOrder", &gEfiGlobalVariableGuid, NULL, &Size, NULL);
   if (Status == EFI_NOT_FOUND) {
     if ((PcdGetPtr(PcdDefaultBootDevicePath) == NULL) || (StrLen ((CHAR16*)PcdGetPtr(PcdDefaultBootDevicePath)) == 0)) {
-      BdsConnectAllDrivers();
       Status = FindCandidate (&BootDevicePath);
       if (EFI_ERROR (Status)) {
         DEBUG ((EFI_D_ERROR, "failed to auto-create default boot option: %r\n",
@@ -635,6 +634,8 @@ BdsEntry (
   gST->Hdr.CRC32 = 0;
   Status = gBS->CalculateCrc32 ((VOID*)gST, gST->Hdr.HeaderSize, &gST->Hdr.CRC32);
   ASSERT_EFI_ERROR (Status);
+
+  BdsConnectAllDrivers();
 
   // If Boot Order does not exist then create a default entry
   DefineDefaultBootEntries ();

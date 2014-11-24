@@ -32,8 +32,17 @@
 &serial0 {
 	status = "ok";
 };
+
 &menet {
         status = "ok";
+};
+
+&sgenet0 {
+	status = "ok";
+};
+
+&xgenet {
+	status = "ok";
 };
 
 &pcie0clk {

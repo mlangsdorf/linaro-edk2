@@ -35,6 +35,19 @@
 
 #include <IndustryStandard/ArmSmc.h>
 
+struct eth_subnode {
+	CHAR16 *macname;
+	char *subnode;
+};
+
+STATIC struct eth_subnode eth_subnodes[] = {
+	{ L"MAC0", "ethernet@17020000" },
+	{ L"MAC0", "ethernet_old" },
+	{ L"MAC1", "ethernet@1f210000" },
+	{ L"MAC2", "ethernet@1f610000" },
+	{ NULL, NULL },
+};
+
 extern unsigned long get_AHB_CLK(void);
 
 #define A_D(x) ( ((x >= L'a')&&(x <= L'f'))?(x-L'a'+0xa):(((x >= L'A')&&(x <= L'F'))?(x-L'A'+0xa):(x-L'0')) )
@@ -65,6 +78,7 @@ UpdateFdt(
   CHAR16                Buf[20];
   UINT8                 MacAddr[6];
   UINTN                 Size;
+  struct eth_subnode    *ethnode;
 
   //
   // Validate Device Tree blob
@@ -128,26 +142,24 @@ UpdateFdt(
   //
   // Set MAC addr
   //
-  Size = sizeof(Buf);
-  Status = gRT->GetVariable(L"MAC0",
+  for (ethnode = eth_subnodes; ethnode->macname; ++ethnode) {
+	  Size = sizeof(Buf);
+	  Status = gRT->GetVariable(ethnode->macname,
 			    &gShellVariableGuid,
 			    NULL, &Size,(void *)Buf);
 
-  if (!EFI_ERROR (Status)) {
-    MacAddr[0] = (A_D(Buf[0])<<4) + A_D(Buf[1]);
-    MacAddr[1] = (A_D(Buf[3])<<4) + A_D(Buf[4]);
-    MacAddr[2] = (A_D(Buf[6])<<4) + A_D(Buf[7]);
-    MacAddr[3] = (A_D(Buf[9])<<4) + A_D(Buf[10]);
-    MacAddr[4] = (A_D(Buf[12])<<4) + A_D(Buf[13]);
-    MacAddr[5] = (A_D(Buf[15])<<4) + A_D(Buf[16]);
+	  if (!EFI_ERROR (Status)) {
+		  MacAddr[0] = (A_D(Buf[0])<<4) + A_D(Buf[1]);
+		  MacAddr[1] = (A_D(Buf[3])<<4) + A_D(Buf[4]);
+		  MacAddr[2] = (A_D(Buf[6])<<4) + A_D(Buf[7]);
+		  MacAddr[3] = (A_D(Buf[9])<<4) + A_D(Buf[10]);
+		  MacAddr[4] = (A_D(Buf[12])<<4) + A_D(Buf[13]);
+		  MacAddr[5] = (A_D(Buf[15])<<4) + A_D(Buf[16]);
 
-    node = fdt_subnode_offset(fdt, soc, "ethernet");
-    if (node >= 0)
-      fdt_setprop(fdt, node, "local-mac-address", MacAddr, sizeof(MacAddr));
-
-    node = fdt_subnode_offset(fdt, soc, "ethernet_old");
-    if (node >= 0)
-      fdt_setprop(fdt, node, "local-mac-address", MacAddr, sizeof(MacAddr));
+		  node = fdt_subnode_offset(fdt, soc, ethnode->subnode);
+		  if (node >= 0)
+			  fdt_setprop(fdt, node, "local-mac-address", MacAddr, sizeof(MacAddr));
+	  }
   }
 
   //

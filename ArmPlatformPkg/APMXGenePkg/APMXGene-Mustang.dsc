@@ -121,6 +121,15 @@
    gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0x840000
    gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x020000
 
+   #
+   # Maximum variable size (give or take some metadata).
+   #
+   # Additionally, the high water mark for triggering a varstore garbage
+   # collection ("reclaim") is calculated approximately as
+   # (PcdFlashNvStorageVariableSize - PcdMaxVariableSize).
+   #
+   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
+
    gArmTokenSpaceGuid.PcdVFPEnabled|1
 
    # Stacks for MPCores in Secure World (Top of OCM)

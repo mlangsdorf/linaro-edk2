@@ -16,7 +16,7 @@
 
 #include "UsbController.h"
 
-extern INTN xgene_xhci_init(UINT64 serdes_base, UINT64 xhci_base,
+extern INTN XGeneXhciInit(UINT64 serdes_base, UINT64 xhci_base,
 		UINTN irq, UINTN cid, UINT32 clk2_sel, UINT32 ovrcur_en,
 		UINT32 ovrcur_ivrt);
 
@@ -439,7 +439,7 @@ PciUsbEmulationEntryPoint (
 
     DEBUG((EFI_D_BLKIO, "PciUsbEmulationEntryPoint started.\n"));
     /* Configure USB host */
-	if (xgene_xhci_init(csr_base, xhci_base, irq, Cid, clk_sel, ovrcur_en,
+	if (XGeneXhciInit(csr_base, xhci_base, irq, Cid, clk_sel, ovrcur_en,
 			ovrcur_ivrt)) {
 		DEBUG((EFI_D_ERROR, "USB%d Initialization failed\n", Cid));
 		Status = EFI_DEVICE_ERROR;

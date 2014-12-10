@@ -13,6 +13,7 @@
 **/
 #include <PiDxe.h>
 #include <Guid/EventGroup.h>
+#include <Guid/ArmMpCoreInfo.h>
 #include <Protocol/AcpiTable.h>
 #include <Protocol/FirmwareVolume2.h>
 #include <Library/BaseLib.h>
@@ -31,6 +32,17 @@
 #include <IndustryStandard/Acpi51.h>
 #include "XGeneEthMAC.h"
 #include "XGeneCPU.h"
+
+//
+// Event to be signalled when PublishArmProcessorTable() in
+// "ArmPkg/Drivers/CpuDxe/CpuMpCore.c" installs the gArmMpCoreInfoGuid
+// configuration table.
+//
+// gBS->InstallConfigurationTable() signals the event group with the matching
+// GUID. Refer to the documentation of the CreateEventEx() boot service in the
+// UEFI spec.
+//
+STATIC EFI_EVENT mArmMpCoreInfoTableInstalledEvent;
 
 /**
   This function calculates and updates an UINT8 checksum.
@@ -75,11 +87,26 @@ OnAcpiExitBootServices(
   IN VOID             *Context
   )
 {
-  /* install APIC table */
-  XGeneInstallApicTable();
-
   // Configure Ethernet MAC accordingly
   XGeneEthMACInit();
+}
+
+VOID
+EFIAPI
+OnArmMpCoreInfoTableInstalled (
+  IN EFI_EVENT Event,
+  IN VOID      *Context
+  )
+{
+  EFI_STATUS Status;
+
+  Status = XGeneInstallApicTable ();
+  if (!EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_INFO,
+      "%a: installed MADT based on MpCoreInfo config table\n",
+      __FUNCTION__));
+    gBS->CloseEvent (Event);
+  }
 }
 
 /**
@@ -110,6 +137,21 @@ AcpiPlatformEntryPoint (
                   NULL,
                   &ExitBootServicesEvent);
   ASSERT_EFI_ERROR(Status);
+
+  Status = gBS->CreateEventEx (
+                  EVT_NOTIFY_SIGNAL,                 // Type,
+                  TPL_CALLBACK,                      // NotifyTpl
+                  OnArmMpCoreInfoTableInstalled,     // NotifyFunction
+                  NULL,                              // NotifyContext
+                  &gArmMpCoreInfoGuid,               // EventGroup
+                  &mArmMpCoreInfoTableInstalledEvent // Event
+                  );
+  ASSERT_EFI_ERROR(Status);
+
+  //
+  // The configuration table may already exist, kick the event to check.
+  //
+  gBS->SignalEvent (mArmMpCoreInfoTableInstalledEvent);
 
   return EFI_SUCCESS;
 }

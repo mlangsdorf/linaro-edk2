@@ -79,8 +79,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10550000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10550004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10550004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -203,8 +203,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10551000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10551004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10551004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -332,8 +332,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10552000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10552004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10552004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -461,8 +461,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10553000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10553004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10553004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -590,8 +590,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10554000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10554004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10554004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -719,8 +719,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10555000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10555004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10555004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -848,8 +848,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10556000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10556004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10556004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {
@@ -977,8 +977,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 //Performance Control
 	Name(_PCT, Package() {
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10557000, 3)},
-		ResourceTemplate() {Register(SystemIO, 32, 0, 0x10557004, 3)}
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557000, 3)},
+		ResourceTemplate() {Register(SystemMemory, 32, 0, 0x10557004, 3)}
 	}) //_PCT
 //Performance States
 	Name(_PSS, Package() {

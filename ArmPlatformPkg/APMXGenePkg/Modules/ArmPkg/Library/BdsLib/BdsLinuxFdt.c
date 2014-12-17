@@ -15,21 +15,71 @@
 #include <Library/ArmSmcLib.h>
 #include <Library/PcdLib.h>
 #include <libfdt.h>
-
 #include <IndustryStandard/ArmSmc.h>
-
 #include "BdsInternal.h"
 #include "BdsLinuxLoader.h"
 
 #define ALIGN(x, a)     (((x) + ((a) - 1)) & ~((a) - 1))
 #define PALIGN(p, a)    ((void *)(ALIGN((unsigned long)(p), (a))))
 #define GET_CELL(p)     (p += 4, *((const UINT32 *)(p-4)))
+#define PREFIX_VARIABLE_NAME            L"MAC"
+#define A_D(x) (((x >= L'a')&&(x <= L'f'))?(x-L'a'+0xa):(((x >= L'A')&&(x <= L'F'))?(x-L'A'+0xa):(x-L'0')))
+#define CONFIG_INTERFACE_COUNT 4
 
 #ifdef AARCH64_MP_PROTOCOL
-#define CPU_OFFSET	8
+#define CPU_OFFSET  8
 #else
-#define CPU_OFFSET	0
+#define CPU_OFFSET  0
 #endif
+
+extern EFI_GUID gShellVariableGuid;
+UINT8 ApmMacAddr[][6] = {{0x00}, {0x00}, {0x00}, {0x00}};
+
+VOID AsciiStrToEthAddr (CHAR16 *MACStr, UINT8 *MAC)
+{
+  *MAC++ = (A_D(*MACStr)<<4) + A_D(*(MACStr+1));
+  *MAC++ = (A_D(*(MACStr+3))<<4) + A_D(*(MACStr+4));
+  *MAC++ = (A_D(*(MACStr+6))<<4) + A_D(*(MACStr+7));
+  *MAC++ = (A_D(*(MACStr+9))<<4) + A_D(*(MACStr+10));
+  *MAC++ = (A_D(*(MACStr+12))<<4) + A_D(*(MACStr+13));
+  *MAC++ = (A_D(*(MACStr+15))<<4) + A_D(*(MACStr+16));
+}
+
+VOID GetEnvMacAddr(UINTN Index, UINT8* MACStr)
+{
+  EFI_STATUS  Status;
+  UINTN       Size;
+  CHAR16      Buf[20];
+  CHAR16      MACEnv[30];
+
+  if (Index > sizeof(ApmMacAddr)/sizeof(ApmMacAddr[0]))
+    return;
+
+  UnicodeSPrint(MACEnv, sizeof(MACEnv), L"%s%d", PREFIX_VARIABLE_NAME, Index);
+  Size = sizeof(Buf);
+  Status = gRT->GetVariable(MACEnv,
+                            &gShellVariableGuid,
+                            0,
+                            &Size,
+                            (VOID*)Buf);
+
+  if (EFI_ERROR (Status))
+    DEBUG((EFI_D_ERROR, "GetVariable %s ERROR\n", MACEnv));
+  else
+    AsciiStrToEthAddr (Buf, MACStr);
+}
+
+EFI_STATUS
+MACAddrInit (VOID
+ )
+{
+  UINTN Index;
+
+  for (Index = 0; Index < sizeof(ApmMacAddr)/sizeof(ApmMacAddr[0]);
+        Index++)
+    GetEnvMacAddr(Index, &ApmMacAddr[Index][0]);
+  return EFI_SUCCESS;
+}
 
 STATIC inline
 UINTN
@@ -223,7 +273,6 @@ IsLinuxReservedRegion (
     return FALSE;
   }
 }
-
 
 STATIC
 BOOLEAN
@@ -469,60 +518,60 @@ PrepareFdt (
     node = fdt_add_subnode(fdt, 0, "memory");
   }
   if (node >= 0) {
-	  int FdtItemLen;
-	  const UINT32 *FdtItem;
-	  UINT64 FdtMemSize;
+    int FdtItemLen;
+    const UINT32 *FdtItem;
+    UINT64 FdtMemSize;
 
 
-	  fdt_setprop_string(fdt, node, "name", "memory");
-	  fdt_setprop_string(fdt, node, "device_type", "memory");
+    fdt_setprop_string(fdt, node, "name", "memory");
+    fdt_setprop_string(fdt, node, "device_type", "memory");
 
-	  GetSystemMemoryResources (&ResourceList);
-	  Resource = (BDS_SYSTEM_MEMORY_RESOURCE*)ResourceList.ForwardLink;
-	  FdtItem = (UINT32 *) fdt_getprop(fdt, node, "reg", &FdtItemLen);
-	  if (FdtItemLen == sizeof(UINT32)*3) {
-		  /* Entry size is 3 DWORD - 64-bit base address and 32-bit size.
-		     Update size if entry size is 0. */
-		  FdtMemSize = fdt32_to_cpu(FdtItem[2]);
-		  if (FdtMemSize == 0) {
-			  Region32.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region32.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-			  err = fdt_setprop(fdt, node, "reg", &Region32, sizeof(Region32));
+    GetSystemMemoryResources (&ResourceList);
+    Resource = (BDS_SYSTEM_MEMORY_RESOURCE*)ResourceList.ForwardLink;
+    FdtItem = (UINT32 *) fdt_getprop(fdt, node, "reg", &FdtItemLen);
+    if (FdtItemLen == sizeof(UINT32)*3) {
+      /* Entry size is 3 DWORD - 64-bit base address and 32-bit size.
+         Update size if entry size is 0. */
+      FdtMemSize = fdt32_to_cpu(FdtItem[2]);
+      if (FdtMemSize == 0) {
+        Region32.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
+        Region32.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
+        err = fdt_setprop(fdt, node, "reg", &Region32, sizeof(Region32));
 
-		  }
-	  } else if (FdtItemLen == sizeof(UINT32)*4) {
-		  /* Entry size is 4 DWORD - 64-bit base address and 64-bit size.
-		     Update size if entry size is 0. */
-		  FdtMemSize = fdt64_to_cpu(*((UINT64 *) &FdtItem[2]));
-		  if (sizeof(UINTN) == sizeof(UINT32)) {
-			  Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-		  } else {
-			  Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
-		  }
+      }
+    } else if (FdtItemLen == sizeof(UINT32)*4) {
+      /* Entry size is 4 DWORD - 64-bit base address and 64-bit size.
+         Update size if entry size is 0. */
+      FdtMemSize = fdt64_to_cpu(*((UINT64 *) &FdtItem[2]));
+      if (sizeof(UINTN) == sizeof(UINT32)) {
+        Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
+        Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
+      } else {
+        Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
+        Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
+      }
 
-		  if (FdtMemSize != 0) {
-			  err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
-		  }
-	  } else if (FdtItemLen == 0) {
-		  /* Newly added - just add it */
-		  if (sizeof(UINTN) == sizeof(UINT32)) {
-			  Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
-		  } else {
-			  Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
-			  Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
-		  }
+      if (FdtMemSize != 0) {
+        err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
+      }
+    } else if (FdtItemLen == 0) {
+      /* Newly added - just add it */
+      if (sizeof(UINTN) == sizeof(UINT32)) {
+        Region.Base = cpu_to_fdt32((UINTN)Resource->PhysicalStart);
+        Region.Size = cpu_to_fdt32((UINTN)Resource->ResourceLength);
+      } else {
+        Region.Base = cpu_to_fdt64((UINTN)Resource->PhysicalStart);
+        Region.Size = cpu_to_fdt64((UINTN)Resource->ResourceLength);
+      }
 
-		  Region.Base = cpu_to_fdtn ((UINTN)Resource->PhysicalStart);
-		  Region.Size = cpu_to_fdtn ((UINTN)Resource->ResourceLength);
+      Region.Base = cpu_to_fdtn ((UINTN)Resource->PhysicalStart);
+      Region.Size = cpu_to_fdtn ((UINTN)Resource->ResourceLength);
 
-		  err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
-	  }
-	  if (err) {
-		  DEBUG((EFI_D_ERROR,"Fail to set new 'memory region' (err:%d)\n",err));
-	  }
+      err = fdt_setprop(fdt, node, "reg", &Region, sizeof(Region));
+    }
+    if (err) {
+      DEBUG((EFI_D_ERROR,"Fail to set new 'memory region' (err:%d)\n",err));
+    }
   }
 
   //
@@ -658,6 +707,173 @@ PrepareFdt (
       }
     }
   }
+
+  MACAddrInit();
+  //
+  // Enable mnet node in the DT
+  //
+  node = fdt_path_offset(fdt, "/soc/ethernet@17020000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find RMGII\n"));
+  else {
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+    fdt_setprop(fdt, node, "local-mac-address", &ApmMacAddr[0],
+        sizeof(ApmMacAddr[0]));
+  }
+
+  //
+  // Enable sgmii node in the DT
+  //
+  node = fdt_path_offset(fdt, "/soc/ethernet@1f210000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find SGMII0\n"));
+  else {
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+    fdt_setprop(fdt, node, "local-mac-address", &ApmMacAddr[1],
+        sizeof(ApmMacAddr[0]));
+  }
+  node = fdt_path_offset(fdt, "/soc/ethernet@1f210030");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find SGMII1\n"));
+  else {
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+    fdt_setprop(fdt, node, "local-mac-address", &ApmMacAddr[2],
+        sizeof(ApmMacAddr[0]));
+  }
+  //
+  // Enable xfi node in the DT
+  //
+  node = fdt_path_offset(fdt, "/soc/ethernet@1f610000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find XFI0\n"));
+  else {
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+    fdt_setprop(fdt, node, "local-mac-address", &ApmMacAddr[3],
+        sizeof(ApmMacAddr[0]));
+  }
+
+  //
+  // Remove sata2 clock ref
+  //
+  node = fdt_path_offset(fdt, "/soc/sata@1a400000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata2\n"));
+  else {
+    fdt_delprop(fdt, node, "clocks");
+    fdt_delprop(fdt, node, "phys");
+    fdt_delprop(fdt, node, "phy-names");
+  }
+    
+  node = fdt_path_offset(fdt, "/soc/phy@1f22a000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find phy2\n"));
+  else
+    fdt_delprop(fdt, node, "clocks");
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sataphy1clk@1f22c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sataphy2clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sata23clk@1f22c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata23clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  //
+  // Remove sata3 clock ref
+  //
+  node = fdt_path_offset(fdt, "/soc/sata@1a800000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata3\n"));
+  else {
+    fdt_delprop(fdt, node, "clocks");
+    fdt_delprop(fdt, node, "phys");
+    fdt_delprop(fdt, node, "phy-names");
+  }
+
+  node = fdt_path_offset(fdt, "/soc/phy@1f23a000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find phy3\n"));
+  else
+    fdt_delprop(fdt, node, "clocks");
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sataphy1clk@1f23c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sataphy3clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sata45clk@1f23c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata45clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  //
+  // Set clock frequency of serial0
+  //
+  node = fdt_path_offset(fdt, "/soc/serial@1c020000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find serial0\n"));
+  else {
+    UINT32 Freq = cpu_to_fdt32(50000000); 
+    fdt_setprop(fdt, node, "clock-frequency", &Freq, sizeof(Freq));
+  }
+
+  node = fdt_path_offset(fdt, "/soc/serial@1c021000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find serial1\n"));
+  else {
+    UINT32 Freq = cpu_to_fdt32(50000000); 
+    fdt_setprop(fdt, node, "clock-frequency", &Freq, sizeof(Freq));
+  }
+
+  //
+  // Set GIC register
+  //
+  node = fdt_path_offset(fdt, "/interrupt-controller@78010000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find GIC\n"));
+  else {
+    int FdtItemLen;
+    UINT32 *FdtItem;
+    UINT32 Item[16];
+
+    FdtItem = (UINT32 *) fdt_getprop(fdt, node, "reg", &FdtItemLen);
+
+    if (fdt32_to_cpu(FdtItem[1]) == 0x78010000 &&
+                      FdtItemLen == sizeof(UINT32) * 16){
+      CopyMem((VOID *)Item, (VOID *)FdtItem, FdtItemLen);
+
+      Item[1] = cpu_to_fdt32(fdt32_to_cpu(Item[1]) + 0x80000);
+      Item[5] = cpu_to_fdt32(fdt32_to_cpu(Item[5]) + 0x80000);
+      Item[9] = cpu_to_fdt32(fdt32_to_cpu(Item[9]) + 0x80000);
+      Item[13] = cpu_to_fdt32(fdt32_to_cpu(Item[13]) + 0x80000);
+
+      fdt_setprop(fdt, node, "reg", &Item, FdtItemLen);
+    }
+  }
+
+  //
+  // Enable usb0 node in the DT
+  //
+  node = fdt_path_offset(fdt, "/soc/dwusb@19000000");
+  if (node)
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+  else
+    DEBUG((EFI_D_ERROR,"Can't find usb0\n"));
+
+  //
+  // Enable usb1 node in the DT
+  //
+  node = fdt_path_offset(fdt, "/soc/dwusb@19800000");
+  if (node)
+    fdt_setprop(fdt, node, "status", "ok", sizeof("ok"));
+  else
+    DEBUG((EFI_D_ERROR,"Can't find usb1\n"));
 
   DEBUG_CODE_BEGIN();
     //DebugDumpFdt (fdt);

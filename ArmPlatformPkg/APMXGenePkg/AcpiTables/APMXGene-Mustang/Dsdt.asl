@@ -2216,6 +2216,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1f200000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x1b000000, 0x400000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xe0 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xb8 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc0 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc1 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc2 }
@@ -2282,6 +2283,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Memory32Fixed(ReadWrite, 0x1f600000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x18000000, 0x400000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xA0 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x78 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x80 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x81 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x82 }
@@ -2298,6 +2300,22 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8d }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8e }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x8f }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x90 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x91 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x92 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x93 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x94 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x95 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x96 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x97 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x98 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x99 }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9a }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9b }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9c }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9d }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9e }
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x9f }
 		})
 		OperationRegion(CLKQ, SystemMemory, 0x1f60c008, 4)
 		Field(CLKQ, DWordAcc, NoLock, Preserve) {
@@ -2312,7 +2330,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 				"max_queues", "1024",
 				"devid", "0",
 				"slave_name", "CPU_QMTM0",
-				"slave_info", "0 0 16 32 16",
+				"slave_info", "0 0 32 32 32",
 			}, Local0)
 			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
 			Return (Local0)
@@ -2648,7 +2666,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x74 }
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x75 }
 		})
-		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		OperationRegion(CLKQ, SystemMemory, 0x1f62c008, 4)
 		Field(CLKQ, DWordAcc, NoLock, Preserve) {
 			CLKE, 2,
 		}

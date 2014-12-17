@@ -47,6 +47,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Sleep(10)
 		}
 	}//SCVR
+	
+//Board Model
+	Name(\BDMD, "APM X-Gene Mustang Board")
 
 ////////////////////////////////////////////////////////////////////////////////
 //System Sleep States

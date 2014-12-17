@@ -231,7 +231,7 @@ static void xgene_pcie_program_core(struct xgene_pcie_port *port)
   xgene_pcie_in32(csr_base + CFG_CONTROL_63_32, &val);
   /* Configure L0, L1 acceptable latency */
   val = (val & ~0xfe0) | XGENE_PCIE_DEV_CTRL;
-  /* 
+  /*
    * Only disable phantom function and configure max payload size
    * capability if they are not at default values
    */
@@ -622,6 +622,7 @@ static int xgene_pcie_setup_port(struct xgene_pcie_port *port)
 int xgene_pcie_setup_core(struct xgene_pcie_port *port)
 {
   int ret = 0;
+  u32 val;
 
   /* X-Gene RC always starts at GEN-3. However few low gen PCIe cards
    * don't get link up. So when X-Gene PCIe port is RC and there is no
@@ -641,6 +642,14 @@ int xgene_pcie_setup_core(struct xgene_pcie_port *port)
     } else
         break;
   }
+
+  /* Mask all un-supported correctable errors reporting */
+  xgene_pcie_in32(port->cfg_base + PCIE_EXT_CAP_AER_POS +
+                  PCIE_AER_CORR_ERR_MASK_REG, &val);
+  val |= PCIE_AER_CORR_ERR_MASK;
+  xgene_pcie_out32(port->cfg_base + PCIE_EXT_CAP_AER_POS +
+                   PCIE_AER_CORR_ERR_MASK_REG, val);
+
   /*
    * With a Downstream Port that supports Link speeds greater
    * than 5.0 GT/s, software must wait a minimum of 200 ms after

@@ -109,6 +109,11 @@ typedef EFI_PHYSICAL_ADDRESS phys_addr_t;
 #define XGENE_PCIE_BRIDGE_DEVICEID  0xE004
 #define XGENE_PCIE_DEVICEID   0xCAFE
 
+#define PCIE_EXT_CAP_AER_POS		0x100
+#define PCIE_AER_CORR_ERR_MASK_REG	0x14
+/* Mask only receiver error. For all errors, use mask value 0xF1C1 */
+#define PCIE_AER_CORR_ERR_MASK		0x0001
+
 enum {
   PTYPE_ENDPOINT = 0x0,
   PTYPE_LEGACY_ENDPOINT = 0x1,

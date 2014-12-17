@@ -273,6 +273,14 @@
 		(((dst) & ~0x00000040) | (((u32) (src) << 6) & 0x00000040))
 #define  CMU_REG16_BYPASS_PLL_LOCK_SET(dst, src) \
 		(((dst) & ~0x00000020) | (((u32) (src) << 5) & 0x00000020))
+#define TX_RATE_CHANGE_ENA_CH06_MASK 0x00008000
+#define RX_RATE_CHANGE_ENA_CH06_MASK 0x00004000
+#define TX_RATE_CHANGE_ENA_CH16_MASK 0x00002000
+#define RX_RATE_CHANGE_ENA_CH16_MASK 0x00001000
+#define TX_RATE_CHANGE_ENA_CH26_MASK 0x00000800
+#define RX_RATE_CHANGE_ENA_CH26_MASK 0x00000400
+#define TX_RATE_CHANGE_ENA_CH36_MASK 0x00000200
+#define RX_RATE_CHANGE_ENA_CH36_MASK 0x00000100
 #define CMU_REG17			0x00022
 #define  CMU_REG17_PVT_CODE_R2A_SET(dst, src) \
 		(((dst) & ~0x00007f00) | (((u32) (src) << 8) & 0x00007f00))
@@ -1415,6 +1423,12 @@ static void xgene_phy_sata_cfg_lanes(struct xgene_phy_ctx *ctx)
 	int lane;
 
 	for (lane = 0; lane < ctx->lane; lane++) {
+		serdes_rd(ctx, lane, RXTX_REG61, &val);
+		val = RXTX_REG61_SPD_SEL_CDR_SET(val,
+			ctx->sata_param.txspeed[lane * 3 +
+			ctx->sata_param.speed[lane]]);
+ 		serdes_wr(ctx, lane, RXTX_REG61, val);
+		
 		serdes_wr(ctx, lane, RXTX_REG147, 0x6);
 
 		/* Set boost control for quarter, half, and full rate */
@@ -1707,7 +1721,7 @@ static void xgene_phy_pdwn_force_vco(struct xgene_phy_ctx *ctx,
 	u32 val;
 
 	dev_dbg(ctx->dev, "Reset VCO and re-start again\n");
-	if (cmu_type == PHY_CMU) {
+	if ((cmu_type == PHY_CMU) && (ctx->mode != SM_SATA_SGMII)) {
 		cmu_rd(ctx, cmu_type, CMU_REG16, &val);
 		val = CMU_REG16_VCOCAL_WAIT_BTW_CODE_SET(val, 0x7);
 		cmu_wr(ctx, cmu_type, CMU_REG16, val);
@@ -1921,7 +1935,8 @@ static void xgene_phy_gen_avg_val(struct xgene_phy_ctx *ctx, int lane)
 	dev_dbg(ctx->dev, "Generating avg calibration value for lane %d\n",
 		lane);
 
-	if (ctx->mode == SM_SATA_SGMII) {
+	if ((ctx->mode == SM_SATA_SGMII) ||
+		(ctx->mode == MODE_XFI)) {
 		serdes_rd(ctx, lane, RXTX_REG145, &val);
 		val = RXTX_REG145_RXVWES_LATENA_SET(val, 1);
 		val = RXTX_REG145_RXES_ENA_SET(val, 1);
@@ -1954,7 +1969,7 @@ static void xgene_phy_gen_avg_val(struct xgene_phy_ctx *ctx, int lane)
 	 	 * As per PHY design spec, the Summer calibration requires a minimum
 	 	 * of 100us to complete.
 	 	 */
-		usleep_range(100, 500);
+		usleep_range(200, 500);
 		serdes_clrbits(ctx, lane, RXTX_REG127,
 				RXTX_REG127_FORCE_SUM_CAL_START_MASK);
 		/*
@@ -2008,7 +2023,7 @@ static void xgene_phy_gen_avg_val(struct xgene_phy_ctx *ctx, int lane)
 		 * As per PHY design spec, the latch calibration requires a minimum
 		 * of 100us to complete.
 		 */
-		usleep_range(100, 500);
+		usleep_range(200, 500);
 		serdes_clrbits(ctx, lane, RXTX_REG127,
 		       RXTX_REG127_FORCE_LAT_CAL_START_MASK);
 
@@ -2698,4 +2713,3 @@ void xgene_reprogram_vco(struct xgene_phy_ctx *ctx, int ref_clk)
 		xgene_phy_rxtx_rdy(ctx, i);
 	}
 }
-

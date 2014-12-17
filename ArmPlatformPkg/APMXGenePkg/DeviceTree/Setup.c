@@ -163,6 +163,67 @@ UpdateFdt(
   }
 
   //
+  // Remove sata2 clock ref
+  //
+  //
+  node = fdt_path_offset(fdt, "/soc/sata@1a400000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata2\n"));
+  else {
+    fdt_delprop(fdt, node, "clocks");
+    fdt_delprop(fdt, node, "phys");
+    fdt_delprop(fdt, node, "phy-names");
+  }
+    
+  node = fdt_path_offset(fdt, "/soc/phy@1f22a000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find phy2\n"));
+  else
+    fdt_delprop(fdt, node, "clocks");
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sataphy1clk@1f22c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sataphy2clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sata23clk@1f22c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata23clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  //
+  // Remove sata3 clock ref
+  //
+  node = fdt_path_offset(fdt, "/soc/sata@1a800000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata3\n"));
+  else {
+    fdt_delprop(fdt, node, "clocks");
+    fdt_delprop(fdt, node, "phys");
+    fdt_delprop(fdt, node, "phy-names");
+  }
+
+  node = fdt_path_offset(fdt, "/soc/phy@1f23a000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find phy3\n"));
+  else
+    fdt_delprop(fdt, node, "clocks");
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sataphy1clk@1f23c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sataphy3clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  node = fdt_path_offset(fdt, "/soc/clocks/sata45clk@1f23c000");
+  if (node < 0)
+    DEBUG((EFI_D_ERROR,"Can't find sata45clk\n"));
+  else
+    fdt_del_node(fdt, node);
+
+  //
   // Set uart clock-frequency (there may be more than one serial port)
   // UART clock is as close as we can get to 50MHz (max) by
   // dividing AHB clock.

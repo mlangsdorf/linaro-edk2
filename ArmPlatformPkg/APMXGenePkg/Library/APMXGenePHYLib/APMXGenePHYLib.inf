@@ -31,6 +31,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
+  ShellPkg/ShellPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPlatformPkg/APMXGenePkg/APMXGene.dec
 
@@ -39,6 +40,10 @@
   UefiLib
   DebugLib
   TimerLib
-  PcdLib
+  BaseLib
+  ArmLib
+
+[Guids]
+  gShellVariableGuid                            # ALWAYS_CONSUMED
 
 [Pcd]

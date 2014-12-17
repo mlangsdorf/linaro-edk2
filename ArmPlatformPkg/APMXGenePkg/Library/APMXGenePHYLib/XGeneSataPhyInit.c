@@ -14,10 +14,21 @@
  * This driver produces IDE_CONTROLLER_INIT protocol for APM X-Gene SATA
  * controllers.
  */
+#include <Uefi.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/DevicePathLib.h>
+#include <Library/UefiLib.h>
+#include <Library/PrintLib.h>
 #include <Library/TimerLib.h>
 #include <Library/BaseLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
+
+#include <Guid/GlobalVariable.h>
+#include <Guid/ShellVariableGuid.h>
+
 #include "phy-xgene.h"
 
 #define HOST_IRQ_STAT					0x08	/* interrupt status */
@@ -26,7 +37,7 @@
 #define DEFAULT_SATA_TXBOOST_GAIN_SSD	{ 0x2, 0x2, 0x2 }
 #define DEFAULT_SATA_TXBOOST_GAIN	{ 0x3, 0x3, 0x3 }
 #define DEFAULT_SATA_TXEYEDIRECTION	{ 0x0, 0x0, 0x0 }
-#define DEFAULT_SATA_TXEYETUNING	{ 0x8, 0x8, 0x8 }
+#define DEFAULT_SATA_TXEYETUNING	{ 0x3, 0x5, 0x8 }
 #define DEFAULT_SATA_SPD_SEL		{ 0x1, 0x3, 0x7 }
 #define DEFAULT_SATA_TXAMP		{ 0x5, 0x5, 0x5 }
 #define DEFAULT_SATA_TXCN1		{ 0x2, 0x2, 0x2 }
@@ -34,6 +45,8 @@
 #define DEFAULT_SATA_TXCP1		{ 0xa, 0xa, 0xa }
 #define DEFAULT_SATA_DFE		{ 0x0, 0x0, 0x0 }
 
+/*Max SATA controler */
+#define SATA_MAX_DEVICE_AHCI		3
 
 /* Max # of disk per a controller */
 #define MAX_AHCI_CHN_PERCTR	 	2
@@ -99,6 +112,12 @@
 #define PTC_RXWM_SET(dst, src)		\
 		(((dst) & ~0x0000007f) | (((u32) (src) << 0) & 0x0000007f))
 
+#define PORTPHY1CFG_ALIGNWAIT_RD(src)	((0x0001ffff & (u32) (src)))
+#define PORTPHY1CFG_ALIGNWAIT_WR(dst)	(0x0001ffff & ((u32) (dst) << 0x0))
+#define PORTPHY1CFG_ALIGNWAIT_SET(dst, src) \
+		(((dst) & ~0x0001ffff) | (((u32) (src) << 0x0) & 0x0001ffff))
+
+
 /* SATA host controller slave CSR */
 #define INT_SLV_TMOMASK			0x00000010
 
@@ -121,6 +140,9 @@
 #define SATA_SPD_SEL_GEN2		0x3
 #define SATA_SPD_SEL_GEN1		0x1
 
+#define A_D(x) (x-L'0')
+#define  PREFIX_VARIABLE_NAME L"SATAGEN"	
+
 struct xgene_ahci_context {
 	u8 cid;				/* Controller ID */
 	int irq;
@@ -129,6 +151,7 @@ struct xgene_ahci_context {
 
 	struct xgene_phy_ctx phy;
 };
+
 
 static int xgene_ahci_init_memram(struct xgene_ahci_context *ctx)
 {
@@ -183,6 +206,9 @@ static void xgene_ahci_set_phy_cfg(struct xgene_ahci_context *ctx, int channel)
 	/* Disable fix rate */
 	writel(0x0001fffe, mmio + PORTPHY1CFG);
 	readl(mmio + PORTPHY1CFG); /* Force a barrier */
+	val = readl(mmio + PORTPHY1CFG);
+	val = PORTPHY1CFG_ALIGNWAIT_SET(val, 0x1117);
+	writel(val, mmio + PORTPHY1CFG);
 	writel(0x28183219, mmio + PORTPHY2CFG);
 	readl(mmio + PORTPHY2CFG); /* Force a barrier */
 	writel(0x13081008, mmio + PORTPHY3CFG);
@@ -312,16 +338,16 @@ static void xgene_ahci_get_param(struct xgene_ahci_context *ctx,
 	static u32 tx_boost_gain_a3[] = {	30, 30, 30, 30, 30, 30,
 						30, 30, 30, 30, 30, 30,
 						30, 30, 30, 30, 30, 30 };
-	static u32 tx_eye_tuning_a3[] = { 	10, 10, 10, 10, 10, 10,
-						1, 10, 10, 2, 10, 10,
-						1, 10, 10, 2, 10, 10 };
+	static u32 tx_eye_tuning_a3[] = { 	3, 10, 10, 3, 10, 10,
+						3, 10, 10, 3, 10, 10,
+						3, 10, 10, 3, 10, 10 };
 	static u32 tx_equalizer_a3[] = {         1, 1, 1, 1, 1, 1,
 		                                 1, 1, 1, 1, 1, 1,
 						 1, 1, 1, 1, 1, 1 };
 
-	static u32 tx_speed_a3[] = {	1, 3, 7,
-					1, 3, 7,
-					1, 3, 7 };
+	static u32 tx_speed_a3[] = {	1, 3, 7, 1, 3, 7,
+					1, 3, 7, 1, 3, 7,
+					1, 3, 7, 1, 3, 7 };
 	static u32 tx_pre_cursor1_a3[] =  {	36400, 36400, 36400, 36400, 36400, 36400,
 					  	36400, 36400, 36400, 36400, 36400, 36400,
 						36400, 36400, 36400, 36400, 36400, 36400 };
@@ -389,8 +415,15 @@ INTN xgene_ahci_init(UINT64 serdes_base, UINT64 ahci_base, UINT64 pcie_clk_base,
 	u32 default_txcp1[] = DEFAULT_SATA_TXCP1;
 	u32 default_dfe[]  = DEFAULT_SATA_DFE;
 	struct xgene_ahci_context *hpriv;
+	STATIC UINTN parse_env = 0;
 	INTN rc;
 	INTN i;
+	INTN j;
+	STATIC CHAR8 SataGen1[SATA_MAX_DEVICE_AHCI * MAX_AHCI_CHN_PERCTR] = {0} ;
+	CHAR16 		      SataEnv[30];
+	CHAR16                SataGen1Support[20];
+	UINTN 		      Size;
+	EFI_STATUS 	     Status;
 
 	hpriv = AllocateZeroPool(sizeof(struct xgene_ahci_context));
 	if (!hpriv) {
@@ -421,6 +454,7 @@ INTN xgene_ahci_init(UINT64 serdes_base, UINT64 ahci_base, UINT64 pcie_clk_base,
 	hpriv->phy.clk_base = hpriv->csr_base + SATA_CLK_OFFSET;
 	hpriv->phy.core_base = hpriv->csr_base;
 	hpriv->phy.inited = 0;
+	hpriv->phy.ssc = 0;
 	if (cid == 2) {
 		hpriv->phy.ext_cmu_base = (VOID *) pcie_clk_base;
 		hpriv->phy.ref_100MHz = 0;
@@ -453,11 +487,34 @@ INTN xgene_ahci_init(UINT64 serdes_base, UINT64 ahci_base, UINT64 pcie_clk_base,
 		hpriv->phy.sata_param.txpostcursor_cp1, 6, default_txcp1,
 		18200);
 	xgene_ahci_get_param(hpriv, "apm,tx-speed",
-		hpriv->phy.sata_param.txspeed, 3, default_spd, 1);
-	for (i = 0; i < MAX_AHCI_CHN_PERCTR; i++) {
-		hpriv->phy.sata_param.speed[i] = 2;	/* Default to Gen3 */
-		hpriv->phy.sata_param.disk_type[i] = DISK_HDD;/* Default to HDD */
+		hpriv->phy.sata_param.txspeed, 6, default_spd, 1);
+		
+	if (!parse_env) {
+		UnicodeSPrint(SataEnv, sizeof(SataEnv), L"%s%d", PREFIX_VARIABLE_NAME, 1);
+		 Size = sizeof(SataGen1Support);
+		 Status = gRT->GetVariable(SataEnv,
+			    &gShellVariableGuid,
+			    0, &Size,(void *)SataGen1Support);
+		i = 0; j = 0;
+		if (!EFI_ERROR(Status)) {
+			while (i < (SATA_MAX_DEVICE_AHCI * MAX_AHCI_CHN_PERCTR)) {
+				SataGen1[i] = A_D(SataGen1Support[j]);
+				i++;
+				j+=2;
+			}	
+		}
+		parse_env++;	
 	}
+	
+	for (i = 0; i < MAX_AHCI_CHN_PERCTR; i++) {
+		if (SataGen1[(cid * MAX_AHCI_CHN_PERCTR) + i]) 
+			hpriv->phy.sata_param.speed[i] = 0;	/* Default to Gen1 */
+		else 
+			hpriv->phy.sata_param.speed[i] = 2;	/* Default to Gen3 */
+
+		hpriv->phy.sata_param.disk_type[i] = DISK_HDD;/* Default to HDD */
+	}		
+	
 	/* Select SATA if required */
 	if (cid != 2)
 		xgene_ahci_mux_select(hpriv);

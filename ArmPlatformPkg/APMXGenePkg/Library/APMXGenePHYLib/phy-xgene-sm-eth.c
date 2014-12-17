@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
  *
  **/
- 
+
 #define XGENET_PLL_STAT                         0x00000250
 #define XGENET_PLL_CFG                          0x00000240
 #define XGENET_PLL_DIV_CFG                      0x0000024c
@@ -32,15 +32,6 @@
 
 #define CFG_TX_O_TX_READY_RD(src)               (((src) & 0x00100000) >> 20)
 #define CFG_RX_O_RX_READY_RD(src)               (((src) & 0x00000001))
-
-#define CMU_REG16_TX_RATE_CHANGE_ENA_CH0        15
-#define CMU_REG16_RX_RATE_CHANGE_ENA_CH0        14
-#define CMU_REG16_TX_RATE_CHANGE_ENA_CH1        13
-#define CMU_REG16_RX_RATE_CHANGE_ENA_CH1        12
-#define CMU_REG16_TX_RATE_CHANGE_ENA_CH2        11
-#define CMU_REG16_RX_RATE_CHANGE_ENA_CH2        10
-#define CMU_REG16_TX_RATE_CHANGE_ENA_CH3        9
-#define CMU_REG16_RX_RATE_CHANGE_ENA_CH3        8
 
 enum eth_port {
 	ENET_0 = 0,
@@ -240,16 +231,16 @@ static void xgenet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 
 		/* TX Rate Change enable: Toggle 0-1-0 */
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH0);
+			TX_RATE_CHANGE_ENA_CH06_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH1);
+			TX_RATE_CHANGE_ENA_CH16_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH2);
+			TX_RATE_CHANGE_ENA_CH26_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH3);
+			TX_RATE_CHANGE_ENA_CH36_MASK);
 
 		serdes_rd(ctx, 0, RXTX_REG2, &value);
 		value = RXTX_REG2_TX_FIFO_ENA_SET(value, 1);
@@ -315,16 +306,16 @@ static void xgenet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 
 		/*  RX rate change enable: Toggle 0-1-0 */
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH0);
+			RX_RATE_CHANGE_ENA_CH06_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH1);
+			RX_RATE_CHANGE_ENA_CH16_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH2);
+			RX_RATE_CHANGE_ENA_CH26_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH3);
+			RX_RATE_CHANGE_ENA_CH36_MASK);
 
 		serdes_rd(ctx, 0, RXTX_REG148, &value);
 		value = RXTX_REG148_BIST_WORD_CNT0_SET(value, 0xFFFF);
@@ -348,23 +339,7 @@ static void xgenet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 
 		serdes_rd(ctx, 0, RXTX_REG1, &value);
 		/* CTLE Full rate Control */
-		tmp = 16;
-		if (!preB0Chip) {  /* B0 */
-			switch (ctx->lane) {
-			case XGENET_0:
-				tmp = 24;
-				break;
-			case XGENET_1:
-				tmp = 28;
-				break;
-			case XGENET_2:
-				tmp = 16;
-				break;
-			case XGENET_3:
-				tmp = 28;
-				break;
-			}
-		}
+		tmp = !preB0Chip ? 17 : 16;
 		value = RXTX_REG1_CTLE_EQ_SET(value, infmode ? tmp : 28);
 		serdes_wr(ctx, 0, RXTX_REG1, value);
 
@@ -624,7 +599,7 @@ static void force_lat_summer_cal(struct xgene_phy_ctx *ctx, int port)
 static void gen_avg_val(struct xgene_phy_ctx *ctx, u32 port, u32 loop)
 {
 	int avg_loop = loop;
-	int MAX_LOOP = 10;
+	int MAX_LOOP = loop;
 	int lat_do = 0, lat_xo = 0, lat_eo = 0, lat_so = 0;
 	int lat_de = 0, lat_xe = 0, lat_ee = 0, lat_se = 0;
 	int sum_cal = 0;
@@ -636,7 +611,6 @@ static void gen_avg_val(struct xgene_phy_ctx *ctx, u32 port, u32 loop)
 	u32 value, lane;
 
 	lane = port & 0x1;
-
 	dev_dbg(ctx->dev, "Generating Average Value\n");
 	/* Enable RX Hi-Z termination enable */
 	serdes_setbits(ctx, lane, RXTX_REG12,
@@ -653,7 +627,7 @@ static void gen_avg_val(struct xgene_phy_ctx *ctx, u32 port, u32 loop)
 
 	while (avg_loop > 0) {
 		force_lat_summer_cal(ctx, port);
-		usleep_range(100, 200);
+		usleep_range(300, 400);
 		serdes_rd(ctx, lane, RXTX_REG21, &value);
 		lat_do_itr = RXTX_REG21_DO_LATCH_CALOUT_RD(value);
 		lat_xo_itr = RXTX_REG21_XO_LATCH_CALOUT_RD(value);
@@ -884,11 +858,17 @@ static void enet_phy_cmu_cfg(struct xgene_phy_ctx *ctx)
 	cmu_wr(ctx, PHY_CMU, CMU_REG9, value);
 
 	cmu_rd(ctx, PHY_CMU, CMU_REG13, &value);
-	value = CMU_REG13_STATE_DELAY4_SET(value, 0xFFFF);
+	value = CMU_REG13_STATE_DELAY1_SET(value, 0xF);
+	value = CMU_REG13_STATE_DELAY2_SET(value, 0xF);
+	value = CMU_REG13_STATE_DELAY3_SET(value, 0xF);
+	value = CMU_REG13_STATE_DELAY4_SET(value, 0xF);
 	cmu_wr(ctx, PHY_CMU, CMU_REG13, value);
 
 	cmu_rd(ctx, PHY_CMU, CMU_REG14, &value);
-	value = CMU_REG14_STATE_DELAY8_SET(value, 0xFFFF);
+	value = CMU_REG14_STATE_DELAY5_SET(value, 0xF);
+	value = CMU_REG14_STATE_DELAY6_SET(value, 0xF);
+	value = CMU_REG14_STATE_DELAY7_SET(value, 0xF);
+	value = CMU_REG14_STATE_DELAY8_SET(value, 0xF);
 	cmu_wr(ctx, PHY_CMU, CMU_REG14, value);
 
 	cmu_rd(ctx, PHY_CMU, CMU_REG16, &value);
@@ -926,9 +906,7 @@ static void enet_phy_cmu_cfg(struct xgene_phy_ctx *ctx)
 static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 {
 	u32 value, inst;
-	u32 sm_b0;
 
-	sm_b0 = !preB0Chip;
 	for (inst = 0; inst < 2; inst++) {
 		serdes_rd(ctx, inst, RXTX_REG147, &value);
 		value = RXTX_REG147_STMC_OVERRIDE_SET(value, 6);
@@ -937,12 +915,13 @@ static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 		serdes_rd(ctx, inst, RXTX_REG0, &value);
 		value = RXTX_REG0_CTLE_EQ_HR_SET(value, 0x10);
 		value = RXTX_REG0_CTLE_EQ_QR_SET(value, 0x10);
-		value = RXTX_REG0_CTLE_EQ_FR_SET(value, sm_b0 ? 0x16 : 0x10);
+		value = RXTX_REG0_CTLE_EQ_FR_SET(value, 
+			!preB0Chip ? 0x16 : 0x10);
 		serdes_wr(ctx, inst, RXTX_REG0, value);
 
 		serdes_rd(ctx, inst, RXTX_REG1, &value);
 		value = RXTX_REG1_RXACVCM_SET(value, 0x7);
-		if (sm_b0) {
+		if (!preB0Chip) {
 			value = RXTX_REG1_CTLE_EQ_SET(value, 0x10);
 			value = RXTX_REG1_RXVREG1_SET(value, 0x3);
 		} else {
@@ -982,8 +961,8 @@ static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 		value = RXTX_REG8_CDR_LOOP_ENA_SET(value, 1);
 		value = RXTX_REG8_CDR_BYPASS_RXLOS_SET(value, 0);
 		value = RXTX_REG8_SSC_ENABLE_SET(value, 0);
-		value = RXTX_REG8_SD_DISABLE_SET(value, 0);
-		value = RXTX_REG8_SD_VREF_SET(value, 4);
+		value = RXTX_REG8_SD_DISABLE_SET(value, 1);
+		value = RXTX_REG8_SD_VREF_SET(value, 2);
 		serdes_wr(ctx, inst, RXTX_REG8, value);
 
 		serdes_rd(ctx, inst, RXTX_REG11, &value);
@@ -993,34 +972,34 @@ static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 		serdes_rd(ctx, inst, RXTX_REG12, &value);
 		value = RXTX_REG12_LATCH_OFF_ENA_SET(value, 1);
 		value = RXTX_REG12_SUMOS_ENABLE_SET(value, 0);
-		value = RXTX_REG12_RX_DET_TERM_ENABLE_SET(value, 1);
+		value = RXTX_REG12_RX_DET_TERM_ENABLE_SET(value, 0);
 		serdes_wr(ctx, inst, RXTX_REG12, value);
 
 		/* TX Rate Change enable: Toggle 0-1-0 */
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH0);
+			TX_RATE_CHANGE_ENA_CH06_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH1);
+			TX_RATE_CHANGE_ENA_CH16_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH2);
+			TX_RATE_CHANGE_ENA_CH26_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_TX_RATE_CHANGE_ENA_CH3);
+			TX_RATE_CHANGE_ENA_CH36_MASK);
 
 		/* RX Rate Change enable: Toggle 0-1-0 */
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH0);
+			RX_RATE_CHANGE_ENA_CH06_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH1);
+			RX_RATE_CHANGE_ENA_CH16_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH2);
+			RX_RATE_CHANGE_ENA_CH26_MASK);
 
 		cmu_toggle0to10(ctx, PHY_CMU, CMU_REG16,
-			CMU_REG16_RX_RATE_CHANGE_ENA_CH3);
+			RX_RATE_CHANGE_ENA_CH36_MASK);
 
 		serdes_rd(ctx, inst, RXTX_REG26, &value);
 		value = RXTX_REG26_PERIOD_ERROR_LATCH_SET(value, 0);
@@ -1028,7 +1007,8 @@ static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 		serdes_wr(ctx, inst, RXTX_REG26, value);
 
 		serdes_rd(ctx, inst, RXTX_REG28, &value);
-		value = RXTX_REG28_DFE_TAP_ENA_SET(value, sm_b0 ? 0 : 7);
+		value = RXTX_REG28_DFE_TAP_ENA_SET(value,
+			!preB0Chip ? 0 : 7);
 		serdes_wr(ctx, inst, RXTX_REG28, value);
 
 		serdes_rd(ctx, inst, RXTX_REG31, &value);
@@ -1037,7 +1017,8 @@ static void enet_phy_rxtx_cfg(struct xgene_phy_ctx *ctx)
 
 		serdes_rd(ctx, inst, RXTX_REG61, &value);
 		value = RXTX_REG61_ISCAN_INBERT_SET(value, 1);
-		value = RXTX_REG61_SPD_SEL_CDR_SET(value, sm_b0 ? 6 : 1);
+		value = RXTX_REG61_SPD_SEL_CDR_SET(value,
+			!preB0Chip ? 6 : 1);
 		value = RXTX_REG61_EYE_COUNT_WIDTH_SEL_SET(value, 0);
 		value = RXTX_REG61_LOADFREQ_SHIFT_SET(value, 0);
 		serdes_wr(ctx, inst, RXTX_REG61, value);
@@ -1193,7 +1174,6 @@ static int sm_enet_init_enet_phy(struct xgene_phy_ctx *ctx)
 
 	refclksel = (refclk >> 1) & 1;
 	refclk_cmos_sel = refclk & 1;
-
 	writel(0x20, ctx->sds_base + SATA_ENET_SDS_RST_CTL);
 	writel(0xDE, ctx->sds_base + SATA_ENET_SDS_RST_CTL);
 	/*
@@ -1221,10 +1201,9 @@ static int sm_enet_init_enet_phy(struct xgene_phy_ctx *ctx)
 		pll_ready = CFG_CMU_O_PLL_READY0_RD(value);
 		pll_lock = CFG_CMU_O_PLL_LOCK0_RD(value);
 		vco_calibration = CFG_CMU_O_VCO_CALDONE0_RD(value);
-		if (((pll_ready && pll_lock && vco_calibration)) ||
-				(loop-- == 0))
+		if (pll_ready && pll_lock && vco_calibration)
 			break;
-	} while (loop != 0);
+	} while (loop-- != 0);
 
 	dev_dbg(ctx->dev, "SATA-Enet: PLL is %sready\n",
 		pll_ready ? "" : "not ");
@@ -1232,9 +1211,15 @@ static int sm_enet_init_enet_phy(struct xgene_phy_ctx *ctx)
 		pll_lock ? "" : "not ");
 	if (!vco_calibration)
 		dev_err(ctx->dev, "SATA-Enet: PLL VCO calibration failed\n");
-	value = readl(ctx->sds_base +  SATA_ENET_SDS0_RXTX_STATUS);
-	tx_ready = CFG_TX_O_TX_READY_F1_RD(value);
-	rx_ready = CFG_RX_O_RX_READY_F1_RD(value);
+	loop = 200;
+	do {
+		value = readl(ctx->sds_base +  SATA_ENET_SDS0_RXTX_STATUS);
+		tx_ready = CFG_TX_O_TX_READY_F1_RD(value);
+		rx_ready = CFG_RX_O_RX_READY_F1_RD(value);
+		if (tx_ready && rx_ready)
+			break;	
+		usleep_range(100, 200);
+	} while (loop-- != 0);
 	if (!tx_ready || !rx_ready) {
 		dev_err(ctx->dev, "SATA-Enet: TX is %sready\n",
 			tx_ready ? "" : "not ");
@@ -1265,7 +1250,10 @@ static int xgene_phy_hw_init_xfi(struct xgene_phy_ctx *ctx,
 			(loop != 0));
 		force_lat_summer_cal(ctx, 0);
 	}
-	gen_avg_val(ctx, ctx->lane, 10);
+	if (preB0Chip || ctx->mode == MODE_SGMII)
+		gen_avg_val(ctx, ctx->lane, 10);
+	else
+		xgene_phy_gen_avg_val(ctx, 0);
 	return 0;
 }
 
@@ -1273,9 +1261,8 @@ static int xgene_phy_hw_init_sata_sgmii(struct xgene_phy_ctx *ctx,
 		enum clk_type_t clk_type, int ssc_enable)
 {
 	int vco_fail, port;
-
 	do {
-		xgene_phy_pdwn_force_vco(ctx, PHY2_CMU, ctx->clk_type);
+		xgene_phy_pdwn_force_vco(ctx, PHY_CMU, ctx->clk_type);
 		sm_enet_init_enet_phy(ctx);
 		vco_fail = enet_vco_status(ctx) >> 3;
 	} while (vco_fail);
@@ -1286,7 +1273,5 @@ static int xgene_phy_hw_init_sata_sgmii(struct xgene_phy_ctx *ctx,
 		else
 			xgene_phy_gen_avg_val(ctx, port);
 	}
-
 	return 0;
 }
-

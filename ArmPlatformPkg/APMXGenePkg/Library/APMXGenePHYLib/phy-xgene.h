@@ -43,7 +43,7 @@ enum phy_mode {
 struct xgene_sata_override_param {
 	enum disk_type disk_type[MAX_LANE];
 	u32 speed[MAX_LANE]; /* Index for override parameter per lane */
-	u32 txspeed[3]; 		/* Tx speed */
+	u32 txspeed[MAX_LANE * 3]; 		/* Tx speed */
 	u32 txboostgain_ssd[MAX_LANE*3];/* Tx freq boost and gain control */
 	u32 txboostgain[MAX_LANE*3];	/* Tx freq boost and gain control */
 	u32 txeyetuning[MAX_LANE*3]; 	/* Tx eye tuning */

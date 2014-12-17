@@ -875,6 +875,28 @@ PrepareFdt (
   else
     DEBUG((EFI_D_ERROR,"Can't find usb1\n"));
 
+  node = fdt_path_offset(fdt, "/soc/sdhc@1c000000");
+  if (node >= 0) {
+	fdt_setprop(fdt, node, "no-1-8-v", NULL, 0);
+	fdt_setprop(fdt, node, "delay-after-power", NULL, 0);
+	fdt_setprop(fdt, node, "no-hispd", NULL, 0);
+	fdt_setprop(fdt, node, "broken-adma", NULL, 0);
+	fdt_setprop(fdt, node, "no-cmd23", NULL, 0);
+	fdt_setprop(fdt, node, "shared-bus-lock", NULL, 0);
+  }
+
+  node = fdt_path_offset(fdt, "/soc/sdhc@1c000100");
+  if (node >= 0) {
+	fdt_setprop(fdt, node, "no-1-8-v", NULL, 0);
+	fdt_setprop(fdt, node, "delay-after-power", NULL, 0);
+	fdt_setprop(fdt, node, "no-hispd", NULL, 0);
+	fdt_setprop(fdt, node, "broken-adma", NULL, 0);
+	fdt_setprop(fdt, node, "no-cmd23", NULL, 0);
+	fdt_setprop(fdt, node, "shared-bus-lock", NULL, 0);
+  }
+
+
+
   DEBUG_CODE_BEGIN();
     //DebugDumpFdt (fdt);
   DEBUG_CODE_END();

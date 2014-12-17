@@ -628,6 +628,7 @@ EFI_STATUS
 APMSDHCIInit(VOID)
 {
   UINT32 Val;
+  UINT32 ret;
   UINTN i;
   UINT32 Sd_Phy_Enable = (UINT32) FixedPcdGet32 (PcdSDIOHostPhyEnableMask);
   gAHBCBaseAddress = (UINT64 *) FixedPcdGet64 (PcdAHBCRegisterBase);
@@ -690,8 +691,16 @@ APMSDHCIInit(VOID)
 
   MicroSecondDelay(1000);
 
-  return APMSDHCICheckMemRdy();
+  ret = APMSDHCICheckMemRdy();
 
+  /* Configure Coherency */
+   Val  = AHBCReadReg(SDR_SDIO_AHB2AXI_CFG_ADDR);
+   Val |= WR_COHERENT_MASK;
+   Val |= RD_COHERENT_MASK;
+   AHBCWriteReg(SDR_SDIO_AHB2AXI_CFG_ADDR,Val);
+   Val  = AHBCReadReg(SDR_SDIO_AHB2AXI_CFG_ADDR);
+
+   return ret;
 }
 
 EFI_GUID gMciDevicePathGuid[APM_SDHCI_HOST_SUPPORT] = {

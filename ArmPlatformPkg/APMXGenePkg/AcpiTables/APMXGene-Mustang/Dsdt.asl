@@ -1814,7 +1814,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 			Name(_HID, "APMC0D0C") // Device Identification Objects
 			Name(_CID, "APMC0D0C")
 			Name(_STR, Unicode("APM X-Gene SDHCI Controller"))
-
+			Name(_CCA, ONE)
 			Method(_STA) {
 				Return (One)
 			}
@@ -2078,29 +2078,11 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // SATA Devices
-	Device(\_SB.SAT0) {
-		Name(_HID, "APMC0D00") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
-		Name(_UID, 1)
-		Name(_STR, Unicode("X-Gene SATA"))
-		Method(_STA, 0, NotSerialized)
-		{
-			Return (0x0)
-		}
-		Name(_CRS, ResourceTemplate () {
-			Memory32Fixed (ReadWrite, 0x1A000000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F210000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F21D000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1F21E000, 0x1000)
-			Memory32Fixed (ReadWrite, 0x1f217000, 0x1000)
-			Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0xA6}
-		})
-	} //SAT0
 	Device(\_SB.SAT1) {
 		Name(_HID, "APMC0D0D") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_UID, 2)
 		Name(_STR, Unicode("X-Gene SATA"))
+		Name(_CCA, ONE)
 		Method(_STA, 0, NotSerialized)
 		{
 			Return (0x1)
@@ -2116,9 +2098,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //SAT1
 	Device(\_SB.SAT2) {
 		Name(_HID, "APMC0D09") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_UID, 3)
 		Name(_STR, Unicode("X-Gene SATA"))
+		Name(_CCA, ONE)
 		Method(_STA, 0, NotSerialized)
 		{
 			Return (0x1)
@@ -2136,10 +2118,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 // USB Devices
 	Device(\_SB.USB0) {
 		Name(_HID, "APMC0D03")
-		Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "USB0")
 		Name(_UID, "USB0")
 		Name(_STR, Unicode("X-Gene USB"))
+		Name(_CCA, ONE)
 		Method(_STA, 0, NotSerialized)
 		{
 			Return (0x1)
@@ -2153,10 +2135,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	} //USB0
 	Device(\_SB.USB1) {
 		Name(_HID, "APMC0D03")
-		Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "USB1")
 		Name(_UID, "USB1")
 		Name(_STR, Unicode("X-Gene USB"))
+		Name(_CCA, ONE)
 		Method(_STA, 0, NotSerialized)
 		{
 			Return (0x1)
@@ -2176,6 +2158,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_DDN, "QM03")
 		Name(_UID, "QM03")
 		Name(_STR, Unicode("QM Lite Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D04")
 		Name(_CRS, ResourceTemplate() {
 			Memory32Fixed(ReadWrite, 0x17030000, 0x10000, )
@@ -2208,6 +2191,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_DDN, "QM01")
 		Name(_UID, "QM01")
 		Name(_STR, Unicode("QM 1 Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D04")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
@@ -2275,6 +2259,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_DDN, "QM00")
 		Name(_UID, "QM00")
 		Name(_STR, Unicode("QM 0 Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D04")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
@@ -2342,6 +2327,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_DDN, "QM02")
 		Name(_UID, "QM02")
 		Name(_STR, Unicode("QM 2 Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D04")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
@@ -2405,10 +2391,10 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 // this ID will be changed to APMC0D05
 	Device(\_SB.ET08) {
 		Name(_HID, "APMC0D05") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
 		Name(_STR, Unicode("Ethernet RGMII Device Node Open Source"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D05")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
@@ -2462,13 +2448,84 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		})
 	}
 
+	Device(\_SB.ET00) {
+		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_CCA, One) // _CCA: Cache Coherency Attribute
+		Name(_DDN, "ET00")
+		Name(_UID, "ET00")
+		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
+		Name(_CID, "APMC0D05")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x1f200000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x1B000000, 0x400000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xc0 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f21c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 4,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0xf, CLKE)
+			Stall(100)
+		}
+		Name (_DSD, Package () {
+			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+			Package () {
+				Package (2) {"mac-address", Package (6) {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}},
+				Package (2) {"phy-channel", 30},
+				Package (2) {"phy-mode", "sgmii"},
+				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
+				Package (2) {"max-speed", 0x3e9},           // 10 Gbps
+			}
+		})
+	}
+
+	Device(\_SB.ET04) {
+		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_DDN, "ET04")
+		Name(_UID, "ET04")
+		Name(_STR, Unicode("Ethernet 10Gb Device"))
+		Name(_CCA, ONE)
+		Name(_CID, "APMC0D05")
+		Method(_STA, 0, NotSerialized) {
+			Return (0x1)
+		}
+		Name(_CRS, ResourceTemplate() {
+			Memory32Fixed(ReadWrite, 0x1f610000, 0xd100, )
+			Memory32Fixed(ReadWrite, 0x1f600000, 0x10000, )
+			Memory32Fixed(ReadWrite, 0x18000000, 0x400000, )
+			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x80 }
+		})
+		OperationRegion(CLKQ, SystemMemory, 0x1f61c008, 4)
+		Field(CLKQ, DWordAcc, NoLock, Preserve) {
+			CLKE, 2,
+		}
+		Method(_INI, 0, NotSerialized) {
+			Store(0x3, CLKE)
+			Stall(100)
+		}
+		Name (_DSD, Package () {
+			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+				Package () {
+				Package (2) {"mac-address", Package (6) {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}},
+				Package (2) {"phy-channel", 1},
+				Package (2) {"phy-mode", "xgmii"},
+				Package (2) {"max-transfer-unit", 0x5dc},   // MTU of 1500
+				Package (2) {"max-speed", 0x2710},          // 10 Gbps
+			}
+		})
+	}
 
 	Device(\_SB.ET8) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET08")
 		Name(_UID, "ET08")
 		Name(_STR, Unicode("Ethernet RGMII Device for APM kernel"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
@@ -2527,18 +2584,18 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 	}
 
-	Device(\_SB.ET00) {
+	Device(\_SB.ET0) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET00")
 		Name(_UID, "ET00")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
 		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x1f210000, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
@@ -2568,18 +2625,18 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 	}
 
-	Device(\_SB.ET01) {
+	Device(\_SB.ET1) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
-	        Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET01")
 		Name(_UID, "ET01")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
 		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x1f210030, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x1f210000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0xac }
@@ -2609,17 +2666,18 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 	}
 
-	Device(\_SB.ET04) {
+	Device(\_SB.ET4) {
 		Name(_HID, "APMC0D19") // Device Identification Objects
 		Name(_DDN, "ET04")
 		Name(_UID, "ET04")
 		Name(_STR, Unicode("Ethernet 10Gb Device"))
+		Name(_CCA, ONE)
 		Name(_CID, "APMC0D19")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
 		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x1f610000, 0x30, )
+			Memory32Fixed(ReadWrite, 0x1f610000, 0xd100, )
 			Memory32Fixed(ReadWrite, 0x1f610000, 0x10000, )
 			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
 			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x70 }
@@ -2649,45 +2707,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		}
 	}
 
-	Device(\_SB.ET05) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
-		Name(_DDN, "ET05")
-		Name(_UID, "ET05")
-		Name(_STR, Unicode("Ethernet 10Gb Device"))
-		Name(_CID, "APMC0D05")
-		Method(_STA, 0, NotSerialized) {
-			Return (0x0)
-		}
-		Name(_CRS, ResourceTemplate() {
-			Memory32Fixed(ReadWrite, 0x1f620000, 0x30, )
-			Memory32Fixed(ReadWrite, 0x1f620000, 0x10000, )
-			Memory32Fixed(ReadWrite, 0x17020000, 0x10000, )
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x73 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x74 }
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x75 }
-		})
-		OperationRegion(CLKQ, SystemMemory, 0x1f62c008, 4)
-		Field(CLKQ, DWordAcc, NoLock, Preserve) {
-			CLKE, 2,
-		}
-		Method(_INI, 0, NotSerialized) {
-			Store(0x3, CLKE)
-			Stall(100)
-		}
-		Method(_DSM, 4, NotSerialized) {
-			Store (Package (14) {
-				"devid", "5",
-				"slave_name", "SXGMII1",
-				"slave_info", "0 0 8 32 8",
-				"max-frame-size", "9018",
-				"phyid", "1",
-				"phy-mode", "xgmii",
-				"local-mac-address", "00:00:00:00:00:00"
-			}, Local0)
-			DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
-			Return (Local0)
-		}
-	}
 ///////////////////////////////////////////////////////////////////////////////
 //PCIe0
 	Device(\_SB.PCI0) {
@@ -2697,8 +2716,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
             //
 
             Name(_HID,"PNP0A08")
-
-            Name(_CCA, One) // _CCA: Cache Coherency Attribute
 
             //
             // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
@@ -2736,6 +2753,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
             // Section 6.1.12
             //
 
+            Name(_CCA, ONE)
             Name(_UID, "PCI0")
 			Name(_STR, Unicode("PCIe 0 Device"))
 
@@ -3034,6 +3052,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D0E") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene MSI/MSIX"))
+		Name(_CCA, ONE)
 		Method(_STA, 0, NotSerialized)
 		{
 			Return (One)
@@ -3072,7 +3091,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D16") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene PktDMA"))
-		Method(_STA, 0, NotSerialized) {
+		Name(_CCA, ONE)
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {
@@ -3103,7 +3124,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D17") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene Pka"))
-		Method(_STA, 0, NotSerialized) {
+		Name(_CCA, ONE)
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {
@@ -3138,7 +3161,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 		Name(_HID, "APMC0D18") // Device Identification Objects
 		Name(_UID, 0)
 		Name(_STR, Unicode("X-Gene TRNG"))
-		Method(_STA, 0, NotSerialized) {
+		Name(_CCA, ONE)
+		Method(_STA, 0, NotSerialized)
+		{
 			Return (One)
 		}
 		Name(_CRS, ResourceTemplate () {

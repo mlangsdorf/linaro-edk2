@@ -470,6 +470,12 @@ static EFI_STATUS XGeneProcessDSDT(
   return EFI_SUCCESS;
 }
 
+extern VOID
+AcpiTableChecksum (
+  IN UINT8      *Buffer,
+  IN UINTN      Size
+  );
+
 EFI_STATUS XGeneEthMACInit(void)
 {
   EFI_STATUS              Status;
@@ -504,6 +510,9 @@ EFI_STATUS XGeneEthMACInit(void)
       break;
 
     XGeneProcessDSDT(AcpiTableProtocol, TableHandle);
+
+    /* Update checksum */
+    AcpiTableChecksum((UINT8 *)Table, Table->Length);
 
     AcpiTableProtocol->Close(TableHandle);
   }

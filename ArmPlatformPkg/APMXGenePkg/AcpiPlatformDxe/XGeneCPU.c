@@ -26,7 +26,6 @@
 #include <Library/UefiLib.h>
 #include <Library/PcdLib.h>
 #include <Ppi/ArmMpCoreInfo.h>
-
 #include <Protocol/AcpiTable.h>
 #include <Guid/Acpi.h>
 #include <IndustryStandard/Acpi51.h>
@@ -84,33 +83,11 @@ EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER APICProcessorTableHeaderTemp
   EFI_ACPI_5_1_PCAT_COMPAT
 };
 
-/**
-  This function calculates and updates an UINT8 checksum.
-
-  @param[in]  Buffer          Pointer to buffer to checksum
-  @param[in]  Size            Number of bytes to checksum
-
-**/
-VOID
-ApicAcpiTableChecksum (
+extern VOID
+AcpiTableChecksum (
   IN UINT8      *Buffer,
   IN UINTN      Size
-  )
-{
-  UINTN ChecksumOffset;
-
-  ChecksumOffset = OFFSET_OF (EFI_ACPI_DESCRIPTION_HEADER, Checksum);
-
-  //
-  // Set checksum to 0 first.
-  //
-  Buffer[ChecksumOffset] = 0;
-
-  //
-  // Update checksum value.
-  //
-  Buffer[ChecksumOffset] = CalculateCheckSum8 (Buffer, Size);
-}
+  );
 
 EFI_STATUS
 XGeneInstallApicTable(VOID)
@@ -179,7 +156,7 @@ XGeneInstallApicTable(VOID)
       CopyMem(GicDistributePointer, &APICGicDistributerTemplate,
                                 sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE));
 
-      ApicAcpiTableChecksum((UINT8 *)ApicTablePointer, ApicTablePointer->Header.Length);
+      AcpiTableChecksum((UINT8 *)ApicTablePointer, ApicTablePointer->Header.Length);
 
       Status = AcpiTableProtocol->InstallAcpiTable (
                                     AcpiTableProtocol,

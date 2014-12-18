@@ -26,8 +26,39 @@
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/AcpiAml.h>
+#include <Protocol/AcpiTable.h>
+#include <Guid/Acpi.h>
+#include <IndustryStandard/Acpi51.h>
 #include "XGeneEthMAC.h"
 #include "XGeneCPU.h"
+
+/**
+  This function calculates and updates an UINT8 checksum.
+
+  @param[in]  Buffer          Pointer to buffer to checksum
+  @param[in]  Size            Number of bytes to checksum
+
+**/
+VOID
+AcpiTableChecksum (
+  IN UINT8      *Buffer,
+  IN UINTN      Size
+  )
+{
+  UINTN ChecksumOffset;
+
+  ChecksumOffset = OFFSET_OF (EFI_ACPI_DESCRIPTION_HEADER, Checksum);
+
+  //
+  // Set checksum to 0 first.
+  //
+  Buffer[ChecksumOffset] = 0;
+
+  //
+  // Update checksum value.
+  //
+  Buffer[ChecksumOffset] = CalculateCheckSum8 (Buffer, Size);
+}
 
 /**
   Notify function for event group EVT_SIGNAL_EXIT_BOOT_SERVICES. This is used

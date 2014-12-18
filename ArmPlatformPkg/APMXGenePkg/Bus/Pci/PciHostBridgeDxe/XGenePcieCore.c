@@ -219,16 +219,24 @@ static void xgene_pcie_setup_link(struct xgene_pcie_port *port)
   }
 }
 
-static void xgene_pcie_program_core(void *csr_base)
+static void xgene_pcie_program_core(struct xgene_pcie_port *port)
 {
   u32 val;
+  void *csr_base = port->csr_base;
 
   xgene_pcie_in32(csr_base + CFG_CONTROL_31_00, &val);
   val |= AER_OPTIONAL_ERROR_EN;
   xgene_pcie_out32(csr_base + CFG_CONTROL_31_00, val);
   xgene_pcie_out32(csr_base + INTXSTATUSMASK, 0x0);
   xgene_pcie_in32(csr_base + CFG_CONTROL_63_32, &val);
-  val = (val & ~0xffff) | XGENE_PCIE_DEV_CTRL;
+  /* Configure L0, L1 acceptable latency */
+  val = (val & ~0xfe0) | XGENE_PCIE_DEV_CTRL;
+  /* 
+   * Only disable phantom function and configure max payload size
+   * capability if they are not at default values
+   */
+  if ((val & 0x1f) != ((port->index == 2) ? 0x1 : 0x2))
+    val = (val & ~0x1f) | ((port->index == 2) ? 0x1 : 0x2);
   xgene_pcie_out32(csr_base + CFG_CONTROL_63_32, val);
 }
 
@@ -553,7 +561,7 @@ void xgene_pcie_reset_port(struct xgene_pcie_port *port)
     if (ret)
       return;
 
-    xgene_pcie_program_core(port->csr_base);
+    xgene_pcie_program_core(port);
 
     if (port->type == PTYPE_ROOT_PORT)
       xgene_pcie_setup_root_complex(port);
@@ -579,7 +587,7 @@ static int xgene_pcie_setup_port(struct xgene_pcie_port *port)
 {
   int type = port->type;
 
-  xgene_pcie_program_core(port->csr_base);
+  xgene_pcie_program_core(port);
   if (type == PTYPE_ROOT_PORT)
     xgene_pcie_setup_root_complex(port);
   else {

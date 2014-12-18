@@ -31,6 +31,9 @@ ASM_GLOBAL ASM_PFX(_ModuleEntryPoint)
 .text
 .align 3
 ASM_PFX(_ModuleEntryPoint):
+        mrs     x0, CurrentEL
+        cmp     x0, #0x4	/* If EL1 assume hotplug jump to wait loop */
+        b.eq    secondary_core_wait
         mrs     x0, MPIDR_EL1     /* if need to access a core specific trickbox */
         msr     VMPIDR_EL2, x0    /* If user land code needs to access this */
 

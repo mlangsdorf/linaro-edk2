@@ -360,7 +360,7 @@ VOID
 ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   )
 {
-  CHAR16 *FWStrInfo;
+  CHAR16 FWStrInfo[FWSTRINGMAXLEN];
 
   PrintFunc(L"TianoCore %s UEFI %d.%d.%d %a %a\n\r",
             (CHAR16*) PcdGetPtr(PcdFirmwareVersionString), 
@@ -379,12 +379,6 @@ ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
   PrintFunc(L" GFC %dMHz\n\r", get_GFC_CLK()/MHZ_SCALE_FACTOR);
   if (PcdGetPtr(PcdFirmwareVendor) != NULL)
     PrintFunc(L"Board: %a\n\r", PcdGetPtr(PcdFirmwareVendor));
-
-  FWStrInfo = AllocateZeroPool(FWSTRINGMAXLEN * sizeof(CHAR16));
-  if (!FWStrInfo) {
-    DEBUG ((EFI_D_ERROR, "Out of memory\n"));
-    return;
-  }
 
   XGeneIppGetFWStrInfo(FWStrInfo, FWSTRINGMAXLEN);
   PrintFunc(L"%s", FWStrInfo);

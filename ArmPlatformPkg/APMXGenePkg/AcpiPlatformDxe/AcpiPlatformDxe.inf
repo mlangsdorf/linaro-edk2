@@ -39,19 +39,18 @@
   ShellPkg/ShellPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   ArmPkg/ArmPkg.dec
-  ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPlatformPkg/APMXGenePkg/APMXGene.dec
 
 [LibraryClasses]
-  UefiLib
-  DxeServicesLib
-  PcdLib
+  BaseLib
   BaseMemoryLib
   DebugLib
   MemoryAllocationLib
-  UefiRuntimeServicesTableLib
+  PcdLib
+  PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
 
 [Guids]
   gShellVariableGuid                            # ALWAYS_CONSUMED
@@ -61,18 +60,12 @@
   gEfiAcpiTableProtocolGuid                     # PROTOCOL ALWAYS_CONSUMED
   gEfiAcpiSdtProtocolGuid                       # PROTOCOL ALWAYS_CONSUMED
 
-[FeaturePcd]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol
-
 [Pcd]
   gArmTokenSpaceGuid.PcdBootingLinuxUEFI
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
-  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
-  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision
 

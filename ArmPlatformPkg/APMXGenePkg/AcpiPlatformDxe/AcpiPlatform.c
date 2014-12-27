@@ -11,25 +11,17 @@
   THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS, WITHOUT
   WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 **/
-#include <PiDxe.h>
-#include <Guid/EventGroup.h>
 #include <Guid/ArmMpCoreInfo.h>
-#include <Protocol/AcpiTable.h>
-#include <Protocol/FirmwareVolume2.h>
+#include <IndustryStandard/Acpi.h>
 #include <Library/BaseLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Protocol/AcpiSystemDescriptionTable.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PrintLib.h>
-#include <Library/DebugLib.h>
-#include <Library/BaseMemoryLib.h>
+#include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
-#include <IndustryStandard/Acpi.h>
-#include <IndustryStandard/AcpiAml.h>
 #include <Protocol/AcpiTable.h>
-#include <Guid/Acpi.h>
-#include <IndustryStandard/Acpi51.h>
+
 #include "XGeneEthMAC.h"
 #include "XGeneCPU.h"
 

@@ -285,7 +285,11 @@
   #  DEBUG_CACHE     0x00200000  // Memory range cachability changes
   #  DEBUG_VERBOSE   0x00400000  // Detailed debug messages
   #  DEBUG_ERROR     0x80000000  // Error
+!if $(TARGET) == RELEASE
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8000004F
+!else
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8040004F
+!endif
 
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
 

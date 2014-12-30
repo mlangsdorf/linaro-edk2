@@ -361,14 +361,11 @@ FvbGetMappedAddress(
 )
 {
   NOR_FLASH_INSTANCE *Instance;
-  //DEBUG ((DEBUG_BLKIO, "FvbGetMappedAddress enter\n"));
-  Instance = INSTANCE_FROM_FVB_THIS(This);
 
-  //ASSERT(Address != NULL);
+  Instance = INSTANCE_FROM_FVB_THIS(This);
 
   *Address = Instance->PhysicalAddress;
 
-  //DEBUG ((DEBUG_VERBOSE, "FvbGetMappedAddress(BaseAddress=0x%x)\n", *Address));
   return EFI_SUCCESS;
 }
 

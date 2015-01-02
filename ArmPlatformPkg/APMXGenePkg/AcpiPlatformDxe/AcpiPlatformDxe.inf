@@ -31,7 +31,6 @@
 
 [Sources]
   AcpiPlatform.c
-  XGeneEthMAC.c
   XGeneCPU.c
 
 [Packages]
@@ -58,7 +57,6 @@
 
 [Protocols]
   gEfiAcpiTableProtocolGuid                     # PROTOCOL ALWAYS_CONSUMED
-  gEfiAcpiSdtProtocolGuid                       # PROTOCOL ALWAYS_CONSUMED
 
 [Pcd]
   gArmTokenSpaceGuid.PcdBootingLinuxUEFI

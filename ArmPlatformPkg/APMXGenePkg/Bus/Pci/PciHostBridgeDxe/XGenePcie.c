@@ -110,7 +110,7 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         PCIE1_OB_MEMBASE1_HI,
         PCIE1_OB_MEMBASE1_LO,
         PCIE1_OB_MEMSIZE1,
-        0,
+        PCIE1_OB_MEMBASE1_HI, /* 1:1 mapping */
         PCIE1_OB_MEMBASE1_LO
       },
       {
@@ -181,7 +181,7 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         PCIE2_OB_MEMBASE1_HI,
         PCIE2_OB_MEMBASE1_LO,
         PCIE2_OB_MEMSIZE1,
-        0,
+        PCIE2_OB_MEMBASE1_HI, /* 1:1 mapping */
         PCIE2_OB_MEMBASE1_LO
       },
       {
@@ -252,7 +252,7 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         PCIE3_OB_MEMBASE1_HI,
         PCIE3_OB_MEMBASE1_LO,
         PCIE3_OB_MEMSIZE1,
-        0,
+        PCIE3_OB_MEMBASE1_HI, /* 1:1 mapping */
         PCIE3_OB_MEMBASE1_LO
       },
       {
@@ -323,7 +323,7 @@ struct xgene_pcie_map_tbl PcieMapTlb[XGENE_PCIE_MAX_PORTS] = {
         PCIE4_OB_MEMBASE1_HI,
         PCIE4_OB_MEMBASE1_LO,
         PCIE4_OB_MEMSIZE1,
-        0,
+        PCIE4_OB_MEMBASE1_HI, /* 1:1 mapping */
         PCIE4_OB_MEMBASE1_LO
       },
       {

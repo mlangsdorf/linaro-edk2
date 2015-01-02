@@ -2845,9 +2845,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						ReadWrite,
 						0x0000000000000000,
 						0x0000000030000000,
-						0x0000000030FFFFFF,
+						0x00000000AFFFFFFF,
 						0x000000E000000000,
-						0x0000000001000000
+						0x0000000080000000
 					)
 					QWordMemory(
 						ResourceProducer,
@@ -2858,9 +2858,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						ReadWrite,
 						0x0000000000000000,
 						0x000000e100000000,
-						0x000000e13FFFFFFF,
+						0x000000e17FFFFFFF,
 						0x0000000000000000,
-						0x0000000040000000
+						0x0000000080000000
 					)
 				})
 

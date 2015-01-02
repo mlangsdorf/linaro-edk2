@@ -37,34 +37,6 @@
 //
 STATIC EFI_EVENT mArmMpCoreInfoTableInstalledEvent;
 
-/**
-  This function calculates and updates an UINT8 checksum.
-
-  @param[in]  Buffer          Pointer to buffer to checksum
-  @param[in]  Size            Number of bytes to checksum
-
-**/
-VOID
-AcpiTableChecksum (
-  IN UINT8      *Buffer,
-  IN UINTN      Size
-  )
-{
-  UINTN ChecksumOffset;
-
-  ChecksumOffset = OFFSET_OF (EFI_ACPI_DESCRIPTION_HEADER, Checksum);
-
-  //
-  // Set checksum to 0 first.
-  //
-  Buffer[ChecksumOffset] = 0;
-
-  //
-  // Update checksum value.
-  //
-  Buffer[ChecksumOffset] = CalculateCheckSum8 (Buffer, Size);
-}
-
 VOID
 EFIAPI
 OnArmMpCoreInfoTableInstalled (

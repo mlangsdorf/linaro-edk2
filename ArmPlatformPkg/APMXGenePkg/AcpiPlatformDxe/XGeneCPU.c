@@ -83,12 +83,6 @@ EFI_ACPI_5_1_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER APICProcessorTableHeaderTemp
   EFI_ACPI_5_1_PCAT_COMPAT
 };
 
-extern VOID
-AcpiTableChecksum (
-  IN UINT8      *Buffer,
-  IN UINTN      Size
-  );
-
 EFI_STATUS
 XGeneInstallApicTable(VOID)
 {
@@ -155,8 +149,6 @@ XGeneInstallApicTable(VOID)
 
       CopyMem(GicDistributePointer, &APICGicDistributerTemplate,
                                 sizeof(EFI_ACPI_5_1_GIC_DISTRIBUTOR_STRUCTURE));
-
-      AcpiTableChecksum((UINT8 *)ApicTablePointer, ApicTablePointer->Header.Length);
 
       Status = AcpiTableProtocol->InstallAcpiTable (
                                     AcpiTableProtocol,

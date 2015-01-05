@@ -27,6 +27,7 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/TimerLib.h>
+#include <Library/DmaLib.h>
 #include <Protocol/DevicePath.h>
 #include <Protocol/PciIo.h>
 #include <Protocol/PciRootBridgeIo.h>

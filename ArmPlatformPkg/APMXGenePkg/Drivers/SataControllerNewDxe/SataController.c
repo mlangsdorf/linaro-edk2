@@ -212,29 +212,18 @@ PciIoMap (
   OUT    VOID                           **Mapping
   )
 {
-  EFI_PHYSICAL_ADDRESS  PhysicalAddress;
+  DMA_MAP_OPERATION   DmaOperation;
 
-  if (HostAddress == NULL || NumberOfBytes == NULL || DeviceAddress == NULL || Mapping == NULL) {
-	return EFI_INVALID_PARAMETER;
+  if (Operation == EfiPciIoOperationBusMasterRead) {
+    DmaOperation = MapOperationBusMasterRead;
+  } else if (Operation == EfiPciIoOperationBusMasterWrite) {
+    DmaOperation = MapOperationBusMasterWrite;
+  } else if (Operation == EfiPciIoOperationBusMasterCommonBuffer) {
+    DmaOperation = MapOperationBusMasterCommonBuffer;
+  } else {
+    return EFI_INVALID_PARAMETER;
   }
-
-  //
-  // Initialize the return values to their defaults
-  //
-  *Mapping = NULL;
-
-  //
-  // Make sure that Operation is valid
-  //
-  if ((UINT32)Operation >= EfiPciOperationMaximum) {
-	return EFI_INVALID_PARAMETER;
-  }
-
-  /* Not support virtual DMA mode for now */
-  PhysicalAddress = (EFI_PHYSICAL_ADDRESS) (UINTN) HostAddress;
-
-  *DeviceAddress = PhysicalAddress;
-  return EFI_SUCCESS;
+  return DmaMap (DmaOperation, HostAddress, NumberOfBytes, DeviceAddress, Mapping);
 }
 
 EFI_STATUS
@@ -243,7 +232,7 @@ PciIoUnmap (
   IN  VOID                         *Mapping
   )
 {
-  return EFI_SUCCESS;
+  return DmaUnmap (Mapping);
 }
 
 EFI_STATUS
@@ -256,40 +245,12 @@ PciIoAllocateBuffer (
   IN  UINT64                       Attributes
   )
 {
-  EFI_STATUS            Status;
-  EFI_PHYSICAL_ADDRESS  PhysicalAddress;
-
-  //
-  // Validate Attributes
-  //
-  if ((Attributes & EFI_PCI_ATTRIBUTE_INVALID_FOR_ALLOCATE_BUFFER) != 0) {
+  if (Attributes & EFI_PCI_ATTRIBUTE_INVALID_FOR_ALLOCATE_BUFFER) {
+    // Check this
     return EFI_UNSUPPORTED;
   }
 
-  //
-  // Check for invalid inputs
-  //
-  if (HostAddress == NULL) {
-    return EFI_INVALID_PARAMETER;
-  }
-
-  //
-  // The only valid memory types are EfiBootServicesData and EfiRuntimeServicesData
-  //
-  if (MemoryType != EfiBootServicesData && MemoryType != EfiRuntimeServicesData) {
-    return EFI_INVALID_PARAMETER;
-  }
-
-  PhysicalAddress = (EFI_PHYSICAL_ADDRESS)(0xffffffffffffffff);
-
-  Status = gBS->AllocatePages (AllocateMaxAddress, MemoryType, Pages, &PhysicalAddress);
-  if (EFI_ERROR (Status)) {
-    return Status;
-  }
-
-  *HostAddress = (VOID *)(UINTN)PhysicalAddress;
-
-  return EFI_SUCCESS;
+  return DmaAllocateBuffer (MemoryType, Pages, HostAddress);
 }
 
 
@@ -300,7 +261,7 @@ PciIoFreeBuffer (
   IN  VOID                         *HostAddress
   )
 {
-  return gBS->FreePages ((EFI_PHYSICAL_ADDRESS) (UINTN) HostAddress, Pages);
+  return DmaFreeBuffer (Pages, HostAddress);
 }
 
 

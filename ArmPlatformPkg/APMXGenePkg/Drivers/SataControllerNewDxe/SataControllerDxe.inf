@@ -29,6 +29,7 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   ArmPkg/ArmPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPlatformPkg/APMXGenePkg/APMXGene.dec
 
@@ -41,6 +42,7 @@
   UefiRuntimeServicesTableLib
   IoLib
   TimerLib
+  DmaLib
   DebugLib
   BaseMemoryLib
   MemoryAllocationLib

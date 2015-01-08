@@ -100,7 +100,7 @@
    gArmTokenSpaceGuid.PcdBootingLinuxUEFI|2
 
 [PcdsFixedAtBuild.common]
-   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1.0-rh-0.13"
+   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.1.0-rh-0.14"
    gArmPlatformTokenSpaceGuid.PcdFirmwareVendor|"X-Gene Mustang Board"
    gEmbeddedTokenSpaceGuid.PcdEmbeddedPrompt|"Mustang"
    gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000

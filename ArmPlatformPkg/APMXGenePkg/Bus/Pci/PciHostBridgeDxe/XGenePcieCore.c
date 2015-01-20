@@ -646,7 +646,7 @@ int xgene_pcie_setup_core(struct xgene_pcie_port *port)
   /* Mask all un-supported correctable errors reporting */
   xgene_pcie_in32(port->cfg_base + PCIE_EXT_CAP_AER_POS +
                   PCIE_AER_CORR_ERR_MASK_REG, &val);
-  val |= PCIE_AER_CORR_ERR_MASK;
+  val |= PCIE_AER_CORR_ERR_MASK_RX;
   xgene_pcie_out32(port->cfg_base + PCIE_EXT_CAP_AER_POS +
                    PCIE_AER_CORR_ERR_MASK_REG, val);
 

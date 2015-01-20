@@ -1,7 +1,7 @@
 /*
  * Intel ACPI Component Architecture
- * iASL Compiler/Disassembler version 20131115-64 [Dec  9 2013]
- * Copyright (c) 2000 - 2013 Intel Corporation
+ * iASL Compiler/Disassembler version 20141107-64 [Dec  2 2014]
+ * Copyright (c) 2000 - 2014 Intel Corporation
  * 
  * Template for [SPCR] ACPI Table
  * Format: [ByteLength]  FieldName : HexFieldValue
@@ -9,13 +9,13 @@
 
 [0004]                          Signature : "SPCR"    [Serial Port Console Redirection table]
 [0004]                       Table Length : 00000050
-[0001]                           Revision : 01
-[0001]                           Checksum : E3
+[0001]                           Revision : 02
+[0001]                           Checksum : 62
 [0006]                             Oem ID : "APMC0D"
 [0008]                       Oem Table ID : "XGENESPC"
 [0004]                       Oem Revision : 00000000
 [0004]                    Asl Compiler ID : "INTL"
-[0004]              Asl Compiler Revision : 20100528
+[0004]              Asl Compiler Revision : 20141107
 
 [0001]                     Interface Type : 00
 [0003]                           Reserved : 000000
@@ -24,12 +24,12 @@
 [0001]                           Space ID : 00 [SystemMemory]
 [0001]                          Bit Width : 08
 [0001]                         Bit Offset : 00
-[0001]               Encoded Access Width : 01 [Undefined/Legacy]
+[0001]               Encoded Access Width : 01 [Byte Access:8]
 [0008]                            Address : 000000001c020000
 
-[0001]                     Interrupt Type : 00
+[0001]                     Interrupt Type : 08
 [0001]                PCAT-compatible IRQ : 00
-[0004]                          Interrupt : 00000000
+[0004]                          Interrupt : 0000006C
 [0001]                          Baud Rate : 07
 [0001]                             Parity : 00
 [0001]                          Stop Bits : 01

@@ -2698,9 +2698,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						ReadWrite,
 						0x0000000000000000,
 						0x000000e100000000,
-						0x000000e17FFFFFFF,
+						0x000000e1FFFFFFFF,
 						0x0000000000000000,
-						0x0000000080000000
+						0x0000000100000000
 					)
 				})
 

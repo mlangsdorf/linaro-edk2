@@ -112,7 +112,7 @@ typedef EFI_PHYSICAL_ADDRESS phys_addr_t;
 #define PCIE_EXT_CAP_AER_POS		0x100
 #define PCIE_AER_CORR_ERR_MASK_REG	0x14
 /* Mask only receiver error. For all errors, use mask value 0xF1C1 */
-#define PCIE_AER_CORR_ERR_MASK		0x0001
+#define PCIE_AER_CORR_ERR_MASK_RX		0x0001
 
 enum {
   PTYPE_ENDPOINT = 0x0,
@@ -231,6 +231,7 @@ enum {
 #define CONFIG_SYS_PCIEX_CFGSIZE        0x01000000 /* 16 MB configuration space */
 #define CONFIG_SYS_PCIE_CFGBASE         0xD0000000
 #define CONFIG_SYS_PCIE_MEMSIZE         0x80000000
+#define CONFIG_SYS_PCIE_MEMSIZE1        0x100000000ULL
 #define CONFIG_SYS_PCIE_INBOUND_BASE    FixedPcdGet64(PcdSystemMemoryBase)
 
 /* Physical Mapping Address */
@@ -270,7 +271,7 @@ enum {
 /* PCIE0 - Outbound Memory 2 Base Address */
 #define PCIE0_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE0_PHYMEMBASE_HI + 1)
 #define PCIE0_OB_MEMBASE1_LO	CONFIG_SYS_PCIE0_PHYMEMBASE_LO
-#define PCIE0_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE
+#define PCIE0_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE1
 /* * PCIE0 - Inbound Memory 1 Base Address */
 #define PCIE0_IB_MEMBASE0_PCIE_HI	0x80
 #define PCIE0_IB_MEMBASE0_PCIE_LO	0
@@ -320,7 +321,7 @@ enum {
 /* PCIE1 - Outbound Memory 2 Base Address */
 #define PCIE1_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE1_PHYMEMBASE_HI + 1)
 #define PCIE1_OB_MEMBASE1_LO	CONFIG_SYS_PCIE1_PHYMEMBASE_LO
-#define PCIE1_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE	/* 0 for not used */
+#define PCIE1_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE1	/* 0 for not used */
 /* * PCIE1 - Inbound Memory 1 Base Address */
 #define PCIE1_IB_MEMBASE0_PCIE_HI	0x80
 #define PCIE1_IB_MEMBASE0_PCIE_LO	0
@@ -370,7 +371,7 @@ enum {
 /* PCIE2 - Outbound Memory 2 Base Address */
 #define PCIE2_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE2_PHYMEMBASE_HI + 1)
 #define PCIE2_OB_MEMBASE1_LO	CONFIG_SYS_PCIE2_PHYMEMBASE_LO
-#define PCIE2_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE	/* 0 for not used */
+#define PCIE2_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE1	/* 0 for not used */
 /* * PCIE2 - Inbound Memory 1 Base Address */
 #define PCIE2_IB_MEMBASE0_PCIE_HI	0x80
 #define PCIE2_IB_MEMBASE0_PCIE_LO	0
@@ -421,7 +422,7 @@ enum {
 /* PCIE3 - Outbound Memory 2 Base Address */
 #define PCIE3_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE3_PHYMEMBASE_HI + 1)
 #define PCIE3_OB_MEMBASE1_LO	CONFIG_SYS_PCIE3_PHYMEMBASE_LO
-#define PCIE3_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE	/* 0 for not used */
+#define PCIE3_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE1	/* 0 for not used */
 /* * PCIE3 - Inbound Memory 1 Base Address */
 #define PCIE3_IB_MEMBASE0_PCIE_HI	0x80
 #define PCIE3_IB_MEMBASE0_PCIE_LO	0
@@ -472,7 +473,7 @@ enum {
 /* PCIE4 - Outbound Memory 2 Base Address */
 #define PCIE4_OB_MEMBASE1_HI	(CONFIG_SYS_PCIE4_PHYMEMBASE_HI + 1)
 #define PCIE4_OB_MEMBASE1_LO	CONFIG_SYS_PCIE4_PHYMEMBASE_LO
-#define PCIE4_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE	/* 0 for not used */
+#define PCIE4_OB_MEMSIZE1	CONFIG_SYS_PCIE_MEMSIZE1	/* 0 for not used */
 /* * PCIE4 - Inbound Memory 1 Base Address */
 #define PCIE4_IB_MEMBASE0_PCIE_HI	0x80
 #define PCIE4_IB_MEMBASE0_PCIE_LO	0

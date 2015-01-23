@@ -59,7 +59,7 @@ EFI_ACPI_5_1_GIC_STRUCTURE APICProcessorRecordTemplate = {
   FixedPcdGet32(PcdGicInterruptInterfaceBase),
   FixedPcdGet32(PcdGicInterruptInterfaceBase) + 0x40000, /* VGIC */
   FixedPcdGet32(PcdGicInterruptInterfaceBase) + 0x20000, /* Hyp GIC */
-  0x9,
+  0x19,
   FixedPcdGet32(PcdGicDistributorBase),
   0, /* need fill in */
 };

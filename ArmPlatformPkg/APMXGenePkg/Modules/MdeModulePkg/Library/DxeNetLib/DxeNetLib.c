@@ -38,6 +38,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #include <Library/HiiLib.h>
 #include <Library/PrintLib.h>
 #include <Library/UefiLib.h>
+#include <Library/PcdLib.h>
 
 #define NIC_ITEM_CONFIG_SIZE   sizeof (NIC_IP4_CONFIG_INFO) + sizeof (EFI_IP4_ROUTE_TABLE) * MAX_IP4_CONFIG_IN_VARIABLE
 #define DEFAULT_ZERO_START     ((UINTN) ~0)
@@ -3409,19 +3410,30 @@ NetLibGetSystemGuid (
 {
   EFI_STATUS                Status;
   SMBIOS_TABLE_ENTRY_POINT  *SmbiosTable;
+  SMBIOS3_TABLE_ENTRY_POINT  *Smbios3Table;
   SMBIOS_STRUCTURE_POINTER  Smbios;
   SMBIOS_STRUCTURE_POINTER  SmbiosEnd;
   CHAR8                     *String;
 
   SmbiosTable = NULL;
-  Status      = EfiGetSystemConfigurationTable (&gEfiSmbiosTableGuid, (VOID **) &SmbiosTable);
+  if (((UINT8) (FixedPcdGet16 (PcdSmbiosVersion) >> 8)) >= 3) {
+    Smbios3Table = NULL;
+    Status      = EfiGetSystemConfigurationTable (&gEfiSmbios3TableGuid, (VOID **) &Smbios3Table);
+  } else {
+    Status      = EfiGetSystemConfigurationTable (&gEfiSmbiosTableGuid, (VOID **) &SmbiosTable);
+  }
 
-  if (EFI_ERROR (Status) || SmbiosTable == NULL) {
+  if (EFI_ERROR (Status) || (SmbiosTable == NULL && Smbios3Table == NULL)) {
     return EFI_NOT_FOUND;
   }
 
-  Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) (SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32));
-  SmbiosEnd.Raw = (UINT8 *) (UINTN) ((UINTN)(SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32)) + SmbiosTable->TableLength);
+  if (((UINT8) (FixedPcdGet16 (PcdSmbiosVersion) >> 8)) >= 3) {
+    Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) (Smbios3Table->TableAddress);
+    SmbiosEnd.Raw = (UINT8 *) (UINTN) ((UINTN)(Smbios3Table->TableAddress) + Smbios3Table->TableMaxSize);
+  } else {
+    Smbios.Hdr    = (SMBIOS_STRUCTURE *) (UINTN) (SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32));
+    SmbiosEnd.Raw = (UINT8 *) (UINTN) ((UINTN)(SmbiosTable->TableAddress | ((UINTN)SmbiosTable->ExtHighAddressTableAddress << 32)) + SmbiosTable->TableLength);
+  }
 
   do {
     if (Smbios.Hdr->Type == 1) {

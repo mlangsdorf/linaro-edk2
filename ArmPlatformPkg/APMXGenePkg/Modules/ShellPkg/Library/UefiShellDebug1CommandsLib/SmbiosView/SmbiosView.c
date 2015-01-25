@@ -20,6 +20,7 @@
 
 UINT8                       gShowType         = SHOW_DETAIL;
 STATIC STRUCTURE_STATISTICS *mStatisticsTable = NULL;
+STATIC UINTN                mStatisticsTableSize = 0;
 
 UINT8  SmbiosMajorVersion;
 UINT8  SmbiosMinorVersion;
@@ -194,22 +195,31 @@ SMBiosView (
 
   SMBIOS_STRUCTURE_POINTER  SmbiosStruct;
   SMBIOS_TABLE_ENTRY_POINT  *SMBiosTable;
+  SMBIOS3_TABLE_ENTRY_POINT *SMBios3Table;
 
   SMBiosTable = NULL;
+  SMBios3Table = NULL;
   LibSmbiosGetEPS (&SMBiosTable);
-  if (SMBiosTable == NULL) {
+  LibSmbios3GetEPS (&SMBios3Table);
+  if (SMBiosTable == NULL && SMBios3Table == NULL) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_CANNOT_ACCESS_TABLE), gShellDebug1HiiHandle);
     return EFI_BAD_BUFFER_SIZE;
   }
 
-  if (CompareMem (SMBiosTable->AnchorString, "_SM_", 4) == 0) {
+  if ((SMBios3Table && CompareMem (SMBios3Table->AnchorString, "_SM3_", 5) == 0) || (SMBiosTable && CompareMem (SMBiosTable->AnchorString, "_SM_", 4) == 0)) {
     //
     // Have got SMBIOS table
     //
-    SmbiosPrintEPSInfo (SMBiosTable, Option);
+    if (SMBios3Table) {
+      Smbios3PrintEPSInfo (SMBios3Table, Option);
+      SmbiosMajorVersion = SMBios3Table->MajorVersion;
+      SmbiosMinorVersion = SMBios3Table->MinorVersion;
+    } else {
+      SmbiosPrintEPSInfo (SMBiosTable, Option);
+      SmbiosMajorVersion = SMBiosTable->MajorVersion;
+      SmbiosMinorVersion = SMBiosTable->MinorVersion;
 
-    SmbiosMajorVersion = SMBiosTable->MajorVersion;
-    SmbiosMinorVersion = SMBiosTable->MinorVersion;
+    }
 
     ShellPrintEx(-1,-1,L"=========================================================\n");
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_QUERY_STRUCT_COND), gShellDebug1HiiHandle);
@@ -248,7 +258,7 @@ SMBiosView (
     // Searching and display structure info
     //
     Handle    = QueryHandle;
-    for (Index = 0; Index < SMBiosTable->NumberOfSmbiosStructures; Index++) {
+    for (Index = 0; ; Index++) {
       //
       // if reach the end of table, break..
       //
@@ -355,20 +365,23 @@ InitSmbiosTableStatistics (
   UINT8                     *Buffer;
   UINT16                    Length;
   UINT16                    Offset;
-  UINT16                    Index;
+  UINT16                    Index, Count;
 
   SMBIOS_STRUCTURE_POINTER  SmbiosStruct;
   SMBIOS_TABLE_ENTRY_POINT  *SMBiosTable;
+  SMBIOS3_TABLE_ENTRY_POINT *SMBios3Table;
   STRUCTURE_STATISTICS      *StatisticsPointer;
 
   SMBiosTable = NULL;
+  SMBios3Table = NULL;
   LibSmbiosGetEPS (&SMBiosTable);
-  if (SMBiosTable == NULL) {
+  LibSmbios3GetEPS (&SMBios3Table);
+  if (SMBiosTable == NULL && SMBios3Table == NULL) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_CANNOT_ACCESS_TABLE), gShellDebug1HiiHandle);
     return EFI_NOT_FOUND;
   }
 
-  if (CompareMem (SMBiosTable->AnchorString, "_SM_", 4) != 0) {
+  if ((SMBios3Table && CompareMem (SMBios3Table->AnchorString, "_SM3_", 5) != 0) || (SMBiosTable && CompareMem (SMBiosTable->AnchorString, "_SM_", 4) != 0)) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_SMBIOS_TABLE), gShellDebug1HiiHandle);
     return EFI_INVALID_PARAMETER;
   }
@@ -380,7 +393,31 @@ InitSmbiosTableStatistics (
     mStatisticsTable = NULL;
   }
 
-  mStatisticsTable = (STRUCTURE_STATISTICS *) AllocateZeroPool (SMBiosTable->NumberOfSmbiosStructures * sizeof (STRUCTURE_STATISTICS));
+  //
+  // search from the first one
+  //
+  Handle = INVALID_HANDLE;
+  LibGetSmbiosStructure (&Handle, NULL, NULL);
+  for (Count = 0; ; Count++) {
+    //
+    // If reach the end of table, break..
+    //
+    if (Handle == INVALID_HANDLE) {
+      break;
+    }
+    //
+    // After LibGetSmbiosStructure(), handle then point to the next!
+    //
+    if (LibGetSmbiosStructure (&Handle, &Buffer, &Length) != DMI_SUCCESS) {
+      break;
+    }
+  }
+
+  if (Count == 0) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  mStatisticsTable = (STRUCTURE_STATISTICS *) AllocateZeroPool (Count * sizeof (STRUCTURE_STATISTICS));
 
   if (mStatisticsTable == NULL) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_OUT_OF_MEM), gShellDebug1HiiHandle);
@@ -395,7 +432,7 @@ InitSmbiosTableStatistics (
   //
   Handle = INVALID_HANDLE;
   LibGetSmbiosStructure (&Handle, NULL, NULL);
-  for (Index = 1; Index <= SMBiosTable->NumberOfSmbiosStructures; Index++) {
+  for (Index = 1; Index <= Count; Index++) {
     //
     // If reach the end of table, break..
     //
@@ -425,6 +462,8 @@ InitSmbiosTableStatistics (
     StatisticsPointer         = &mStatisticsTable[Index];
   }
 
+  mStatisticsTableSize = Count;
+
   return EFI_SUCCESS;
 }
 
@@ -442,11 +481,12 @@ DisplayStatisticsTable (
   )
 {
   UINTN                    Index;
-  UINTN                    Num;
   STRUCTURE_STATISTICS     *StatisticsPointer;
   SMBIOS_TABLE_ENTRY_POINT *SMBiosTable;
+  SMBIOS3_TABLE_ENTRY_POINT *SMBios3Table;
 
   SMBiosTable = NULL;
+  SMBios3Table = NULL;
   if (Option < SHOW_OUTLINE) {
     return EFI_SUCCESS;
   }
@@ -454,13 +494,18 @@ DisplayStatisticsTable (
   // display EPS information firstly
   //
   LibSmbiosGetEPS (&SMBiosTable);
-  if (SMBiosTable == NULL) {
+  LibSmbios3GetEPS (&SMBios3Table);
+  if (SMBiosTable == NULL && SMBios3Table == NULL) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_CANNOT_ACCESS_TABLE), gShellDebug1HiiHandle);
     return EFI_UNSUPPORTED;
   }
 
   ShellPrintEx(-1,-1,L"\n============================================================\n");
-  SmbiosPrintEPSInfo (SMBiosTable, Option);
+  if (SMBios3Table) {
+    Smbios3PrintEPSInfo (SMBios3Table, Option);
+  } else {
+    SmbiosPrintEPSInfo (SMBiosTable, Option);
+  }
 
   if (Option < SHOW_NORMAL) {
     return EFI_SUCCESS;
@@ -473,11 +518,11 @@ DisplayStatisticsTable (
 
   ShellPrintEx(-1,-1,L"============================================================\n");
   StatisticsPointer = &mStatisticsTable[0];
-  Num         = SMBiosTable->NumberOfSmbiosStructures;
+
   //
   // display statistics table content
   //
-  for (Index = 1; Index <= Num; Index++) {
+  for (Index = 1; Index <= mStatisticsTableSize; Index++) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_INDEX), gShellDebug1HiiHandle, StatisticsPointer->Index);
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_TYPE), gShellDebug1HiiHandle, StatisticsPointer->Type);
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_SMBIOSVIEW_HANDLE), gShellDebug1HiiHandle, StatisticsPointer->Handle);

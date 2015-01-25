@@ -20,6 +20,7 @@
 
 STATIC UINT8                    mInit         = 0;
 STATIC SMBIOS_TABLE_ENTRY_POINT *mSmbiosTable = NULL;
+STATIC SMBIOS3_TABLE_ENTRY_POINT *mSmbios3Table = NULL;
 STATIC SMBIOS_STRUCTURE_POINTER m_SmbiosStruct;
 STATIC SMBIOS_STRUCTURE_POINTER *mSmbiosStruct = &m_SmbiosStruct;
 
@@ -44,9 +45,12 @@ LibSmbiosInit (
   //
   // Get SMBIOS table from System Configure table
   //
-  Status = GetSystemConfigurationTable (&gEfiSmbiosTableGuid, (VOID**)&mSmbiosTable);
+  Status = GetSystemConfigurationTable (&gEfiSmbios3TableGuid, (VOID**)&mSmbios3Table);
+  if (mSmbios3Table == NULL) {
+    Status = GetSystemConfigurationTable (&gEfiSmbiosTableGuid, (VOID**)&mSmbiosTable);
+  }
 
-  if (mSmbiosTable == NULL) {
+  if (mSmbios3Table == NULL && mSmbiosTable == NULL) {
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_LIBSMBIOSVIEW_CANNOT_GET_TABLE), gShellDebug1HiiHandle);
     return EFI_NOT_FOUND;
   }
@@ -58,7 +62,11 @@ LibSmbiosInit (
   //
   // Init SMBIOS structure table address
   //
-  mSmbiosStruct->Raw  = (UINT8 *) (UINTN) (mSmbiosTable->TableAddress | ((UINTN)mSmbiosTable->ExtHighAddressTableAddress << 32));
+  if (mSmbios3Table) {
+    mSmbiosStruct->Raw  = (UINT8 *) (UINTN) (mSmbios3Table->TableAddress);
+  } else {
+    mSmbiosStruct->Raw  = (UINT8 *) (UINTN) (mSmbiosTable->TableAddress | ((UINTN)mSmbiosTable->ExtHighAddressTableAddress << 32));
+  }
 
   mInit               = 1;
   return EFI_SUCCESS;
@@ -75,6 +83,10 @@ LibSmbiosCleanup (
   //
   // Release resources
   //
+  if (mSmbios3Table != NULL) {
+    mSmbios3Table = NULL;
+  }
+
   if (mSmbiosTable != NULL) {
     mSmbiosTable = NULL;
   }
@@ -98,6 +110,21 @@ LibSmbiosGetEPS (
   *EntryPointStructure = mSmbiosTable;
 }
 
+/**
+  Get the entry point structure for the table.
+
+  @param[out] EntryPointStructure  The pointer to populate.
+**/
+VOID
+LibSmbios3GetEPS (
+  OUT SMBIOS3_TABLE_ENTRY_POINT **EntryPointStructure
+  )
+{
+  //
+  // return SMBIOS Table address
+  //
+  *EntryPointStructure = mSmbios3Table;
+}
 /**
   Return SMBIOS string for the given string number.
 
@@ -189,7 +216,11 @@ LibGetSmbiosStructure (
 
   *Length       = 0;
   Smbios.Hdr    = mSmbiosStruct->Hdr;
-  SmbiosEnd.Raw = Smbios.Raw + mSmbiosTable->TableLength;
+  if (mSmbios3Table) {
+    SmbiosEnd.Raw = Smbios.Raw + mSmbios3Table->TableMaxSize;
+  } else {
+    SmbiosEnd.Raw = Smbios.Raw + mSmbiosTable->TableLength;
+  }
   while (Smbios.Raw < SmbiosEnd.Raw) {
     if (Smbios.Hdr->Handle == *Handle) {
       Raw = Smbios.Raw;
@@ -205,12 +236,15 @@ LibGetSmbiosStructure (
       //
       // update with the next structure handle.
       //
-      if (Smbios.Raw < SmbiosEnd.Raw) {
+      if (Smbios.Raw < SmbiosEnd.Raw && ((SMBIOS_STRUCTURE *)Raw)->Type != 127) {
         *Handle = Smbios.Hdr->Handle;
       } else {
         *Handle = INVALID_HANDLE;
       }
       return DMI_SUCCESS;
+    }
+    if (Smbios.Hdr->Type == 127) {
+      break;
     }
     //
     // Walk to next structure
@@ -221,4 +255,3 @@ LibGetSmbiosStructure (
   *Handle = INVALID_HANDLE;
   return DMI_INVALID_HANDLE;
 }
-

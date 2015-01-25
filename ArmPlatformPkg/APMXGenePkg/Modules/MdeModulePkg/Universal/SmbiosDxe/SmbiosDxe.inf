@@ -34,6 +34,7 @@
   SmbiosDxe.c
 
 [Packages]
+  ArmPlatformPkg/APMXGenePkg/APMXGene.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
 
@@ -53,6 +54,7 @@
 [Guids]
   gEfiEventReadyToBootGuid                    # PROTOCOL ALWAYS_CONSUMED
   gEfiSmbiosTableGuid                         # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmbios3TableGuid                        # PROTOCOL ALWAYS_CONSUMED
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion

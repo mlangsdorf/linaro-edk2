@@ -33,6 +33,7 @@
 
 
 [Packages]
+  ArmPlatformPkg/APMXGenePkg/APMXGene.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
 
@@ -49,9 +50,13 @@
   HiiLib
   PrintLib
 
+[FixedPcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion
+
 [Guids]
   gEfiNicIp4ConfigVariableGuid
   gEfiSmbiosTableGuid
+  gEfiSmbios3TableGuid
 
 [Protocols]
   gEfiSimpleNetworkProtocolGuid                 # PROTOCOL ALWAYS_CONSUMED

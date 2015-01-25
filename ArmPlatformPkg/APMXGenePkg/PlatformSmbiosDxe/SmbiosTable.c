@@ -34,7 +34,7 @@ SMBIOS_TABLE_TYPE0 gSmbiosType0Template = {
   { EFI_SMBIOS_TYPE_BIOS_INFORMATION, sizeof (SMBIOS_TABLE_TYPE0), 0 },
   1,                    // Vendor String
   2,                    // BiosVersion String
-  0xE000,               // BiosSegment
+  0,                    // BiosSegment
   3,                    // BiosReleaseDate String
   0x7F,                 // BiosSize
   {                     // BiosCharacteristics
@@ -44,11 +44,11 @@ SMBIOS_TABLE_TYPE0 gSmbiosType0Template = {
     0,    //  IsaIsSupported                    :1;
     0,    //  McaIsSupported                    :1;
     0,    //  EisaIsSupported                   :1;
-    0,    //  PciIsSupported                    :1;
+    1,    //  PciIsSupported                    :1;
     0,    //  PcmciaIsSupported                 :1;
     0,    //  PlugAndPlayIsSupported            :1;
     0,    //  ApmIsSupported                    :1;
-    0,    //  BiosIsUpgradable                  :1;
+    1,    //  BiosIsUpgradable                  :1;
     0,    //  BiosShadowingAllowed              :1;
     0,    //  VlVesaIsSupported                 :1;
     0,    //  EscdSupportIsAvailable            :1;
@@ -65,7 +65,7 @@ SMBIOS_TABLE_TYPE0 gSmbiosType0Template = {
     0,    //  Floppy35_288IsSupported           :1;
     0,    //  PrintScreenIsSupported            :1;
     0,    //  Keyboard8042IsSupported           :1;
-    0,    //  SerialIsSupported                 :1;
+    1,    //  SerialIsSupported                 :1;
     0,    //  PrinterIsSupported                :1;
     0,    //  CgaMonoIsSupported                :1;
     0,    //  NecPc98                           :1;
@@ -81,7 +81,7 @@ SMBIOS_TABLE_TYPE0 gSmbiosType0Template = {
           //  AtapiZipDriveBootIsSupported      :1;
           //  Boot1394IsSupported               :1;
           //  SmartBatteryIsSupported           :1;
-                  //  BIOSCharacteristicsExtensionBytes[1]
+          //  BIOSCharacteristicsExtensionBytes[1]
     0x0a, //  BiosBootSpecIsSupported              :1;
           //  FunctionKeyNetworkBootIsSupported    :1;
           //  TargetContentDistributionEnabled     :1;
@@ -89,13 +89,13 @@ SMBIOS_TABLE_TYPE0 gSmbiosType0Template = {
           //  VirtualMachineSupported              :1;
           //  ExtensionByte2Reserved               :3;
   },
-  0x00,                    // SystemBiosMajorRelease
-  0x01,                    // SystemBiosMinorRelease
+  0x01,                    // SystemBiosMajorRelease
+  0x00,                    // SystemBiosMinorRelease
   0xFF,                    // EmbeddedControllerFirmwareMajorRelease
   0xFF,                    // EmbeddedControllerFirmwareMinorRelease
 };
 CHAR8 *gSmbiosType0Strings[] = {
-  "www.apm.com",     // Vendor String
+  "AppliedMicro",     // Vendor String
   __TIME__,                   // BiosVersion String
   __DATE__,                   // BiosReleaseDate String
   NULL
@@ -113,12 +113,12 @@ SMBIOS_TABLE_TYPE1 gSmbiosType1Template = {
   6,    // Family String
 };
 CHAR8  *gSmbiosType1Strings[] = {
-  "www.apm.com",
-  "APMXGenePkg",
+  "AppliedMicro",
+  "Mustang",
   "1.0",
   "System Serial#",
   "System SKU#",
-  "edk2",
+  "XGene 1",
   NULL 
 };
 
@@ -144,8 +144,8 @@ SMBIOS_TABLE_TYPE2  gSmbiosType2Template = {
   { 0 }                     // ContainedObjectHandles[1];
 };
 CHAR8  *gSmbiosType2Strings[] = {
-  "www.apm.com",
-  "APMXGenePkg",
+  "AppliedMicro",
+  "Mustang",
   "1.0",
   "Base Board Serial#",
   "Base Board Asset Tag#",
@@ -155,28 +155,130 @@ CHAR8  *gSmbiosType2Strings[] = {
 
 SMBIOS_TABLE_TYPE3  gSmbiosType3Template = {
   { EFI_SMBIOS_TYPE_SYSTEM_ENCLOSURE, sizeof (SMBIOS_TABLE_TYPE3), 0 },
-  1,                        // Manufacturer String
-  MiscChassisTypeLapTop,    // Type;
-  2,                        // Version String
-  3,                        // SerialNumber String
-  4,                        // AssetTag String
-  ChassisStateSafe,         // BootupState;           
-  ChassisStateSafe,         // PowerSupplyState;       
-  ChassisStateSafe,         // ThermalState;           
-  ChassisSecurityStatusNone,// SecurityStatus;         
-  { 0, 0, 0, 0 },           // OemDefined[4];
+  1,                                   // Manufacturer String
+  MiscChassisTypeRackMountChassis,     // Type;
+  2,                                   // Version String
+  3,                                   // SerialNumber String
+  4,                                   // AssetTag String
+  ChassisStateSafe,                    // BootupState;
+  ChassisStateSafe,                    // PowerSupplyState;
+  ChassisStateSafe,                    // ThermalState;
+  ChassisSecurityStatusNone,           // SecurityStatus;
+  { 0, 0, 0, 0 },                      // OemDefined[4];
   0,    // Height;
-  0,    // NumberofPowerCords;
+  1,    // NumberofPowerCords;
   0,    // ContainedElementCount;
   0,    // ContainedElementRecordLength;
-   { { 0 } },    // ContainedElements[1];
+  { { 0 } },    // ContainedElements[1];
+  5,    // SKUNumber String
 };
 CHAR8  *gSmbiosType3Strings[] = {
-  "www.apm.com",
-  "EmulatorPkg",
+  "AppliedMicro",
+  "1.0",
   "Chassis Board Serial#",
   "Chassis Board Asset Tag#",
+  "Chassic SKU#",
   NULL  
+};
+
+SMBIOS_TABLE_TYPE4  gSmbiosType4Template = {
+    { EFI_SMBIOS_TYPE_PROCESSOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE4), 0},
+    1,                                // Socket Designation;
+    ProcessorOther,                   // ProcessorType;
+    ProcessorFamilyIndicatorFamily2,  // ProcessorFamily;
+    2,                                // ProcessorManufacture;
+    {                                 // ProcessorId;
+      {
+        0,  // ProcessorSteppingId:4;
+        0,  // ProcessorModel:     4;
+        0,  // ProcessorFamily:    4;
+        0,  // ProcessorType:      2;
+        0,  // ProcessorReserved1: 2;
+        0,  // ProcessorXModel:    4;
+        0,  // ProcessorXFamily:   8;
+        0,  // ProcessorReserved2: 4;
+      },
+      {
+        1,      // ProcessorFpu       :1;
+        0,      // ProcessorVme       :1;
+        0,      // ProcessorDe        :1;
+        0,      // ProcessorPse       :1;
+        0,      // ProcessorTsc       :1;
+        0,      // ProcessorMsr       :1;
+        0,      // ProcessorPae       :1;
+        0,      // ProcessorMce       :1;
+        0,      // ProcessorCx8       :1;
+        0,      // ProcessorApic      :1;
+        0,      // ProcessorReserved1 :1;
+        0,      // ProcessorSep       :1;
+        0,      // ProcessorMtrr      :1;
+        0,      // ProcessorPge       :1;
+        0,      // ProcessorMca       :1;
+        0,      // ProcessorCmov      :1;
+        0,      // ProcessorPat       :1;
+        0,      // ProcessorPse36     :1;
+        0,      // ProcessorPsn       :1;
+        0,      // ProcessorClfsh     :1;
+        0,      // ProcessorReserved2 :1;
+        0,      // ProcessorDs        :1;
+        1,      // ProcessorAcpi      :1;
+        0,      // ProcessorMmx       :1;
+        0,      // ProcessorFxsr      :1;
+        0,      // ProcessorSse       :1;
+        0,      // ProcessorSse2      :1;
+        0,      // ProcessorSs        :1;
+        0,      // ProcessorReserved3 :1;
+        0,      // ProcessorTm        :1;
+        0,      // ProcessorReserved4 :2;
+      }
+    },
+    3,   // ProcessorVersion;
+    {    // Voltage;
+      0, // ProcessorVoltageCapability5V        :1;
+      0, // ProcessorVoltageCapability3_3V      :1;
+      0, // ProcessorVoltageCapability2_9V      :1;
+      0, // ProcessorVoltageCapabilityReserved  :1; ///< Bit 3, must be zero.
+      0, // ProcessorVoltageReserved            :3; ///< Bits 4-6, must be zero.
+      0, // ProcessorVoltageIndicateLegacy      :1;
+    },
+    0,                    // ExternalClock;
+    2400,                 // MaxSpeed;
+    0,                    // CurrentSpeed;
+    0x41,                 // Status;
+    ProcessorUpgradeNone, // ProcessorUpgrade;      ///< The enumeration value from PROCESSOR_UPGRADE.
+    0xFFFF,               // L1CacheHandle;
+    0xFFFF,               // L2CacheHandle;
+    0xFFFF,               // L3CacheHandle;
+    4,                    // SerialNumber;
+    5,                    // AssetTag;
+    6,                    // PartNumber;
+    //
+    // Add for smbios 2.5
+    //
+    8,                    // CoreCount;
+    8,                    // EnabledCoreCount;
+    0,                    // ThreadCount;
+    0xec,                 // ProcessorCharacteristics;
+    //
+    // Add for smbios 2.6
+    //
+    ProcessorFamilyARM, //ProcessorFamily2;
+    //
+    // Add for smbios 3.0
+    //
+    0,                //CoreCount2;
+    0,                //EnabledCoreCount2;
+    0,                //ThreadCount2;
+};
+
+CHAR8  *gSmbiosType4Strings[] = {
+  "XGene1",
+  "AppliedMicro",
+  "A3",
+  "Unknown",
+  "Unknown",
+  "APM88XXXX",
+  NULL
 };
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template1 = {
@@ -184,11 +286,11 @@ SMBIOS_TABLE_TYPE8  gSmbiosType8Template1 = {
   0,                            // InternalReferenceDesignator String
   PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeNone,        // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeOther,                // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeRJ45,        // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeNetworkPort,          // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings1[] = {
-  "Mini DisplayPort",
+  "Ethernet",
   NULL
 };
 
@@ -197,103 +299,76 @@ SMBIOS_TABLE_TYPE8  gSmbiosType8Template2 = {
   0,                            // InternalReferenceDesignator String
   PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeNone,        // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeFireWire,             // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings2[] = {
-  "FireWire 800",
+  "USB0",
   NULL
 };
-
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template3 = {
   { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
   0,                            // InternalReferenceDesignator String
   PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeRJ45,        // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeNetworkPort,          // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings3[] = {
-  "Ethernet",
+  "USB1",
   NULL
 };
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template4 = {
   { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
   0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortConnectorTypeSasSata,     // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeNone,        // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeSataPort,             // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings4[] = {
-  "USB0",
+  "SATA0",
   NULL
 };
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template5 = {
   { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
   0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortConnectorTypeSasSata,     // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeNone,     // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeSataPort,             // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings5[] = {
-  "USB1",
+  "SATA1",
   NULL
 };
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template6 = {
   { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
   0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortConnectorTypeSasSata,     // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeNone,     // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeSataPort,             // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings6[] = {
-  "USB2",
+  "SATA2",
   NULL
 };
 
 SMBIOS_TABLE_TYPE8  gSmbiosType8Template7 = {
   { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
   0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortConnectorTypeSasSata,     // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
   1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeUsb,         // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeUsb,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
+  PortConnectorTypeNone,     // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
+  PortTypeSataPort,             // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
 };
 CHAR8  *gSmbiosType8Strings7[] = {
-  "USB3",
-  NULL
-};
-
-SMBIOS_TABLE_TYPE8  gSmbiosType8Template8 = {
-  { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
-  0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeHeadPhoneMiniJack, // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeAudioPort,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
-};
-CHAR8  *gSmbiosType8Strings8[] = {
-  "Audio Line In",
-  NULL
-};
-
-SMBIOS_TABLE_TYPE8  gSmbiosType8Template9 = {
-  { EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, sizeof (SMBIOS_TABLE_TYPE8), 0 },
-  0,                            // InternalReferenceDesignator String
-  PortConnectorTypeNone,        // InternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  1,                            // ExternalReferenceDesignator String
-  PortConnectorTypeHeadPhoneMiniJack, // ExternalConnectorType;          ///< The enumeration value from MISC_PORT_CONNECTOR_TYPE.
-  PortTypeAudioPort,                  // PortType;                       ///< The enumeration value from MISC_PORT_TYPE.
-};
-CHAR8  *gSmbiosType8Strings9[] = {
-  "Audio Line Out",
+  "SATA3",
   NULL
 };
 
@@ -335,7 +410,7 @@ SMBIOS_TABLE_TYPE11 gSmbiosType11Template = {
   1 // StringCount
 };
 CHAR8 *gSmbiosType11Strings[] = {
-  "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/EmulatorPkg/",
+  "Contact: http://www.apm.com",
   NULL
 };
 
@@ -345,7 +420,7 @@ SMBIOS_TABLE_TYPE12 gSmbiosType12Template = {
   1 // StringCount
 };
 CHAR8 *gSmbiosType12Strings[] = {
-  "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/EmulatorPkg/EmulatorPkg.dsc",
+  "Read the manual",
   NULL
 };
 
@@ -357,7 +432,7 @@ SMBIOS_TABLE_TYPE16 gSmbiosType16Template = {
   0x80000000,                     // MaximumCapacity;
   0xFFFE,                         // MemoryErrorInformationHandle;
   1,                              // NumberOfMemoryDevices;
-  0x3fffffffffffffffULL,          // ExtendedMaximumCapacity;
+  0x0000000800000000ULL,          // ExtendedMaximumCapacity;
 };
 
 SMBIOS_TABLE_TYPE17 gSmbiosType17Template = {
@@ -398,11 +473,14 @@ SMBIOS_TABLE_TYPE17 gSmbiosType17Template = {
   0,          // Attributes;
   0,          // ExtendedSize;
   0,          // ConfiguredMemoryClockSpeed;
+  0,          // MinimumVoltage;
+  0,          // MaximumVoltage;
+  0,          // ConfiguredVoltage;
 };
 CHAR8 *gSmbiosType17Strings[] = {
-  "OS Virtual Memory",
-  "malloc",
-  "OSV",
+  "Removable DIMM Bank",
+  "Bank Unknown",
+  "Unknown",
   NULL
 };
 
@@ -421,13 +499,12 @@ SMBIOS_TABLE_TYPE32 gSmbiosType32Template = {
   BootInformationStatusNoError  // BootStatus
 };
 
-
-
 SMBIOS_TEMPLATE_ENTRY gSmbiosTemplate[] = {
   { (SMBIOS_STRUCTURE *)&gSmbiosType0Template,   gSmbiosType0Strings  },
   { (SMBIOS_STRUCTURE *)&gSmbiosType1Template,   gSmbiosType1Strings  },
   { (SMBIOS_STRUCTURE *)&gSmbiosType2Template,   gSmbiosType2Strings  },
   { (SMBIOS_STRUCTURE *)&gSmbiosType3Template,   gSmbiosType3Strings  },
+  { (SMBIOS_STRUCTURE *)&gSmbiosType4Template,   gSmbiosType4Strings  },
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template1,  gSmbiosType8Strings1 },
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template2,  gSmbiosType8Strings2 },
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template3,  gSmbiosType8Strings3 },
@@ -435,8 +512,6 @@ SMBIOS_TEMPLATE_ENTRY gSmbiosTemplate[] = {
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template5,  gSmbiosType8Strings5 },
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template6,  gSmbiosType8Strings6 },
   { (SMBIOS_STRUCTURE *)&gSmbiosType8Template7,  gSmbiosType8Strings7 },
-  { (SMBIOS_STRUCTURE *)&gSmbiosType8Template8,  gSmbiosType8Strings8 },
-  { (SMBIOS_STRUCTURE *)&gSmbiosType8Template9,  gSmbiosType8Strings9 },
   { (SMBIOS_STRUCTURE *)&gSmbiosType9Template,   gSmbiosType9Strings  },
   { (SMBIOS_STRUCTURE *)&gSmbiosType11Template,  gSmbiosType11Strings },
   { (SMBIOS_STRUCTURE *)&gSmbiosType12Template,  gSmbiosType12Strings },

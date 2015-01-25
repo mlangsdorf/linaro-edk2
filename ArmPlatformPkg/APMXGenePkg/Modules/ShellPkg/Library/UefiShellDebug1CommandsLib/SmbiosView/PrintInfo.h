@@ -47,6 +47,18 @@ SmbiosPrintEPSInfo (
   );
 
 /**
+  Print the info of EPS(Entry Point Structure).
+
+  @param[in] SmbiosTable    Pointer to the SMBIOS3 table entry point.
+  @param[in] Option         Display option.
+**/
+VOID
+Smbios3PrintEPSInfo (
+  IN  SMBIOS3_TABLE_ENTRY_POINT  *SmbiosTable,
+  IN  UINT8                     Option
+  );
+
+/**
   This function print the content of the structure pointed by Struct.
 
   @param[in] Struct       Point to the structure to be printed.

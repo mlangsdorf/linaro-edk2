@@ -51,9 +51,6 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ///
 #define SMBIOS_TYPE_END_OF_TABLE     0x007F
 
-///
-/// Smbios Table Entry Point Structure.
-///
 #pragma pack(1)
 typedef struct {
   UINT8   AnchorString[4];
@@ -72,6 +69,23 @@ typedef struct {
   UINT8   SmbiosBcdRevision;
   UINT32  ExtHighAddressTableAddress;
 } SMBIOS_TABLE_ENTRY_POINT;
+
+///
+/// Smbios 64bit Table Entry Point Structure.
+///
+#pragma pack(1)
+typedef struct {
+  UINT8   AnchorString[5];
+  UINT8   EntryPointStructureChecksum;
+  UINT8   EntryPointLength;
+  UINT8   MajorVersion;
+  UINT8   MinorVersion;
+  UINT8   Docrev;
+  UINT8   EntryPointRevision;
+  UINT8   Reserved;
+  UINT32  TableMaxSize;
+  UINT64  TableAddress;
+} SMBIOS3_TABLE_ENTRY_POINT;
 
 ///
 /// The Smbios structure header.
@@ -364,6 +378,10 @@ typedef struct {
   UINT8                       ContainedElementCount;
   UINT8                       ContainedElementRecordLength;
   CONTAINED_ELEMENT           ContainedElements[1];
+  //
+  // Add for smbios 2.7
+  //
+  SMBIOS_TABLE_STRING         SKUNumber;
 } SMBIOS_TABLE_TYPE3;
 
 ///
@@ -735,6 +753,12 @@ typedef struct {
   // Add for smbios 2.6
   //
   UINT16                ProcessorFamily2;
+  //
+  // Add for smbios 3.0
+  //
+  UINT16                CoreCount2;
+  UINT16                EnabledCoreCount2;
+  UINT16                ThreadCount2;
 } SMBIOS_TABLE_TYPE4;
 
 ///
@@ -1025,6 +1049,8 @@ typedef enum {
   PortTypeAudioPort                 = 0x1D,
   PortTypeModemPort                 = 0x1E,
   PortTypeNetworkPort               = 0x1F,
+  PortTypeSataPort                  = 0x20,
+  PortTypeSasPort                   = 0x21,
   PortType8251Compatible            = 0xA0,
   PortType8251FifoCompatible        = 0xA1,
   PortTypeOther                     = 0xFF
@@ -1525,6 +1551,12 @@ typedef struct {
   //
   UINT32                    ExtendedSize;
   UINT16                    ConfiguredMemoryClockSpeed;
+  //
+  // Add for smbios 2.8
+  //
+  UINT16                    MinimumVoltage;
+  UINT16                    MaximumVoltage;
+  UINT16                    ConfiguredVoltage;
 } SMBIOS_TABLE_TYPE17;
 
 ///

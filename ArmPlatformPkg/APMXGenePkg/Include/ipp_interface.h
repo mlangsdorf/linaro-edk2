@@ -1445,7 +1445,8 @@ typedef union ipp_bd_pwr_info {
                 unsigned int tpc_en : 1;
                 unsigned int avs_en : 1;
                 unsigned int reset_cap : 1;
-                unsigned int rsvd1 : 12;
+                unsigned int poweroff_cap : 1;
+                unsigned int rsvd1 : 11;
                 unsigned int pmd_vltg : 4;
                 unsigned int soc_vltg : 4;
                 unsigned int rsvd2 : 8;

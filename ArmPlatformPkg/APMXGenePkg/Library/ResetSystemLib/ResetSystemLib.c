@@ -36,6 +36,7 @@
 #define APM_MPA_REG_OFFSET    0x1000
 
 UINT64  ResetAddr = (UINT64)(SCU_BASE_ADDR + 0x14);
+UINT64  ShutdownAddrIpp = 0x10548010;
 UINT64  ResetAddrIpp = 0x10549010;
 UINT64  IppInfoAddr = (UINT64)(SCU_BASE_ADDR + APM_MPA_REG_OFFSET + MPA_SCRATCH14_ADDR);
 
@@ -59,8 +60,24 @@ VariableClassAddressChangeEvent (
   )
 {
   EfiConvertPointer (0x0, (VOID **) &ResetAddr);
+  EfiConvertPointer (0x0, (VOID **) &ShutdownAddrIpp);
   EfiConvertPointer (0x0, (VOID **) &ResetAddrIpp);
   EfiConvertPointer (0x0, (VOID **) &IppInfoAddr);
+}
+
+EFI_STATUS
+EFIAPI
+IppShutdown(VOID)
+{
+  ipp_info_t ipp_info;
+
+  ipp_info.bd_pwr_info.data = MmioRead32((UINTN)IppInfoAddr);
+  if (ipp_info.bd_pwr_info.inf.poweroff_cap){
+    MmioWrite32((UINTN)ShutdownAddrIpp, 1);
+    return EFI_SUCCESS;
+  }
+
+  return EFI_UNSUPPORTED;
 }
 
 EFI_STATUS
@@ -99,10 +116,13 @@ LibResetSystem (
   )
 {
   switch (ResetType) {
+  case EfiResetShutdown:
+    IppShutdown();
+    while(1);
+    break;
   case EfiResetWarm:
     // Map a warm reset into a cold reset
   case EfiResetCold:
-  case EfiResetShutdown:
   case EfiResetPlatformSpecific:
     if (EFI_ERROR(IppReboot())) {
       MmioWrite32((UINTN)ResetAddr, 1);
@@ -141,6 +161,18 @@ LibInitializeResetSystem (
 
   Status = gDS->SetMemorySpaceAttributes (
                   ResetAddr & SCU_ADDRESS_MASK,
+                  0x1000, /* 4K align */
+                  Descriptor.Attributes | EFI_MEMORY_RUNTIME
+                  );
+  ASSERT_EFI_ERROR (Status);
+
+  Status = gDS->GetMemorySpaceDescriptor(ShutdownAddrIpp & SCU_ADDRESS_MASK, &Descriptor);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = gDS->SetMemorySpaceAttributes (
+                  ShutdownAddrIpp & SCU_ADDRESS_MASK,
                   0x1000, /* 4K align */
                   Descriptor.Attributes | EFI_MEMORY_RUNTIME
                   );

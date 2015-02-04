@@ -2677,7 +2677,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						0x0000000080000000
 					)
 					QWordMemory(
-						ResourceProducer,
+						ResourceConsumer,
 						PosDecode,
 						MinFixed,
 						MaxFixed,

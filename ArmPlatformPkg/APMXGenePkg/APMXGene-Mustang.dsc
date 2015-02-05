@@ -390,7 +390,8 @@
        FileHandleLib|ShellPkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
        ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
        SortLib|ShellPkg/Library/UefiSortLib/UefiSortLib.inf
-       PathLib|MdeModulePkg/Library/BasePathLib/BasePathLib.inf
+       PathLib|ShellPkg/Library/BasePathLib/BasePathLib.inf
+       BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
 
      <PcdsFixedAtBuild>
        gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xFF

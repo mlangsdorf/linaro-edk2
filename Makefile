@@ -19,7 +19,7 @@ EDK2TOOLSDIR=$(EDK2DIR)/BaseTools
 export EDK_TOOLS_PATH=$(EDK2TOOLSDIR)
 
 export ARCH=
-export CROSS_COMPILE:=aarch64-linux-gnu-
+export CROSS_COMPILE:=aarch64-apm-linux-gnu-
 export CROSS_COMPILER_PATH:=/usr/bin
 export ASL_BIN_DIR:=/usr/bin
 

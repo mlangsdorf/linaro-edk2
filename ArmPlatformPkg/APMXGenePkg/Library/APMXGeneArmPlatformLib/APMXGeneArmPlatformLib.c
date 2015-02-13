@@ -350,6 +350,104 @@ UINTN  read_pmdid(void)
         return read_cpuid_id() / 2;
 }
 
+VOID PrintXGeneChipName(UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...))
+{
+  INT32 Val, Rev;
+
+  asm volatile("mrs %0, midr_el1" : "=r" (Val));
+  Rev = Val & 0xf;
+  Val >>= 20;
+  Val &= 0xf;
+
+  switch (Val) {
+  case 0:
+    PrintFunc(L" Potenza");
+    return;
+  case 1:
+    if (Rev == 2) {
+      PrintFunc(L" Magneto");
+    } else {
+      PrintFunc(L" Strega");
+    }
+    return;
+  }
+
+  PrintFunc(L" Unknown");
+}
+
+/**
+ * Detect chip revision based on ID registers
+ * of Coprocessor 0, EFUSE0 and display the
+ * revision string.
+**/
+VOID PrintXGeneChipRev(UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...))
+{
+  #define MIDR_EL1_VENDOR_MASK         0xff000000
+  #define MIDR_EL1_VARIANT_MASK        0x00f00000
+  #define MIDR_EL1_ARCH_MASK           0x000f0000
+  #define MIDR_EL1_PARTNUM_MASK        0x0000fff0
+  #define MIDR_EL1_REV_MASK            0x0000000f
+  #define REVIDR_EL1_MINOR_REV_MASK    0x00000007
+  #define EFUSE0_SHADOW_VERSION_SHIFT  28
+  #define EFUSE0_SHADOW_VERSION_MASK   0xf
+
+  INT32 Val, Rev;
+
+  asm volatile("mrs %0, midr_el1" : "=r" (Val));
+  asm volatile("mrs %0, revidr_el1" : "=r" (Rev));
+
+  switch (Val & MIDR_EL1_VARIANT_MASK) {
+  case 0x00000000:
+    switch (Val & MIDR_EL1_REV_MASK) {
+    case 0:
+      switch (Rev & REVIDR_EL1_MINOR_REV_MASK) {
+      case 2:
+        Val = (MmioRead32(EFUSE0_SHADOW_ADDR_ABS) >> EFUSE0_SHADOW_VERSION_SHIFT)
+                & EFUSE0_SHADOW_VERSION_MASK;
+        if (Val == 0x1) {
+          PrintFunc(L" A2");
+        } else {
+          PrintFunc(L" A3");
+        }
+        return;
+      default:
+        PrintFunc(L" A3");
+        return;
+      }
+      break;
+    case 1:
+      PrintFunc(L" B0");
+      return;
+    }
+    break;
+  case 0x00100000: /* Shadowcat or Magneto */
+    switch (Val & MIDR_EL1_REV_MASK) {
+    case 0:
+      PrintFunc(L" A2");
+      return;
+    case 1:
+      switch (Rev & REVIDR_EL1_MINOR_REV_MASK) {
+      case 0:
+        PrintFunc(L" A1");
+        return;
+      case 1:
+        PrintFunc(L" A0");
+        return;
+      }
+      break;
+    case 2:
+      switch (Rev & REVIDR_EL1_MINOR_REV_MASK) {
+      case 1:
+        PrintFunc(L" A0");
+        return;
+      }
+      break;
+    }
+  }
+
+  PrintFunc(L" Unknown");
+}
+
 /**
   Display the Platform banner
 
@@ -368,7 +466,10 @@ ArmPlatformShowBoardBanner (UINTN (*PrintFunc)(IN CONST CHAR16 *Format, ...)
             (EFI_IFR_SPECIFICATION_VERSION >> 4) & 0xF,
             EFI_IFR_SPECIFICATION_VERSION & 0xF,
             __DATE__, __TIME__);
-  PrintFunc(L"CPU: APM ARM 64-bit Potenza");
+  PrintFunc(L"CPU: APM ARM 64-bit");
+  PrintXGeneChipName(PrintFunc);
+  PrintFunc(L" Rev");
+  PrintXGeneChipRev(PrintFunc);
   PrintFunc(L" %dMHz", get_PMD_CLK(read_pmdid())/MHZ_SCALE_FACTOR);
   PrintFunc(L" PCP %dMHz\n", get_PCP_CLK()/MHZ_SCALE_FACTOR);
   PrintFunc(L"     32 KB ICACHE, 32 KB DCACHE\n");

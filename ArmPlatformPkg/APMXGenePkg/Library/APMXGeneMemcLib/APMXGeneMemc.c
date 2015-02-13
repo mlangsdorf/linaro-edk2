@@ -263,9 +263,10 @@ UINT64 GetDDRSize(VOID)
 {
   UINT32 McuActiveFlag;
   UINT64 Result = 0;
+  UINT64 Reg;
+  UINT32 Value;
   INTN i, j;
-  volatile UINT64 Reg;
-  volatile UINT32 Value;
+
   Reg = (PCPRB_BASE + 0x02200000);
   Value = *(UINT32 *)Reg;
   if (PCP_RB_CSW_CSWCR_DUALMCB_RD(Value)) {
@@ -279,11 +280,10 @@ UINT64 GetDDRSize(VOID)
   }
 
   for (i = 0; i < 4; i++) {
-    Reg = (MCU0_BASE+ 0x40000*i + RANK0_OFFSET);
     if (!(McuActiveFlag & (1 << i)))
       continue;
     for (j = 0; j < 8; j++) {
-      Reg += 0x40*j;
+      Reg = (MCU0_BASE + 0x40000 * i + RANK0_OFFSET) + 0x40 * j;
       Value = *(UINT32 *)Reg;
       if (Value > 5)
         continue;

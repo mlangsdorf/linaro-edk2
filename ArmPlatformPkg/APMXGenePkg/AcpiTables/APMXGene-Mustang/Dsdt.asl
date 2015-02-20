@@ -1116,19 +1116,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 ///////////////////////////////////////////////////////////////////////////////
-// PMU
-	Device(\_SB.PMU0) {
-		Name(_HID, "LNRO0007") // Device Identification Objects
-		Name(_DDN, "PMU0")
-		Name(_UID, "PMU0")
-		Name(_STR, Unicode("PMU"))
-		Name(_CID, "LNRO0007")
-		Name(_CRS, ResourceTemplate() {
-			Interrupt(ResourceProducer, Level, ActiveHigh, Exclusive) { 0x1C }
-		})
-	}
-
-///////////////////////////////////////////////////////////////////////////////
 // SLIMpro Device
 	Device(\_SB.SLIM) {
 		Name(_HID, "APMC0D01") // Device Identification Objects
@@ -2690,7 +2677,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						0x0000000080000000
 					)
 					QWordMemory(
-						ResourceProducer,
+						ResourceConsumer,
 						PosDecode,
 						MinFixed,
 						MaxFixed,
@@ -2698,9 +2685,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 						ReadWrite,
 						0x0000000000000000,
 						0x000000e100000000,
-						0x000000e17FFFFFFF,
+						0x000000e1FFFFFFFF,
 						0x0000000000000000,
-						0x0000000080000000
+						0x0000000100000000
 					)
 				})
 

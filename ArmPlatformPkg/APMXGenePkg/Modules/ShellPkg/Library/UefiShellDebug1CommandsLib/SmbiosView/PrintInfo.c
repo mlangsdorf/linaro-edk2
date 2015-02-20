@@ -199,6 +199,67 @@ SmbiosPrintEPSInfo (
 }
 
 /**
+  Print the info of EPS(Entry Point Structure).
+
+  @param[in] SmbiosTable    Pointer to the SMBIOS3 table entry point.
+  @param[in] Option         Display option.
+**/
+VOID
+Smbios3PrintEPSInfo (
+  IN  SMBIOS3_TABLE_ENTRY_POINT  *SmbiosTable,
+  IN  UINT8                     Option
+  )
+{
+  UINT8 Anchor[6];
+
+  if (SmbiosTable == NULL) {
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_SMBIOSTABLE_NULL), gShellDebug1HiiHandle);
+    return ;
+  }
+
+  if (Option == SHOW_NONE) {
+    return ;
+  }
+
+  if (Option >= SHOW_NORMAL) {
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_ENTRY_POINT_SIGN), gShellDebug1HiiHandle);
+    MemToString (Anchor, SmbiosTable->AnchorString, 5);
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_ANCHOR_STR), gShellDebug1HiiHandle, Anchor);
+    ShellPrintHiiEx(-1,-1,NULL,
+      STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_EPS_CHECKSUM),
+      gShellDebug1HiiHandle,
+      SmbiosTable->EntryPointStructureChecksum
+     );
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_ENTRY_POINT_LEN), gShellDebug1HiiHandle, SmbiosTable->EntryPointLength);
+    ShellPrintHiiEx(-1,-1,NULL,
+      STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_VERSION),
+      gShellDebug1HiiHandle,
+      SmbiosTable->MajorVersion,
+      SmbiosTable->MinorVersion
+     );
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_TABLE_ADDR), gShellDebug1HiiHandle, SmbiosTable->TableAddress);
+    ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_TABLE_MAXSIZE), gShellDebug1HiiHandle, SmbiosTable->TableMaxSize);
+
+  }
+  //
+  // If SHOW_ALL, also print followings.
+  //
+  if (Option >= SHOW_DETAIL) {
+    ShellPrintHiiEx(-1,-1,NULL,
+      STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_ENTRY_POINT_REVISION),
+      gShellDebug1HiiHandle,
+      SmbiosTable->EntryPointRevision
+     );
+    ShellPrintHiiEx(-1,-1,NULL,
+      STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_ENTRY_POINT_DOCREV),
+      gShellDebug1HiiHandle,
+      SmbiosTable->Docrev
+     );
+  }
+
+  Print (L"\n");
+}
+/**
   This function print the content of the structure pointed by Struct.
 
   @param[in] Struct       Point to the structure to be printed.
@@ -311,6 +372,9 @@ SmbiosPrintStructure (
     PRINT_PENDING_STRING (Struct, Type3, Version);
     PRINT_PENDING_STRING (Struct, Type3, SerialNumber);
     PRINT_PENDING_STRING (Struct, Type3, AssetTag);
+    if (AE_SMBIOS_VERSION (0x2, 0x7) && (Struct->Hdr->Length > 0x15)) {
+      PRINT_PENDING_STRING (Struct, Type3, SKUNumber);
+    }
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_BOOTUP_STATE), gShellDebug1HiiHandle);
     DisplaySystemEnclosureStatus (Struct->Type3->BootupState, Option);
     ShellPrintHiiEx(-1,-1,NULL,STRING_TOKEN (STR_SMBIOSVIEW_PRINTINFO_POWER_SUPPLY_STATE), gShellDebug1HiiHandle);
@@ -360,6 +424,17 @@ SmbiosPrintStructure (
       PRINT_STRUCT_VALUE (Struct, Type4, CoreCount);
       PRINT_STRUCT_VALUE (Struct, Type4, EnabledCoreCount);
       PRINT_STRUCT_VALUE (Struct, Type4, ThreadCount);
+      if (AE_SMBIOS_VERSION (0x3, 0x0) && (Struct->Hdr->Length > 0x2a)) {
+        if (Struct->Type4->CoreCount == 0xFF) {
+          PRINT_STRUCT_VALUE (Struct, Type4, CoreCount2);
+        }
+        if (Struct->Type4->EnabledCoreCount == 0xFF) {
+          PRINT_STRUCT_VALUE (Struct, Type4, EnabledCoreCount2);
+        }
+        if (Struct->Type4->ThreadCount == 0xFF) {
+          PRINT_STRUCT_VALUE (Struct, Type4, ThreadCount2);
+        }
+      }
       DisplayProcessorCharacteristics (Struct->Type4->ProcessorCharacteristics, Option);
     }
     break;
@@ -645,6 +720,11 @@ SmbiosPrintStructure (
     if (AE_SMBIOS_VERSION (0x2, 0x7) && (Struct->Hdr->Length > 0x1C)) {
       PRINT_STRUCT_VALUE (Struct, Type17, ExtendedSize);
       PRINT_STRUCT_VALUE (Struct, Type17, ConfiguredMemoryClockSpeed);
+    }
+    if (AE_SMBIOS_VERSION (0x2, 0x8) && (Struct->Hdr->Length > 0x22)) {
+      PRINT_STRUCT_VALUE (Struct, Type17, MinimumVoltage);
+      PRINT_STRUCT_VALUE (Struct, Type17, MaximumVoltage);
+      PRINT_STRUCT_VALUE (Struct, Type17, ConfiguredVoltage);
     }
     break;
 

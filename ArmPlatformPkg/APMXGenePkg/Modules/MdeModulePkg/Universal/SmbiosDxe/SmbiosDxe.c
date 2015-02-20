@@ -23,6 +23,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 SMBIOS_INSTANCE mPrivateData;
 
 UINTN mPreAllocatedPages = 0;
+UINTN mSmbios3PreAllocatedPages = 0;
 
 //
 // Chassis for SMBIOS entry point structure that is to be installed into EFI system config table.
@@ -106,7 +107,55 @@ SMBIOS_TABLE_ENTRY_POINT EntryPointStructureData = {
   0
 };
 
-
+SMBIOS3_TABLE_ENTRY_POINT *Smbios3EntryPointStructure    = NULL;
+SMBIOS3_TABLE_ENTRY_POINT Smbios3EntryPointStructureData = {
+  //
+  // AnchorString
+  //
+  {
+    0x5f,
+    0x53,
+    0x4d,
+    0x33,
+    0x5f
+  },
+  //
+  // EntryPointStructureChecksum,TO BE FILLED
+  //
+  0,
+  //
+  // EntryPointStructure Length
+  //
+  0x18,
+  //
+  // MajorVersion
+  //
+  (UINT8) (FixedPcdGet16 (PcdSmbiosVersion) >> 8),
+  //
+  // MinorVersion
+  //
+  (UINT8) (FixedPcdGet16 (PcdSmbiosVersion) & 0x00ff),
+  //
+  // Docrev
+  //
+  0,
+  //
+  // EntryPointRevision
+  //
+  1,
+  //
+  // Reserved
+  //
+  0,
+  //
+  // Table maximum size, TO BE FILLED
+  //
+  0,
+  //
+  // TableAddress, TO BE FILLED
+  //
+  0,
+};
 
 /**
 
@@ -361,7 +410,7 @@ SmbiosAdd (
     return Status;
   }
 
-  if (EntryPointStructure->TableLength + StructureSize > SMBIOS_TABLE_MAX_LENGTH) {
+  if (EntryPointStructure && (EntryPointStructure->TableLength + StructureSize) > SMBIOS_TABLE_MAX_LENGTH) {
     //
     // The length of the entire structure table (including all strings) must be reported
     // in the Structure Table Length field of the SMBIOS Structure Table Entry Point,
@@ -370,6 +419,14 @@ SmbiosAdd (
     return EFI_OUT_OF_RESOURCES;
   }
 
+  if (Smbios3EntryPointStructure && (Smbios3EntryPointStructure->TableMaxSize + StructureSize) > SMBIOS_TABLE_MAX_LENGTH) {
+    //
+    // The length of the entire structure table (including all strings) must be reported
+    // in the Structure Table Length field of the SMBIOS Structure Table Entry Point,
+    // which is a WORD field limited to 65,535 bytes.
+    //
+    return EFI_OUT_OF_RESOURCES;
+  }
   //
   // Enter into critical section
   //  
@@ -580,7 +637,7 @@ SmbiosUpdateString (
         return EFI_SUCCESS;
       }
 
-      if (EntryPointStructure->TableLength + InputStrLen - TargetStrLen > SMBIOS_TABLE_MAX_LENGTH) {
+      if (EntryPointStructure && (EntryPointStructure->TableLength + InputStrLen - TargetStrLen) > SMBIOS_TABLE_MAX_LENGTH) {
         //
         // The length of the entire structure table (including all strings) must be reported
         // in the Structure Table Length field of the SMBIOS Structure Table Entry Point,
@@ -589,6 +646,14 @@ SmbiosUpdateString (
         return EFI_UNSUPPORTED;
       }
 
+      if (Smbios3EntryPointStructure && (Smbios3EntryPointStructure->TableMaxSize + InputStrLen - TargetStrLen) > SMBIOS_TABLE_MAX_LENGTH) {
+        //
+        // The length of the entire structure table (including all strings) must be reported
+        // in the Structure Table Length field of the SMBIOS Structure Table Entry Point,
+        // which is a WORD field limited to 65,535 bytes.
+        //
+        return EFI_UNSUPPORTED;
+      }
       //
       // Original string buffer size is not exactly match input string length.
       // Re-allocate buffer is needed.
@@ -1039,6 +1104,138 @@ SmbiosCreateTable (
 }
 
 /**
+  Assembles SMBIOS table from the SMBIOS protocol. Produce Table
+  Entry Point 64bit and return the pointer to it.
+
+  @param  TableEntryPointStructure   On exit, points to the SMBIOS entrypoint structure 64bit.
+
+  @retval EFI_SUCCESS                Structure created sucessfully.
+  @retval EFI_NOT_READY              Some of The SMBIOS records was not available yet.
+  @retval EFI_OUT_OF_RESOURCES       No enough memory.
+
+**/
+EFI_STATUS
+EFIAPI
+Smbios3CreateTable (
+  OUT VOID    **TableEntryPointStructure
+  )
+{
+  UINT8                           *BufferPointer;
+  UINTN                           RecordSize;
+  UINTN                           NumOfStr;
+  EFI_STATUS                      Status;
+  EFI_SMBIOS_HANDLE               SmbiosHandle;
+  EFI_SMBIOS_PROTOCOL             *SmbiosProtocol;
+  EFI_PHYSICAL_ADDRESS            PhysicalAddress;
+  EFI_SMBIOS_TABLE_HEADER         *SmbiosRecord;
+  EFI_SMBIOS_TABLE_END_STRUCTURE  EndStructure;
+  EFI_SMBIOS_ENTRY                *CurrentSmbiosEntry;
+
+  Status            = EFI_SUCCESS;
+  BufferPointer     = NULL;
+
+  //
+  // Get Smbios protocol to traverse SMBIOS records.
+  //
+  SmbiosProtocol = &mPrivateData.Smbios;
+
+  //
+  // Make some statistics about all the structures
+  //
+  Smbios3EntryPointStructure->TableMaxSize = 0;
+
+  //
+  // Calculate EPS Table Length
+  //
+  CurrentSmbiosEntry = NULL;
+  do {
+    Status = GetNextSmbiosRecord (SmbiosProtocol, &CurrentSmbiosEntry, &SmbiosRecord);
+
+    if (Status == EFI_SUCCESS) {
+      GetSmbiosStructureSize(SmbiosProtocol, SmbiosRecord, &RecordSize, &NumOfStr);
+      Smbios3EntryPointStructure->TableMaxSize += RecordSize;
+    }
+  } while (!EFI_ERROR(Status));
+
+  //
+  // Create End-Of-Table structure
+  //
+  GetMaxSmbiosHandle(SmbiosProtocol, &SmbiosHandle);
+  EndStructure.Header.Type = EFI_SMBIOS_TYPE_END_OF_TABLE;
+  EndStructure.Header.Length = (UINT8) sizeof (EFI_SMBIOS_TABLE_HEADER);
+  EndStructure.Header.Handle = SmbiosHandle;
+  EndStructure.Tailing[0] = 0;
+  EndStructure.Tailing[1] = 0;
+  Smbios3EntryPointStructure->TableMaxSize += sizeof (EndStructure);
+
+  if ((UINTN) EFI_SIZE_TO_PAGES (Smbios3EntryPointStructure->TableMaxSize) > mSmbios3PreAllocatedPages) {
+    //
+    // If new SMBIOS talbe size exceeds the original pre-allocated page,
+    // it is time to re-allocate memory
+    //
+    if (Smbios3EntryPointStructure->TableAddress != 0) {
+      //
+      // Free the original pre-allocated page
+      //
+      FreePages ((VOID*)(UINTN)(Smbios3EntryPointStructure->TableAddress),
+                  mSmbios3PreAllocatedPages
+                  );
+      Smbios3EntryPointStructure->TableAddress = 0;
+      mSmbios3PreAllocatedPages = 0;
+    }
+
+    PhysicalAddress = 0xffffffffffffffffULL;
+    Status = gBS->AllocatePages (
+                    AllocateMaxAddress,
+                    EfiReservedMemoryType,
+                    EFI_SIZE_TO_PAGES (Smbios3EntryPointStructure->TableMaxSize),
+                    &PhysicalAddress
+                    );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((EFI_D_ERROR, "SmbiosCreateTable() could not allocate SMBIOS\n"));
+      Smbios3EntryPointStructure->TableAddress = 0;
+      return EFI_OUT_OF_RESOURCES;
+    } else {
+      DEBUG ((EFI_D_VERBOSE, "SmbiosCreateTable() SMBIOS table:%llX\n", PhysicalAddress));
+      Smbios3EntryPointStructure->TableAddress = (UINT64) PhysicalAddress;
+      mSmbios3PreAllocatedPages = EFI_SIZE_TO_PAGES (Smbios3EntryPointStructure->TableMaxSize);
+    }
+  }
+
+  //
+  // Assemble the tables
+  //
+  ASSERT (Smbios3EntryPointStructure->TableAddress != 0);
+  BufferPointer = (UINT8 *) (UINTN) (Smbios3EntryPointStructure->TableAddress);
+  CurrentSmbiosEntry = NULL;
+  do {
+    Status = GetNextSmbiosRecord (SmbiosProtocol, &CurrentSmbiosEntry, &SmbiosRecord);
+
+    if (Status == EFI_SUCCESS) {
+      GetSmbiosStructureSize(SmbiosProtocol, SmbiosRecord, &RecordSize, &NumOfStr);
+      CopyMem (BufferPointer, SmbiosRecord, RecordSize);
+      BufferPointer = BufferPointer + RecordSize;
+    }
+  } while (!EFI_ERROR(Status));
+
+  //
+  // Assemble End-Of-Table structure
+  //
+  CopyMem (BufferPointer, &EndStructure, sizeof (EndStructure));
+
+  Smbios3EntryPointStructure->EntryPointStructureChecksum = 0;
+
+  Smbios3EntryPointStructure->EntryPointStructureChecksum =
+    CalculateCheckSum8 ((UINT8 *) Smbios3EntryPointStructure, Smbios3EntryPointStructure->EntryPointLength);
+
+  //
+  // Returns the pointer
+  //
+  *TableEntryPointStructure = Smbios3EntryPointStructure;
+
+  return EFI_SUCCESS;
+}
+/**
   Create SMBIOS Table and install it to the System Table.
 **/
 VOID
@@ -1048,11 +1245,21 @@ SmbiosTableConstruction (
   )
 {
   UINT8       *Eps;
+  UINT8       *Eps3;
   EFI_STATUS  Status;
 
-  Status = SmbiosCreateTable ((VOID **) &Eps);
-  if (!EFI_ERROR (Status)) {
-    gBS->InstallConfigurationTable (&gEfiSmbiosTableGuid, Eps);
+  if (((UINT8) (FixedPcdGet16 (PcdSmbiosVersion) >> 8)) >= 3) {
+    DEBUG ((EFI_D_VERBOSE, "Install SMBIOS 3\n"));
+    Status = Smbios3CreateTable ((VOID **) &Eps3);
+    if (!EFI_ERROR (Status)) {
+      gBS->InstallConfigurationTable (&gEfiSmbios3TableGuid, Eps3);
+    }
+  } else {
+    DEBUG ((EFI_D_VERBOSE, "Install SMBIOS 2.x\n"));
+    Status = SmbiosCreateTable ((VOID **) &Eps);
+    if (!EFI_ERROR (Status)) {
+      gBS->InstallConfigurationTable (&gEfiSmbiosTableGuid, Eps);
+    }
   }
 }
 
@@ -1076,6 +1283,7 @@ SmbiosDriverEntryPoint (
 {
   EFI_STATUS            Status;
   EFI_PHYSICAL_ADDRESS  PhysicalAddress;
+  BOOLEAN               UseSmbios3;
 
   mPrivateData.Signature                = SMBIOS_INSTANCE_SIGNATURE;
   mPrivateData.Smbios.Add               = SmbiosAdd;
@@ -1089,45 +1297,72 @@ SmbiosDriverEntryPoint (
   InitializeListHead (&mPrivateData.AllocatedHandleListHead);
   EfiInitializeLock (&mPrivateData.DataLock, TPL_NOTIFY);
 
+  UseSmbios3 = FALSE;
+  if (((UINT8) (FixedPcdGet16 (PcdSmbiosVersion) >> 8)) >= 3) {
+    UseSmbios3 = TRUE;
+  }
   //
   // Initialize the EntryPointStructure with initial values.
-  // Allocate memory (below 4GB).
+  // Allocate memory
   //
-  PhysicalAddress = 0xffffffff;
-  Status = gBS->AllocatePages (
-                  AllocateMaxAddress,
-                  EfiReservedMemoryType,
-                  EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
-                  &PhysicalAddress
-                  );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate EntryPointStructure < 4GB\n"));
+  if (UseSmbios3) {
+    PhysicalAddress = 0xffffffffffffffffULL;
     Status = gBS->AllocatePages (
-                    AllocateAnyPages,
-                    EfiReservedMemoryType,
-                    EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
-                    &PhysicalAddress
-                    );
-   if (EFI_ERROR (Status)) {   
-      return EFI_OUT_OF_RESOURCES;
+                      AllocateMaxAddress,
+                      EfiReservedMemoryType,
+                      EFI_SIZE_TO_PAGES (sizeof (SMBIOS3_TABLE_ENTRY_POINT)),
+                      &PhysicalAddress
+                      );
+  } else {
+    PhysicalAddress = 0xffffffff;
+    Status = gBS->AllocatePages (
+                      AllocateMaxAddress,
+                      EfiReservedMemoryType,
+                      EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
+                      &PhysicalAddress
+                      );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate EntryPointStructure < 4GB\n"));
+      Status = gBS->AllocatePages (
+                        AllocateAnyPages,
+                        EfiReservedMemoryType,
+                        EFI_SIZE_TO_PAGES (sizeof (SMBIOS_TABLE_ENTRY_POINT)),
+                        &PhysicalAddress
+                        );
     }
   }
 
-  EntryPointStructure = (SMBIOS_TABLE_ENTRY_POINT *) (UINTN) PhysicalAddress;
-  
-  CopyMem (
-    EntryPointStructure,
-    &EntryPointStructureData,
-    sizeof (SMBIOS_TABLE_ENTRY_POINT)
-    );
+  if (EFI_ERROR (Status)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
 
+  if (UseSmbios3) {
+    Smbios3EntryPointStructure = (SMBIOS3_TABLE_ENTRY_POINT *) (UINTN) PhysicalAddress;
+    CopyMem (
+        Smbios3EntryPointStructure,
+        &Smbios3EntryPointStructureData,
+        sizeof (SMBIOS3_TABLE_ENTRY_POINT)
+        );
+  } else {
+    EntryPointStructure = (SMBIOS_TABLE_ENTRY_POINT *) (UINTN) PhysicalAddress;
+    CopyMem (
+        EntryPointStructure,
+        &EntryPointStructureData,
+        sizeof (SMBIOS_TABLE_ENTRY_POINT)
+        );
+  }
+  
   //
   // Pre-allocate 1 page for SMBIOS table.
   // SMBIOS table will be updated when new SMBIOS type is added or 
   // existing SMBIOS type is updated. If the total size of SMBIOS table exceeds 1 page,
   // we will re-allocate new memory when creating whole SMBIOS table.
   //
-  PhysicalAddress= ((EFI_PHYSICAL_ADDRESS)EntryPointStructure | 0xffffffff);
+  if (UseSmbios3) {
+    PhysicalAddress = 0xffffffffffffffffULL;
+  } else {
+    PhysicalAddress = ((EFI_PHYSICAL_ADDRESS)EntryPointStructure | 0xffffffff);
+  }
   Status = gBS->AllocatePages (
                   AllocateMaxAddress,
                   EfiReservedMemoryType,
@@ -1136,21 +1371,35 @@ SmbiosDriverEntryPoint (
                   );
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "SmbiosDriverEntryPoint() could not allocate SMBIOS table\n"));
-    EntryPointStructure->TableAddress = 0;
+    if (EntryPointStructure) {
+      EntryPointStructure->TableAddress = 0;
+    } else {
+      Smbios3EntryPointStructure->TableAddress = 0;
+    }
+
   } else {
     DEBUG ((EFI_D_VERBOSE, "SmbiosDriverEntryPoint() SMBIOS table:%llX\n", PhysicalAddress));
-    /* high address should be the same with EntryPointStructure address */
-    EntryPointStructure->TableAddress = (UINT32) PhysicalAddress;
-    EntryPointStructure->ExtHighAddressTableAddress = (UINT32) ((PhysicalAddress & 0xffffffff00000000ULL) >> 32);
-    mPreAllocatedPages = 1;
+    if (EntryPointStructure) {
+      /* high address should be the same with EntryPointStructure address */
+      EntryPointStructure->TableAddress = (UINT32) PhysicalAddress;
+      EntryPointStructure->ExtHighAddressTableAddress = (UINT32) ((PhysicalAddress & 0xffffffff00000000ULL) >> 32);
+      mPreAllocatedPages = 1;
+    } else {
+      /* high address should be the same with EntryPointStructure address */
+      Smbios3EntryPointStructure->TableAddress = PhysicalAddress;
+      mSmbios3PreAllocatedPages = 1;
+    }
   }
 
-  //
-  // Init TableLength to the length of End-Of-Table structure for SmbiosAdd() called at the first time
-  // to check the TableLength limitation.
-  //
-  EntryPointStructure->TableLength  = sizeof (EFI_SMBIOS_TABLE_END_STRUCTURE);
-  
+  if (EntryPointStructure) {
+    //
+    // Init TableLength to the length of End-Of-Table structure for SmbiosAdd() called at the first time
+    // to check the TableLength limitation.
+    //
+    EntryPointStructure->TableLength  = sizeof (EFI_SMBIOS_TABLE_END_STRUCTURE);
+  } else {
+    Smbios3EntryPointStructure->TableMaxSize  = sizeof (EFI_SMBIOS_TABLE_END_STRUCTURE);
+  }
   //
   // Make a new handle and install the protocol
   //

@@ -68,6 +68,16 @@ LibSmbiosGetEPS (
   );
 
 /**
+  Get the entry point structure for the table.
+
+  @param[out] EntryPointStructure  The pointer to populate.
+**/
+VOID
+LibSmbios3GetEPS (
+  OUT SMBIOS3_TABLE_ENTRY_POINT **EntryPointStructure
+  );
+
+/**
   Return SMBIOS string for the given string number.
 
   @param[in] Smbios         Pointer to SMBIOS structure.

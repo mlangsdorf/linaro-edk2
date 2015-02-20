@@ -37,13 +37,15 @@
         status = "ok";
 };
 
+/*
 &sgenet0 {
-	status = "ok";
+	status = "disabled";
 };
 
 &xgenet {
-	status = "ok";
+	status = "disabled";
 };
+*/
 
 &pcie0clk {
 	status = "ok";

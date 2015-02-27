@@ -2443,12 +2443,12 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET00) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D30") // Device Identification Objects
 		Name(_CCA, One) // _CCA: Cache Coherency Attribute
 		Name(_DDN, "ET00")
 		Name(_UID, "ET00")
 		Name(_STR, Unicode("Ethernet SATA-SGMII Device"))
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D30")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
@@ -2489,12 +2489,12 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x05, "APM   ", "APM88xxxx", 1) {
 	}
 
 	Device(\_SB.ET04) {
-		Name(_HID, "APMC0D05") // Device Identification Objects
+		Name(_HID, "APMC0D31") // Device Identification Objects
 		Name(_DDN, "ET04")
 		Name(_UID, "ET04")
 		Name(_STR, Unicode("Ethernet 10Gb Device"))
 		Name(_CCA, ONE)
-		Name(_CID, "APMC0D05")
+		Name(_CID, "APMC0D31")
 		Method(_STA, 0, NotSerialized) {
 			Return (0x1)
 		}
